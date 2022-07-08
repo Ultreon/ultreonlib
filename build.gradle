@@ -1,0 +1,275 @@
+import java.nio.file.Files
+import java.nio.file.Paths
+
+import static java.nio.charset.StandardCharsets.UTF_8
+import static java.nio.file.StandardOpenOption.*
+
+buildscript {
+    repositories {
+        mavenLocal()
+        maven { url = 'https://files.minecraftforge.net/maven' }
+        mavenCentral()
+        maven {
+            name = "sonatype"
+            url = "https://oss.sonatype.org/content/repositories/snapshots/"
+        }
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
+    }
+}
+
+apply plugin: 'net.minecraftforge.gradle'
+apply plugin: 'eclipse'
+apply plugin: 'maven-publish'
+apply from: 'https://raw.githubusercontent.com/SizableShrimp/Forge-Class-Remapper/main/classremapper.gradle'
+
+def buildNumberFile = Paths.get(projectDir.path, "buildnumber.txt")
+
+// Read build number file.
+FileInputStream fileInputStream = new FileInputStream("buildnumber.txt")
+String buildNrString = new String(Files.readAllBytes(buildNumberFile))
+fileInputStream.close()
+Integer buildNumber = Integer.valueOf(buildNrString)
+
+// Advance build number.
+buildNumber++
+
+// Write new build number.
+Files.write(buildNumberFile, buildNumber.toString().getBytes(UTF_8), CREATE, TRUNCATE_EXISTING, WRITE)
+
+group 'com.ultreon.mc'
+version "$mod_version.$buildNumber-$mc_version"
+
+println("Version: " + version)
+
+java {
+    toolchain {
+        it.languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+publishing {
+    repositories {
+//        maven {
+//            name = "GitHubPackages-QModLib"
+//            url = uri("https://maven.pkg.github.com/Qboi123/QModLib")
+//            credentials {
+//                username = System.getenv("GITHUB_USERNAME")
+//                password = System.getenv("GITHUB_TOKEN")
+//            }
+//        }
+        maven {
+            name = "GitHubPackages-QFM"
+            url = uri("https://maven.pkg.github.com/Qboi123/QForgeMod")
+            credentials {
+                username = System.getenv("GITHUB_USERNAME")
+                password = System.getenv("GITHUB_TOKEN")
+            }
+        }
+    }
+    dependencies {
+
+    }
+
+    publications {
+        //noinspection GroovyAssignabilityCheck
+        gpr(MavenPublication) {
+            //noinspection GroovyAssignabilityCheck
+            from(components.java)
+        }
+    }
+}
+
+java {
+    withSourcesJar()
+    withJavadocJar()
+}
+
+task deleteOldJavadoc(type: Delete) {
+    delete fileTree("$projectDir/docs/latest/")
+}
+
+task copyJavadoc(type: Copy) {
+    from javadoc.outputs
+    into "$projectDir/docs/latest/"
+    dependsOn deleteOldJavadoc
+}
+
+mkdir "$projectDir/docs/"
+mkdir "$projectDir/docs/latest"
+
+javadoc.finalizedBy(copyJavadoc)
+
+minecraft {
+    // The mappings can be changed at any time, and must be in the following format.
+    // snapshot_YYYYMMDD   Snapshot are built nightly.
+    // stable_#            Stables are built at the discretion of the MCP team.
+    // Use non-default mappings at your own risk. they may not always work.
+    // Simply re-run your setup task after changing the mappings to update your workspace.
+    mappings channel: 'official', version: "$mc_version"
+    // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
+
+    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
+
+    // Default run configurations.
+    // These can be tweaked, removed, or duplicated as needed.
+    runs {
+        client {
+            //noinspection GroovyAssignabilityCheck
+            workingDirectory project.file('run')
+
+            // Recommended logging data for a userdev environment
+            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+
+            // Recommended logging level for the console
+            property 'forge.logging.console.level', 'debug'
+
+            mods {
+                qmodlib {
+                    //noinspection GroovyAssignabilityCheck
+                    source sourceSets.main
+                }
+            }
+        }
+
+        server {
+            //noinspection GroovyAssignabilityCheck
+            workingDirectory project.file('run')
+
+            // Recommended logging data for a userdev environment
+            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+
+            // Recommended logging level for the console
+            property 'forge.logging.console.level', 'debug'
+
+            mods {
+                qmodlib {
+                    //noinspection GroovyAssignabilityCheck
+                    source sourceSets.main
+                }
+            }
+        }
+
+        data {
+            //noinspection GroovyAssignabilityCheck
+            workingDirectory project.file('run')
+
+            // Recommended logging data for a userdev environment
+            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+
+            // Recommended logging level for the console
+            property 'forge.logging.console.level', 'debug'
+
+            args '--mod', 'umodlib', '--all', '--output', file('src/generated/resources/')
+
+            mods {
+                qmodlib {
+                    //noinspection GroovyAssignabilityCheck
+                    source sourceSets.main
+                }
+            }
+        }
+    }
+}
+
+repositories {
+    mavenLocal()
+    maven {
+        // location of the maven that hosts JEI files
+        name = "Progwml6 maven"
+        url = "https://dvs1.progwml6.com/files/maven/"
+    }
+    maven {
+        // location of a maven mirror for JEI files, as a fallback
+        name = "ModMaven"
+        url = "https://modmaven.k-4u.nl"
+    }
+    maven {
+        url 'https://squiddev.cc/maven/'
+    }
+    maven {
+        url 'https://jitpack.io'
+    }
+    maven {
+        url 'https://maven.imagej.net/content/repositories/public/'
+    }
+    mavenCentral()
+}
+
+configurations {
+    // configuration that holds jars to include in the jar
+    api {
+        canBeResolved true
+    }
+}
+
+dependencies {
+    implementation 'org.jetbrains:annotations:23.0.0'
+
+    // Specify the version of Minecraft to use, If this is any group other then 'net.minecraft' it is assumed
+    // that the dep is a ForgeGradle 'patcher' dependency. And it's patches will be applied.
+    // The user dev artifact is a special name and will get all sorts of transformations applied to it.
+    minecraft "net.minecraftforge:forge:$mc_version-$forge_version"
+
+    // Apis
+//    api group: 'org.apache.commons', name: 'commons-lang3', version: '3.0'
+}
+
+// Example for how to get properties into the manifest for reading by the runtime..
+jar {
+    doFirst {
+    }
+
+    afterEvaluate {
+        project.version "$mod_version-$mc_version"
+    }
+
+    manifest {
+        //noinspection GrDeprecatedAPIUsage
+        def v = version
+
+        attributes([
+                "Specification-Title": "Ultreon Mod Library",
+                "Specification-Vendor": "Ultreon Team",
+                "Specification-Version": project.version,
+                "Implementation-Title": project.name,
+                "Implementation-Version": "${v}",
+                "Implementation-Vendor" :"Ultreon Team",
+                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+        ])
+    }
+    from {
+        configurations.api.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
+
+// Example for how to get properties into the manifest for reading by the runtime..
+task runJar (type: Jar) {
+    doFirst {
+    }
+
+    afterEvaluate {
+        project.version = "$mod_version-$mc_version"
+    }
+
+    from zipTree(jar.archiveFile.get())
+
+    classifier "run"
+
+    from {
+        configurations.api.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+
+    dependsOn jar
+    finalizedBy "deleteJar"
+}
+
+task deleteJar (type: Delete) {
+    delete = jar.archiveFile.get()
+}
+
+jar.finalizedBy('reobfJar')
