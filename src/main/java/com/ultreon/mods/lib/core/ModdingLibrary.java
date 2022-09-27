@@ -1,13 +1,11 @@
 package com.ultreon.mods.lib.core;
 
 import com.mojang.brigadier.CommandDispatcher;
-import com.ultreon.mods.lib.core.silentlib.advancements.LibTriggers;
-import com.ultreon.mods.lib.core.silentlib.crafting.recipe.DamageItemRecipe;
-import com.ultreon.mods.lib.core.silentlib.data.TestRecipeProvider;
-import com.ultreon.mods.lib.core.silentlib.item.ILeftClickItem;
-import com.ultreon.mods.lib.core.silentlib.network.internal.UltreonModLibNetwork;
-import com.ultreon.mods.lib.core.silentlib.server.command.internal.TeleportCommand;
-import com.ultreon.mods.lib.core.silentlib.server.command.internal.ViewNbtCommand;
+import com.ultreon.mods.lib.core.network.ModdingLibraryNet;
+import com.ultreon.mods.lib.core.server.command.TeleportCommand;
+import com.ultreon.mods.lib.core.server.command.ViewNbtCommand;
+import com.ultreon.mods.lib.networking.NetworkLib;
+import com.ultreon.mods.lib.networking.network.Network;
 import net.minecraft.FieldsAreNonnullByDefault;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.commands.CommandSourceStack;
@@ -44,6 +42,7 @@ public final class ModdingLibrary {
 
     public static final Logger LOGGER = LogManager.getLogger(MOD_NAME);
     public static final Random RANDOM = new Random();
+    private static final Network NETWORK = new ModdingLibraryNet();
 
     @Nullable
     private static ModdingLibrary instance;
@@ -58,10 +57,6 @@ public final class ModdingLibrary {
         FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(RecipeSerializer.class, this::registerRecipeSerializers);
 
         MinecraftForge.EVENT_BUS.addListener(this::onRegisterCommands);
-
-        UltreonModLibNetwork.init();
-        LibTriggers.init();
-        ILeftClickItem.EventHandler.init();
     }
 
     public static String getVersion() {
@@ -103,10 +98,11 @@ public final class ModdingLibrary {
 
     private void gatherData(GatherDataEvent event) {
         DataGenerator gen = event.getGenerator();
-        gen.addProvider(new TestRecipeProvider(gen));
+//        gen.addProvider(new TestRecipeProvider(gen));
     }
 
     private void commonSetup(FMLCommonSetupEvent event) {
+        NetworkLib.registerNetwork(NETWORK);
     }
 
     private void imcEnqueue(InterModEnqueueEvent event) {
@@ -122,6 +118,5 @@ public final class ModdingLibrary {
     }
 
     private void registerRecipeSerializers(RegistryEvent.Register<RecipeSerializer<?>> event) {
-        event.getRegistry().register(DamageItemRecipe.SERIALIZER.setRegistryName(ModdingLibrary.res("damage_item")));
     }
 }

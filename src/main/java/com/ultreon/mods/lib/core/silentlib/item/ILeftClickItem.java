@@ -18,8 +18,8 @@
 
 package com.ultreon.mods.lib.core.silentlib.item;
 
+import com.ultreon.mods.lib.core.network.ModdingLibraryNet;
 import com.ultreon.mods.lib.core.silentlib.network.internal.LeftClickItemPacket;
-import com.ultreon.mods.lib.core.silentlib.network.internal.UltreonModLibNetwork;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
@@ -93,7 +93,7 @@ public interface ILeftClickItem {
                 InteractionResultHolder<ItemStack> result = ((ILeftClickItem) stack.getItem()).onItemLeftClickBlockSL(event.getWorld(), event.getPlayer(), event.getHand());
                 // Server-side call
                 if (result.getResult() == InteractionResult.SUCCESS) {
-                    UltreonModLibNetwork.channel.sendToServer(new LeftClickItemPacket(ClickType.BLOCK, event.getHand()));
+                    ModdingLibraryNet.channel.sendToServer(new LeftClickItemPacket(ClickType.BLOCK, event.getHand()));
                 }
             }
         }
@@ -105,7 +105,7 @@ public interface ILeftClickItem {
                 InteractionResultHolder<ItemStack> result = ((ILeftClickItem) stack.getItem()).onItemLeftClickSL(event.getWorld(), event.getPlayer(), event.getHand());
                 // Server-side call
                 if (result.getResult() == InteractionResult.SUCCESS) {
-                    UltreonModLibNetwork.channel.sendToServer(new LeftClickItemPacket(ClickType.EMPTY, event.getHand()));
+                    ModdingLibraryNet.channel.sendToServer(new LeftClickItemPacket(ClickType.EMPTY, event.getHand()));
                 }
             }
         }

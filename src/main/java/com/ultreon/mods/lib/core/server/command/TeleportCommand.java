@@ -1,4 +1,4 @@
-package com.ultreon.mods.lib.core.silentlib.server.command.internal;
+package com.ultreon.mods.lib.core.server.command;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
@@ -15,21 +15,19 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 
-/**
- * @deprecated Removed
- */
-@Deprecated
 public final class TeleportCommand {
     private TeleportCommand() {
     }
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
-        dispatcher.register(Commands.literal("sl_tp")
-                .requires(source -> source.hasPermission(2))
-                .then(Commands.argument("entity", EntityArgument.entities())
-                        .then(Commands.argument("dimension", DimensionArgument.dimension())
-                                .then(Commands.argument("pos", BlockPosArgument.blockPos())
-                                        .executes(TeleportCommand::run)
+        dispatcher.register(Commands.literal("ultreon:modlib")
+                .then(Commands.literal("teleport")
+                        .requires(source -> source.hasPermission(2))
+                        .then(Commands.argument("entity", EntityArgument.entities())
+                                .then(Commands.argument("dimension", DimensionArgument.dimension())
+                                        .then(Commands.argument("pos", BlockPosArgument.blockPos())
+                                                .executes(TeleportCommand::run)
+                                        )
                                 )
                         )
                 )

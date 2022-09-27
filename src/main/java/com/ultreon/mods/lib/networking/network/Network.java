@@ -1,6 +1,6 @@
 package com.ultreon.mods.lib.networking.network;
 
-import com.ultreon.mods.lib.networking.UltreonNet;
+import com.ultreon.mods.lib.networking.NetworkLib;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.Connection;
 import net.minecraft.resources.ResourceKey;
@@ -16,9 +16,9 @@ import net.minecraftforge.network.simple.SimpleChannel;
 import java.util.Objects;
 
 public abstract class Network {
-    private final String VERSION = "machinizing-net3";
     private final String modId;
     private final String channelName;
+    private final String version;
 
     public Connection getManager() {
         return Objects.requireNonNull(Minecraft.getInstance().getConnection()).getConnection();
@@ -26,19 +26,20 @@ public abstract class Network {
 
     private SimpleChannel channel;
 
-    protected Network(String modId, String channelName) {
+    protected Network(String modId, String channelName, int version) {
         this.modId = modId;
         this.channelName = channelName;
+        this.version = modId + "-net" + version;
 
-        UltreonNet.registerNetwork(this);
+        NetworkLib.registerNetwork(this);
     }
 
     public final void init() {
         int id = 0;
         channel = NetworkRegistry.ChannelBuilder.named(new ResourceLocation(modId(), channelName()))
-                .clientAcceptedVersions(s -> Objects.equals(s, VERSION))
-                .serverAcceptedVersions(s -> Objects.equals(s, VERSION))
-                .networkProtocolVersion(() -> VERSION)
+                .clientAcceptedVersions(s -> Objects.equals(s, version))
+                .serverAcceptedVersions(s -> Objects.equals(s, version))
+                .networkProtocolVersion(() -> version)
                 .simpleChannel();
 
         /////////////////////////////////

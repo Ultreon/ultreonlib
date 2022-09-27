@@ -19,8 +19,8 @@
 package com.ultreon.mods.lib.core.silentlib.util;
 
 import com.ultreon.mods.lib.core.ModdingLibrary;
+import com.ultreon.mods.lib.core.network.ModdingLibraryNet;
 import com.ultreon.mods.lib.core.silentlib.network.internal.SpawnEntityPacket;
-import com.ultreon.mods.lib.core.silentlib.network.internal.UltreonModLibNetwork;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -66,7 +66,7 @@ public final class EntityHelper {
         world.addFreshEntity(entity);
         if (world instanceof ServerLevel) {
             SpawnEntityPacket message = new SpawnEntityPacket(entity);
-            UltreonModLibNetwork.channel.send(PacketDistributor.NEAR.with(PacketDistributor.TargetPoint.p(entity.getX(), entity.getY(), entity.getZ(), r2, entity.level.dimension())), message);
+            ModdingLibraryNet.channel.send(PacketDistributor.NEAR.with(PacketDistributor.TargetPoint.p(entity.getX(), entity.getY(), entity.getZ(), r2, entity.level.dimension())), message);
         }
     }
 

@@ -19,11 +19,11 @@ import java.util.Map;
 import java.util.ServiceLoader;
 
 @Mod("ultreon_net")
-public class UltreonNet {
+public class NetworkLib {
     private static final Logger LOGGER = LogUtils.getLogger();
     private static final Map<ResourceLocation, Network> NETWORKS = new HashMap<>();
 
-    public UltreonNet() {
+    public NetworkLib() {
         // Register the setup method for mod-loading
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
 

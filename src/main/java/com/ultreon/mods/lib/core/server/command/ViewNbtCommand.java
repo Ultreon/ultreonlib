@@ -1,10 +1,10 @@
-package com.ultreon.mods.lib.core.silentlib.server.command.internal;
+package com.ultreon.mods.lib.core.server.command;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.ultreon.mods.lib.core.silentlib.network.internal.DisplayNBTPacket;
-import com.ultreon.mods.lib.core.silentlib.network.internal.UltreonModLibNetwork;
+import com.ultreon.mods.lib.core.network.ModdingLibraryNet;
+import com.ultreon.mods.lib.core.network.ShowNbtPacket;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;
@@ -83,9 +83,9 @@ public class ViewNbtCommand {
     }
 
     private static void sendPacket(CommandContext<CommandSourceStack> context, CompoundTag nbt, Component title) throws CommandSyntaxException {
-        DisplayNBTPacket msg = new DisplayNBTPacket(nbt, textOfNullable(title));
+        ShowNbtPacket msg = new ShowNbtPacket(nbt, textOfNullable(title));
         Connection netManager = context.getSource().getPlayerOrException().connection.connection;
-        UltreonModLibNetwork.channel.sendTo(msg, netManager, NetworkDirection.PLAY_TO_CLIENT);
+        ModdingLibraryNet.channel.sendTo(msg, netManager, NetworkDirection.PLAY_TO_CLIENT);
     }
 
     private static Component textOfNullable(@Nullable Component text) {

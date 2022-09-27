@@ -1,14 +1,9 @@
-package com.ultreon.mods.lib.core.silentlib.data;
+package com.ultreon.mods.lib.core.recipes;
 
 import com.google.gson.JsonObject;
-import com.ultreon.mods.lib.core.silentlib.crafting.recipe.DamageItemRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.ItemLike;
 
-/**
- * @deprecated Removed
- */
-@Deprecated
 public class DamageItemRecipeBuilder extends ExtendedShapelessRecipeBuilder {
     protected int damage = 1;
 

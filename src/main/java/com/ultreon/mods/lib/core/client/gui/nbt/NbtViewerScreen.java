@@ -1,4 +1,4 @@
-package com.ultreon.mods.lib.core.silentlib.client.gui.nbt;
+package com.ultreon.mods.lib.core.client.gui.nbt;
 
 import com.google.gson.JsonObject;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -16,17 +16,13 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @deprecated Removed
- */
-@Deprecated
-public class DisplayNBTScreen extends Screen {
+public class NbtViewerScreen extends Screen {
     final List<String> lines;
     private final CompoundTag nbtCompound;
-    private DisplayNBTList displayList;
+    private NbtViewerList displayList;
     private Component header;
 
-    public DisplayNBTScreen(CompoundTag nbt, Component titleIn) {
+    public NbtViewerScreen(CompoundTag nbt, Component titleIn) {
         super(titleIn);
         this.lines = formatNbt(nbt, 0);
         this.nbtCompound = nbt;
@@ -120,7 +116,7 @@ public class DisplayNBTScreen extends Screen {
             this.header = new TextComponent(message);
         }));
 
-        this.displayList = new DisplayNBTList(this, minecraft, scaledWidth, this.height, 12, this.height - 12, 11);
+        this.displayList = new NbtViewerList(this, minecraft, scaledWidth, this.height, 12, this.height - 12, 11);
         this.addRenderableWidget(this.displayList);
     }
 

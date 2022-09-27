@@ -1,4 +1,4 @@
-package com.ultreon.mods.lib.core.silentlib.client.gui.nbt;
+package com.ultreon.mods.lib.core.client.gui.nbt;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.ultreon.mods.lib.core.silentlib.util.TextRenderUtils;
@@ -8,15 +8,11 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import org.jetbrains.annotations.NotNull;
 
-/**
- * @deprecated Removed
- */
-@Deprecated
-public final class DisplayNBTListEntry extends ObjectSelectionList.Entry<DisplayNBTListEntry> {
+public final class NbtViewerEntry extends ObjectSelectionList.Entry<NbtViewerEntry> {
     private final String text;
     private final Minecraft mc;
 
-    public DisplayNBTListEntry(String text) {
+    public NbtViewerEntry(String text) {
         this.text = text;
         this.mc = Minecraft.getInstance();
     }
