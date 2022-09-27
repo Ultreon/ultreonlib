@@ -1,0 +1,127 @@
+package com.ultreon.mods.lib.core;
+
+import com.mojang.brigadier.CommandDispatcher;
+import com.ultreon.mods.lib.core.silentlib.advancements.LibTriggers;
+import com.ultreon.mods.lib.core.silentlib.crafting.recipe.DamageItemRecipe;
+import com.ultreon.mods.lib.core.silentlib.data.TestRecipeProvider;
+import com.ultreon.mods.lib.core.silentlib.item.ILeftClickItem;
+import com.ultreon.mods.lib.core.silentlib.network.internal.UltreonModLibNetwork;
+import com.ultreon.mods.lib.core.silentlib.server.command.internal.TeleportCommand;
+import com.ultreon.mods.lib.core.silentlib.server.command.internal.ViewNbtCommand;
+import net.minecraft.FieldsAreNonnullByDefault;
+import net.minecraft.MethodsReturnNonnullByDefault;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.data.DataGenerator;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.RegisterCommandsEvent;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.ModContainer;
+import net.minecraftforge.fml.ModList;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
+import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fml.loading.FMLEnvironment;
+import net.minecraftforge.forge.event.lifecycle.GatherDataEvent;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
+import java.util.Optional;
+import java.util.Random;
+
+@Mod(ModdingLibrary.MOD_ID)
+@FieldsAreNonnullByDefault
+@ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
+public final class ModdingLibrary {
+    public static final String MOD_ID = "ultreonlib";
+    public static final String MOD_NAME = "QModLib";
+
+    public static final Logger LOGGER = LogManager.getLogger(MOD_NAME);
+    public static final Random RANDOM = new Random();
+
+    @Nullable
+    private static ModdingLibrary instance;
+
+    public ModdingLibrary() {
+        instance = this;
+
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::gatherData);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::commonSetup);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::imcEnqueue);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::imcProcess);
+        FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(RecipeSerializer.class, this::registerRecipeSerializers);
+
+        MinecraftForge.EVENT_BUS.addListener(this::onRegisterCommands);
+
+        UltreonModLibNetwork.init();
+        LibTriggers.init();
+        ILeftClickItem.EventHandler.init();
+    }
+
+    public static String getVersion() {
+        Optional<? extends ModContainer> o = ModList.get().getModContainerById(MOD_ID);
+        if (o.isPresent()) {
+            return o.get().getModInfo().getVersion().toString();
+        }
+        return "0.0.0";
+    }
+
+    public static boolean isDevEnv() {
+        return !FMLEnvironment.production;
+    }
+
+    public static boolean isProdEnv() {
+        return FMLEnvironment.production;
+    }
+
+    public static ResourceLocation getId(String path) {
+        return new ResourceLocation(MOD_ID, path);
+    }
+
+    @Nullable
+    public static ModdingLibrary getInstance() {
+        return instance;
+    }
+
+    public static boolean isModDev() {
+        return !FMLEnvironment.production;
+    }
+
+    public static boolean isModLoaded(String modId) {
+        return ModList.get().isLoaded(modId);
+    }
+
+    public static ResourceLocation res(String path) {
+        return new ResourceLocation(MOD_ID, path);
+    }
+
+    private void gatherData(GatherDataEvent event) {
+        DataGenerator gen = event.getGenerator();
+        gen.addProvider(new TestRecipeProvider(gen));
+    }
+
+    private void commonSetup(FMLCommonSetupEvent event) {
+    }
+
+    private void imcEnqueue(InterModEnqueueEvent event) {
+    }
+
+    private void imcProcess(InterModProcessEvent event) {
+    }
+
+    private void onRegisterCommands(RegisterCommandsEvent event) {
+        CommandDispatcher<CommandSourceStack> dispatcher = event.getDispatcher();
+        ViewNbtCommand.register(dispatcher);
+        TeleportCommand.register(dispatcher);
+    }
+
+    private void registerRecipeSerializers(RegistryEvent.Register<RecipeSerializer<?>> event) {
+        event.getRegistry().register(DamageItemRecipe.SERIALIZER.setRegistryName(ModdingLibrary.res("damage_item")));
+    }
+}

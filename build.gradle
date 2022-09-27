@@ -179,7 +179,6 @@ jar {
         configurations.api.collect { it.isDirectory() ? it : zipTree(it) }
     }
 }
-
 // Example for how to get properties into the manifest for reading by the runtime..
 task runJar (type: Jar) {
     doFirst {
@@ -248,4 +247,14 @@ jar.finalizedBy('reobfJar')
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
+}
+
+// Fix the classpath the right way and once and for all
+afterEvaluate {
+    // Collect deps in runtimeClasspath but NOT in minecraft
+    def deps = (configurations.runtimeClasspath - configurations.minecraft).join(';')
+    // Add deps to classpath
+    minecraft.runs.each { run ->
+        run.token 'minecraft_classpath', deps
+    }
 }

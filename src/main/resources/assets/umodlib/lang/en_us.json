@@ -1,0 +1,5 @@
+{
+  "command.ultreonlib.nbt.notBlockEntity": "%1$s is not a block entity.",
+  "command.ultreonlib.nbt.noItemInHand": "You don't have any item in your main hand.",
+  "command.ultreonlib.nbt.noItemTag": "%1$s doesn't have any nbt tag."
+}
