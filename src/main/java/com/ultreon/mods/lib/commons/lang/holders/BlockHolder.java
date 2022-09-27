@@ -1,6 +1,5 @@
 package com.ultreon.mods.lib.commons.lang.holders;
 
-import com.ultreon.mods.lib.core.silentlib.block.BlockLike;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -10,7 +9,8 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 
-public interface BlockHolder extends ItemHolder, BlockLike {
+@FunctionalInterface
+public interface BlockHolder extends ItemHolder {
 
     @Nonnull
     Block asBlock();
@@ -39,5 +39,9 @@ public interface BlockHolder extends ItemHolder, BlockLike {
     @Override
     default String getTranslationId() {
         return asBlock().getDescriptionId();
+    }
+
+    static BlockHolder self(Block block) {
+        return () -> block;
     }
 }

@@ -7,6 +7,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import javax.annotation.Nonnull;
 
+@FunctionalInterface
 public interface FluidHolder extends BaseHolder {
 
     @Nonnull
@@ -28,7 +29,7 @@ public interface FluidHolder extends BaseHolder {
     }
 
     @Override
-    default Component getComponent() {
+    default Component getTranslation() {
         return getFluid().getAttributes().getDisplayName(getFluidStack(1));
     }
 

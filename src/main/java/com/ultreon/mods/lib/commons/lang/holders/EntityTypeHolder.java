@@ -6,6 +6,7 @@ import net.minecraft.world.entity.EntityType;
 
 import javax.annotation.Nonnull;
 
+@FunctionalInterface
 public interface EntityTypeHolder extends BaseHolder {
 
     @Nonnull
@@ -17,7 +18,7 @@ public interface EntityTypeHolder extends BaseHolder {
     }
 
     @Override
-    default Component getComponent() {
+    default Component getTranslation() {
         return getEntityType().getDescription();
     }
 

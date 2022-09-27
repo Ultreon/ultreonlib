@@ -6,6 +6,7 @@ import net.minecraft.world.item.ItemStack;
 
 import javax.annotation.Nonnull;
 
+@FunctionalInterface
 public interface ItemHolder extends BaseHolder, net.minecraft.world.level.ItemLike {
 
     @Nonnull
