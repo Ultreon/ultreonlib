@@ -74,15 +74,16 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>All Superinterfaces:</dt>
-<dd><code><a href="BaseHolder.html" title="interface in com.ultreon.mods.lib.commons.lang.holders">BaseHolder</a></code>, <code><a href="../../../core/silentlib/block/BlockLike.html" title="interface in com.ultreon.mods.lib.core.silentlib.block">BlockLike</a></code>, <code><a href="../../../core/api/ComponentHolder.html" title="interface in com.ultreon.mods.lib.core.api">ComponentHolder</a></code>, <code><a href="ItemHolder.html" title="interface in com.ultreon.mods.lib.commons.lang.holders">ItemHolder</a></code>, <code>net.minecraft.world.level.ItemLike</code>, <code><a href="../../../core/api/TranslationHolder.html" title="interface in com.ultreon.mods.lib.core.api">TranslationHolder</a></code></dd>
+<dd><code><a href="BaseHolder.html" title="interface in com.ultreon.mods.lib.commons.lang.holders">BaseHolder</a></code>, <code><a href="../../../core/ComponentHolder.html" title="interface in com.ultreon.mods.lib.core">ComponentHolder</a></code>, <code><a href="ItemHolder.html" title="interface in com.ultreon.mods.lib.commons.lang.holders">ItemHolder</a></code>, <code>net.minecraft.world.level.ItemLike</code>, <code><a href="../../../core/TranslationHolder.html" title="interface in com.ultreon.mods.lib.core">TranslationHolder</a></code></dd>
 </dl>
 <dl class="notes">
-<dt>All Known Implementing Classes:</dt>
-<dd><code><a href="../../../core/silentlib/registry/BlockRegistryObject.html" title="class in com.ultreon.mods.lib.core.silentlib.registry">BlockRegistryObject</a></code></dd>
+<dt>Functional Interface:</dt>
+<dd>This is a functional interface and can therefore be used as the assignment target for a lambda expression or method reference.</dd>
 </dl>
 <hr>
-<div class="type-signature"><span class="modifiers">public interface </span><span class="element-name type-name-label">BlockHolder</span><span class="extends-implements">
-extends <a href="ItemHolder.html" title="interface in com.ultreon.mods.lib.commons.lang.holders">ItemHolder</a>, <a href="../../../core/silentlib/block/BlockLike.html" title="interface in com.ultreon.mods.lib.core.silentlib.block">BlockLike</a></span></div>
+<div class="type-signature"><span class="annotations"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/FunctionalInterface.html" title="class or interface in java.lang" class="external-link">@FunctionalInterface</a>
+</span><span class="modifiers">public interface </span><span class="element-name type-name-label">BlockHolder</span><span class="extends-implements">
+extends <a href="ItemHolder.html" title="interface in com.ultreon.mods.lib.commons.lang.holders">ItemHolder</a></span></div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -91,7 +92,7 @@ extends <a href="ItemHolder.html" title="interface in com.ultreon.mods.lib.commo
 <section class="method-summary" id="method-summary">
 <h2>Method Summary</h2>
 <div id="method-summary-table">
-<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="method-summary-table-tab0" role="tab" aria-selected="true" aria-controls="method-summary-table.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table', 3)" class="active-table-tab">All Methods</button><button id="method-summary-table-tab2" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab2', 3)" class="table-tab">Instance Methods</button><button id="method-summary-table-tab3" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab3', 3)" class="table-tab">Abstract Methods</button><button id="method-summary-table-tab5" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab5', 3)" class="table-tab">Default Methods</button></div>
+<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="method-summary-table-tab0" role="tab" aria-selected="true" aria-controls="method-summary-table.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table', 3)" class="active-table-tab">All Methods</button><button id="method-summary-table-tab1" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab1', 3)" class="table-tab">Static Methods</button><button id="method-summary-table-tab2" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab2', 3)" class="table-tab">Instance Methods</button><button id="method-summary-table-tab3" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab3', 3)" class="table-tab">Abstract Methods</button><button id="method-summary-table-tab5" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab5', 3)" class="table-tab">Default Methods</button></div>
 <div id="method-summary-table.tabpanel" role="tabpanel">
 <div class="summary-table three-column-summary" aria-labelledby="method-summary-table-tab0">
 <div class="table-header col-first">Modifier and Type</div>
@@ -99,9 +100,7 @@ extends <a href="ItemHolder.html" title="interface in com.ultreon.mods.lib.commo
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>net.minecraft.world.level.block.Block</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#asBlock()" class="member-name-link">asBlock</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
-<div class="block">Get the block this object represents.</div>
-</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code>default @NotNull net.minecraft.world.item.Item</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code><a href="#asItem()" class="member-name-link">asItem</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5">&nbsp;</div>
@@ -117,15 +116,15 @@ extends <a href="ItemHolder.html" title="interface in com.ultreon.mods.lib.commo
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code>default <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code><a href="#getTranslationId()" class="member-name-link">getTranslationId</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1"><code>static <a href="BlockHolder.html" title="interface in com.ultreon.mods.lib.commons.lang.holders">BlockHolder</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1"><code><a href="#self(net.minecraft.world.level.block.Block)" class="member-name-link">self</a><wbr>(net.minecraft.world.level.block.Block&nbsp;block)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1">&nbsp;</div>
 </div>
 </div>
 </div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-com.ultreon.mods.lib.commons.lang.holders.BaseHolder">Methods inherited from interface&nbsp;com.ultreon.mods.lib.commons.lang.holders.<a href="BaseHolder.html" title="interface in com.ultreon.mods.lib.commons.lang.holders">BaseHolder</a></h3>
-<code><a href="BaseHolder.html#getComponent()">getComponent</a>, <a href="BaseHolder.html#getName()">getName</a></code></div>
-<div class="inherited-list">
-<h3 id="methods-inherited-from-class-com.ultreon.mods.lib.core.silentlib.block.BlockLike">Methods inherited from interface&nbsp;com.ultreon.mods.lib.core.silentlib.block.<a href="../../../core/silentlib/block/BlockLike.html" title="interface in com.ultreon.mods.lib.core.silentlib.block">BlockLike</a></h3>
-<code><a href="../../../core/silentlib/block/BlockLike.html#asBlockState()">asBlockState</a></code></div>
+<code><a href="BaseHolder.html#getName()">getName</a>, <a href="BaseHolder.html#getTranslation()">getTranslation</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-com.ultreon.mods.lib.commons.lang.holders.ItemHolder">Methods inherited from interface&nbsp;com.ultreon.mods.lib.commons.lang.holders.<a href="ItemHolder.html" title="interface in com.ultreon.mods.lib.commons.lang.holders">ItemHolder</a></h3>
 <code><a href="ItemHolder.html#asItemStack()">asItemStack</a>, <a href="ItemHolder.html#asItemStack(int)">asItemStack</a>, <a href="ItemHolder.html#itemMatches(net.minecraft.world.item.Item)">itemMatches</a>, <a href="ItemHolder.html#itemMatches(net.minecraft.world.item.ItemStack)">itemMatches</a></code></div>
@@ -145,14 +144,6 @@ extends <a href="ItemHolder.html" title="interface in com.ultreon.mods.lib.commo
 <h3>asBlock</h3>
 <div class="member-signature"><span class="annotations">@Nonnull
 </span><span class="return-type">net.minecraft.world.level.block.Block</span>&nbsp;<span class="element-name">asBlock</span>()</div>
-<div class="block"><span class="descfrm-type-label">Description copied from interface:&nbsp;<code><a href="../../../core/silentlib/block/BlockLike.html#asBlock()">BlockLike</a></code></span></div>
-<div class="block">Get the block this object represents.</div>
-<dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="../../../core/silentlib/block/BlockLike.html#asBlock()">asBlock</a></code>&nbsp;in interface&nbsp;<code><a href="../../../core/silentlib/block/BlockLike.html" title="interface in com.ultreon.mods.lib.core.silentlib.block">BlockLike</a></code></dd>
-<dt>Returns:</dt>
-<dd>The block, which may be newly constructed</dd>
-</dl>
 </section>
 </li>
 <li>
@@ -173,8 +164,6 @@ extends <a href="ItemHolder.html" title="interface in com.ultreon.mods.lib.commo
 <div class="member-signature"><span class="annotations">@NotNull
 </span><span class="modifiers">default</span>&nbsp;<span class="return-type">@NotNull net.minecraft.world.item.Item</span>&nbsp;<span class="element-name">asItem</span>()</div>
 <dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="../../../core/silentlib/block/BlockLike.html#asItem()">asItem</a></code>&nbsp;in interface&nbsp;<code><a href="../../../core/silentlib/block/BlockLike.html" title="interface in com.ultreon.mods.lib.core.silentlib.block">BlockLike</a></code></dd>
 <dt>Specified by:</dt>
 <dd><code><a href="ItemHolder.html#asItem()">asItem</a></code>&nbsp;in interface&nbsp;<code><a href="ItemHolder.html" title="interface in com.ultreon.mods.lib.commons.lang.holders">ItemHolder</a></code></dd>
 <dt>Specified by:</dt>
@@ -202,8 +191,14 @@ extends <a href="ItemHolder.html" title="interface in com.ultreon.mods.lib.commo
 <dt>Specified by:</dt>
 <dd><code><a href="ItemHolder.html#getTranslationId()">getTranslationId</a></code>&nbsp;in interface&nbsp;<code><a href="ItemHolder.html" title="interface in com.ultreon.mods.lib.commons.lang.holders">ItemHolder</a></code></dd>
 <dt>Specified by:</dt>
-<dd><code><a href="../../../core/api/TranslationHolder.html#getTranslationId()">getTranslationId</a></code>&nbsp;in interface&nbsp;<code><a href="../../../core/api/TranslationHolder.html" title="interface in com.ultreon.mods.lib.core.api">TranslationHolder</a></code></dd>
+<dd><code><a href="../../../core/TranslationHolder.html#getTranslationId()">getTranslationId</a></code>&nbsp;in interface&nbsp;<code><a href="../../../core/TranslationHolder.html" title="interface in com.ultreon.mods.lib.core">TranslationHolder</a></code></dd>
 </dl>
+</section>
+</li>
+<li>
+<section class="detail" id="self(net.minecraft.world.level.block.Block)">
+<h3>self</h3>
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type"><a href="BlockHolder.html" title="interface in com.ultreon.mods.lib.commons.lang.holders">BlockHolder</a></span>&nbsp;<span class="element-name">self</span><wbr><span class="parameters">(net.minecraft.world.level.block.Block&nbsp;block)</span></div>
 </section>
 </li>
 </ul>

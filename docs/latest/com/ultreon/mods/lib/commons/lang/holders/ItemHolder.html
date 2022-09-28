@@ -74,7 +74,7 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>All Superinterfaces:</dt>
-<dd><code><a href="BaseHolder.html" title="interface in com.ultreon.mods.lib.commons.lang.holders">BaseHolder</a></code>, <code><a href="../../../core/api/ComponentHolder.html" title="interface in com.ultreon.mods.lib.core.api">ComponentHolder</a></code>, <code>net.minecraft.world.level.ItemLike</code>, <code><a href="../../../core/api/TranslationHolder.html" title="interface in com.ultreon.mods.lib.core.api">TranslationHolder</a></code></dd>
+<dd><code><a href="BaseHolder.html" title="interface in com.ultreon.mods.lib.commons.lang.holders">BaseHolder</a></code>, <code><a href="../../../core/ComponentHolder.html" title="interface in com.ultreon.mods.lib.core">ComponentHolder</a></code>, <code>net.minecraft.world.level.ItemLike</code>, <code><a href="../../../core/TranslationHolder.html" title="interface in com.ultreon.mods.lib.core">TranslationHolder</a></code></dd>
 </dl>
 <dl class="notes">
 <dt>All Known Subinterfaces:</dt>
@@ -82,10 +82,15 @@ loadScripts(document, 'script');</script>
 </dl>
 <dl class="notes">
 <dt>All Known Implementing Classes:</dt>
-<dd><code><a href="../../../core/silentlib/registry/BlockRegistryObject.html" title="class in com.ultreon.mods.lib.core.silentlib.registry">BlockRegistryObject</a></code>, <code><a href="../../../core/common/ItemHolder.html" title="class in com.ultreon.mods.lib.core.common">ItemHolder</a></code>, <code><a href="../../../core/silentlib/registry/ItemRegistryObject.html" title="class in com.ultreon.mods.lib.core.silentlib.registry">ItemRegistryObject</a></code>, <code><a href="../../../core/common/ItemSelfHolder.html" title="class in com.ultreon.mods.lib.core.common">ItemSelfHolder</a></code></dd>
+<dd><code><a href="../../../core/common/ItemHolder.html" title="class in com.ultreon.mods.lib.core.common">ItemHolder</a></code>, <code><a href="../../../core/common/ItemSelfHolder.html" title="class in com.ultreon.mods.lib.core.common">ItemSelfHolder</a></code></dd>
+</dl>
+<dl class="notes">
+<dt>Functional Interface:</dt>
+<dd>This is a functional interface and can therefore be used as the assignment target for a lambda expression or method reference.</dd>
 </dl>
 <hr>
-<div class="type-signature"><span class="modifiers">public interface </span><span class="element-name type-name-label">ItemHolder</span><span class="extends-implements">
+<div class="type-signature"><span class="annotations"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/FunctionalInterface.html" title="class or interface in java.lang" class="external-link">@FunctionalInterface</a>
+</span><span class="modifiers">public interface </span><span class="element-name type-name-label">ItemHolder</span><span class="extends-implements">
 extends <a href="BaseHolder.html" title="interface in com.ultreon.mods.lib.commons.lang.holders">BaseHolder</a>, net.minecraft.world.level.ItemLike</span></div>
 </section>
 <section class="summary">
@@ -127,7 +132,7 @@ extends <a href="BaseHolder.html" title="interface in com.ultreon.mods.lib.commo
 </div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-com.ultreon.mods.lib.commons.lang.holders.BaseHolder">Methods inherited from interface&nbsp;com.ultreon.mods.lib.commons.lang.holders.<a href="BaseHolder.html" title="interface in com.ultreon.mods.lib.commons.lang.holders">BaseHolder</a></h3>
-<code><a href="BaseHolder.html#getComponent()">getComponent</a>, <a href="BaseHolder.html#getName()">getName</a></code></div>
+<code><a href="BaseHolder.html#getName()">getName</a>, <a href="BaseHolder.html#getTranslation()">getTranslation</a></code></div>
 </section>
 </li>
 </ul>
@@ -192,7 +197,7 @@ extends <a href="BaseHolder.html" title="interface in com.ultreon.mods.lib.commo
 <div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getTranslationId</span>()</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="../../../core/api/TranslationHolder.html#getTranslationId()">getTranslationId</a></code>&nbsp;in interface&nbsp;<code><a href="../../../core/api/TranslationHolder.html" title="interface in com.ultreon.mods.lib.core.api">TranslationHolder</a></code></dd>
+<dd><code><a href="../../../core/TranslationHolder.html#getTranslationId()">getTranslationId</a></code>&nbsp;in interface&nbsp;<code><a href="../../../core/TranslationHolder.html" title="interface in com.ultreon.mods.lib.core">TranslationHolder</a></code></dd>
 </dl>
 </section>
 </li>
