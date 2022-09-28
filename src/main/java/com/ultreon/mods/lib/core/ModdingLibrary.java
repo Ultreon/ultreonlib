@@ -8,6 +8,7 @@ import com.ultreon.mods.lib.networking.NetworkLib;
 import com.ultreon.mods.lib.networking.network.Network;
 import net.minecraft.FieldsAreNonnullByDefault;
 import net.minecraft.MethodsReturnNonnullByDefault;
+import net.minecraft.SharedConstants;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
@@ -42,7 +43,7 @@ public final class ModdingLibrary {
 
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_NAME);
     public static final Random RANDOM = new Random();
-    private static final Network NETWORK = new ModdingLibraryNet();
+    public static final Network NETWORK = new ModdingLibraryNet();
 
     @Nullable
     private static ModdingLibrary instance;
@@ -57,6 +58,8 @@ public final class ModdingLibrary {
         FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(RecipeSerializer.class, this::registerRecipeSerializers);
 
         MinecraftForge.EVENT_BUS.addListener(this::onRegisterCommands);
+
+        SharedConstants.IS_RUNNING_IN_IDE = !FMLEnvironment.production;
     }
 
     public static String getVersion() {

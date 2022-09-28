@@ -3,7 +3,7 @@ package com.ultreon.mods.lib.core.server.command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.ultreon.mods.lib.core.network.ModdingLibraryNet;
+import com.ultreon.mods.lib.core.ModdingLibrary;
 import com.ultreon.mods.lib.core.network.ShowNbtPacket;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -11,7 +11,6 @@ import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.commands.arguments.coordinates.BlockPosArgument;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.Connection;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -19,7 +18,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraftforge.network.NetworkDirection;
 
 import javax.annotation.Nullable;
 
@@ -84,8 +82,7 @@ public class ViewNbtCommand {
 
     private static void sendPacket(CommandContext<CommandSourceStack> context, CompoundTag nbt, Component title) throws CommandSyntaxException {
         ShowNbtPacket msg = new ShowNbtPacket(nbt, textOfNullable(title));
-        Connection netManager = context.getSource().getPlayerOrException().connection.connection;
-        ModdingLibraryNet.channel.sendTo(msg, netManager, NetworkDirection.PLAY_TO_CLIENT);
+        ModdingLibrary.NETWORK.sendToClient(msg, context.getSource().getPlayerOrException());
     }
 
     private static Component textOfNullable(@Nullable Component text) {

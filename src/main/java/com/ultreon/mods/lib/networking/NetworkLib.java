@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.ServiceLoader;
 
-@Mod("ultreon_net")
+@Mod("ultreonlib_net")
 public class NetworkLib {
     private static final Logger LOGGER = LogUtils.getLogger();
     private static final Map<ResourceLocation, Network> NETWORKS = new HashMap<>();
