@@ -2,8 +2,8 @@ package com.ultreon.mods.lib.core.client.gui.nbt;
 
 import com.google.gson.JsonObject;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.ultreon.mods.lib.core.silentlib.util.NBTToJson;
-import com.ultreon.mods.lib.core.silentlib.util.TextRenderUtils;
+import com.ultreon.mods.lib.core.nbt.NBTToJson;
+import com.ultreon.mods.lib.core.util.FontRenderUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
@@ -126,7 +126,7 @@ public class NbtViewerScreen extends Screen {
         this.displayList.render(matrix, mouseX, mouseY, partialTicks);
         String titleStr = this.header.getString();
         int scaledWidth = minecraft.getWindow().getGuiScaledWidth();
-        TextRenderUtils.renderScaled(matrix, font, new TextComponent(titleStr).getVisualOrderText(), (scaledWidth - font.width(titleStr)) / 2, 2, 1f, 0xFFFFFF, true);
+        FontRenderUtils.renderScaled(matrix, font, new TextComponent(titleStr).getVisualOrderText(), (scaledWidth - font.width(titleStr)) / 2, 2, 1f, 0xFFFFFF, true);
         super.render(matrix, mouseX, mouseY, partialTicks);
     }
 }

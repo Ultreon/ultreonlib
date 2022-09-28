@@ -3,7 +3,7 @@ package com.ultreon.mods.lib.core.recipes;
 import com.google.common.collect.Lists;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.ultreon.mods.lib.core.silentlib.util.NameUtils;
+import com.ultreon.mods.lib.core.util.ResourceIdUtils;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementRewards;
 import net.minecraft.advancements.CriterionTriggerInstance;
@@ -17,6 +17,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.ItemLike;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -129,7 +130,7 @@ public class ExtendedShapelessRecipeBuilder {
     }
 
     public void build(Consumer<FinishedRecipe> consumer) {
-        build(consumer, NameUtils.from(this.result));
+        build(consumer, ResourceIdUtils.from(this.result));
     }
 
     public void build(Consumer<FinishedRecipe> consumer, ResourceLocation id) {
@@ -155,7 +156,7 @@ public class ExtendedShapelessRecipeBuilder {
         }
 
         @Override
-        public void serializeRecipeData(JsonObject json) {
+        public void serializeRecipeData(@NotNull JsonObject json) {
             if (!builder.group.isEmpty()) {
                 json.addProperty("group", builder.group);
             }
@@ -167,7 +168,7 @@ public class ExtendedShapelessRecipeBuilder {
             json.add("ingredients", ingredients);
 
             JsonObject result = new JsonObject();
-            result.addProperty("item", NameUtils.from(builder.result).toString());
+            result.addProperty("item", ResourceIdUtils.from(builder.result).toString());
             if (builder.count > 1) {
                 result.addProperty("count", builder.count);
             }
@@ -176,11 +177,13 @@ public class ExtendedShapelessRecipeBuilder {
             builder.serializeExtra(json);
         }
 
+        @NotNull
         @Override
         public RecipeSerializer<?> getType() {
             return builder.serializer;
         }
 
+        @NotNull
         @Override
         public ResourceLocation getId() {
             return id;

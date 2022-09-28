@@ -1,6 +1,5 @@
 package com.ultreon.mods.lib.core.util;
 
-import com.ultreon.mods.lib.core.util.helpers.UtilityClass;
 import net.minecraft.core.Vec3i;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.server.level.ServerLevel;

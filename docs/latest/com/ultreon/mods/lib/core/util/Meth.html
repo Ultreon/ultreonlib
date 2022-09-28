@@ -72,14 +72,14 @@ loadScripts(document, 'script');</script>
 <h1 title="Class Meth" class="title">Class Meth</h1>
 </div>
 <div class="inheritance" title="Inheritance Tree"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">java.lang.Object</a>
-<div class="inheritance"><a href="helpers/UtilityClass.html" title="class in com.ultreon.mods.lib.core.util.helpers">com.ultreon.mods.lib.core.util.helpers.UtilityClass</a>
+<div class="inheritance"><a href="UtilityClass.html" title="class in com.ultreon.mods.lib.core.util">com.ultreon.mods.lib.core.util.UtilityClass</a>
 <div class="inheritance">com.ultreon.mods.lib.core.util.Meth</div>
 </div>
 </div>
 <section class="class-description" id="class-description">
 <hr>
 <div class="type-signature"><span class="modifiers">public final class </span><span class="element-name type-name-label">Meth</span>
-<span class="extends-implements">extends <a href="helpers/UtilityClass.html" title="class in com.ultreon.mods.lib.core.util.helpers">UtilityClass</a></span></div>
+<span class="extends-implements">extends <a href="UtilityClass.html" title="class in com.ultreon.mods.lib.core.util">UtilityClass</a></span></div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -108,113 +108,248 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static double</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#distance(net.minecraft.core.Position,net.minecraft.core.Position)" class="member-name-link">distance</a><wbr>(net.minecraft.core.Position&nbsp;from,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#clamp(double,double,double)" class="member-name-link">clamp</a><wbr>(double&nbsp;value,
+ double&nbsp;lowerBound,
+ double&nbsp;upperBound)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static float</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#clamp(float,float,float)" class="member-name-link">clamp</a><wbr>(float&nbsp;value,
+ float&nbsp;lowerBound,
+ float&nbsp;upperBound)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static int</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#clamp(int,int,int)" class="member-name-link">clamp</a><wbr>(int&nbsp;value,
+ int&nbsp;lowerBound,
+ int&nbsp;upperBound)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static double</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#distance(net.minecraft.core.Position,net.minecraft.core.Position)" class="member-name-link">distance</a><wbr>(net.minecraft.core.Position&nbsp;from,
  net.minecraft.core.Position&nbsp;to)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Distance between two <code>Position</code>.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static double</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#distance(net.minecraft.core.Vec3i,net.minecraft.core.Vec3i)" class="member-name-link">distance</a><wbr>(net.minecraft.core.Vec3i&nbsp;from,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static double</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#distance(net.minecraft.core.Vec3i,net.minecraft.core.Vec3i)" class="member-name-link">distance</a><wbr>(net.minecraft.core.Vec3i&nbsp;from,
  net.minecraft.core.Vec3i&nbsp;to)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Distance between two <code>Vec3i</code> (such as <code>BlockPos</code>).</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static double</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#distance(net.minecraft.world.entity.Entity,net.minecraft.core.Position)" class="member-name-link">distance</a><wbr>(net.minecraft.world.entity.Entity&nbsp;entity,
- net.minecraft.core.Position&nbsp;pos)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
-<div class="block">Distance between an entity's position and a given position.</div>
-</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static double</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#distance(net.minecraft.world.entity.Entity,net.minecraft.core.Vec3i)" class="member-name-link">distance</a><wbr>(net.minecraft.world.entity.Entity&nbsp;entity,
- net.minecraft.core.Vec3i&nbsp;pos)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#distance(net.minecraft.world.entity.Entity,net.minecraft.core.Position)" class="member-name-link">distance</a><wbr>(net.minecraft.world.entity.Entity&nbsp;entity,
+ net.minecraft.core.Position&nbsp;pos)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Distance between an entity's position and a given position.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static double</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#distanceHorizontal(net.minecraft.core.Position,net.minecraft.core.Position)" class="member-name-link">distanceHorizontal</a><wbr>(net.minecraft.core.Position&nbsp;from,
- net.minecraft.core.Position&nbsp;to)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#distance(net.minecraft.world.entity.Entity,net.minecraft.core.Vec3i)" class="member-name-link">distance</a><wbr>(net.minecraft.world.entity.Entity&nbsp;entity,
+ net.minecraft.core.Vec3i&nbsp;pos)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Distance between an entity's position and a given position.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static double</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#distanceHorizontal(net.minecraft.core.Position,net.minecraft.core.Position)" class="member-name-link">distanceHorizontal</a><wbr>(net.minecraft.core.Position&nbsp;from,
+ net.minecraft.core.Position&nbsp;to)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Distance between two <code>Position</code>, but ignores the Y-coordinate.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static double</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#distanceHorizontal(net.minecraft.core.Vec3i,net.minecraft.core.Vec3i)" class="member-name-link">distanceHorizontal</a><wbr>(net.minecraft.core.Vec3i&nbsp;from,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static double</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#distanceHorizontal(net.minecraft.core.Vec3i,net.minecraft.core.Vec3i)" class="member-name-link">distanceHorizontal</a><wbr>(net.minecraft.core.Vec3i&nbsp;from,
  net.minecraft.core.Vec3i&nbsp;to)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Distance between two <code>Vec3i</code> (such as <code>BlockPos</code>), but
  ignores the Y-coordinate.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static double</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#distanceHorizontal(net.minecraft.world.entity.Entity,net.minecraft.core.Position)" class="member-name-link">distanceHorizontal</a><wbr>(net.minecraft.world.entity.Entity&nbsp;entity,
- net.minecraft.core.Position&nbsp;pos)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
-<div class="block">Distance between an entity's position and a given position, but ignores the Y-coordinate.</div>
-</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static double</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#distanceHorizontal(net.minecraft.world.entity.Entity,net.minecraft.core.Vec3i)" class="member-name-link">distanceHorizontal</a><wbr>(net.minecraft.world.entity.Entity&nbsp;entity,
- net.minecraft.core.Vec3i&nbsp;pos)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#distanceHorizontal(net.minecraft.world.entity.Entity,net.minecraft.core.Position)" class="member-name-link">distanceHorizontal</a><wbr>(net.minecraft.world.entity.Entity&nbsp;entity,
+ net.minecraft.core.Position&nbsp;pos)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Distance between an entity's position and a given position, but ignores the Y-coordinate.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static double</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#distanceHorizontalSq(net.minecraft.core.Position,net.minecraft.core.Position)" class="member-name-link">distanceHorizontalSq</a><wbr>(net.minecraft.core.Position&nbsp;from,
- net.minecraft.core.Position&nbsp;to)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#distanceHorizontal(net.minecraft.world.entity.Entity,net.minecraft.core.Vec3i)" class="member-name-link">distanceHorizontal</a><wbr>(net.minecraft.world.entity.Entity&nbsp;entity,
+ net.minecraft.core.Vec3i&nbsp;pos)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Distance between an entity's position and a given position, but ignores the Y-coordinate.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static double</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#distanceHorizontalSq(net.minecraft.core.Position,net.minecraft.core.Position)" class="member-name-link">distanceHorizontalSq</a><wbr>(net.minecraft.core.Position&nbsp;from,
+ net.minecraft.core.Position&nbsp;to)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Distance squared between two <code>Position</code>, but ignores the Y-coordinate.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static double</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#distanceHorizontalSq(net.minecraft.core.Vec3i,net.minecraft.core.Vec3i)" class="member-name-link">distanceHorizontalSq</a><wbr>(net.minecraft.core.Vec3i&nbsp;from,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static double</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#distanceHorizontalSq(net.minecraft.core.Vec3i,net.minecraft.core.Vec3i)" class="member-name-link">distanceHorizontalSq</a><wbr>(net.minecraft.core.Vec3i&nbsp;from,
  net.minecraft.core.Vec3i&nbsp;to)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Distance squared between two <code>Vec3i</code> (such as <code>BlockPos</code>),
  but ignores the Y-coordinate.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static double</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#distanceHorizontalSq(net.minecraft.world.entity.Entity,net.minecraft.core.Position)" class="member-name-link">distanceHorizontalSq</a><wbr>(net.minecraft.world.entity.Entity&nbsp;entity,
- net.minecraft.core.Position&nbsp;pos)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
-<div class="block">Distance squared between an entity's position and a given position, but ignores the
- Y-coordinate.</div>
-</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static double</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#distanceHorizontalSq(net.minecraft.world.entity.Entity,net.minecraft.core.Vec3i)" class="member-name-link">distanceHorizontalSq</a><wbr>(net.minecraft.world.entity.Entity&nbsp;entity,
- net.minecraft.core.Vec3i&nbsp;pos)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#distanceHorizontalSq(net.minecraft.world.entity.Entity,net.minecraft.core.Position)" class="member-name-link">distanceHorizontalSq</a><wbr>(net.minecraft.world.entity.Entity&nbsp;entity,
+ net.minecraft.core.Position&nbsp;pos)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Distance squared between an entity's position and a given position, but ignores the
  Y-coordinate.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static double</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#distanceSq(net.minecraft.core.Position,net.minecraft.core.Position)" class="member-name-link">distanceSq</a><wbr>(net.minecraft.core.Position&nbsp;from,
- net.minecraft.core.Position&nbsp;to)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#distanceHorizontalSq(net.minecraft.world.entity.Entity,net.minecraft.core.Vec3i)" class="member-name-link">distanceHorizontalSq</a><wbr>(net.minecraft.world.entity.Entity&nbsp;entity,
+ net.minecraft.core.Vec3i&nbsp;pos)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Distance squared between an entity's position and a given position, but ignores the
+ Y-coordinate.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static double</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#distanceSq(net.minecraft.core.Position,net.minecraft.core.Position)" class="member-name-link">distanceSq</a><wbr>(net.minecraft.core.Position&nbsp;from,
+ net.minecraft.core.Position&nbsp;to)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Distance squared between two <code>Position</code>.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static double</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#distanceSq(net.minecraft.core.Vec3i,net.minecraft.core.Vec3i)" class="member-name-link">distanceSq</a><wbr>(net.minecraft.core.Vec3i&nbsp;from,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static double</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#distanceSq(net.minecraft.core.Vec3i,net.minecraft.core.Vec3i)" class="member-name-link">distanceSq</a><wbr>(net.minecraft.core.Vec3i&nbsp;from,
  net.minecraft.core.Vec3i&nbsp;to)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Distance squared between two <code>Vec3i</code> (such as <code>BlockPos</code>).</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static double</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#distanceSq(net.minecraft.world.entity.Entity,net.minecraft.core.Position)" class="member-name-link">distanceSq</a><wbr>(net.minecraft.world.entity.Entity&nbsp;entity,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static double</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#distanceSq(net.minecraft.world.entity.Entity,net.minecraft.core.Position)" class="member-name-link">distanceSq</a><wbr>(net.minecraft.world.entity.Entity&nbsp;entity,
  net.minecraft.core.Position&nbsp;pos)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Distance squared between an entity's position and a given position.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static double</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#distanceSq(net.minecraft.world.entity.Entity,net.minecraft.core.Vec3i)" class="member-name-link">distanceSq</a><wbr>(net.minecraft.world.entity.Entity&nbsp;entity,
+ net.minecraft.core.Vec3i&nbsp;pos)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Distance squared between an entity's position and a given position.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static double</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#distanceSq(net.minecraft.world.entity.Entity,net.minecraft.core.Vec3i)" class="member-name-link">distanceSq</a><wbr>(net.minecraft.world.entity.Entity&nbsp;entity,
- net.minecraft.core.Vec3i&nbsp;pos)</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static boolean</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#doublesEqual(double,double)" class="member-name-link">doublesEqual</a><wbr>(double&nbsp;a,
+ double&nbsp;b)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
-<div class="block">Distance squared between an entity's position and a given position.</div>
+<div class="block">Compare if two doubles are equal, using precision constant <code>DOUBLES_EQUAL_PRECISION</code>.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static int</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getDecimalPlaces(java.lang.Double)" class="member-name-link">getDecimalPlaces</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Double.html" title="class or interface in java.lang" class="external-link">Double</a>&nbsp;d)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#doublesEqual(double,double,double)" class="member-name-link">doublesEqual</a><wbr>(double&nbsp;a,
+ double&nbsp;b,
+ double&nbsp;precision)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Compare if two doubles are equal, within the given level of precision.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static boolean</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#floatsEqual(float,float)" class="member-name-link">floatsEqual</a><wbr>(float&nbsp;a,
+ float&nbsp;b)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Compare if two floats are equal, using precision constant <code>DOUBLES_EQUAL_PRECISION</code>.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#floatsEqual(float,float,float)" class="member-name-link">floatsEqual</a><wbr>(float&nbsp;a,
+ float&nbsp;b,
+ float&nbsp;precision)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Compare if two floats are equal, within the given level of precision.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static int</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getDecimalPlaces(java.lang.Float)" class="member-name-link">getDecimalPlaces</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Float.html" title="class or interface in java.lang" class="external-link">Float</a>&nbsp;d)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getDecimalPlaces(java.lang.Double)" class="member-name-link">getDecimalPlaces</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Double.html" title="class or interface in java.lang" class="external-link">Double</a>&nbsp;d)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static int</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getDecimalPlaces(java.math.BigDecimal)" class="member-name-link">getDecimalPlaces</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/math/BigDecimal.html" title="class or interface in java.math" class="external-link">BigDecimal</a>&nbsp;d)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getDecimalPlaces(java.lang.Float)" class="member-name-link">getDecimalPlaces</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Float.html" title="class or interface in java.lang" class="external-link">Float</a>&nbsp;d)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Decimal places of a float value.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static int</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getDecimalPlaces(java.math.BigDecimal)" class="member-name-link">getDecimalPlaces</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/math/BigDecimal.html" title="class or interface in java.math" class="external-link">BigDecimal</a>&nbsp;d)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#inRangeExclusive(double,double,double)" class="member-name-link">inRangeExclusive</a><wbr>(double&nbsp;value,
+ double&nbsp;min,
+ double&nbsp;max)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static boolean</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#inRangeExclusive(int,int,int)" class="member-name-link">inRangeExclusive</a><wbr>(int&nbsp;value,
+ int&nbsp;min,
+ int&nbsp;max)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#inRangeInclusive(double,double,double)" class="member-name-link">inRangeInclusive</a><wbr>(double&nbsp;value,
+ double&nbsp;min,
+ double&nbsp;max)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static boolean</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#inRangeInclusive(int,int,int)" class="member-name-link">inRangeInclusive</a><wbr>(int&nbsp;value,
+ int&nbsp;min,
+ int&nbsp;max)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static int</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#max(int,int)" class="member-name-link">max</a><wbr>(int&nbsp;a,
+ int&nbsp;b)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static int</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#max(int,int,int)" class="member-name-link">max</a><wbr>(int&nbsp;a,
+ int&nbsp;b,
+ int&nbsp;c)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static int</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#max(int,int,int,int)" class="member-name-link">max</a><wbr>(int&nbsp;a,
+ int&nbsp;b,
+ int&nbsp;c,
+ int&nbsp;d)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static int</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#max(int,int,int,int,int...)" class="member-name-link">max</a><wbr>(int&nbsp;a,
+ int&nbsp;b,
+ int&nbsp;c,
+ int&nbsp;d,
+ int...&nbsp;rest)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static int</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#min(int,int)" class="member-name-link">min</a><wbr>(int&nbsp;a,
+ int&nbsp;b)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static int</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#min(int,int,int)" class="member-name-link">min</a><wbr>(int&nbsp;a,
+ int&nbsp;b,
+ int&nbsp;c)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static int</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#min(int,int,int,int)" class="member-name-link">min</a><wbr>(int&nbsp;a,
+ int&nbsp;b,
+ int&nbsp;c,
+ int&nbsp;d)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static int</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#min(int,int,int,int,int...)" class="member-name-link">min</a><wbr>(int&nbsp;a,
+ int&nbsp;b,
+ int&nbsp;c,
+ int&nbsp;d,
+ int...&nbsp;rest)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static double</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#nextGaussian(double,double)" class="member-name-link">nextGaussian</a><wbr>(double&nbsp;mean,
+ double&nbsp;deviation)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static double</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#nextGaussian(java.util.Random,double,double)" class="member-name-link">nextGaussian</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Random.html" title="class or interface in java.util" class="external-link">Random</a>&nbsp;random,
+ double&nbsp;mean,
+ double&nbsp;deviation)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static int</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#nextInt(int)" class="member-name-link">nextInt</a><wbr>(int&nbsp;bound)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static int</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#nextIntInclusive(int,int)" class="member-name-link">nextIntInclusive</a><wbr>(int&nbsp;min,
+ int&nbsp;max)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static int</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#nextIntInclusive(java.util.Random,int,int)" class="member-name-link">nextIntInclusive</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Random.html" title="class or interface in java.util" class="external-link">Random</a>&nbsp;random,
+ int&nbsp;min,
+ int&nbsp;max)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static boolean</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#tryPercentage(double)" class="member-name-link">tryPercentage</a><wbr>(double&nbsp;percent)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#tryPercentage(java.util.Random,double)" class="member-name-link">tryPercentage</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Random.html" title="class or interface in java.util" class="external-link">Random</a>&nbsp;random,
+ double&nbsp;percent)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
@@ -256,10 +391,10 @@ loadScripts(document, 'script');</script>
  Consider using <a href="#distanceSq(net.minecraft.core.Vec3i,net.minecraft.core.Vec3i)"><code>distanceSq(net.minecraft.core.Vec3i, net.minecraft.core.Vec3i)</code></a> when possible.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>from</code> - One point</dd>
-<dd><code>to</code> - Another point</dd>
+<dd><code>from</code> - one point</dd>
+<dd><code>to</code> - another point</dd>
 <dt>Returns:</dt>
-<dd>The distance between <code>from</code> and <code>to</code></dd>
+<dd>the distance between <code>from</code> and <code>to</code></dd>
 </dl>
 </section>
 </li>
@@ -271,10 +406,10 @@ loadScripts(document, 'script');</script>
 <div class="block">Distance between two <code>Position</code>. Consider using <a href="#distanceSq(net.minecraft.core.Vec3i,net.minecraft.core.Vec3i)"><code>distanceSq(net.minecraft.core.Vec3i, net.minecraft.core.Vec3i)</code></a> when possible.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>from</code> - One point</dd>
-<dd><code>to</code> - Another point</dd>
+<dd><code>from</code> - one point</dd>
+<dd><code>to</code> - another point</dd>
 <dt>Returns:</dt>
-<dd>The distance between <code>from</code> and <code>to</code></dd>
+<dd>the distance between <code>from</code> and <code>to</code></dd>
 </dl>
 </section>
 </li>
@@ -286,10 +421,10 @@ loadScripts(document, 'script');</script>
 <div class="block">Distance between an entity's position and a given position. Consider using <a href="#distanceSq(net.minecraft.core.Vec3i,net.minecraft.core.Vec3i)"><code>distanceSq(net.minecraft.core.Vec3i, net.minecraft.core.Vec3i)</code></a> when possible.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>entity</code> - The entity</dd>
-<dd><code>pos</code> - The other point</dd>
+<dd><code>entity</code> - the entity</dd>
+<dd><code>pos</code> - the other point</dd>
 <dt>Returns:</dt>
-<dd>The distance between {code entity} and <code>pos</code></dd>
+<dd>the distance between {code entity} and <code>pos</code></dd>
 </dl>
 </section>
 </li>
@@ -301,10 +436,10 @@ loadScripts(document, 'script');</script>
 <div class="block">Distance between an entity's position and a given position. Consider using <a href="#distanceSq(net.minecraft.core.Vec3i,net.minecraft.core.Vec3i)"><code>distanceSq(net.minecraft.core.Vec3i, net.minecraft.core.Vec3i)</code></a> when possible.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>entity</code> - The entity</dd>
-<dd><code>pos</code> - The other point</dd>
+<dd><code>entity</code> - the entity</dd>
+<dd><code>pos</code> - the other point</dd>
 <dt>Returns:</dt>
-<dd>The distance between {code entity} and <code>pos</code></dd>
+<dd>the distance between {code entity} and <code>pos</code></dd>
 </dl>
 </section>
 </li>
@@ -317,10 +452,10 @@ loadScripts(document, 'script');</script>
  Use instead of <a href="#distance(net.minecraft.core.Vec3i,net.minecraft.core.Vec3i)"><code>distance(net.minecraft.core.Vec3i, net.minecraft.core.Vec3i)</code></a> when possible.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>from</code> - One point</dd>
-<dd><code>to</code> - Another point</dd>
+<dd><code>from</code> - one point</dd>
+<dd><code>to</code> - another point</dd>
 <dt>Returns:</dt>
-<dd>The distance between <code>from</code> and <code>to</code> squared</dd>
+<dd>the distance between <code>from</code> and <code>to</code> squared</dd>
 </dl>
 </section>
 </li>
@@ -333,10 +468,10 @@ loadScripts(document, 'script');</script>
  possible.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>from</code> - One point</dd>
-<dd><code>to</code> - Another point</dd>
+<dd><code>from</code> - one point</dd>
+<dd><code>to</code> - another point</dd>
 <dt>Returns:</dt>
-<dd>The distance between <code>from</code> and <code>to</code> squared</dd>
+<dd>the distance between <code>from</code> and <code>to</code> squared</dd>
 </dl>
 </section>
 </li>
@@ -348,10 +483,10 @@ loadScripts(document, 'script');</script>
 <div class="block">Distance squared between an entity's position and a given position.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>entity</code> - The entity</dd>
-<dd><code>pos</code> - The other point</dd>
+<dd><code>entity</code> - the entity</dd>
+<dd><code>pos</code> - the other point</dd>
 <dt>Returns:</dt>
-<dd>The distance between {code entity} and <code>pos</code> squared</dd>
+<dd>the distance between {code entity} and <code>pos</code> squared</dd>
 </dl>
 </section>
 </li>
@@ -363,10 +498,10 @@ loadScripts(document, 'script');</script>
 <div class="block">Distance squared between an entity's position and a given position.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>entity</code> - The entity</dd>
-<dd><code>pos</code> - The other point</dd>
+<dd><code>entity</code> - the entity</dd>
+<dd><code>pos</code> - the other point</dd>
 <dt>Returns:</dt>
-<dd>The distance between {code entity} and <code>pos</code> squared</dd>
+<dd>the distance between {code entity} and <code>pos</code> squared</dd>
 </dl>
 </section>
 </li>
@@ -379,10 +514,10 @@ loadScripts(document, 'script');</script>
  ignores the Y-coordinate. Consider using <a href="#distanceHorizontalSq(net.minecraft.core.Vec3i,net.minecraft.core.Vec3i)"><code>distanceHorizontalSq(net.minecraft.core.Vec3i, net.minecraft.core.Vec3i)</code></a> when possible.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>from</code> - One point</dd>
-<dd><code>to</code> - Another point</dd>
+<dd><code>from</code> - one point</dd>
+<dd><code>to</code> - another point</dd>
 <dt>Returns:</dt>
-<dd>The distance between <code>from</code> and <code>to</code> squared, ignoring Y-axis</dd>
+<dd>the distance between <code>from</code> and <code>to</code> squared, ignoring Y-axis</dd>
 </dl>
 </section>
 </li>
@@ -394,10 +529,10 @@ loadScripts(document, 'script');</script>
 <div class="block">Distance between two <code>Position</code>, but ignores the Y-coordinate. Consider using <a href="#distanceHorizontalSq(net.minecraft.core.Vec3i,net.minecraft.core.Vec3i)"><code>distanceHorizontalSq(net.minecraft.core.Vec3i, net.minecraft.core.Vec3i)</code></a> when possible.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>from</code> - One point</dd>
-<dd><code>to</code> - Another point</dd>
+<dd><code>from</code> - one point</dd>
+<dd><code>to</code> - another point</dd>
 <dt>Returns:</dt>
-<dd>The distance between <code>from</code> and <code>to</code> squared</dd>
+<dd>the distance between <code>from</code> and <code>to</code> squared</dd>
 </dl>
 </section>
 </li>
@@ -409,10 +544,10 @@ loadScripts(document, 'script');</script>
 <div class="block">Distance between an entity's position and a given position, but ignores the Y-coordinate.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>entity</code> - The entity</dd>
-<dd><code>pos</code> - The other point</dd>
+<dd><code>entity</code> - the entity</dd>
+<dd><code>pos</code> - the other point</dd>
 <dt>Returns:</dt>
-<dd>The distance between {code entity} and <code>pos</code>, ignoring Y-axis</dd>
+<dd>the distance between {code entity} and <code>pos</code>, ignoring Y-axis</dd>
 </dl>
 </section>
 </li>
@@ -424,10 +559,10 @@ loadScripts(document, 'script');</script>
 <div class="block">Distance between an entity's position and a given position, but ignores the Y-coordinate.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>entity</code> - The entity</dd>
-<dd><code>pos</code> - The other point</dd>
+<dd><code>entity</code> - the entity</dd>
+<dd><code>pos</code> - the other point</dd>
 <dt>Returns:</dt>
-<dd>The distance between {code entity} and <code>pos</code>, ignoring Y-axis</dd>
+<dd>the distance between {code entity} and <code>pos</code>, ignoring Y-axis</dd>
 </dl>
 </section>
 </li>
@@ -440,10 +575,10 @@ loadScripts(document, 'script');</script>
  but ignores the Y-coordinate. Use instead of <a href="#distanceHorizontal(net.minecraft.core.Vec3i,net.minecraft.core.Vec3i)"><code>distanceHorizontal(net.minecraft.core.Vec3i, net.minecraft.core.Vec3i)</code></a> when possible.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>from</code> - One point</dd>
-<dd><code>to</code> - Another point</dd>
+<dd><code>from</code> - one point</dd>
+<dd><code>to</code> - another point</dd>
 <dt>Returns:</dt>
-<dd>The distance between <code>from</code> and <code>to</code> squared, ignoring Y-axis</dd>
+<dd>the distance between <code>from</code> and <code>to</code> squared, ignoring Y-axis</dd>
 </dl>
 </section>
 </li>
@@ -456,10 +591,10 @@ loadScripts(document, 'script');</script>
  <a href="#distanceHorizontal(net.minecraft.core.Vec3i,net.minecraft.core.Vec3i)"><code>distanceHorizontal(net.minecraft.core.Vec3i, net.minecraft.core.Vec3i)</code></a> when possible.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>from</code> - One point</dd>
-<dd><code>to</code> - Another point</dd>
+<dd><code>from</code> - one point</dd>
+<dd><code>to</code> - another point</dd>
 <dt>Returns:</dt>
-<dd>The distance between <code>from</code> and <code>to</code> squared, ignoring Y-axis</dd>
+<dd>the distance between <code>from</code> and <code>to</code> squared, ignoring Y-axis</dd>
 </dl>
 </section>
 </li>
@@ -472,10 +607,10 @@ loadScripts(document, 'script');</script>
  Y-coordinate.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>entity</code> - The entity</dd>
-<dd><code>pos</code> - The other point</dd>
+<dd><code>entity</code> - the entity</dd>
+<dd><code>pos</code> - the other point</dd>
 <dt>Returns:</dt>
-<dd>The distance between {code entity} and <code>pos</code> squared, ignoring Y-axis</dd>
+<dd>the distance between {code entity} and <code>pos</code> squared, ignoring Y-axis</dd>
 </dl>
 </section>
 </li>
@@ -488,10 +623,10 @@ loadScripts(document, 'script');</script>
  Y-coordinate.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>entity</code> - The entity</dd>
-<dd><code>pos</code> - The other point</dd>
+<dd><code>entity</code> - the entity</dd>
+<dd><code>pos</code> - the other point</dd>
 <dt>Returns:</dt>
-<dd>The distance between {code entity} and <code>pos</code> squared, ignoring Y-axis</dd>
+<dd>the distance between {code entity} and <code>pos</code> squared, ignoring Y-axis</dd>
 </dl>
 </section>
 </li>
@@ -499,6 +634,13 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getDecimalPlaces(java.lang.Float)">
 <h3>getDecimalPlaces</h3>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">getDecimalPlaces</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Float.html" title="class or interface in java.lang" class="external-link">Float</a>&nbsp;d)</span></div>
+<div class="block">Decimal places of a float value.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>d</code> - float value</dd>
+<dt>Returns:</dt>
+<dd>the amount of decimal places.</dd>
+</dl>
 </section>
 </li>
 <li>
@@ -511,6 +653,221 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getDecimalPlaces(java.math.BigDecimal)">
 <h3>getDecimalPlaces</h3>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">getDecimalPlaces</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/math/BigDecimal.html" title="class or interface in java.math" class="external-link">BigDecimal</a>&nbsp;d)</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="clamp(double,double,double)">
+<h3>clamp</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">clamp</span><wbr><span class="parameters">(double&nbsp;value,
+ double&nbsp;lowerBound,
+ double&nbsp;upperBound)</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="clamp(float,float,float)">
+<h3>clamp</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">float</span>&nbsp;<span class="element-name">clamp</span><wbr><span class="parameters">(float&nbsp;value,
+ float&nbsp;lowerBound,
+ float&nbsp;upperBound)</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="clamp(int,int,int)">
+<h3>clamp</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">clamp</span><wbr><span class="parameters">(int&nbsp;value,
+ int&nbsp;lowerBound,
+ int&nbsp;upperBound)</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="doublesEqual(double,double)">
+<h3>doublesEqual</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">doublesEqual</span><wbr><span class="parameters">(double&nbsp;a,
+ double&nbsp;b)</span></div>
+<div class="block">Compare if two doubles are equal, using precision constant <code>DOUBLES_EQUAL_PRECISION</code>.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="doublesEqual(double,double,double)">
+<h3>doublesEqual</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">doublesEqual</span><wbr><span class="parameters">(double&nbsp;a,
+ double&nbsp;b,
+ double&nbsp;precision)</span></div>
+<div class="block">Compare if two doubles are equal, within the given level of precision.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>precision</code> - Should be a small, positive number (like <code>DOUBLES_EQUAL_PRECISION</code>)</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="floatsEqual(float,float)">
+<h3>floatsEqual</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">floatsEqual</span><wbr><span class="parameters">(float&nbsp;a,
+ float&nbsp;b)</span></div>
+<div class="block">Compare if two floats are equal, using precision constant <code>DOUBLES_EQUAL_PRECISION</code>.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="floatsEqual(float,float,float)">
+<h3>floatsEqual</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">floatsEqual</span><wbr><span class="parameters">(float&nbsp;a,
+ float&nbsp;b,
+ float&nbsp;precision)</span></div>
+<div class="block">Compare if two floats are equal, within the given level of precision.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>precision</code> - Should be a small, positive number (like <code>DOUBLES_EQUAL_PRECISION</code>)</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="inRangeExclusive(double,double,double)">
+<h3>inRangeExclusive</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">inRangeExclusive</span><wbr><span class="parameters">(double&nbsp;value,
+ double&nbsp;min,
+ double&nbsp;max)</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="inRangeExclusive(int,int,int)">
+<h3>inRangeExclusive</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">inRangeExclusive</span><wbr><span class="parameters">(int&nbsp;value,
+ int&nbsp;min,
+ int&nbsp;max)</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="inRangeInclusive(double,double,double)">
+<h3>inRangeInclusive</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">inRangeInclusive</span><wbr><span class="parameters">(double&nbsp;value,
+ double&nbsp;min,
+ double&nbsp;max)</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="inRangeInclusive(int,int,int)">
+<h3>inRangeInclusive</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">inRangeInclusive</span><wbr><span class="parameters">(int&nbsp;value,
+ int&nbsp;min,
+ int&nbsp;max)</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="min(int,int)">
+<h3>min</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">min</span><wbr><span class="parameters">(int&nbsp;a,
+ int&nbsp;b)</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="min(int,int,int)">
+<h3>min</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">min</span><wbr><span class="parameters">(int&nbsp;a,
+ int&nbsp;b,
+ int&nbsp;c)</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="min(int,int,int,int)">
+<h3>min</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">min</span><wbr><span class="parameters">(int&nbsp;a,
+ int&nbsp;b,
+ int&nbsp;c,
+ int&nbsp;d)</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="min(int,int,int,int,int...)">
+<h3>min</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">min</span><wbr><span class="parameters">(int&nbsp;a,
+ int&nbsp;b,
+ int&nbsp;c,
+ int&nbsp;d,
+ int...&nbsp;rest)</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="max(int,int)">
+<h3>max</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">max</span><wbr><span class="parameters">(int&nbsp;a,
+ int&nbsp;b)</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="max(int,int,int)">
+<h3>max</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">max</span><wbr><span class="parameters">(int&nbsp;a,
+ int&nbsp;b,
+ int&nbsp;c)</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="max(int,int,int,int)">
+<h3>max</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">max</span><wbr><span class="parameters">(int&nbsp;a,
+ int&nbsp;b,
+ int&nbsp;c,
+ int&nbsp;d)</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="max(int,int,int,int,int...)">
+<h3>max</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">max</span><wbr><span class="parameters">(int&nbsp;a,
+ int&nbsp;b,
+ int&nbsp;c,
+ int&nbsp;d,
+ int...&nbsp;rest)</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="nextGaussian(double,double)">
+<h3>nextGaussian</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">nextGaussian</span><wbr><span class="parameters">(double&nbsp;mean,
+ double&nbsp;deviation)</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="nextGaussian(java.util.Random,double,double)">
+<h3>nextGaussian</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">nextGaussian</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Random.html" title="class or interface in java.util" class="external-link">Random</a>&nbsp;random,
+ double&nbsp;mean,
+ double&nbsp;deviation)</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="nextInt(int)">
+<h3>nextInt</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">nextInt</span><wbr><span class="parameters">(int&nbsp;bound)</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="nextIntInclusive(int,int)">
+<h3>nextIntInclusive</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">nextIntInclusive</span><wbr><span class="parameters">(int&nbsp;min,
+ int&nbsp;max)</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="nextIntInclusive(java.util.Random,int,int)">
+<h3>nextIntInclusive</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">nextIntInclusive</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Random.html" title="class or interface in java.util" class="external-link">Random</a>&nbsp;random,
+ int&nbsp;min,
+ int&nbsp;max)</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="tryPercentage(double)">
+<h3>tryPercentage</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">tryPercentage</span><wbr><span class="parameters">(double&nbsp;percent)</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="tryPercentage(java.util.Random,double)">
+<h3>tryPercentage</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">tryPercentage</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Random.html" title="class or interface in java.util" class="external-link">Random</a>&nbsp;random,
+ double&nbsp;percent)</span></div>
 </section>
 </li>
 </ul>

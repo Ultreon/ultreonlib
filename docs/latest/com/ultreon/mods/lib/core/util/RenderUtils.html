@@ -72,14 +72,14 @@ loadScripts(document, 'script');</script>
 <h1 title="Class RenderUtils" class="title">Class RenderUtils</h1>
 </div>
 <div class="inheritance" title="Inheritance Tree"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">java.lang.Object</a>
-<div class="inheritance"><a href="helpers/UtilityClass.html" title="class in com.ultreon.mods.lib.core.util.helpers">com.ultreon.mods.lib.core.util.helpers.UtilityClass</a>
+<div class="inheritance"><a href="UtilityClass.html" title="class in com.ultreon.mods.lib.core.util">com.ultreon.mods.lib.core.util.UtilityClass</a>
 <div class="inheritance">com.ultreon.mods.lib.core.util.RenderUtils</div>
 </div>
 </div>
 <section class="class-description" id="class-description">
 <hr>
 <div class="type-signature"><span class="modifiers">public final class </span><span class="element-name type-name-label">RenderUtils</span>
-<span class="extends-implements">extends <a href="helpers/UtilityClass.html" title="class in com.ultreon.mods.lib.core.util.helpers">UtilityClass</a></span></div>
+<span class="extends-implements">extends <a href="UtilityClass.html" title="class in com.ultreon.mods.lib.core.util">UtilityClass</a></span></div>
 <div class="block">Render utilities.</div>
 </section>
 <section class="summary">
@@ -108,20 +108,41 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static boolean</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#isMouseInArea(int,int,int,int,int,int)" class="member-name-link">isMouseInArea</a><wbr>(int&nbsp;mouseX,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static net.minecraft.client.renderer.texture.TextureAtlasSprite</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getFluidTexture(net.minecraftforge.fluids.FluidStack)" class="member-name-link">getFluidTexture</a><wbr>(net.minecraftforge.fluids.FluidStack&nbsp;stack)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static boolean</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#isMouseInArea(int,int,int,int,int,int)" class="member-name-link">isMouseInArea</a><wbr>(int&nbsp;mouseX,
  int&nbsp;mouseY,
  int&nbsp;x,
  int&nbsp;y,
  int&nbsp;width,
  int&nbsp;height)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#renderGuiTank(net.minecraftforge.fluids.capability.IFluidHandler,int,double,double,double,double,double)" class="member-name-link">renderGuiTank</a><wbr>(net.minecraftforge.fluids.capability.IFluidHandler&nbsp;fluidHandler,
+ int&nbsp;tank,
+ double&nbsp;x,
+ double&nbsp;y,
+ double&nbsp;zLevel,
+ double&nbsp;width,
+ double&nbsp;height)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#scissor(int,int,int,int)" class="member-name-link">scissor</a><wbr>(int&nbsp;x,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#renderGuiTank(net.minecraftforge.fluids.FluidStack,int,double,double,double,double,double)" class="member-name-link">renderGuiTank</a><wbr>(net.minecraftforge.fluids.FluidStack&nbsp;stack,
+ int&nbsp;tankCapacity,
+ double&nbsp;x,
+ double&nbsp;y,
+ double&nbsp;zLevel,
+ double&nbsp;width,
+ double&nbsp;height)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#scissor(int,int,int,int)" class="member-name-link">scissor</a><wbr>(int&nbsp;x,
  int&nbsp;y,
  int&nbsp;width,
  int&nbsp;height)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
 </div>
@@ -171,6 +192,37 @@ loadScripts(document, 'script');</script>
  int&nbsp;y,
  int&nbsp;width,
  int&nbsp;height)</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="renderGuiTank(net.minecraftforge.fluids.capability.IFluidHandler,int,double,double,double,double,double)">
+<h3>renderGuiTank</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">renderGuiTank</span><wbr><span class="parameters">(net.minecraftforge.fluids.capability.IFluidHandler&nbsp;fluidHandler,
+ int&nbsp;tank,
+ double&nbsp;x,
+ double&nbsp;y,
+ double&nbsp;zLevel,
+ double&nbsp;width,
+ double&nbsp;height)</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="renderGuiTank(net.minecraftforge.fluids.FluidStack,int,double,double,double,double,double)">
+<h3>renderGuiTank</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">renderGuiTank</span><wbr><span class="parameters">(net.minecraftforge.fluids.FluidStack&nbsp;stack,
+ int&nbsp;tankCapacity,
+ double&nbsp;x,
+ double&nbsp;y,
+ double&nbsp;zLevel,
+ double&nbsp;width,
+ double&nbsp;height)</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="getFluidTexture(net.minecraftforge.fluids.FluidStack)">
+<h3>getFluidTexture</h3>
+<div class="member-signature"><span class="annotations">@Nullable
+</span><span class="modifiers">public static</span>&nbsp;<span class="return-type">net.minecraft.client.renderer.texture.TextureAtlasSprite</span>&nbsp;<span class="element-name">getFluidTexture</span><wbr><span class="parameters">(net.minecraftforge.fluids.FluidStack&nbsp;stack)</span></div>
 </section>
 </li>
 </ul>

@@ -3,7 +3,7 @@ package com.ultreon.mods.lib.core.init;
 import com.ultreon.mods.lib.core.ModdingLibrary;
 import com.ultreon.mods.lib.core.recipes.DamageItemRecipe;
 import com.ultreon.mods.lib.core.recipes.ExtendedShapelessRecipe;
-import com.ultreon.mods.lib.core.util.helpers.UtilityClass;
+import com.ultreon.mods.lib.core.util.UtilityClass;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;

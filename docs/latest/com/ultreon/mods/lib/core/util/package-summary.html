@@ -15,7 +15,11 @@
 <script type="text/javascript" src="../../../../../../script-dir/jquery-ui.min.js"></script>
 </head>
 <body class="package-declaration-page">
-<script type="text/javascript">var pathtoroot = "../../../../../../";
+<script type="text/javascript">var evenRowColor = "even-row-color";
+var oddRowColor = "odd-row-color";
+var tableTab = "table-tab";
+var activeTableTab = "active-table-tab";
+var pathtoroot = "../../../../../../";
 loadScripts(document, 'script');</script>
 <noscript>
 <div>JavaScript is disabled on your browser.</div>
@@ -83,31 +87,68 @@ loadScripts(document, 'script');</script>
 </li>
 <li>
 <div id="class-summary">
-<div class="caption"><span>Classes</span></div>
-<div class="summary-table two-column-summary">
+<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="class-summary-tab0" role="tab" aria-selected="true" aria-controls="class-summary.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('class-summary', 'class-summary', 2)" class="active-table-tab">All Classes and Interfaces</button><button id="class-summary-tab2" role="tab" aria-selected="false" aria-controls="class-summary.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('class-summary', 'class-summary-tab2', 2)" class="table-tab">Classes</button><button id="class-summary-tab3" role="tab" aria-selected="false" aria-controls="class-summary.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('class-summary', 'class-summary-tab3', 2)" class="table-tab">Enum Classes</button></div>
+<div id="class-summary.tabpanel" role="tabpanel">
+<div class="summary-table two-column-summary" aria-labelledby="class-summary-tab0">
 <div class="table-header col-first">Class</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="ChatUtils.html" title="class in com.ultreon.mods.lib.core.util">ChatUtils</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="col-first even-row-color class-summary class-summary-tab3"><a href="Anchor.html" title="enum class in com.ultreon.mods.lib.core.util">Anchor</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab3">&nbsp;</div>
+<div class="col-first odd-row-color class-summary class-summary-tab3"><a href="Anchor.Horizontal.html" title="enum class in com.ultreon.mods.lib.core.util">Anchor.Horizontal</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab3">&nbsp;</div>
+<div class="col-first even-row-color class-summary class-summary-tab3"><a href="Anchor.Vertical.html" title="enum class in com.ultreon.mods.lib.core.util">Anchor.Vertical</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab3">&nbsp;</div>
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="BiomeUtils.html" title="class in com.ultreon.mods.lib.core.util">BiomeUtils</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">&nbsp;</div>
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="CapabilityUtils.html" title="class in com.ultreon.mods.lib.core.util">CapabilityUtils</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">&nbsp;</div>
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="ChatUtils.html" title="class in com.ultreon.mods.lib.core.util">ChatUtils</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">Chat utilities.</div>
 </div>
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="ClientTicks.html" title="class in com.ultreon.mods.lib.core.util">ClientTicks</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">&nbsp;</div>
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="DimensionId.html" title="class in com.ultreon.mods.lib.core.util">DimensionId</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="block">Copied from McJtyLib on 2022-09-28.</div>
+</div>
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="EntityAttrUtils.html" title="class in com.ultreon.mods.lib.core.util">EntityAttrUtils</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">&nbsp;</div>
 <div class="col-first odd-row-color class-summary class-summary-tab2"><a href="EntityUtils.html" title="class in com.ultreon.mods.lib.core.util">EntityUtils</a></div>
 <div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">Entity utilities</div>
 </div>
 <div class="col-first even-row-color class-summary class-summary-tab2"><a href="Exceptions.html" title="class in com.ultreon.mods.lib.core.util">Exceptions</a></div>
 <div class="col-last even-row-color class-summary class-summary-tab2">&nbsp;</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="GraphicsUtil.html" title="class in com.ultreon.mods.lib.core.util">GraphicsUtil</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">Deprecated.
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="FirstSpawnItems.html" title="class in com.ultreon.mods.lib.core.util">FirstSpawnItems</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">&nbsp;</div>
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="FontRenderUtils.html" title="class in com.ultreon.mods.lib.core.util">FontRenderUtils</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">&nbsp;</div>
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="GameUtil.html" title="class in com.ultreon.mods.lib.core.util">GameUtil</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">&nbsp;</div>
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="GraphicsUtil.html" title="class in com.ultreon.mods.lib.core.util">GraphicsUtil</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">Deprecated.
 <div class="deprecation-comment">use <a href="../client/render/Gfx.html" title="class in com.ultreon.mods.lib.core.client.render"><code>Gfx</code></a> instead.</div>
 </div>
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="InventoryUtils.html" title="class in com.ultreon.mods.lib.core.util">InventoryUtils</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">&nbsp;</div>
 <div class="col-first even-row-color class-summary class-summary-tab2"><a href="ItemUtils.html" title="class in com.ultreon.mods.lib.core.util">ItemUtils</a></div>
 <div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">Item stack helper class.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="Meth.html" title="class in com.ultreon.mods.lib.core.util">Meth</a></div>
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="LazySupplier.html" title="class in com.ultreon.mods.lib.core.util">LazySupplier</a>&lt;T&gt;</div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="block">Reimplementation of <code>LazyLoadedValue</code>, because the class there is deprecated.</div>
+</div>
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="Location.html" title="class in com.ultreon.mods.lib.core.util">Location</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">&nbsp;</div>
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="LootUtils.html" title="class in com.ultreon.mods.lib.core.util">LootUtils</a></div>
 <div class="col-last odd-row-color class-summary class-summary-tab2">&nbsp;</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="ParticleUtils.html" title="class in com.ultreon.mods.lib.core.util">ParticleUtils</a></div>
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="Meth.html" title="class in com.ultreon.mods.lib.core.util">Meth</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">&nbsp;</div>
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="ParticleUtils.html" title="class in com.ultreon.mods.lib.core.util">ParticleUtils</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">&nbsp;</div>
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="PlayerUtils.html" title="class in com.ultreon.mods.lib.core.util">PlayerUtils</a></div>
 <div class="col-last even-row-color class-summary class-summary-tab2">&nbsp;</div>
 <div class="col-first odd-row-color class-summary class-summary-tab2"><a href="RenderContext.html" title="class in com.ultreon.mods.lib.core.util">RenderContext</a></div>
 <div class="col-last odd-row-color class-summary class-summary-tab2">&nbsp;</div>
@@ -115,9 +156,22 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">Render utilities.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="TileEntityUtils.html" title="class in com.ultreon.mods.lib.core.util">TileEntityUtils</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="ResourceIdUtils.html" title="class in com.ultreon.mods.lib.core.util">ResourceIdUtils</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">&nbsp;</div>
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="ServerTicks.html" title="class in com.ultreon.mods.lib.core.util">ServerTicks</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">&nbsp;</div>
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="TeleportUtils.html" title="class in com.ultreon.mods.lib.core.util">TeleportUtils</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">&nbsp;</div>
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="TileEntityUtils.html" title="class in com.ultreon.mods.lib.core.util">TileEntityUtils</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">Tile entity utilities.</div>
+</div>
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="TimeUtils.html" title="class in com.ultreon.mods.lib.core.util">TimeUtils</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">&nbsp;</div>
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="UtilityClass.html" title="class in com.ultreon.mods.lib.core.util">UtilityClass</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">&nbsp;</div>
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="WorldUtils.html" title="class in com.ultreon.mods.lib.core.util">WorldUtils</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">&nbsp;</div>
 </div>
 </div>
 </div>

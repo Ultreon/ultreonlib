@@ -1,7 +1,7 @@
 package com.ultreon.mods.lib.core.client.gui.nbt;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.ultreon.mods.lib.core.silentlib.util.TextRenderUtils;
+import com.ultreon.mods.lib.core.util.FontRenderUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.ObjectSelectionList;
 import net.minecraft.network.chat.Component;
@@ -19,9 +19,10 @@ public final class NbtViewerEntry extends ObjectSelectionList.Entry<NbtViewerEnt
 
     @Override
     public void render(@NotNull PoseStack matrix, int p_230432_2_, int p_230432_3_, int p_230432_4_, int p_230432_5_, int p_230432_6_, int p_230432_7_, int p_230432_8_, boolean p_230432_9_, float p_230432_10_) {
-        TextRenderUtils.renderScaled(matrix, this.mc.font, new TextComponent(this.text).getVisualOrderText(), p_230432_4_, p_230432_3_, 1.0f, 0xFFFFFF, true);
+        FontRenderUtils.renderScaled(matrix, this.mc.font, new TextComponent(this.text).getVisualOrderText(), p_230432_4_, p_230432_3_, 1.0f, 0xFFFFFF, true);
     }
 
+    @NotNull
     @Override
     public Component getNarration() {
         return new TextComponent(this.text);
