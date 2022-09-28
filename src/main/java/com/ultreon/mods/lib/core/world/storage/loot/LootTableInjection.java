@@ -35,7 +35,7 @@ public class LootTableInjection {
      * @param path resource path to the injection.
      * @return resource location object.
      */
-    public static ResourceLocation mcLoc(String path) {
+    public static ResourceLocation mcId(String path) {
         return new ResourceLocation(ResourceLocation.DEFAULT_NAMESPACE, path);
     }
 
@@ -45,7 +45,7 @@ public class LootTableInjection {
      * @param path resource path to the injection.
      * @return resource location object.
      */
-    public static ResourceLocation forgeLoc(String path) {
+    public static ResourceLocation forgeId(String path) {
         return new ResourceLocation("forge", path);
     }
 

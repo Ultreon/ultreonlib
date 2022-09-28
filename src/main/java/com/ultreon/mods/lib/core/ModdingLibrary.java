@@ -1,17 +1,24 @@
 package com.ultreon.mods.lib.core;
 
 import com.mojang.brigadier.CommandDispatcher;
+import com.ultreon.mods.lib.commons.collection.list.ItemStackList;
 import com.ultreon.mods.lib.core.network.ModdingLibraryNet;
+import com.ultreon.mods.lib.core.player.ModMessages;
 import com.ultreon.mods.lib.core.server.command.TeleportCommand;
 import com.ultreon.mods.lib.core.server.command.ViewNbtCommand;
+import com.ultreon.mods.lib.core.util.FirstSpawnItems;
+import com.ultreon.mods.lib.core.util.GameUtil;
 import com.ultreon.mods.lib.networking.NetworkLib;
 import com.ultreon.mods.lib.networking.network.Network;
+import net.minecraft.ChatFormatting;
 import net.minecraft.FieldsAreNonnullByDefault;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.SharedConstants;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegisterCommandsEvent;
@@ -60,6 +67,11 @@ public final class ModdingLibrary {
         MinecraftForge.EVENT_BUS.addListener(this::onRegisterCommands);
 
         SharedConstants.IS_RUNNING_IN_IDE = !FMLEnvironment.production;
+
+        if (GameUtil.isDeveloperEnv()) {
+            ModMessages.addMessage(new TextComponent("You are running a development build of Minecraft.").withStyle(style -> style.withColor(ChatFormatting.GOLD)));
+            FirstSpawnItems.register(res("dev"), player -> ItemStackList.of(Items.DEBUG_STICK, Items.COMMAND_BLOCK, Items.CHAIN_COMMAND_BLOCK, Items.REPEATING_COMMAND_BLOCK, Items.STRUCTURE_BLOCK, Items.STRUCTURE_VOID, Items.JIGSAW, Items.NETHERITE_SWORD));
+        }
     }
 
     public static String getVersion() {
@@ -70,6 +82,13 @@ public final class ModdingLibrary {
         return "0.0.0";
     }
 
+    /**
+     * Get whether the game is running in a development environment or not.
+     *
+     * @return true if the current environment is for developers.
+     * @deprecated use {@link GameUtil#isDeveloperEnv()} instead.
+     */
+    @Deprecated
     public static boolean isDevEnv() {
         return !FMLEnvironment.production;
     }

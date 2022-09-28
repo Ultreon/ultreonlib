@@ -35,6 +35,16 @@ com.ultreon.mods.lib.core.util.helpers
 com.ultreon.mods.lib.core.util.render
 com.ultreon.mods.lib.core.world
 com.ultreon.mods.lib.core.world.storage.loot
+com.ultreon.mods.lib.gui
+com.ultreon.mods.lib.gui.client
+com.ultreon.mods.lib.gui.client.gui
+com.ultreon.mods.lib.gui.client.gui.screen
+com.ultreon.mods.lib.gui.client.gui.screen.window
+com.ultreon.mods.lib.gui.client.gui.widget
+com.ultreon.mods.lib.gui.client.input
+com.ultreon.mods.lib.gui.common
+com.ultreon.mods.lib.gui.mixin
+com.ultreon.mods.lib.gui.util
 com.ultreon.mods.lib.networking
 com.ultreon.mods.lib.networking.network
 com.ultreon.mods.lib.networking.service

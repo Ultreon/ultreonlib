@@ -41,9 +41,10 @@ public final class GameUtil extends UtilityClass {
 
     /**
      * Check if this is a deobfuscated (development) environment.
+     *
      * @return True if and only if we are running in a deobfuscated environment
      */
-    public static boolean isDeobfuscated() {
+    public static boolean isDeveloperEnv() {
         return !FMLEnvironment.production;
     }
 }

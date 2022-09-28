@@ -1,6 +1,7 @@
 package com.ultreon.mods.lib.core.util;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import net.minecraft.Util;
 import net.minecraft.commands.arguments.selector.EntitySelector;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
@@ -23,7 +24,7 @@ public final class ChatUtils extends UtilityClass {
 
     public static void broadcastMessage(@NotNull Level server, @NotNull Component message) {
         for (Player player : server.players()) {
-            player.sendMessage(message, player.getUUID());
+            player.sendMessage(message, Util.NIL_UUID);
         }
     }
 
@@ -33,7 +34,7 @@ public final class ChatUtils extends UtilityClass {
 
     public static void broadcastMessage(@NotNull MinecraftServer server, @NotNull Component message) {
         for (Player player : server.getPlayerList().getPlayers()) {
-            player.sendMessage(message, player.getUUID());
+            player.sendMessage(message, Util.NIL_UUID);
         }
     }
 
@@ -44,7 +45,7 @@ public final class ChatUtils extends UtilityClass {
     public static boolean broadcastMessage(@NotNull EntitySelector server, @NotNull Component message) {
         try {
             for (Player player : server.findPlayers(ServerLifecycleHooks.getCurrentServer().createCommandSourceStack())) {
-                player.sendMessage(message, player.getUUID());
+                player.sendMessage(message, Util.NIL_UUID);
             }
         } catch (CommandSyntaxException e) {
             return false;

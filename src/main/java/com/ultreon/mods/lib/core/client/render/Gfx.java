@@ -8,6 +8,8 @@ import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.renderer.block.BlockRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.network.chat.Component;
@@ -37,9 +39,11 @@ public class Gfx {
     private final PoseStack poseStack;
     @Nonnull
     private final Screen screen;
-    private final Minecraft mc;
+    private final Minecraft minecraft;
     private final TextureManager textureManager;
     private final ItemRenderer itemRenderer;
+    private final BlockRenderDispatcher blockRenderer;
+    private final EntityRenderDispatcher entityRenderer;
     private Font font;
     private Color color = Color.black;
 
@@ -50,11 +54,13 @@ public class Gfx {
     public Gfx(PoseStack poseStack, Font font, @Nullable Screen screen) {
         this.poseStack = poseStack;
         this.font = font;
-        this.mc = Minecraft.getInstance();
-        this.screen = screen == null ? (this.mc.screen == null ? new Screen(new TextComponent("LOL WHAT DO YOU EXPECT???")) {
-        } : this.mc.screen) : screen;
-        this.textureManager = this.mc.getTextureManager();
-        this.itemRenderer = this.mc.getItemRenderer();
+        this.minecraft = Minecraft.getInstance();
+        this.screen = screen == null ? (this.minecraft.screen == null ? new Screen(new TextComponent("LOL WHAT DO YOU EXPECT???")) {
+        } : this.minecraft.screen) : screen;
+        this.textureManager = this.minecraft.getTextureManager();
+        this.itemRenderer = this.minecraft.getItemRenderer();
+        this.blockRenderer = this.minecraft.getBlockRenderer();
+        this.entityRenderer = this.minecraft.getEntityRenderDispatcher();
     }
 
     public void drawString(String string, int x, int y) {
@@ -282,6 +288,26 @@ public class Gfx {
 
     public PoseStack getPoseStack() {
         return poseStack;
+    }
+
+    public Minecraft getMinecraft() {
+        return minecraft;
+    }
+
+    public TextureManager getTextureManager() {
+        return textureManager;
+    }
+
+    public ItemRenderer getItemRenderer() {
+        return itemRenderer;
+    }
+
+    public BlockRenderDispatcher getBlockRenderer() {
+        return blockRenderer;
+    }
+
+    public EntityRenderDispatcher getEntityRenderer() {
+        return entityRenderer;
     }
 
     public static class Pos {

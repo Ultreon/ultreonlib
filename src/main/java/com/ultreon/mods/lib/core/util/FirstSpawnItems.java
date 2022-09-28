@@ -16,7 +16,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 public class FirstSpawnItems {
-    private static HashMap<ResourceLocation, Function<Player, Collection<ItemStack>>> spawnItems;
+    private static final HashMap<ResourceLocation, Function<Player, Collection<ItemStack>>> spawnItems = new HashMap<>();
 
     static {
         new FirstSpawnItems();
