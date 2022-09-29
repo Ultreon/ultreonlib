@@ -3,7 +3,7 @@ package com.ultreon.mods.lib.core.server.command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.ultreon.mods.lib.core.ModdingLibrary;
+import com.ultreon.mods.lib.core.network.ModdingLibraryNet;
 import com.ultreon.mods.lib.core.network.ShowNbtPacket;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -82,7 +82,7 @@ public class ViewNbtCommand {
 
     private static void sendPacket(CommandContext<CommandSourceStack> context, CompoundTag nbt, Component title) throws CommandSyntaxException {
         ShowNbtPacket msg = new ShowNbtPacket(nbt, textOfNullable(title));
-        ModdingLibrary.NETWORK.sendToClient(msg, context.getSource().getPlayerOrException());
+        ModdingLibraryNet.get().sendToClient(msg, context.getSource().getPlayerOrException());
     }
 
     private static Component textOfNullable(@Nullable Component text) {

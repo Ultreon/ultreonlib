@@ -22,6 +22,24 @@ import net.minecraftforge.fml.loading.FMLEnvironment;
 
 public final class GameUtil extends UtilityClass {
     /**
+     * Set to true to override the development environment flag.
+     * Then set {@link #devEnv} to the desired overridden value.
+     *
+     * @see #isDeveloperEnv()
+     * @see #devEnv
+     */
+    public static boolean overrideDevEnv = false;
+
+    /**
+     * The overridden value for {@link #isDeveloperEnv()}
+     * Note that {@link #overrideDevEnv} needs to be set to {@code true} to make it work.
+     *
+     * @see #isDeveloperEnv()
+     * @see #overrideDevEnv
+     */
+    public static boolean devEnv = false;
+
+    /**
      * Check if the game is run as client side.
      *
      * @return true if we are on the client side.
@@ -40,11 +58,14 @@ public final class GameUtil extends UtilityClass {
     }
 
     /**
-     * Check if this is a deobfuscated (development) environment.
+     * Check if this is a development environment.
      *
-     * @return True if and only if we are running in a deobfuscated environment
+     * @return True if and only if we are running in the development environment
      */
     public static boolean isDeveloperEnv() {
+        if (overrideDevEnv) {
+            return devEnv;
+        }
         return !FMLEnvironment.production;
     }
 }

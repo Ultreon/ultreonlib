@@ -11,7 +11,6 @@ import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
@@ -27,7 +26,7 @@ import javax.annotation.Nullable;
 import java.util.Objects;
 
 @SuppressWarnings("unused")
-public abstract class InventoryBlockEntity extends BaseContainerBlockEntity implements WorldlyContainer, Tickable {
+public abstract class InventoryBlockEntity extends ExtendedBlockEntity implements WorldlyContainer, Tickable {
     public final int size;
     public final UmlItemStackHandler inventory;
     private final LazyOptional<? extends IItemHandler>[] handlers =
@@ -130,7 +129,8 @@ public abstract class InventoryBlockEntity extends BaseContainerBlockEntity impl
         handleUpdateTag(Objects.requireNonNull(pkt.getTag()));
     }
 
-    public void tick() {
+    @Override
+    protected void execute() {
         this.timer++;
         if (this.requiresUpdate && this.level != null) {
             update();
@@ -208,6 +208,4 @@ public abstract class InventoryBlockEntity extends BaseContainerBlockEntity impl
             handler.invalidate();
         }
     }
-
-
 }

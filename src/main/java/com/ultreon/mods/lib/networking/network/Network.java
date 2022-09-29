@@ -56,7 +56,7 @@ public abstract class Network {
         registerPackets(new PacketRegisterContext(channel, id));
     }
 
-    protected abstract void registerPackets(PacketRegisterContext packetRegisterContext);
+    protected abstract void registerPackets(PacketRegisterContext ctx);
 
     public final String channelName() {
         return channelName;

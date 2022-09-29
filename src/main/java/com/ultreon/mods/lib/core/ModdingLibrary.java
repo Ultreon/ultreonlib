@@ -2,14 +2,11 @@ package com.ultreon.mods.lib.core;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.ultreon.mods.lib.commons.collection.list.ItemStackList;
-import com.ultreon.mods.lib.core.network.ModdingLibraryNet;
 import com.ultreon.mods.lib.core.player.ModMessages;
 import com.ultreon.mods.lib.core.server.command.TeleportCommand;
 import com.ultreon.mods.lib.core.server.command.ViewNbtCommand;
 import com.ultreon.mods.lib.core.util.FirstSpawnItems;
 import com.ultreon.mods.lib.core.util.GameUtil;
-import com.ultreon.mods.lib.networking.NetworkLib;
-import com.ultreon.mods.lib.networking.network.Network;
 import net.minecraft.ChatFormatting;
 import net.minecraft.FieldsAreNonnullByDefault;
 import net.minecraft.MethodsReturnNonnullByDefault;
@@ -50,7 +47,6 @@ public final class ModdingLibrary {
 
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_NAME);
     public static final Random RANDOM = new Random();
-    public static final Network NETWORK = new ModdingLibraryNet();
 
     @Nullable
     private static ModdingLibrary instance;
@@ -124,7 +120,7 @@ public final class ModdingLibrary {
     }
 
     private void commonSetup(FMLCommonSetupEvent event) {
-        NetworkLib.registerNetwork(NETWORK);
+
     }
 
     private void imcEnqueue(InterModEnqueueEvent event) {

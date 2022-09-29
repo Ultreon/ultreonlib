@@ -6,13 +6,19 @@ import com.ultreon.mods.lib.networking.network.PacketRegisterContext;
 
 public class ModdingLibraryNet extends Network {
     private static final int VERSION = 1;
+    static ModdingLibraryNet instance;
 
-    public ModdingLibraryNet() {
+    ModdingLibraryNet() {
         super(ModdingLibrary.MOD_ID, "net", VERSION);
     }
 
+    public static ModdingLibraryNet get() {
+        return instance;
+    }
+
     @Override
-    protected void registerPackets(PacketRegisterContext packetRegisterContext) {
-        packetRegisterContext.register(ShowNbtPacket.class, ShowNbtPacket::new);
+    protected void registerPackets(PacketRegisterContext ctx) {
+        ctx.register(ShowNbtPacket.class, ShowNbtPacket::new);
+        ctx.register(PipelinePacket.class, PipelinePacket::new);
     }
 }

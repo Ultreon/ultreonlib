@@ -21,7 +21,6 @@ import java.util.function.Consumer;
  */
 @SuppressWarnings("unused")
 public class PlayerSkins {
-
     private static final HashMap<String, GameProfile> players = new HashMap<>();
 
     public static void receiveSkin(UUID uuid, String name, Consumer<ResourceLocation> consumer) {

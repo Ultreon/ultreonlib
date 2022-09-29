@@ -1,5 +1,6 @@
 package com.ultreon.mods.lib.gui;
 
+import com.ultreon.mods.lib.core.util.GameUtil;
 import com.ultreon.mods.lib.gui.client.gui.ReloadsTheme;
 import com.ultreon.mods.lib.gui.client.gui.Theme;
 import com.ultreon.mods.lib.gui.client.gui.screen.TitleStyle;
@@ -8,12 +9,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.server.ServerStartingEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.forgespi.language.IModInfo;
 import org.apache.logging.log4j.LogManager;
@@ -27,7 +24,7 @@ import java.util.Objects;
 @Mod(UltreonGuiLib.MOD_ID)
 public class UltreonGuiLib implements ReloadsTheme {
     // Mod Constants.
-    public static final String MOD_ID = "ultreon_gui_lib";
+    public static final String MOD_ID = "ultreonlib_gui";
 
     // Directly reference a log4j logger.
     private static final Logger LOGGER = LogManager.getLogger();
@@ -78,9 +75,6 @@ public class UltreonGuiLib implements ReloadsTheme {
             return;
         }
 
-        // Register the setup method for modloading
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
-
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
 
@@ -105,10 +99,12 @@ public class UltreonGuiLib implements ReloadsTheme {
     }
 
     /**
-     * Check if Vertinox is currently a development build.
+     * Check if the gui library is currently a development build.
      *
      * @return the Mod Dev State.
+     * @deprecated use {@link GameUtil#isDeveloperEnv()}
      */
+    @Deprecated
     @SuppressWarnings("ConstantConditions")
     public static boolean isModDev() {
         if (MOD_DEV_OVERRIDE != null) {
@@ -148,14 +144,5 @@ public class UltreonGuiLib implements ReloadsTheme {
         if (Minecraft.getInstance().screen instanceof ReloadsTheme) {
             ((ReloadsTheme) Minecraft.getInstance().screen).reloadTheme();
         }
-    }
-
-    private void setup(final FMLCommonSetupEvent event) {
-
-    }
-
-    @SubscribeEvent
-    public void onServerStarting(ServerStartingEvent event) {
-        LOGGER.info("Some server is starting I think...");
     }
 }

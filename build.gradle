@@ -1,31 +1,48 @@
+//file:noinspection GroovyUnusedAssignment
+//file:noinspection GroovyAssignabilityCheck
+//file:noinspection JCenterRepository
+
 buildscript {
     repositories {
         mavenLocal()
+        maven { url = 'https://maven.minecraftforge.net' }
+        maven { url = 'https://maven.parchmentmc.org' }
+        maven { url = 'https://files.minecraftforge.net/maven' }
+        maven { url = 'https://dist.creeper.host/Sponge/maven' }
         mavenCentral()
         maven {
-            name = "sonatype"
-            url = "https://oss.sonatype.org/content/repositories/snapshots/"
+            name "sonatype"
+            url "https://oss.sonatype.org/content/repositories/snapshots/"
         }
         maven {
             url "https://plugins.gradle.org/m2/"
         }
+        maven {
+            url "https://github.com/QTechCommunity/Maven/raw/main/"
+        }
+        maven {
+            url "https://maven.tterrag.com/"
+        }
+        maven {
+            url "https://repo.spongepowered.org/maven"
+        }
     }
     dependencies {
-        classpath "org.spongepowered:mixingradle:0.7-SNAPSHOT"
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
+        classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.7-SNAPSHOT'
+        classpath 'org.parchmentmc:librarian:1.+'
     }
 }
 
-plugins {
-    id 'net.minecraftforge.gradle' version '5.1.+'
-    id 'org.parchmentmc.librarian.forgegradle' version '1.+'
-}
-
+apply plugin: 'net.minecraftforge.gradle'
+apply plugin: 'org.parchmentmc.librarian.forgegradle'
 apply plugin: 'org.spongepowered.mixin'
+apply plugin: 'java-library'
+apply plugin: 'signing'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
-apply from: 'https://raw.githubusercontent.com/SizableShrimp/Forge-Class-Remapper/main/classremapper.gradle'
 
-def def_mod_version = "$mod_version-$mc_version"
+def def_mod_version = "$mc_version-$mod_version"
 
 group 'com.ultreon.mc'
 version def_mod_version
@@ -176,7 +193,7 @@ jar {
     }
 
     afterEvaluate {
-        project.version "$mod_version-$mc_version"
+        project.version "mc$mc_version-$mod_version"
     }
 
     manifest {
