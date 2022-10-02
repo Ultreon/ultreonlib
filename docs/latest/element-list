@@ -6,6 +6,7 @@ com.ultreon.mods.lib.commons.exceptions
 com.ultreon.mods.lib.commons.function
 com.ultreon.mods.lib.commons.lang.holders
 com.ultreon.mods.lib.commons.lang.vector
+com.ultreon.mods.lib.commons.platform.win32
 com.ultreon.mods.lib.core
 com.ultreon.mods.lib.core.advancements
 com.ultreon.mods.lib.core.block.entity
