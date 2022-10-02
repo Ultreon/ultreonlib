@@ -10,7 +10,6 @@ import com.ultreon.mods.lib.core.util.GameUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.FieldsAreNonnullByDefault;
 import net.minecraft.MethodsReturnNonnullByDefault;
-import net.minecraft.SharedConstants;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.network.chat.TextComponent;
@@ -43,7 +42,7 @@ import java.util.Random;
 @MethodsReturnNonnullByDefault
 public final class ModdingLibrary {
     public static final String MOD_ID = "ultreonlib";
-    public static final String MOD_NAME = "QModLib";
+    public static final String MOD_NAME = "Ultreon Core Library";
 
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_NAME);
     public static final Random RANDOM = new Random();
@@ -61,8 +60,6 @@ public final class ModdingLibrary {
         FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(RecipeSerializer.class, this::registerRecipeSerializers);
 
         MinecraftForge.EVENT_BUS.addListener(this::onRegisterCommands);
-
-        SharedConstants.IS_RUNNING_IN_IDE = !FMLEnvironment.production;
 
         if (GameUtil.isDeveloperEnv()) {
             ModMessages.addMessage(new TextComponent("You are running a development build of Minecraft.").withStyle(style -> style.withColor(ChatFormatting.GOLD)));

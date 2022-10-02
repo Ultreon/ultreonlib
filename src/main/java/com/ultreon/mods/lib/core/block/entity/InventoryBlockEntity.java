@@ -106,9 +106,9 @@ public abstract class InventoryBlockEntity extends ExtendedBlockEntity implement
     }
 
     @Override
-    public void handleUpdateTag(CompoundTag tag) {
+    public final void handleUpdateTag(CompoundTag tag) {
         super.handleUpdateTag(tag);
-        load(tag);
+        handlePipeline(tag);
     }
 
     @Override

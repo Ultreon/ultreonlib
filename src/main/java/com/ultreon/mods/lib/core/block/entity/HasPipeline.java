@@ -13,12 +13,12 @@ public interface HasPipeline {
     CompoundTag serializeForTransfer();
 
     default void sendUpdate() {
-        CompoundTag tags = serializeForTransfer();
+        CompoundTag pipeline = serializeForTransfer();
         if (this instanceof BlockEntity blockEntity) {
             Level level = blockEntity.getLevel();
             if (level != null) {
-                BlockPos blockPos = blockEntity.getBlockPos();
-                ModdingLibraryNet.get().sendToLevel(new PipelinePacket(blockPos, tags), level);
+                BlockPos pos = blockEntity.getBlockPos();
+                ModdingLibraryNet.get().sendToLevel(new PipelinePacket(pos, pipeline), level);
             }
         }
     }

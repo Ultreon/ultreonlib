@@ -20,6 +20,7 @@ public abstract class ExtendedBlockEntity extends BaseContainerBlockEntity imple
 
         if (!pipeline.isEmpty()) {
             sendUpdate();
+            pipeline = new CompoundTag();
         }
     }
 

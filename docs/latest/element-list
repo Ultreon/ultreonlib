@@ -2,6 +2,7 @@ com.ultreon.mods.lib.commons.collection
 com.ultreon.mods.lib.commons.collection.list
 com.ultreon.mods.lib.commons.collection.map
 com.ultreon.mods.lib.commons.collection.table
+com.ultreon.mods.lib.commons.exceptions
 com.ultreon.mods.lib.commons.function
 com.ultreon.mods.lib.commons.lang.holders
 com.ultreon.mods.lib.commons.lang.vector
