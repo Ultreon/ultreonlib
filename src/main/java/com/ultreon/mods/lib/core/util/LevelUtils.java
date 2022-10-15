@@ -17,7 +17,7 @@ import net.minecraft.client.gui.screens.GenericDirtMessageScreen;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.client.gui.screens.multiplayer.JoinMultiplayerScreen;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 
 import java.util.Objects;
 
@@ -58,7 +58,7 @@ public final class LevelUtils extends UtilityClass {
     private static void clearLevelAndDisconnect(Minecraft mc, boolean flag) {
         Objects.requireNonNull(mc.level).disconnect();
         if (flag) {
-            mc.clearLevel(new GenericDirtMessageScreen(new TranslatableComponent("menu.savingLevel")));
+            mc.clearLevel(new GenericDirtMessageScreen(Component.translatable("menu.savingLevel")));
         } else {
             mc.clearLevel();
         }

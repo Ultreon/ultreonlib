@@ -68,7 +68,7 @@ public interface FluidRecipe<C extends FluidInventory> extends Recipe<C> {
      * @param stack  A new FluidStack
      */
     static void writeFluid(FriendlyByteBuf buffer, FluidStack stack) {
-        buffer.writeResourceLocation(Objects.requireNonNull(stack.getFluid().getRegistryName()));
+        buffer.writeResourceLocation(Objects.requireNonNull(ForgeRegistries.FLUIDS.getKey(stack.getFluid())));
         buffer.writeVarInt(stack.getAmount());
     }
 

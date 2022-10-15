@@ -22,12 +22,9 @@ import com.ultreon.mods.lib.core.ModdingLibrary;
 import com.ultreon.mods.lib.core.util.LootUtils;
 import com.ultreon.mods.lib.core.util.PlayerUtils;
 import net.minecraft.ChatFormatting;
-import net.minecraft.Util;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -96,11 +93,11 @@ public class LootContainerItem extends Item {
     }
 
     private static void listItemReceivedInChat(ServerPlayer playerMP, ItemStack stack) {
-        Component itemReceivedText = new TranslatableComponent(
+        Component itemReceivedText = Component.translatable(
                 "item.ultreonlib.lootContainer.itemReceived",
                 stack.getCount(),
                 stack.getHoverName());
-        playerMP.sendMessage(itemReceivedText, Util.NIL_UUID);
+        playerMP.sendSystemMessage(itemReceivedText);
     }
 
     /**
@@ -160,8 +157,8 @@ public class LootContainerItem extends Item {
     public void appendHoverText(@NotNull ItemStack stack, @Nullable Level worldIn, @NotNull List<Component> tooltip, TooltipFlag flagIn) {
         if (!flagIn.isAdvanced()) return;
 
-        Component textTableName = new TextComponent(this.getLootTable(stack).toString()).withStyle(ChatFormatting.WHITE);
-        tooltip.add(new TranslatableComponent("item.ultreonlib.lootContainer.table", textTableName).withStyle(ChatFormatting.BLUE));
+        Component textTableName = Component.literal(this.getLootTable(stack).toString()).withStyle(ChatFormatting.WHITE);
+        tooltip.add(Component.translatable("item.ultreonlib.lootContainer.table", textTableName).withStyle(ChatFormatting.BLUE));
     }
 
     @NotNull
@@ -193,7 +190,7 @@ public class LootContainerItem extends Item {
 
     @Override
     public void fillItemCategory(@NotNull CreativeModeTab group, @NotNull NonNullList<ItemStack> items) {
-        if (this.allowdedIn(group)) {
+        if (this.allowedIn(group)) {
             items.add(this.getStack());
         }
     }

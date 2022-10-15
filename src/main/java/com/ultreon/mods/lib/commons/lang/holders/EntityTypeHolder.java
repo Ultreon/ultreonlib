@@ -3,6 +3,7 @@ package com.ultreon.mods.lib.commons.lang.holders;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nonnull;
 
@@ -14,7 +15,7 @@ public interface EntityTypeHolder extends BaseHolder {
 
     @Override
     default ResourceLocation getRegistryName() {
-        return getEntityType().getRegistryName();
+        return ForgeRegistries.ENTITY_TYPES.getKey(getEntityType());
     }
 
     @Override

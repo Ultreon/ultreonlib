@@ -13,7 +13,6 @@ import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.item.ItemStack;
@@ -55,7 +54,7 @@ public class Gfx {
         this.poseStack = poseStack;
         this.font = font;
         this.minecraft = Minecraft.getInstance();
-        this.screen = screen == null ? (this.minecraft.screen == null ? new Screen(new TextComponent("LOL WHAT DO YOU EXPECT???")) {
+        this.screen = screen == null ? (this.minecraft.screen == null ? new Screen(Component.literal("LOL WHAT DO YOU EXPECT???")) {
         } : this.minecraft.screen) : screen;
         this.textureManager = this.minecraft.getTextureManager();
         this.itemRenderer = this.minecraft.getItemRenderer();
@@ -269,10 +268,11 @@ public class Gfx {
         this.color = color;
     }
 
+    @SuppressWarnings("UnstableApiUsage")
     public void renderBackground(boolean forceTransparent) {
         if (forceTransparent) {
             screen.fillGradient(poseStack, 0, 0, screen.width, screen.height, -1072689136, -804253680);
-            MinecraftForge.EVENT_BUS.post(new ScreenEvent.BackgroundDrawnEvent(screen, poseStack));
+            MinecraftForge.EVENT_BUS.post(new ScreenEvent.BackgroundRendered(screen, poseStack));
         } else {
             screen.renderBackground(this.poseStack);
         }

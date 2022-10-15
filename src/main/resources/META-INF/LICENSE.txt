@@ -3,7 +3,7 @@ Copyright (c) 2022 Qboi123 <qboiwastaken@gmail.com>
 Ultreon API License version 1.1
 =================================================
 
-?1 - Meaning:
+§1 - Meaning:
 ------------------------
 1. "Executable Form":
 The "executable form" is the file/folder being referred as executable.
@@ -11,7 +11,7 @@ The "executable form" is the file/folder being referred as executable.
 2. "Executables":
 Archives containing bytecode and/or executable files still count as executables.
 
-?2 - Information:
+§2 - Information:
 -------------------
 1. Distribution and Modification:
 Copying anything from this project is hereby prohibited.
@@ -32,7 +32,7 @@ Moving content from private to public needs permission of the project owner.
 Mixins are allowed to be used to make changes on runtime level. As long the file itself will be left unchanged.
 AND it's not allowed to export the mixins.
 
-?3 - Notes:
+§3 - Notes:
 -------------------
  * If you notice that the project with originally this license is redistributed in a modified or non-modified form without explicit permission of the original project owner, we advise you to contact that project owner.
  * Any usage of the project and/or it's contents that violates the license will lead to termination of any of the online accounts / services that violates it.

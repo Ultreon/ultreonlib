@@ -1,8 +1,8 @@
 package com.ultreon.mods.lib.core.recipes;
 
-import com.ultreon.mods.lib.core.ModdingLibrary;
 import net.minecraft.core.NonNullList;
 import net.minecraft.util.GsonHelper;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeSerializer;
@@ -48,11 +48,11 @@ public class DamageItemRecipe extends ExtendedShapelessRecipe {
 
         for (int i = 0; i < list.size(); ++i) {
             ItemStack stack = inv.getItem(i);
-            if (stack.hasContainerItem()) {
-                list.set(i, stack.getContainerItem());
+            if (stack.hasCraftingRemainingItem()) {
+                list.set(i, stack.getCraftingRemainingItem());
             } else if (stack.getMaxDamage() > 0) {
                 ItemStack tool = stack.copy();
-                if (tool.hurt(this.damageToItems, ModdingLibrary.RANDOM, null)) {
+                if (tool.hurt(this.damageToItems, RandomSource.create(), null)) {
                     tool.shrink(1);
                 }
                 list.set(i, tool);

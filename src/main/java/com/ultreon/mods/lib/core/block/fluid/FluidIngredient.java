@@ -170,7 +170,7 @@ public class FluidIngredient implements Predicate<FluidStack> {
         if (this.tag != null) {
             json.addProperty("tag", this.tag.location().toString());
         } else if (this.fluid != null) {
-            json.addProperty("fluid", ResourceIdUtils.from(this.fluid).toString());
+            json.addProperty("fluid", ResourceIdUtils.from(ForgeRegistries.FLUIDS, this.fluid).toString());
         } else {
             throw new IllegalStateException("Fluid ingredient is missing both tag and fluid");
         }
@@ -191,7 +191,7 @@ public class FluidIngredient implements Predicate<FluidStack> {
         if (isTag)
             buffer.writeResourceLocation(tag.location());
         else if (fluid != null)
-            buffer.writeResourceLocation(Objects.requireNonNull(fluid.getRegistryName()));
+            buffer.writeResourceLocation(Objects.requireNonNull(ForgeRegistries.FLUIDS.getKey(fluid)));
         else
             buffer.writeResourceLocation(new ResourceLocation("null"));
         buffer.writeVarInt(this.amount);

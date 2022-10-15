@@ -3,7 +3,6 @@ package com.ultreon.mods.lib.commons.lang.holders;
 import com.ultreon.mods.lib.core.ComponentHolder;
 import com.ultreon.mods.lib.core.TranslationHolder;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 
 public interface BaseHolder extends ComponentHolder, TranslationHolder {
@@ -16,6 +15,6 @@ public interface BaseHolder extends ComponentHolder, TranslationHolder {
 
     @Override
     default Component getTranslation() {
-        return new TranslatableComponent(getTranslationId());
+        return Component.translatable(getTranslationId());
     }
 }

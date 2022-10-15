@@ -1,7 +1,6 @@
 package com.ultreon.mods.lib.core.player;
 
 import com.ultreon.mods.lib.core.ModdingLibrary;
-import net.minecraft.Util;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -21,11 +20,11 @@ public class ModMessages {
 
     @SubscribeEvent
     public static void sendOnLogin(PlayerEvent.PlayerLoggedInEvent event) {
-        Player player = event.getPlayer();
+        Player player = event.getEntity();
         if (player == null) return;
 
         for (Component message : MESSAGES) {
-            player.sendMessage(message, Util.NIL_UUID);
+            player.sendSystemMessage(message);
         }
     }
 }

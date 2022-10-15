@@ -5,6 +5,7 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
@@ -33,7 +34,7 @@ public interface BlockHolder extends ItemHolder {
     @Override
     default ResourceLocation getRegistryName() {
         //Make sure to use the block's registry name in case it somehow doesn't match
-        return asBlock().getRegistryName();
+        return ForgeRegistries.BLOCKS.getKey(asBlock());
     }
 
     @Override

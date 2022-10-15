@@ -20,7 +20,6 @@ com.ultreon.mods.lib.core.common.enums
 com.ultreon.mods.lib.core.common.geom
 com.ultreon.mods.lib.core.common.interfaces
 com.ultreon.mods.lib.core.event
-com.ultreon.mods.lib.core.graphics
 com.ultreon.mods.lib.core.init
 com.ultreon.mods.lib.core.input
 com.ultreon.mods.lib.core.inventory

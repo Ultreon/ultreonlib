@@ -9,22 +9,22 @@ import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.client.gui.ForgeIngameGui;
-import net.minecraftforge.client.gui.IIngameOverlay;
+import net.minecraftforge.client.gui.overlay.ForgeGui;
+import net.minecraftforge.client.gui.overlay.IGuiOverlay;
 
-public final class ItemHudOverlay extends Gui implements IIngameOverlay {
+public final class ItemHudOverlay extends Gui implements IGuiOverlay {
     public ItemHudOverlay() {
-        super(Minecraft.getInstance());
+        super(Minecraft.getInstance(), Minecraft.getInstance().getItemRenderer());
     }
 
     @Override
-    public void render(ForgeIngameGui gui, PoseStack pose, float partialTicks, int width, int height) {
+    public void render(ForgeGui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
         LocalPlayer player = Minecraft.getInstance().player;
         if (player != null) {
             ItemStack heldItem = player.getItemInHand(InteractionHand.MAIN_HAND);
             Item item = heldItem.getItem();
             if (item instanceof Renderable) {
-                ((Renderable) item).render(new Gfx(pose, Minecraft.getInstance().font));
+                ((Renderable) item).render(new Gfx(poseStack, Minecraft.getInstance().font));
             }
         }
     }

@@ -35,7 +35,7 @@ public class WindowCloseEvent extends Event {
     }
 
     @SubscribeEvent
-    public static void onOptionsScreenInit(ScreenEvent.InitScreenEvent.Post event) {
+    public static void onOptionsScreenInit(ScreenEvent.Init.Post event) {
         Minecraft mc = Minecraft.getInstance();
         Screen screen = event.getScreen();
         if (screen instanceof TitleScreen titleScreen) {

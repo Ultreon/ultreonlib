@@ -6,7 +6,7 @@ import com.ultreon.mods.lib.gui.client.gui.Theme;
 import com.ultreon.mods.lib.gui.client.gui.screen.TitleStyle;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.ConfigGuiHandler;
+import net.minecraftforge.client.ConfigScreenHandler;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -53,8 +53,8 @@ public class Config {
 
     public static void registerConfigScreen() {
         ModLoadingContext.get().registerExtensionPoint(
-                ConfigGuiHandler.ConfigGuiFactory.class,
-                () -> new ConfigGuiHandler.ConfigGuiFactory((minecraft, screen) -> new InternalConfigScreen(screen))
+                ConfigScreenHandler.ConfigScreenFactory.class,
+                () -> new ConfigScreenHandler.ConfigScreenFactory((minecraft, screen) -> new InternalConfigScreen(screen))
         );
     }
 }

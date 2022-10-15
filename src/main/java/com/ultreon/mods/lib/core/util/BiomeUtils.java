@@ -18,7 +18,8 @@ public final class BiomeUtils extends UtilityClass {
         }
 
         String category = CATEGORY_PATTERN.matcher(input).replaceFirst(Matcher.quoteReplacement(""));
-        return biome.getBiomeCategory().name().equalsIgnoreCase(category);
+        return ForgeRegistries.BIOMES.tags().getTagNames()
+                .anyMatch(pair -> pair.location().toString().equals(category));
     }
 
     public static boolean contains(Biome biome, Collection<? extends String> list, boolean valueIfListEmpty) {

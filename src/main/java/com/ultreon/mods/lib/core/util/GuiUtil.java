@@ -5,7 +5,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.util.StringDecomposer;
 
 import java.util.ArrayList;
@@ -22,7 +21,7 @@ public final class GuiUtil {
                 continue;
             }
 
-            Component chat = new TextComponent(line);
+            Component chat = Component.translatable(line);
             if (maxWidth >= 0) {
                 ret.addAll(font.getSplitter().splitLines(chat, maxWidth, Style.EMPTY).stream().map(StringDecomposer::getPlainText).toList());
             }

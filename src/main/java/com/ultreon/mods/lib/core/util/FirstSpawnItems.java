@@ -52,7 +52,7 @@ public class FirstSpawnItems {
     }
 
     private void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
-        Player player = event.getPlayer();
+        Player player = event.getEntity();
         CompoundTag givenItems = PlayerUtils.getPersistedCompound(player, ModdingLibrary.MOD_ID + ".FirstSpawnItems");
 
         spawnItems.forEach((key, factory) -> spawnItems(player, givenItems, key, factory.apply(player)));

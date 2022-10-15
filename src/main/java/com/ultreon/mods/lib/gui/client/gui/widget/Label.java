@@ -18,7 +18,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.components.Widget;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import org.jetbrains.annotations.NotNull;
 
 public class Label implements Widget, ReloadsTheme {
@@ -80,7 +79,7 @@ public class Label implements Widget, ReloadsTheme {
     }
 
     public void setMessage(String s) {
-        setMessage(new TextComponent(s));
+        setMessage(Component.literal(s));
     }
 
     public Theme getTheme() {

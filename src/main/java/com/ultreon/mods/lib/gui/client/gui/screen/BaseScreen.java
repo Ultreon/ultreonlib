@@ -27,7 +27,6 @@ import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.phys.Vec2;
@@ -150,7 +149,7 @@ public abstract class BaseScreen extends Screen implements ReloadsTheme {
 
         if (button == MouseButton.RIGHT && isAtTitleBar(mouseX, mouseY)) {
             ContextMenu menu = new ContextMenu((int) mouseX, (int) mouseY, null);
-            menu.add(new ButtonMenuItem(menu, new TextComponent("Close"), menuItem -> closeScreen()));
+            menu.add(new ButtonMenuItem(menu, Component.literal("Close"), menuItem -> closeScreen()));
             placeContextMenu(menu);
             return true;
         }

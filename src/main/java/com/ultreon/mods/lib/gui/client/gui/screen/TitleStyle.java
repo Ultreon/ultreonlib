@@ -13,7 +13,6 @@ package com.ultreon.mods.lib.gui.client.gui.screen;
 
 import com.ultreon.mods.lib.gui.client.gui.Theme;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 /**
@@ -79,7 +78,7 @@ public enum TitleStyle {
      */
     @NonNull
     public Component getDisplayName() {
-        return new TranslatableComponent(getDescriptionId());
+        return Component.translatable(getDescriptionId());
     }
 
     /**

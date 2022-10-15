@@ -35,7 +35,7 @@ public class NbtDataUtils {
     private static CompoundTag writeItemStack(ItemStack i) {
         CompoundTag nbt = new CompoundTag();
         nbt.putInt("count", i.getCount());
-        nbt.putString("item", i.getItem().getRegistryName().toString());
+        nbt.putString("item", ForgeRegistries.ITEMS.getKey(i.getItem()).toString());
         nbt.putByte("type", (byte) 0);
         return nbt;
     }

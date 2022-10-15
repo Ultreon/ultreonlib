@@ -15,7 +15,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.narration.NarratedElementType;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import org.jetbrains.annotations.NotNull;
 
 public class LabelItem extends MenuItem {
@@ -41,9 +40,9 @@ public class LabelItem extends MenuItem {
         narrator.add(NarratedElementType.TITLE, this.createNarrationMessage());
         if (this.active) {
             if (this.isFocused()) {
-                narrator.add(NarratedElementType.USAGE, new TranslatableComponent("narration.button.usage.focused"));
+                narrator.add(NarratedElementType.USAGE, Component.translatable("narration.button.usage.focused"));
             } else {
-                narrator.add(NarratedElementType.USAGE, new TranslatableComponent("narration.button.usage.hovered"));
+                narrator.add(NarratedElementType.USAGE, Component.translatable("narration.button.usage.hovered"));
             }
         }
     }

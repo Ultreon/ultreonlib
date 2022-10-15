@@ -3,6 +3,7 @@ package com.ultreon.mods.lib.commons.lang.holders;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nonnull;
 
@@ -32,7 +33,7 @@ public interface ItemHolder extends BaseHolder, net.minecraft.world.level.ItemLi
 
     @Override
     default ResourceLocation getRegistryName() {
-        return asItem().getRegistryName();
+        return ForgeRegistries.ITEMS.getKey(asItem());
     }
 
     @Override

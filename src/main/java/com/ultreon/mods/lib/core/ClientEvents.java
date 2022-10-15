@@ -9,19 +9,15 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber(modid = ModdingLibrary.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
 public class ClientEvents {
     @SubscribeEvent
-    public static void onRenderGameOverlay(RenderGameOverlayEvent event) {
-        if (event.getType() != RenderGameOverlayEvent.ElementType.LAYER) {
-            return;
-        }
-
-        PoseStack matrixStack = event.getMatrixStack();
+    public static void onRenderGameOverlay(RenderGuiOverlayEvent event) {
+        PoseStack matrixStack = event.getPoseStack();
 
         Minecraft mc = Minecraft.getInstance();
         LocalPlayer player = mc.player;

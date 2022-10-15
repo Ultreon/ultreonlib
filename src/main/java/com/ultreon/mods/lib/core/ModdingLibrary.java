@@ -12,13 +12,12 @@ import net.minecraft.FieldsAreNonnullByDefault;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.event.RegisterCommandsEvent;
-import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.ModContainer;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
@@ -27,7 +26,6 @@ import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLEnvironment;
-import net.minecraftforge.forge.event.lifecycle.GatherDataEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -57,12 +55,11 @@ public final class ModdingLibrary {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::commonSetup);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::imcEnqueue);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::imcProcess);
-        FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(RecipeSerializer.class, this::registerRecipeSerializers);
 
         MinecraftForge.EVENT_BUS.addListener(this::onRegisterCommands);
 
         if (GameUtil.isDeveloperEnv()) {
-            ModMessages.addMessage(new TextComponent("You are running a development build of Minecraft.").withStyle(style -> style.withColor(ChatFormatting.GOLD)));
+            ModMessages.addMessage(Component.literal("You are running a development build of Minecraft.").withStyle(style -> style.withColor(ChatFormatting.GOLD)));
             FirstSpawnItems.register(res("dev"), player -> ItemStackList.of(Items.DEBUG_STICK, Items.COMMAND_BLOCK, Items.CHAIN_COMMAND_BLOCK, Items.REPEATING_COMMAND_BLOCK, Items.STRUCTURE_BLOCK, Items.STRUCTURE_VOID, Items.JIGSAW, Items.NETHERITE_SWORD));
         }
     }
@@ -130,8 +127,5 @@ public final class ModdingLibrary {
         CommandDispatcher<CommandSourceStack> dispatcher = event.getDispatcher();
         ViewNbtCommand.register(dispatcher);
         TeleportCommand.register(dispatcher);
-    }
-
-    private void registerRecipeSerializers(RegistryEvent.Register<RecipeSerializer<?>> event) {
     }
 }

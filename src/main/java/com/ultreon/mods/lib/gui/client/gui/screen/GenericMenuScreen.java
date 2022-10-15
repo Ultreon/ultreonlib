@@ -33,8 +33,6 @@ import net.minecraft.client.gui.narration.NarratableEntry;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec2;
 import org.jetbrains.annotations.NotNull;
@@ -265,7 +263,7 @@ public abstract class GenericMenuScreen extends BaseScreen implements ReloadsThe
 
     @SuppressWarnings("unused")
     public Label addLabel(String text) {
-        return addLabel(new TextComponent(text));
+        return addLabel(Component.literal(text));
     }
 
     @SuppressWarnings("unused")
@@ -853,12 +851,12 @@ public abstract class GenericMenuScreen extends BaseScreen implements ReloadsThe
         }
 
         public Properties titleText(String text) {
-            this.title = new TextComponent(text);
+            this.title = Component.literal(text);
             return this;
         }
 
         public Properties titleLang(String text) {
-            this.title = new TranslatableComponent(text);
+            this.title = Component.translatable(text);
             return this;
         }
 

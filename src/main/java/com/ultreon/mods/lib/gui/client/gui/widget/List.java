@@ -30,7 +30,6 @@ import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarratableEntry;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FastColor;
 import net.minecraft.util.Mth;
@@ -57,7 +56,7 @@ public class List extends AbstractWidget implements ContainerEventHandler, Reloa
 
     private static final int ENTRY_HEIGHT = 14;
     private static final int LIST_BORDER_WIDTH = 7;
-    private static final Component SEARCH_HINT = new TextComponent("Search...");
+    private static final Component SEARCH_HINT = Component.literal("Search...");
     private final int headerHeight;
 
     private final java.util.List<GuiEventListener> children;
@@ -538,7 +537,7 @@ public class List extends AbstractWidget implements ContainerEventHandler, Reloa
                 this.list = list;
                 this.guiTexture = list.guiTexture;
                 this.entryTitle = title;
-                this.description = description == null ? TextComponent.EMPTY : new TextComponent(description);
+                this.description = description == null ? Component.empty() : Component.literal(description);
                 this.texture = texture;
                 this.u = u;
                 this.v = v;

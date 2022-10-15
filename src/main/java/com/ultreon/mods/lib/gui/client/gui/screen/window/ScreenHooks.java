@@ -14,7 +14,7 @@ import java.util.Random;
 @Mod.EventBusSubscriber(value = Dist.CLIENT, modid = UltreonGuiLib.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class ScreenHooks {
     @SubscribeEvent
-    public static void onMouseDrag(ScreenEvent.MouseDragEvent.Pre event) {
+    public static void onMouseDrag(ScreenEvent.MouseDragged.Pre event) {
         double dragX = event.getDragX();
         double dragY = event.getDragY();
         double mouseX = event.getMouseX();
@@ -36,7 +36,7 @@ public class ScreenHooks {
     }
 
     @SubscribeEvent
-    public static void onMouseClick(ScreenEvent.MouseClickedEvent.Pre event) {
+    public static void onMouseClick(ScreenEvent.MouseButtonPressed.Pre event) {
         double mouseX = event.getMouseX();
         double mouseY = event.getMouseY();
         int button = event.getButton();
@@ -51,7 +51,7 @@ public class ScreenHooks {
     }
 
     @SubscribeEvent
-    public static void onMouseRelease(ScreenEvent.MouseReleasedEvent.Pre event) {
+    public static void onMouseRelease(ScreenEvent.MouseButtonReleased.Pre event) {
         double mouseX = event.getMouseX();
         double mouseY = event.getMouseY();
         int button = event.getButton();
@@ -65,7 +65,7 @@ public class ScreenHooks {
     }
 
     @SubscribeEvent
-    public static void onMouseScroll(ScreenEvent.MouseScrollEvent.Pre event) {
+    public static void onMouseScroll(ScreenEvent.MouseScrolled.Pre event) {
         double mouseX = event.getMouseX();
         double mouseY = event.getMouseY();
         double delta = event.getScrollDelta();
@@ -77,7 +77,7 @@ public class ScreenHooks {
     }
 
     @SubscribeEvent
-    public static void onKeyPress(ScreenEvent.KeyboardKeyPressedEvent.Pre event) {
+    public static void onKeyPress(ScreenEvent.KeyPressed.Pre event) {
         int keyCode = event.getKeyCode();
         int scanCode = event.getScanCode();
         int modifiers = event.getModifiers();
@@ -118,7 +118,7 @@ public class ScreenHooks {
     }
 
     @SubscribeEvent
-    public static void onKeyRelease(ScreenEvent.KeyboardKeyReleasedEvent.Pre event) {
+    public static void onKeyRelease(ScreenEvent.KeyReleased.Pre event) {
         int keyCode = event.getKeyCode();
         int scanCode = event.getScanCode();
         int modifiers = event.getModifiers();
@@ -130,7 +130,7 @@ public class ScreenHooks {
     }
 
     @SubscribeEvent
-    public static void onCharTyped(ScreenEvent.KeyboardCharTypedEvent.Pre event) {
+    public static void onCharTyped(ScreenEvent.CharacterTyped.Pre event) {
         char codePoint = event.getCodePoint();
         int modifiers = event.getModifiers();
 
@@ -141,7 +141,7 @@ public class ScreenHooks {
     }
 
     @SubscribeEvent(receiveCanceled = true)
-    public static void onDrawScreen(ScreenEvent.DrawScreenEvent.Post event) {
-        WindowManager.INSTANCE.renderAllWindows(event.getPoseStack(), event.getMouseX(), event.getMouseY(), event.getPartialTicks());
+    public static void onDrawScreen(ScreenEvent.Render.Post event) {
+        WindowManager.INSTANCE.renderAllWindows(event.getPoseStack(), event.getMouseX(), event.getMouseY(), event.getPartialTick());
     }
 }

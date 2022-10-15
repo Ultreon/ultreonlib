@@ -4,6 +4,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nonnull;
 
@@ -25,16 +26,16 @@ public interface FluidHolder extends BaseHolder {
 
     @Override
     default ResourceLocation getRegistryName() {
-        return getFluid().getRegistryName();
+        return ForgeRegistries.FLUIDS.getKey(getFluid());
     }
 
     @Override
     default Component getTranslation() {
-        return getFluid().getAttributes().getDisplayName(getFluidStack(1));
+        return getFluid().getFluidType().getDescription();
     }
 
     @Override
     default String getTranslationId() {
-        return getFluid().getAttributes().getTranslationKey();
+        return getFluid().getFluidType().getDescriptionId();
     }
 }

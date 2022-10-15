@@ -2,7 +2,6 @@ package com.ultreon.mods.lib.gui.client.gui;
 
 import com.ultreon.mods.lib.gui.UltreonGuiLib;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -130,7 +129,7 @@ public enum Theme {
      */
     @NonNull
     public Component getDisplayName() {
-        return new TranslatableComponent(getDescriptionId());
+        return Component.translatable(getDescriptionId());
     }
 
     /**

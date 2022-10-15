@@ -23,8 +23,6 @@ import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarratableEntry;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FastColor;
 import net.minecraftforge.api.distmarker.Dist;
@@ -43,8 +41,8 @@ public final class ListScreen extends Screen {
     private String searchTerms = "";
     private boolean initialized;
 
-    private static final Component SEARCH_HINT = (new TranslatableComponent("gui.socialInteractions.search_hint")).withStyle(ChatFormatting.ITALIC).withStyle(ChatFormatting.GRAY);
-    private static final Component SEARCH_EMPTY = (new TranslatableComponent("gui.socialInteractions.search_empty")).withStyle(ChatFormatting.GRAY);
+    private static final Component SEARCH_HINT = (Component.translatable("gui.socialInteractions.search_hint")).withStyle(ChatFormatting.ITALIC).withStyle(ChatFormatting.GRAY);
+    private static final Component SEARCH_EMPTY = (Component.translatable("gui.socialInteractions.search_empty")).withStyle(ChatFormatting.GRAY);
     private static final ResourceLocation GUI_TEXTURE = UltreonGuiLib.res("textures/gui/list.png");
 
     private IListEntryClick onListEntryClick = (list, entry) -> {
@@ -290,7 +288,7 @@ public final class ListScreen extends Screen {
             public Entry(Minecraft minecraft, ListScreen screen, String title, String description, String id, Button... buttons) {
                 this.mc = minecraft;
                 this.entryTitle = title;
-                this.description = new TextComponent(description);
+                this.description = Component.literal(description);
                 this.id = id;
                 this.screen = screen;
 
@@ -302,7 +300,7 @@ public final class ListScreen extends Screen {
 
                 Component description = this.getDescription();
                 int l;
-                if (description == TextComponent.EMPTY) {
+                if (description.equals(Component.EMPTY)) {
                     fill(pose, left, top, left + width, top + height, EMPTY_COLOR);
                     l = top + (height - 9) / 2;
                 } else {

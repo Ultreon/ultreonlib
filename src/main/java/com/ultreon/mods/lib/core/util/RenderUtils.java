@@ -59,11 +59,12 @@ public final class RenderUtils extends UtilityClass {
         int posY = (int) (y + height - renderAmount);
 
         RenderSystem.setShaderTexture(0, InventoryMenu.BLOCK_ATLAS);
-        int color = stack.getFluid().getAttributes().getColor();
-        float r = ((color >> 16) & 0xFF) / 255f;
-        float g = ((color >> 8) & 0xFF) / 255f;
-        float b = (color & 0xFF) / 255f;
-        RenderSystem.setShaderColor(1f, r, g, b);
+//        int color = stack.getFluid().getAttributes().getColor();
+//        float r = ((color >> 16) & 0xFF) / 255f;
+//        float g = ((color >> 8) & 0xFF) / 255f;
+//        float b = (color & 0xFF) / 255f;
+//        RenderSystem.setShaderColor(1f, r, g, b);
+        RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
 
         RenderSystem.enableBlend();
         for (int i = 0; i < width; i += 16) {

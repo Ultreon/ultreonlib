@@ -17,7 +17,6 @@ import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarratedElementType;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.phys.Vec2;
 import org.jetbrains.annotations.NotNull;
 import org.lwjgl.glfw.GLFW;
@@ -40,7 +39,7 @@ public class Window extends BaseContainerWidget implements ReloadsTheme {
     private static final String CLOSE_ICON = "\u00D7";
     private static final String CLOSE_ICON_HOVER = ChatFormatting.RED + CLOSE_ICON;
 
-    private Component title = TextComponent.EMPTY;
+    private Component title = Component.empty();
     private boolean valid = true;
     private boolean visible;
     private final Minecraft minecraft = Minecraft.getInstance();
@@ -70,7 +69,7 @@ public class Window extends BaseContainerWidget implements ReloadsTheme {
      * @param height The height of the window
      */
     public Window(int x, int y, int width, int height) {
-        super(x, y, width, height, TextComponent.EMPTY);
+        super(x, y, width, height, Component.empty());
     }
 
     @Override

@@ -12,8 +12,6 @@ import net.minecraft.commands.arguments.coordinates.BlockPosArgument;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
@@ -47,14 +45,14 @@ public class ViewNbtCommand {
         BlockPos pos = BlockPosArgument.getSpawnablePos(context, "pos");
         ServerLevel world = context.getSource().getLevel();
         BlockEntity tileEntity = world.getBlockEntity(pos);
-        Component title = new TranslatableComponent(world.getBlockState(pos).getBlock().getDescriptionId());
+        Component title = Component.translatable(world.getBlockState(pos).getBlock().getDescriptionId());
 
         if (tileEntity != null) {
             sendPacket(context, tileEntity.serializeNBT(), title);
             return 1;
         }
 
-        context.getSource().sendFailure(new TranslatableComponent("command.ultreonlib.nbt.notBlockEntity", title));
+        context.getSource().sendFailure(Component.translatable("command.ultreonlib.nbt.notBlockEntity", title));
         return 0;
     }
 
@@ -69,10 +67,10 @@ public class ViewNbtCommand {
     private static int runForItem(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         ItemStack stack = context.getSource().getPlayerOrException().getMainHandItem();
         if (stack.isEmpty()) {
-            context.getSource().sendFailure(new TranslatableComponent("command.ultreonlib.nbt.noItemInHand"));
+            context.getSource().sendFailure(Component.translatable("command.ultreonlib.nbt.noItemInHand"));
             return 0;
         } else if (!stack.hasTag()) {
-            context.getSource().sendFailure(new TranslatableComponent("command.ultreonlib.nbt.noItemTag", stack.getHoverName()));
+            context.getSource().sendFailure(Component.translatable("command.ultreonlib.nbt.noItemTag", stack.getHoverName()));
             return 0;
         }
 
@@ -87,6 +85,6 @@ public class ViewNbtCommand {
 
     private static Component textOfNullable(@Nullable Component text) {
         // Just in case a mod does something stupid
-        return text == null ? new TextComponent("null") : text;
+        return text == null ? Component.literal("null") : text;
     }
 }

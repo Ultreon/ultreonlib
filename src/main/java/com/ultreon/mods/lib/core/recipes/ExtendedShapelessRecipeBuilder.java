@@ -17,6 +17,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.ItemLike;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
@@ -130,7 +131,7 @@ public class ExtendedShapelessRecipeBuilder {
     }
 
     public void build(Consumer<FinishedRecipe> consumer) {
-        build(consumer, ResourceIdUtils.from(this.result));
+        build(consumer, ResourceIdUtils.from(ForgeRegistries.ITEMS, this.result));
     }
 
     public void build(Consumer<FinishedRecipe> consumer, ResourceLocation id) {
@@ -168,7 +169,7 @@ public class ExtendedShapelessRecipeBuilder {
             json.add("ingredients", ingredients);
 
             JsonObject result = new JsonObject();
-            result.addProperty("item", ResourceIdUtils.from(builder.result).toString());
+            result.addProperty("item", ResourceIdUtils.from(ForgeRegistries.ITEMS, builder.result).toString());
             if (builder.count > 1) {
                 result.addProperty("count", builder.count);
             }

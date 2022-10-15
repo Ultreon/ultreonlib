@@ -1,24 +1,36 @@
 package com.ultreon.mods.lib.core.client.init;
 
-import com.ultreon.mods.lib.core.ModdingLibrary;
 import com.ultreon.mods.lib.core.client.overlay.ItemHudOverlay;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.client.gui.ForgeIngameGui;
-import net.minecraftforge.client.gui.IIngameOverlay;
-import net.minecraftforge.client.gui.OverlayRegistry;
+import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
+import net.minecraftforge.client.gui.overlay.IGuiOverlay;
+import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import org.jetbrains.annotations.ApiStatus;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Supplier;
 
 public class ModOverlays {
-    public static final ItemHudOverlay ITEM_HUD_OVERLAY = register(ModdingLibrary.res("item_hud_overlay"), ItemHudOverlay::new);
+    private static final Map<String, IGuiOverlay> REGISTRY = new HashMap<>();
 
-    private static <T extends IIngameOverlay> T register(ResourceLocation res, Supplier<T> overlay) {
-        T registering = overlay.get();
-        OverlayRegistry.registerOverlayBelow(ForgeIngameGui.HOTBAR_ELEMENT, res.toString(), registering);
-        return registering;
+    public static final ItemHudOverlay ITEM_HUD_OVERLAY = register("item_hud_overlay", ItemHudOverlay::new);
+
+    @ApiStatus.Internal
+    private static <T extends IGuiOverlay> T register(String name, Supplier<T> overlay) {
+        T gui = overlay.get();
+        REGISTRY.put(name, gui);
+        return gui;
     }
 
+    private static void handleRegistration(RegisterGuiOverlaysEvent event) {
+        for (String key : REGISTRY.keySet()) {
+            event.registerBelow(VanillaGuiOverlay.HOTBAR.id(), key, REGISTRY.get(key));
+        }
+    }
+
+    @ApiStatus.Internal
     public static void register() {
-        // NO-OP
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(ModOverlays::handleRegistration);
     }
 }
