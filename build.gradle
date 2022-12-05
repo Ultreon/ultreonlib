@@ -45,7 +45,7 @@ apply plugin: 'maven-publish'
 def def_mod_version = "$mc_version-$mod_version"
 
 group 'com.ultreon.mc'
-version def_mod_version
+version = "${mod_version}+${getenv("CI_PIPELINE_ID") == null ? "local" : getenv("CI_PIPELINE_ID")}"
 
 mkdir "$projectDir/docs/"
 mkdir "$projectDir/docs/latest"
@@ -240,8 +240,15 @@ task runJar (type: Jar) {
 publishing {
     repositories {
         maven {
-            name = "Main"
-            url = uri("${projectDir}/.maven_repo")
+            url "${CI_API_V4_URL}/groups/ultreon/-/packages/maven"
+            name "GitLab"
+            credentials(HttpHeaderCredentials) {
+                name = 'Job-Token'
+                value = System.getenv("CI_JOB_TOKEN")
+            }
+            authentication {
+                header(HttpHeaderAuthentication)
+            }
         }
         mavenLocal()
     }
