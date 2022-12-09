@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "id": "ultreonlib",
+  "version": "${version}",
+  "name": "Ultreon Modding Library",
+  "description": "${description}",
+  "authors": [
+    "Qboi123"
+  ],
+  "contributors": [
+
+  ],
+  "contact": {
+    "website": "https://ultreon.github.io/web/",
+    "repo": "https://gitlab.com/ultreon/ultreon-mod-lib",
+    "issues": "https://gitlab.com/ultreon/ultreon-mod-lib/-/issues"
+  },
+  "license": "Ultreon API License v1.1",
+  "icon": "ultreonlib.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.ultreon.mods.lib.fabric.UltreonLibFabric"
+    ]
+  },
+  "mixins": [
+    "ultreonlib.mixins.json",
+    "ultreonlib-common.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${loaderVersion}",
+    "minecraft": ">=${minecraftVersion} <1.19.3"
+  }
+}

@@ -1,303 +1,133 @@
-//file:noinspection GroovyUnusedAssignment
-//file:noinspection GroovyAssignabilityCheck
-//file:noinspection JCenterRepository
-import static java.lang.System.getenv
-
-buildscript {
-    repositories {
-        mavenLocal()
-        maven { url = 'https://maven.minecraftforge.net' }
-        maven { url = 'https://maven.parchmentmc.org' }
-        maven { url = 'https://files.minecraftforge.net/maven' }
-        maven { url = 'https://dist.creeper.host/Sponge/maven' }
-        mavenCentral()
-        maven {
-            name "sonatype"
-            url "https://oss.sonatype.org/content/repositories/snapshots/"
-        }
-        maven {
-            url "https://plugins.gradle.org/m2/"
-        }
-        maven {
-            url "https://github.com/QTechCommunity/Maven/raw/main/"
-        }
-        maven {
-            url "https://maven.tterrag.com/"
-        }
-        maven {
-            url "https://repo.spongepowered.org/maven"
-        }
-    }
-    dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
-        classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.7-SNAPSHOT'
-        classpath 'org.parchmentmc:librarian:1.+'
-    }
+plugins {
+    id "architectury-plugin" version "3.4-SNAPSHOT"
+    id "dev.architectury.loom" version "1.0-SNAPSHOT" apply false
+    id "io.github.pacifistmc.forgix" version "1.2.2"
 }
-
-apply plugin: 'net.minecraftforge.gradle'
-apply plugin: 'org.parchmentmc.librarian.forgegradle'
-apply plugin: 'org.spongepowered.mixin'
-apply plugin: 'java-library'
-apply plugin: 'signing'
-apply plugin: 'eclipse'
-apply plugin: 'maven-publish'
-
-def def_mod_version = "$mc_version-$mod_version"
-
-group 'com.ultreon.mc'
-version = "${mod_version}+${getenv("GITHUB_BUILD_NUMBER") == null ? "local" : getenv("GITHUB_BUILD_NUMBER")}"
-
-mkdir "$projectDir/docs/"
-mkdir "$projectDir/docs/latest"
-
-minecraft {
-    // The mappings can be changed at any time, and must be in the following format.
-    // snapshot_YYYYMMDD   Snapshot are built nightly.
-    // stable_#            Stables are built at the discretion of the MCP team.
-    // Use non-default mappings at your own risk. they may not always work.
-    // Simply re-run your setup task after changing the mappings to update your workspace.
-    mappings channel: 'official', version: "$mc_version"
-    // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
-
-    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
-
-    // Default run configurations.
-    // These can be tweaked, removed, or duplicated as needed.
-    runs {
-        client {
-            //noinspection GroovyAssignabilityCheck
-            workingDirectory project.file('run')
-
-            // Recommended logging data for a user-dev environment
-            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
-
-            // Recommended logging level for the console
-            property 'forge.logging.console.level', 'debug'
-
-            mods {
-                qmodlib {
-                    //noinspection GroovyAssignabilityCheck
-                    source sourceSets.main
-                }
-            }
-        }
-
-        server {
-            //noinspection GroovyAssignabilityCheck
-            workingDirectory project.file('run')
-
-            // Recommended logging data for a user-dev environment
-            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
-
-            // Recommended logging level for the console
-            property 'forge.logging.console.level', 'debug'
-
-            mods {
-                qmodlib {
-                    //noinspection GroovyAssignabilityCheck
-                    source sourceSets.main
-                }
-            }
-        }
-
-        data {
-            //noinspection GroovyAssignabilityCheck
-            workingDirectory project.file('run')
-
-            // Recommended logging data for a user-dev environment
-            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
-
-            // Recommended logging level for the console
-            property 'forge.logging.console.level', 'debug'
-
-            args '--mod', 'umodlib', '--all', '--output', file('src/generated/resources/')
-
-            mods {
-                qmodlib {
-                    //noinspection GroovyAssignabilityCheck
-                    source sourceSets.main
-                }
-            }
-        }
-    }
-}
-
 repositories {
-    mavenLocal()
-    maven {
-        // location of the maven that hosts JEI files
-        name = "Progwml6 maven"
-        url = "https://dvs1.progwml6.com/files/maven/"
-    }
-    maven {
-        // location of a maven mirror for JEI files, as a fallback
-        name = "ModMaven"
-        url = "https://modmaven.k-4u.nl"
-    }
-    maven {
-        url 'https://squiddev.cc/maven/'
-    }
-    maven {
-        url 'https://jitpack.io'
-    }
-    maven {
-        url 'https://maven.imagej.net/content/repositories/public/'
-    }
-    mavenCentral()
+    gradlePluginPortal()
 }
 
-processResources.inputs.dir("${projectDir}/src/main/resources")
-
-mixin {
-    add sourceSets.main, "ultreonlib.refmap.json"
-
-    config "ultreonlib.mixins.json"
+architectury {
+    minecraft = rootProject.minecraft_version
 }
+version = "${mod_version}+${System.getenv("CI_PIPELINE_ID") == null ? "local" : System.getenv("CI_PIPELINE_ID")}"
 
-// Include resources generated by data generators.
-sourceSets.main.resources { srcDir 'src/generated/resources' }
+Object getModDescription() {
+    return "${mod_description}"
+}
+forgix {
+    group = "com.ultreon.mods"
+    mergedJarName = "ultreon-lib-${version}.jar"
+    outputDir = "build/libs/merged"
 
-configurations {
-    // configuration that holds jars to include in the jar
-    api {
-        canBeResolved true
+    forge {
+        projectName = "merge-forge"
+        jarLocation = "build/libs/ultreonlib-${version}.jar"
+       // additionalRelocate("com.ultreon.ultreonlib", "forge.com.ultreon.ultreonlib")
+
+    //    mixin "ultreonlib-common.mixins.json"
+   //     mixin "ultreon-lib.mixins.json"
+    }
+
+    fabric {
+        projectName = "merge-fabric"
+        jarLocation = "build/libs/ultreonlib-${version}.jar"
+     //   additionalRelocate("com.ultreon.ultreonlib", "fabric.com.ultreon.ultreonlib")
     }
 }
 
-dependencies {
-    implementation 'org.jetbrains:annotations:23.0.0'
+println "forgix.outputDir = $forgix.outputDir"
 
-    // Apply Mixin AP
-    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+subprojects {
+    apply plugin: "dev.architectury.loom"
 
-    // Specify the version of Minecraft to use, If this is any group other then 'net.minecraft' it is assumed
-    // that the dep is a ForgeGradle 'patcher' dependency. And it's patches will be applied.
-    // The user dev artifact is a special name and will get all sorts of transformations applied to it.
-    minecraft "net.minecraftforge:forge:$mc_version-$forge_version"
-
-    // Apis
-//    api group: 'org.apache.commons', name: 'commons-lang3', version: '3.0'
-}
-
-java {
-    toolchain {
-        it.languageVersion = JavaLanguageVersion.of(17)
-    }
-    withSourcesJar()
-    withJavadocJar()
-}
-
-// Example for how to get properties into the manifest for reading by the runtime..
-jar {
-    doFirst {
+    loom {
+        silentMojangMappingsLicense()
     }
 
-    afterEvaluate {
-        project.version "mc$mc_version-$mod_version"
-    }
-
-    manifest {
-        //noinspection GrDeprecatedAPIUsage
-        def v = version
-
-        attributes([
-                "Specification-Title": "Ultreon Mod Library",
-                "Specification-Vendor": "Ultreon Team",
-                "Specification-Version": project.version,
-                "Implementation-Title": project.name,
-                "Implementation-Version": "${v}",
-                "Implementation-Vendor" :"Ultreon Team",
-                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
-        ])
-    }
-    from {
-        configurations.api.collect { it.isDirectory() ? it : zipTree(it) }
-    }
-}
-// Example for how to get properties into the manifest for reading by the runtime..
-task runJar (type: Jar) {
-    doFirst {
-        def time = new Date().format("yyyyMMdd.HHmmss")
-        project.version = "$def_mod_version-$time"
-    }
-
-    doLast {
-        project.version = def_mod_version
-    }
-
-    from zipTree(jar.archiveFile.get())
-
-    classifier "run"
-
-    from {
-        configurations.api.collect { it.isDirectory() ? it : zipTree(it) }
-    }
-
-    dependsOn jar
-    finalizedBy "deleteJar"
-}
-
-publishing {
     repositories {
+        mavenCentral()
+
         maven {
-            url "https://gitlab.com/api/groups/ultreon/-/packages/maven"
-            name "GitLab"
-            credentials(HttpHeaderCredentials) {
-                name = 'Job-Token'
-                value = getenv("CI_JOB_TOKEN")
-            }
-            authentication {
-                header(HttpHeaderAuthentication)
+            name = 'Sponge / Mixin'
+            url = 'https://repo.spongepowered.org/repository/maven-public/'
+        }
+
+        maven {
+            name = 'BlameJared Maven (CrT / Bookshelf)'
+            url = 'https://maven.blamejared.com'
+        }
+        maven {
+            name = 'ParchmentMC'
+            url = 'https://maven.parchmentmc.org'
+        }
+
+        maven {
+            name 'Quilt (Release)'
+            url 'https://maven.quiltmc.org/repository/release/'
+        }
+
+
+        maven {
+            url "https://cursemaven.com"
+            content {
+                includeGroup "curse.maven"
             }
         }
-        mavenLocal()
+        maven {
+            // location of the maven that hosts JEI files
+            name = "Progwml6 maven"
+            url = "https://dvs1.progwml6.com/files/maven/"
+        }
+        maven { url "https://maven.architectury.dev/" }
+        maven { url 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/' }
     }
-    publications {
-        //noinspection GroovyAssignabilityCheck
-        main(MavenPublication) {
-            from components.java
-            pom.withXml {
-                //noinspection GroovyImplicitNullArgumentCall
-                def pomNode = asNode()
-                pomNode.dependencies.'*'.findAll() {
-                    it.groupId.text() == 'net.minecraftforge' && it.artifactId.text() == "forge"
-                }.each() {
-                    it.parent().remove(it)
-                }
-            }
+
+    dependencies {
+        minecraft "com.mojang:minecraft:${rootProject.minecraft_version}"
+        // The following line declares the mojmap mappings, you may use other mappings as well
+        mappings loom.layered() {
+            officialMojangMappings()
+            parchment("org.parchmentmc.data:parchment-1.19.2:2022.08.10@zip")
         }
     }
-}
 
-task deleteJar(type: Delete) {
-    delete = jar.archiveFile.get()
-}
-
-task deleteOldJavadoc(type: Delete) {
-    delete fileTree("$projectDir/docs/latest/")
-}
-
-task copyJavadoc(type: Copy) {
-    from javadoc.outputs
-    into "$projectDir/docs/latest/"
-    dependsOn deleteOldJavadoc
-}
-
-javadoc.finalizedBy(copyJavadoc)
-
-jar.finalizedBy('reobfJar')
-
-tasks.withType(JavaCompile).configureEach {
-    options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
-}
-
-// Fix the classpath the right way and once and for all
-afterEvaluate {
-    // Collect deps in runtimeClasspath but NOT in minecraft
-    def deps = (configurations.runtimeClasspath - configurations.minecraft).join(';')
-    // Add deps to classpath
-    minecraft.runs.each { run ->
-        run.token 'minecraft_classpath', deps
+    processResources {
+        exclude "*.pdn", "*.xcf", "*.bbmodel", "*.bin", "*.rom"
     }
 }
+
+allprojects {
+    apply plugin: "java"
+    apply plugin: "architectury-plugin"
+    apply plugin: "maven-publish"
+
+    archivesBaseName = rootProject.archives_base_name
+    version = rootProject.version
+    group = rootProject.maven_group
+
+    repositories {
+        // Add repositories to retrieve artifacts from in here.
+        // You should only use this when depending on other mods because
+        // Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
+        // See https://docs.gradle.org/current/userguide/declaring_repositories.html
+        // for more information about repositories.
+        maven { url = "https://maven.parchmentmc.org" }
+
+        flatDir {
+            dir "${rootProject.projectDir}/libs"
+        }
+    }
+
+    tasks.withType(JavaCompile) {
+        options.encoding = "UTF-8"
+        options.release = 17
+    }
+
+    java {
+        withSourcesJar()
+    }
+}
+
+mergeJars.mustRunAfter build
+//build.dependsOn mergeJars

@@ -13,7 +13,7 @@ Archives containing bytecode and/or executable files still count as executables.
 
 §2 - Information:
 -------------------
-1. Distribution and Modification:
+1. EnvTyperibution and Modification:
 Copying anything from this project is hereby prohibited.
 Redistributing isn't allowed, and any modification made to the code or resources is prohibited.
 Project members are allowed to make changes from within the organization boundaries.
