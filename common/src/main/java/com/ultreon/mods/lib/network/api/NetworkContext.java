@@ -1,4 +1,4 @@
-package com.ultreon.mods.lib.network;
+package com.ultreon.mods.lib.network.api;
 
 import net.minecraft.network.Connection;
 import net.minecraft.network.FriendlyByteBuf;

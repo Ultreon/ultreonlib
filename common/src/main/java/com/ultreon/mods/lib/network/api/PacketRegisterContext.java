@@ -1,6 +1,6 @@
-package com.ultreon.mods.lib.network;
+package com.ultreon.mods.lib.network.api;
 
-import com.ultreon.mods.lib.network.packet.BasePacket;
+import com.ultreon.mods.lib.network.api.packet.BasePacket;
 import dev.architectury.networking.NetworkChannel;
 import io.netty.handler.codec.DecoderException;
 import net.minecraft.network.FriendlyByteBuf;
@@ -18,9 +18,13 @@ public class PacketRegisterContext {
         this.id = id;
     }
 
-    public <T extends BasePacket<T>> int register(Class<T> clazz, Function<FriendlyByteBuf, T> construct) {
+    @SafeVarargs
+    @SuppressWarnings("unchecked")
+    public final <T extends BasePacket<T>> int register(Function<FriendlyByteBuf, T> construct, T... type) {
         final int id = this.id++;
         final Constructor<T> declaredConstructor;
+
+        Class<T> clazz = (Class<T>) type.getClass().getComponentType();
 
         try {
             declaredConstructor = clazz.getDeclaredConstructor(FriendlyByteBuf.class);
@@ -37,8 +41,7 @@ public class PacketRegisterContext {
         }
 
         channel.register(
-                clazz,
-                BasePacket::toBytes,
+                clazz, BasePacket::toBytes,
                 buffer -> {
                     T t;
                     try {

@@ -7,8 +7,9 @@
   ],
   "client": [
     "AbstractWidgetAccessor",
-    "TitleScreenAccessor",
-    "MouseHandlerMixin"
+    "MouseHandlerMixin",
+    "ScreenAccess",
+    "TitleScreenAccessor"
   ],
   "injectors": {
     "defaultRequire": 1

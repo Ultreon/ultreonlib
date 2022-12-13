@@ -4,8 +4,8 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Supplier;
@@ -59,7 +59,7 @@ public class ArmorMaterialBuilder {
             return this.repairMaterial.get();
         }
 
-        @OnlyIn(Dist.CLIENT)
+        @Environment(EnvType.CLIENT)
         public @NotNull String getName() {
             return this.name;
         }

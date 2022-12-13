@@ -6,8 +6,8 @@ import com.ultreon.mods.lib.gui.client.gui.Theme;
 import com.ultreon.mods.lib.gui.client.gui.screen.TitleStyle;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
@@ -113,12 +113,12 @@ public class UltreonGuiLib implements ReloadsTheme {
         return !FMLEnvironment.production;
     }
 
-    @OnlyIn(Dist.CLIENT)
+    @Environment(EnvType.CLIENT)
     public static Theme getTheme() {
         return Config.THEME.get();
     }
 
-    @OnlyIn(Dist.CLIENT)
+    @Environment(EnvType.CLIENT)
     public static void setTheme(Theme theme) {
         Config.THEME.set(theme);
         Config.THEME.save();
@@ -126,12 +126,12 @@ public class UltreonGuiLib implements ReloadsTheme {
         instance.reloadTheme();
     }
 
-    @OnlyIn(Dist.CLIENT)
+    @Environment(EnvType.CLIENT)
     public static TitleStyle getTitleStyle() {
         return Config.TITLE_STYLE.get();
     }
 
-    @OnlyIn(Dist.CLIENT)
+    @Environment(EnvType.CLIENT)
     public static void setTitleStyle(TitleStyle style) {
         Config.TITLE_STYLE.set(style);
         Config.TITLE_STYLE.save();
@@ -139,7 +139,7 @@ public class UltreonGuiLib implements ReloadsTheme {
         instance.reloadTheme();
     }
 
-    @OnlyIn(Dist.CLIENT)
+    @Environment(EnvType.CLIENT)
     public void reloadTheme() {
         if (Minecraft.getInstance().screen instanceof ReloadsTheme) {
             ((ReloadsTheme) Minecraft.getInstance().screen).reloadTheme();

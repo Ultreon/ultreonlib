@@ -4,7 +4,7 @@ import com.ultreon.mods.lib.client.gui.ReloadsTheme;
 import com.ultreon.mods.lib.client.gui.Theme;
 import com.ultreon.mods.lib.client.gui.screen.TitleStyle;
 import com.ultreon.mods.lib.loot.LootTableInjection;
-import com.ultreon.mods.lib.network.NetworkManager;
+import com.ultreon.mods.lib.network.api.NetworkManager;
 import dev.architectury.event.events.common.LootEvent;
 import dev.architectury.platform.Mod;
 import dev.architectury.platform.Platform;

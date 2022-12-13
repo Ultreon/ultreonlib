@@ -8,12 +8,12 @@ import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.api.distmarker.Dist;
+import net.fabricmc.api.EnvType;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-@Mod.EventBusSubscriber(modid = ModdingLibrary.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
+@Mod.EventBusSubscriber(modid = ModdingLibrary.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = EnvType.CLIENT)
 public class ClientEvents {
     @SubscribeEvent
     public static void onRenderGameOverlay(RenderGameOverlayEvent event) {
