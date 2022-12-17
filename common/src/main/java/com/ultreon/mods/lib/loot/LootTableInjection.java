@@ -8,6 +8,7 @@ import net.minecraft.world.level.storage.loot.LootTables;
 import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
 import net.minecraft.world.level.storage.loot.entries.LootTableReference;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
+import org.jetbrains.annotations.ApiStatus;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -65,6 +66,7 @@ public class LootTableInjection extends UtilityClass {
         registerInjection(target, new ResourceLocation(modId, target.getPath()));
     }
 
+    @ApiStatus.Internal
     public static void runModifications(LootTables manager, ResourceLocation id, LootEvent.LootTableModificationContext context, boolean builtin) {
         if (builtin) {
             Injector injector = injections.get(id);

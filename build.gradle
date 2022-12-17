@@ -14,7 +14,7 @@ architectury {
 def hashCode = new Random().nextInt()
 def hash = "%08x".formatted(hashCode)
 
-version = "${mod_version}+${System.getenv("CI_PIPELINE_ID") == null ? hash : System.getenv("CI_PIPELINE_ID")}"
+version = "${mod_version}"
 
 println "Mod version: $version"
 

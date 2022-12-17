@@ -12,6 +12,7 @@
   ],
   "contact": {
     "website": "https://ultreon.github.io/web/",
+    "homepage": "https://www.curseforge.com/minecraft/mc-mods/ultreon-mod-lib",
     "repo": "https://gitlab.com/ultreon/ultreon-mod-lib",
     "issues": "https://gitlab.com/ultreon/ultreon-mod-lib/-/issues"
   },
@@ -21,6 +22,12 @@
   "entrypoints": {
     "main": [
       "com.ultreon.mods.lib.fabric.UltreonLibFabric"
+    ],
+    "client": [
+      "com.ultreon.mods.lib.fabric.UltreonLibFabricClient"
+    ],
+    "modmenu": [
+      "com.ultreon.mods.lib.fabric.UltreonLibModMenuIntegration"
     ]
   },
   "mixins": [
@@ -30,5 +37,14 @@
   "depends": {
     "fabricloader": ">=${loaderVersion}",
     "minecraft": ">=${minecraftVersion} <1.19.3"
+  },
+  "custom": {
+    "modmenu": {
+      "links": {
+        "modmenu.curseforge": "https://www.curseforge.com/minecraft/mc-mods/ultreon-mod-lib",
+        "modmenu.modrinth": "https://modrinth.com/mod/ultreonlib"
+      },
+      "badges": [ "library" ]
+    }
   }
 }

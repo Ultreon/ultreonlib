@@ -1,5 +1,6 @@
 package com.ultreon.mods.lib.fabric;
 
+import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import com.ultreon.mods.lib.UltreonLib;
 import com.ultreon.mods.lib.UltreonLibConfig;
 import net.fabricmc.api.ModInitializer;

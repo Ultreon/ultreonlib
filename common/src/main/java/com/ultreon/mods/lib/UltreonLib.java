@@ -5,7 +5,9 @@ import com.ultreon.mods.lib.client.gui.Theme;
 import com.ultreon.mods.lib.client.gui.screen.TitleStyle;
 import com.ultreon.mods.lib.loot.LootTableInjection;
 import com.ultreon.mods.lib.network.api.NetworkManager;
+import com.ultreon.mods.lib.util.ModMessages;
 import dev.architectury.event.events.common.LootEvent;
+import dev.architectury.event.events.common.PlayerEvent;
 import dev.architectury.platform.Mod;
 import dev.architectury.platform.Platform;
 import net.fabricmc.api.EnvType;
@@ -43,6 +45,8 @@ public class UltreonLib {
 
     private UltreonLib() {
         LootEvent.MODIFY_LOOT_TABLE.register(LootTableInjection::runModifications);
+
+        PlayerEvent.PLAYER_JOIN.register(ModMessages::sendOnLogin);
     }
 
     @ApiStatus.Internal
