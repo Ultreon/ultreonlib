@@ -1,4 +1,4 @@
-package com.ultreon.mods.lib.network;
+package com.ultreon.mods.lib.network.api;
 
 import com.mojang.logging.LogUtils;
 import net.minecraft.resources.ResourceLocation;

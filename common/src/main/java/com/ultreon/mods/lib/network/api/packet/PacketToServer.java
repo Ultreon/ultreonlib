@@ -1,4 +1,4 @@
-package com.ultreon.mods.lib.network.packet;
+package com.ultreon.mods.lib.network.api.packet;
 
 import dev.architectury.networking.NetworkManager;
 import dev.architectury.utils.Env;

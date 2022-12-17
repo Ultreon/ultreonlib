@@ -1,6 +1,6 @@
-package com.ultreon.mods.lib.network;
+package com.ultreon.mods.lib.network.api;
 
-import com.ultreon.mods.lib.network.packet.BasePacket;
+import com.ultreon.mods.lib.network.api.packet.BasePacket;
 import dev.architectury.networking.NetworkChannel;
 import dev.architectury.networking.NetworkManager.PacketContext;
 import dev.architectury.utils.Env;

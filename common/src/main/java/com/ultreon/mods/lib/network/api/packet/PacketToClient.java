@@ -1,11 +1,7 @@
-package com.ultreon.mods.lib.network.packet;
+package com.ultreon.mods.lib.network.api.packet;
 
-import com.ultreon.mods.lib.network.NetworkContext;
-import com.ultreon.mods.lib.network.NetworkDirection;
 import dev.architectury.networking.NetworkManager;
 import dev.architectury.utils.Env;
-import net.fabricmc.api.EnvType;
-import net.minecraft.network.Connection;
 
 import java.util.function.Supplier;
 

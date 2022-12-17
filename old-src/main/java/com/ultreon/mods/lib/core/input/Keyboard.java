@@ -2,8 +2,8 @@ package com.ultreon.mods.lib.core.input;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.Minecraft;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import org.lwjgl.glfw.GLFW;
 
 /**
@@ -21,7 +21,7 @@ public class Keyboard {
      *
      * @return true if pressed, false otherwise.
      */
-    @OnlyIn(Dist.CLIENT)
+    @Environment(EnvType.CLIENT)
     public static boolean isHoldingShift() {
         return InputConstants.isKeyDown(WINDOW, GLFW.GLFW_KEY_LEFT_SHIFT) || InputConstants.isKeyDown(WINDOW, GLFW.GLFW_KEY_RIGHT_SHIFT);
     }
@@ -31,7 +31,7 @@ public class Keyboard {
      *
      * @return true if pressed, false otherwise.
      */
-    @OnlyIn(Dist.CLIENT)
+    @Environment(EnvType.CLIENT)
     public static boolean isHoldingCtrl() {
         return InputConstants.isKeyDown(WINDOW, GLFW.GLFW_KEY_LEFT_CONTROL) || InputConstants.isKeyDown(WINDOW, GLFW.GLFW_KEY_RIGHT_CONTROL);
     }
@@ -41,7 +41,7 @@ public class Keyboard {
      *
      * @return true if pressed, false otherwise.
      */
-    @OnlyIn(Dist.CLIENT)
+    @Environment(EnvType.CLIENT)
     public static boolean isHoldingAlt() {
         return InputConstants.isKeyDown(WINDOW, GLFW.GLFW_KEY_LEFT_ALT) || InputConstants.isKeyDown(WINDOW, GLFW.GLFW_KEY_RIGHT_ALT);
     }
@@ -52,7 +52,7 @@ public class Keyboard {
      *
      * @return true if pressed, false otherwise.
      */
-    @OnlyIn(Dist.CLIENT)
+    @Environment(EnvType.CLIENT)
     public static boolean isHoldingSuper() {
         return InputConstants.isKeyDown(WINDOW, GLFW.GLFW_KEY_LEFT_SUPER) || InputConstants.isKeyDown(WINDOW, GLFW.GLFW_KEY_RIGHT_SUPER);
     }

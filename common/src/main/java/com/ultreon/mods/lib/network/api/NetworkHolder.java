@@ -1,4 +1,4 @@
-package com.ultreon.mods.lib.network;
+package com.ultreon.mods.lib.network.api;
 
 /**
  * Holder for injecting the network class into a field.

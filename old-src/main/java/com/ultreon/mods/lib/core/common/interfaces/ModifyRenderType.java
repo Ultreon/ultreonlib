@@ -3,8 +3,8 @@ package com.ultreon.mods.lib.core.common.interfaces;
 import net.minecraft.FieldsAreNonnullByDefault;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -12,6 +12,6 @@ import javax.annotation.ParametersAreNonnullByDefault;
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 public interface ModifyRenderType {
-    @OnlyIn(Dist.CLIENT)
+    @Environment(EnvType.CLIENT)
     RenderType getRenderType();
 }

@@ -20,8 +20,7 @@ import com.ultreon.mods.lib.client.gui.Theme;
 import com.ultreon.mods.lib.client.gui.widget.ButtonMenuItem;
 import com.ultreon.mods.lib.client.gui.widget.ContextMenu;
 import com.ultreon.mods.lib.client.input.MouseButton;
-import dev.architectury.hooks.client.screen.ScreenAccess;
-import dev.architectury.injectables.annotations.ExpectPlatform;
+import com.ultreon.mods.lib.mixin.common.ScreenAccess;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Widget;
@@ -78,7 +77,7 @@ public abstract class BaseScreen extends Screen implements ReloadsTheme {
 
         int mx = flag ? Integer.MIN_VALUE : mouseX;
         int my = flag ? Integer.MIN_VALUE : mouseY;
-        for (Widget widget : ((ScreenAccess)this).getRenderables()) {
+        for (Widget widget : ((ScreenAccess) this).getRenderables()) {
             widget.render(pose, mx, my, partialTicks);
         }
 

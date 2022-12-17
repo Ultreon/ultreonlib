@@ -8,8 +8,8 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 
 public class ShowNbtPacket extends PacketToClient<ShowNbtPacket> {
     private final CompoundTag nbt;
@@ -20,7 +20,7 @@ public class ShowNbtPacket extends PacketToClient<ShowNbtPacket> {
         title = buf.readComponent();
     }
 
-    @OnlyIn(Dist.CLIENT)
+    @Environment(EnvType.CLIENT)
     @Override
     protected void handle(Connection connection) {
         LocalPlayer player = Minecraft.getInstance().player;

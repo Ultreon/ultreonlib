@@ -10,7 +10,13 @@ repositories {
 architectury {
     minecraft = rootProject.minecraft_version
 }
-version = "${mod_version}+${System.getenv("CI_PIPELINE_ID") == null ? "local" : System.getenv("CI_PIPELINE_ID")}"
+
+def hashCode = new Random().nextInt()
+def hash = "%08x".formatted(hashCode)
+
+version = "${mod_version}"
+
+println "Mod version: $version"
 
 Object getModDescription() {
     return "${mod_description}"
@@ -22,7 +28,7 @@ forgix {
 
     forge {
         projectName = "merge-forge"
-        jarLocation = "build/libs/ultreonlib-${version}.jar"
+        jarLocation = "build/libs/ultreon-lib-${version}.jar"
        // additionalRelocate("com.ultreon.ultreonlib", "forge.com.ultreon.ultreonlib")
 
     //    mixin "ultreonlib-common.mixins.json"
@@ -31,7 +37,7 @@ forgix {
 
     fabric {
         projectName = "merge-fabric"
-        jarLocation = "build/libs/ultreonlib-${version}.jar"
+        jarLocation = "build/libs/ultreon-lib-${version}.jar"
      //   additionalRelocate("com.ultreon.ultreonlib", "fabric.com.ultreon.ultreonlib")
     }
 }
