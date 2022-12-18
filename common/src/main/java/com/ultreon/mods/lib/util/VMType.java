@@ -2,6 +2,7 @@ package com.ultreon.mods.lib.util;
 
 import com.google.common.annotations.Beta;
 import org.jetbrains.annotations.Nullable;
+import oshi.SystemInfo;
 
 @Beta
 public enum VMType {
@@ -16,13 +17,19 @@ public enum VMType {
     }
 
     @Nullable
-    public static VMType getFromManufacturer(String manufacturer) {
+    public static VMType fromManufacturer(String manufacturer) {
         for (VMType vmType : values()) {
             if (vmType.manufacturer.equals(manufacturer)) {
                 return vmType;
             }
         }
         return null;
+    }
+
+    @Nullable
+    public static VMType system() {
+        SystemInfo systemInfo = new SystemInfo();
+        return fromManufacturer(systemInfo.getHardware().getComputerSystem().getManufacturer());
     }
 
     public String getName() {
