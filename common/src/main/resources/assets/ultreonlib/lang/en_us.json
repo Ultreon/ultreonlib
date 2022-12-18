@@ -14,5 +14,7 @@
   "ultreonlib.title_style.normal": "Normal",
   "ultreonlib.title_style.detached": "Detached",
   "ultreonlib.title_style.hidden": "Hidden",
-  "gui.ultreonlib.action_menu.access_denied": "§c§lAccess Denied"
+  "gui.ultreonlib.action_menu.access_denied": "§c§lAccess Denied",
+  "screen.ultreonlib.dev_preview.title": "Development Preview",
+  "screen.ultreonlib.dev_preview.description": "There are mods that are in a development preview, see mods below:"
 }

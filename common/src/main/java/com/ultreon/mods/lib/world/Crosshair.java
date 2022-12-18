@@ -46,9 +46,8 @@ public final class Crosshair {
     public <T extends Entity> Entity entity(double distance) {
         HitResult hit = traceHit(distance);
 
-        if (hit.getType() == HitResult.Type.ENTITY) {
-            EntityHitResult finalHit = (EntityHitResult) hit;
-            return finalHit.getEntity();
+        if (hit instanceof EntityHitResult output) {
+            return output.getEntity();
         } else {
             return null;
         }
