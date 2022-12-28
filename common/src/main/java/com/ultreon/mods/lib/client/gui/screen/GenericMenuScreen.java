@@ -20,6 +20,7 @@ import com.ultreon.mods.lib.UltreonLib;
 import com.ultreon.mods.lib.UltreonLibConfig;
 import com.ultreon.mods.lib.client.gui.ReloadsTheme;
 import com.ultreon.mods.lib.client.gui.Theme;
+import com.ultreon.mods.lib.client.gui.widget.BaseButton;
 import com.ultreon.mods.lib.client.gui.widget.Label;
 import com.ultreon.mods.lib.client.gui.widget.List;
 import com.ultreon.mods.lib.client.gui.widget.ThemedButton;
@@ -86,90 +87,90 @@ public abstract class GenericMenuScreen extends BaseScreen implements ReloadsThe
     }
 
     @SuppressWarnings("unused")
-    public Pair<Button, Button> addButtonRow(Component componentL, Component componentR) {
+    public Pair<BaseButton, BaseButton> addButtonRow(Component componentL, Component componentR) {
         return addButtonRow(componentL, btn -> {
         }, componentR, btn -> {
         });
     }
 
     @SuppressWarnings("unused")
-    public Pair<Button, Button> addButtonRow(Component componentL, Button.OnPress onPressL, Component componentR, Button.OnPress onPressR) {
+    public Pair<BaseButton, BaseButton> addButtonRow(Component componentL, BaseButton.CommandCallback onPressL, Component componentR, BaseButton.CommandCallback onPressR) {
         return addButtonRow(componentL, onPressL, (btn, stack, mx, my) -> {
         }, componentR, onPressR, (btn, stack, mx, my) -> {
         });
     }
 
     @SuppressWarnings("unused")
-    public Pair<Button, Button> addButtonRow(Component componentL, Runnable onPressL, Component componentR, Runnable onPressR) {
+    public Pair<BaseButton, BaseButton> addButtonRow(Component componentL, Runnable onPressL, Component componentR, Runnable onPressR) {
         return addButtonRow(componentL, btn -> onPressL.run(), (btn, stack, mx, my) -> {
         }, componentR, btn -> onPressR.run(), (btn, stack, mx, my) -> {
         });
     }
 
     @SuppressWarnings("unused")
-    public Pair<Button, Button> addButtonRow(Component componentL, Button.OnPress onPressL, Button.OnTooltip onTooltipL, Component componentR, Button.OnPress onPressR, Button.OnTooltip onTooltipR) {
+    public Pair<BaseButton, BaseButton> addButtonRow(Component componentL, BaseButton.CommandCallback onPressL, BaseButton.TooltipHandler onTooltipL, Component componentR, BaseButton.CommandCallback onPressR, BaseButton.TooltipHandler onTooltipR) {
         return addButtonRow(componentL, ThemedButton.Type.of(theme), onPressL, onTooltipL, componentR, ThemedButton.Type.of(theme), onPressR, onTooltipR);
     }
 
     @SuppressWarnings("unused")
-    public Pair<Button, Button> addButtonRow(Component componentL, Runnable onPressL, Button.OnTooltip onTooltipL, Component componentR, Runnable onPressR, Button.OnTooltip onTooltipR) {
+    public Pair<BaseButton, BaseButton> addButtonRow(Component componentL, Runnable onPressL, BaseButton.TooltipHandler onTooltipL, Component componentR, Runnable onPressR, BaseButton.TooltipHandler onTooltipR) {
         return addButtonRow(componentL, ThemedButton.Type.of(theme), btn -> onPressL.run(), onTooltipL, componentR, ThemedButton.Type.of(theme), btn -> onPressR.run(), onTooltipR);
     }
 
     @SuppressWarnings("unused")
-    public Pair<Button, Button> addButtonRow(Component componentL, ThemedButton.Type typeL, Component componentR, ThemedButton.Type typeR) {
+    public Pair<BaseButton, BaseButton> addButtonRow(Component componentL, ThemedButton.Type typeL, Component componentR, ThemedButton.Type typeR) {
         return addButtonRow(componentL, typeL, btn -> {
         }, componentR, typeR, btn -> {
         });
     }
 
     @SuppressWarnings("unused")
-    public Pair<Button, Button> addButtonRow(Component componentL, ThemedButton.Type typeL, Button.OnPress onPressL, Component componentR, Button.OnPress onPressR) {
+    public Pair<BaseButton, BaseButton> addButtonRow(Component componentL, ThemedButton.Type typeL, BaseButton.CommandCallback onPressL, Component componentR, BaseButton.CommandCallback onPressR) {
         return addButtonRow(componentL, typeL, onPressL, componentR, ThemedButton.Type.of(theme), onPressR);
     }
 
     @SuppressWarnings("unused")
-    public Pair<Button, Button> addButtonRow(Component componentL, ThemedButton.Type typeL, Runnable onPressL, Component componentR, Runnable onPressR) {
+    public Pair<BaseButton, BaseButton> addButtonRow(Component componentL, ThemedButton.Type typeL, Runnable onPressL, Component componentR, Runnable onPressR) {
         return addButtonRow(componentL, typeL, btn -> onPressL.run(), componentR, ThemedButton.Type.of(theme), btn -> onPressR.run());
     }
 
     @SuppressWarnings("unused")
-    public Pair<Button, Button> addButtonRow(Component componentL, Button.OnPress onPressL, Component componentR, ThemedButton.Type typeR, Button.OnPress onPressR) {
+    public Pair<BaseButton, BaseButton> addButtonRow(Component componentL, BaseButton.CommandCallback onPressL, Component componentR, ThemedButton.Type typeR, BaseButton.CommandCallback onPressR) {
         return addButtonRow(componentL, ThemedButton.Type.of(theme), onPressL, componentR, typeR, onPressR);
     }
 
     @SuppressWarnings("unused")
-    public Pair<Button, Button> addButtonRow(Component componentL, Runnable onPressL, Component componentR, ThemedButton.Type typeR, Runnable onPressR) {
+    public Pair<BaseButton, BaseButton> addButtonRow(Component componentL, Runnable onPressL, Component componentR, ThemedButton.Type typeR, Runnable onPressR) {
         return addButtonRow(componentL, ThemedButton.Type.of(theme), btn -> onPressL.run(), componentR, typeR, btn -> onPressR.run());
     }
 
     @SuppressWarnings("unused")
-    public Pair<Button, Button> addButtonRow(Component componentL, ThemedButton.Type typeL, Button.OnPress onPressL, Component componentR, ThemedButton.Type typeR, Button.OnPress onPressR) {
+    public Pair<BaseButton, BaseButton> addButtonRow(Component componentL, ThemedButton.Type typeL, BaseButton.CommandCallback onPressL, Component componentR, ThemedButton.Type typeR, BaseButton.CommandCallback onPressR) {
         return addButtonRow(componentL, typeL, onPressL, (btn, stack, mx, my) -> {
         }, componentR, typeR, onPressR, (btn, stack, mx, my) -> {
         });
     }
 
     @SuppressWarnings("unused")
-    public Pair<Button, Button> addButtonRow(Component componentL, ThemedButton.Type typeL, Runnable onPressL, Component componentR, ThemedButton.Type typeR, Runnable onPressR) {
+    public Pair<BaseButton, BaseButton> addButtonRow(Component componentL, ThemedButton.Type typeL, Runnable onPressL, Component componentR, ThemedButton.Type typeR, Runnable onPressR) {
         return addButtonRow(componentL, typeL, btn -> onPressL.run(), (btn, stack, mx, my) -> {
         }, componentR, typeR, btn -> onPressR.run(), (btn, stack, mx, my) -> {
         });
     }
 
     @SuppressWarnings("unused")
-    public Pair<Button, Button> addButtonRow(Component componentL, ThemedButton.Type typeL, Runnable onPressL, Button.OnTooltip onTooltipL, Component componentR, ThemedButton.Type typeR, Runnable onPressR, Button.OnTooltip onTooltipR) {
+    public Pair<BaseButton, BaseButton> addButtonRow(Component componentL, ThemedButton.Type typeL, Runnable onPressL, BaseButton.TooltipHandler onTooltipL, Component componentR, ThemedButton.Type typeR, Runnable onPressR, BaseButton.TooltipHandler onTooltipR) {
         return addButtonRow(componentL, typeL, btn -> onPressL.run(), onTooltipL, componentR, typeR, btn -> onPressR.run(), onTooltipR);
     }
 
     @SuppressWarnings("unused")
-    public Pair<Button, Button> addButtonRow(Component componentL, ThemedButton.Type typeL, Button.OnPress onPressL, Button.OnTooltip onTooltipL, Component componentR, ThemedButton.Type typeR, Button.OnPress onPressR, Button.OnTooltip onTooltipR) {
+    public Pair<BaseButton, BaseButton> addButtonRow(Component componentL, ThemedButton.Type typeL, BaseButton.CommandCallback onPressL, BaseButton.TooltipHandler onTooltipL, Component componentR, ThemedButton.Type typeR, BaseButton.CommandCallback onPressR, BaseButton.TooltipHandler onTooltipR) {
         if (this.frozen) {
             return null;
         }
 
-        Button left = new ThemedButton(0, 0, 0, 0, componentL, onPressL, onTooltipL, typeL);
-        Button right = new ThemedButton(0, 0, 0, 0, componentR, onPressR, onTooltipR, typeR);
+        BaseButton left = new ThemedButton(0, 0, 0, 0, componentL, onPressL, onTooltipL, typeL);
+        BaseButton right = new ThemedButton(0, 0, 0, 0, componentR, onPressR, onTooltipR, typeR);
 
         left.setWidth(((width() - 5 - 5) / 2) - 1);
         right.setWidth(((width() - 5 - 5) / 2) - 1);
@@ -180,63 +181,63 @@ public abstract class GenericMenuScreen extends BaseScreen implements ReloadsThe
     }
 
     @SuppressWarnings("unused")
-    public Button addButtonRow(Component component) {
+    public BaseButton addButtonRow(Component component) {
         return addButtonRow(component, btn -> {
         });
     }
 
     @SuppressWarnings("unused")
-    public Button addButtonRow(Component component, Runnable onPress) {
+    public BaseButton addButtonRow(Component component, Runnable onPress) {
         return addButtonRow(component, btn -> onPress.run(), (btn, stack, mx, my) -> {
         });
     }
 
     @SuppressWarnings("unused")
-    public Button addButtonRow(Component component, Button.OnPress onPress) {
+    public BaseButton addButtonRow(Component component, BaseButton.CommandCallback onPress) {
         return addButtonRow(component, onPress, (btn, stack, mx, my) -> {
         });
     }
 
     @SuppressWarnings("unused")
-    public Button addButtonRow(Component component, Runnable onPress, Button.OnTooltip onTooltip) {
+    public BaseButton addButtonRow(Component component, Runnable onPress, BaseButton.TooltipHandler onTooltip) {
         return addButtonRow(component, ThemedButton.Type.of(theme), btn -> onPress.run(), onTooltip);
     }
 
     @SuppressWarnings("unused")
-    public Button addButtonRow(Component component, Button.OnPress onPress, Button.OnTooltip onTooltip) {
+    public BaseButton addButtonRow(Component component, BaseButton.CommandCallback onPress, BaseButton.TooltipHandler onTooltip) {
         return addButtonRow(component, ThemedButton.Type.of(theme), onPress, onTooltip);
     }
 
     @SuppressWarnings("unused")
-    public Button addButtonRow(Component component, ThemedButton.Type type) {
+    public BaseButton addButtonRow(Component component, ThemedButton.Type type) {
         return addButtonRow(component, type, btn -> {
         });
     }
 
     @SuppressWarnings("unused")
-    public Button addButtonRow(Component component, ThemedButton.Type type, Button.OnPress onPress) {
+    public BaseButton addButtonRow(Component component, ThemedButton.Type type, BaseButton.CommandCallback onPress) {
         return addButtonRow(component, type, onPress, (btn, stack, mx, my) -> {
         });
     }
 
     @SuppressWarnings("unused")
-    public Button addButtonRow(Component component, ThemedButton.Type type, Runnable onPress) {
+    public BaseButton addButtonRow(Component component, ThemedButton.Type type, Runnable onPress) {
         return addButtonRow(component, type, btn -> onPress.run(), (btn, stack, mx, my) -> {
         });
     }
 
     @SuppressWarnings("unused")
-    public Button addButtonRow(Component component, ThemedButton.Type type, Runnable onPress, Button.OnTooltip onTooltip) {
+    public BaseButton addButtonRow(Component component, ThemedButton.Type type, Runnable onPress, BaseButton.TooltipHandler onTooltip) {
         return addButtonRow(component, type, btn -> onPress.run(), onTooltip);
     }
 
     @SuppressWarnings("unused")
-    public Button addButtonRow(Component component, ThemedButton.Type type, Button.OnPress onPress, Button.OnTooltip onTooltip) {
+    public BaseButton addButtonRow(Component component, ThemedButton.Type type, BaseButton.CommandCallback onPress, BaseButton.TooltipHandler onTooltip) {
         if (this.frozen) {
             return null;
         }
 
-        Button button = new ThemedButton(0, 0, 0, 0, component, onPress, onTooltip, type);
+        BaseButton button = new ThemedButton(0, 0, 0, 0, component, onPress, onTooltip, type);
 
         button.setWidth(width() - 5 - 5);
         this.rows.add(new Row(ImmutableList.of(button), 24, width() - 6 - 6, 20, 6, 2, 4, 0, 53));

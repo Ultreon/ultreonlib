@@ -3,9 +3,11 @@ package com.ultreon.mods.lib.client;
 import com.ultreon.mods.lib.UltreonLib;
 import com.ultreon.mods.lib.client.gui.Theme;
 import com.ultreon.mods.lib.client.gui.screen.GenericMenuScreen;
+import com.ultreon.mods.lib.client.gui.screen.LeftSideTabScreen;
 import com.ultreon.mods.lib.client.gui.screen.TitleStyle;
+import com.ultreon.mods.lib.client.gui.widget.BaseButton;
 import com.ultreon.mods.lib.util.KeyboardHelper;
-import net.minecraft.client.gui.components.Button;
+import dev.architectury.platform.Platform;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 
@@ -18,7 +20,7 @@ public class InternalConfigScreen extends GenericMenuScreen {
         addButtonRow(Component.translatable("gui.ultreonlib.config.title_style").append(UltreonLib.getTitleStyle().getDisplayName()), this::changeTitleStyle);
     }
 
-    private void changeTheme(Button button) {
+    private void changeTheme(BaseButton button) {
         Theme theme = UltreonLib.getTheme();
         theme = KeyboardHelper.isShiftDown() ? theme.previous() : theme.next();
         UltreonLib.setTheme(theme);
@@ -26,7 +28,7 @@ public class InternalConfigScreen extends GenericMenuScreen {
         button.setMessage(Component.translatable("gui.ultreonlib.config.theme").append(theme.getDisplayName()));
     }
 
-    private void changeTitleStyle(Button button) {
+    private void changeTitleStyle(BaseButton button) {
         TitleStyle titleStyle = UltreonLib.getTitleStyle();
         titleStyle = KeyboardHelper.isShiftDown() ? titleStyle.previous() : titleStyle.next();
         UltreonLib.setTitleStyle(titleStyle);

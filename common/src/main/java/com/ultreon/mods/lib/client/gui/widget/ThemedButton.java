@@ -20,26 +20,26 @@ import net.minecraft.resources.ResourceLocation;
 public non-sealed class ThemedButton extends TexturedButton implements ReloadsTheme {
     private Type type;
 
-    public ThemedButton(int x, int y, int width, int height, Component title, OnPress pressedAction, Type type) {
-        super(x, y, width, height, title, pressedAction);
+    public ThemedButton(int x, int y, int width, int height, Component title, CommandCallback onClick, Type type) {
+        super(x, y, width, height, title, onClick);
         this.type = type;
         setTextColor(type.textColor);
     }
 
-    public ThemedButton(int x, int y, int width, int height, Component title, OnPress pressedAction, OnTooltip onTooltip, Type type) {
-        super(x, y, width, height, title, pressedAction, onTooltip);
+    public ThemedButton(int x, int y, int width, int height, Component title, CommandCallback onClick, TooltipHandler onTooltip, Type type) {
+        super(x, y, width, height, title, onClick, onTooltip);
         this.type = type;
         setTextColor(type.textColor);
     }
 
-    public ThemedButton(Component title, OnPress pressedAction, Type type) {
-        super(0, 0, 0, 0, title, pressedAction);
+    public ThemedButton(Component title, CommandCallback onClick, Type type) {
+        super(0, 0, 0, 0, title, onClick);
         this.type = type;
         setTextColor(type.textColor);
     }
 
-    public ThemedButton(Component title, OnPress pressedAction, OnTooltip onTooltip, Type type) {
-        super(0, 0, 0, 0, title, pressedAction, onTooltip);
+    public ThemedButton(Component title, CommandCallback onClick, TooltipHandler onTooltip, Type type) {
+        super(0, 0, 0, 0, title, onClick, onTooltip);
         this.type = type;
         setTextColor(type.textColor);
     }

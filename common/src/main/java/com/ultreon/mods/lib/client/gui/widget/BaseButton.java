@@ -1,73 +1,58 @@
 package com.ultreon.mods.lib.client.gui.widget;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.ultreon.mods.lib.client.gui.Clickable;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.narration.NarratedElementType;
+import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.network.chat.Component;
 
-public class BaseButton extends Button implements Clickable {
-    private long multiClickDelay = 500L;
-    private long lastClickTime;
-    private int clicks;
-    private int textColor = 0xffffff;
+import java.util.function.Consumer;
 
-    public BaseButton(int x, int y, int width, int height, Component message, OnPress onPress) {
-        super(x, y, width, height, message, onPress);
+public class BaseButton extends BaseWidget implements Clickable {
+    private CommandCallback callback;
+    private TooltipHandler tooltipHandler;
+
+    public BaseButton(int x, int y, int width, int height, Component message, CommandCallback callback) {
+        this(x, y, width, height, message, callback, (button, pose, mouseX, mouseY) -> {});
     }
 
-    public BaseButton(int x, int y, int width, int height, Component message, OnPress onPress, OnTooltip onTooltip) {
-        super(x, y, width, height, message, onPress, onTooltip);
-    }
-
-    public long getMultiClickDelay() {
-        return multiClickDelay;
-    }
-
-    public void setMultiClickDelay(long multiClickDelay) {
-        this.multiClickDelay = multiClickDelay;
-    }
-
-    private long getTimeSinceLastClick() {
-        return this.lastClickTime - System.currentTimeMillis();
+    public BaseButton(int x, int y, int width, int height, Component message, CommandCallback callback, TooltipHandler tooltipHandler) {
+        super(x, y, width, height, message);
+        this.setTextColor(0xffffff);
+        this.callback = callback;
+        this.tooltipHandler = tooltipHandler;
     }
 
     @Override
-    public void click() {
-        this.onPress.onPress(this);
-    }
-
-    public void click(int clicks) {
-        click();
-    }
-
-    public final void doubleClick() {
-        clicks = getClicks() + 2;
-        lastClickTime = System.currentTimeMillis();
-        click(clicks);
+    public void updateNarration(NarrationElementOutput narrationElementOutput) {
+        this.defaultButtonNarrationText(narrationElementOutput);
+        this.tooltipHandler.narrateTooltip(component -> narrationElementOutput.add(NarratedElementType.HINT, component));
     }
 
     @Override
-    public final void onPress() {
-        clicks = getClicks() + 1;
-        lastClickTime = System.currentTimeMillis();
-        click(clicks);
+    public void onLeftClick(int clicks) {
+        callback.click(this);
     }
 
-    @Override
-    public final void onClick(double pMouseX, double pMouseY) {
-        super.onClick(pMouseX, pMouseY);
+    public void setCallback(CommandCallback callback) {
+        this.callback = callback;
     }
 
-    public final int getClicks() {
-        long timeSinceLastClick = getTimeSinceLastClick();
-        clicks = timeSinceLastClick < multiClickDelay ? clicks : 0;
-        return clicks;
+    public void setTooltipHandler(TooltipHandler tooltipHandler) {
+        this.tooltipHandler = tooltipHandler;
     }
 
-    public int getTextColor() {
-        return textColor;
+    @FunctionalInterface
+    public interface CommandCallback {
+        void click(BaseButton button);
     }
 
-    public void setTextColor(int textColor) {
-        this.textColor = textColor;
+    @FunctionalInterface
+    public interface TooltipHandler {
+        void onTooltip(Button button, PoseStack pose, int mouseX, int mouseY);
+
+        default void narrateTooltip(Consumer<Component> contents) {
+        }
     }
 }

@@ -44,12 +44,20 @@ public abstract class BaseScreen extends Screen implements ReloadsTheme {
     private static final ResourceLocation WIDGETS = UltreonLib.res("textures/gui/widgets.png");
     private static final ResourceLocation WIDGETS_LIGHT = UltreonLib.res("textures/gui/widgets_light.png");
 
+    protected static final int BORDER_SIZE = 7;
+
     private ContextMenu contextMenu = null;
     private Theme theme;
+    private Screen back;
 
     protected BaseScreen(Component title) {
+        this(title, null);
+    }
+
+    protected BaseScreen(Component title, Screen back) {
         super(title);
         this.theme = UltreonLib.getTheme();
+        this.back = back;
     }
 
     public void show() {
@@ -199,7 +207,7 @@ public abstract class BaseScreen extends Screen implements ReloadsTheme {
     }
 
     protected void back() {
-        onClose();
+        Minecraft.getInstance().setScreen(back);
     }
 
     protected final boolean isAtCloseButton(int mouseX, int mouseY) {
@@ -277,5 +285,10 @@ public abstract class BaseScreen extends Screen implements ReloadsTheme {
         blit(pose, x, y + 7 + height, 7, 7, u + 0, 14, 7, 7, 256, 256);
         blit(pose, x + 7, y + 7 + height, width, 7, u + 7, 14, 7, 7, 256, 256);
         blit(pose, x + 7 + width, y + 7 + height, 7, 7, u + 14, 14, 7, 7, 256, 256);
+    }
+
+    public void open() {
+        this.back = Minecraft.getInstance().screen;
+        Minecraft.getInstance().setScreen(this);
     }
 }

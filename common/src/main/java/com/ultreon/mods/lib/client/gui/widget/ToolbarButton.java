@@ -39,7 +39,7 @@ public class ToolbarButton extends ToolbarItem implements ReloadsTheme, Clickabl
         narration.add(NarratedElementType.TITLE, getMessage());
     }
 
-    public void click() {
+    public void onLeftClick(int clicks) {
         synchronized (lock) {
             if (command != null) {
                 command.call(this);
@@ -79,23 +79,9 @@ public class ToolbarButton extends ToolbarItem implements ReloadsTheme, Clickabl
         }
     }
 
-//    @Override
-//    public boolean mouseClicked(double x, double y, int button) {
-//        System.out.println("x = " + x + ", y = " + y + ", button = " + button);
-//        if (isMouseOver(x, y) && button == MouseButton.LEFT) {
-//            System.out.println("Clicked");
-//            click();
-//            return true;
-//        }
-//
-//        System.out.println("Not over");
-//
-//        return super.mouseClicked(x, y, button);
-//    }
-
     @Override
     public void onClick(double pMouseX, double pMouseY) {
-        click();
+        leftClick();
     }
 
     public void setCommand(@Nullable CommandCallback command) {

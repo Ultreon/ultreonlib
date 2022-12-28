@@ -53,19 +53,22 @@ subprojects {
 
     repositories {
         mavenCentral()
+        google()
+
+        mavenLocal()
 
         maven {
-            name = 'Sponge / Mixin'
-            url = 'https://repo.spongepowered.org/repository/maven-public/'
+            name 'Sponge / Mixin'
+            url 'https://repo.spongepowered.org/repository/maven-public/'
         }
 
         maven {
-            name = 'BlameJared Maven (CrT / Bookshelf)'
-            url = 'https://maven.blamejared.com'
+            name 'BlameJared Maven (CrT / Bookshelf)'
+            url 'https://maven.blamejared.com'
         }
         maven {
-            name = 'ParchmentMC'
-            url = 'https://maven.parchmentmc.org'
+            name 'ParchmentMC'
+            url 'https://maven.parchmentmc.org'
         }
 
         maven {
@@ -75,6 +78,7 @@ subprojects {
 
 
         maven {
+            name "Cursemaven"
             url "https://cursemaven.com"
             content {
                 includeGroup "curse.maven"
@@ -82,8 +86,8 @@ subprojects {
         }
         maven {
             // location of the maven that hosts JEI files
-            name = "Progwml6 maven"
-            url = "https://dvs1.progwml6.com/files/maven/"
+            name "Progwml6 maven"
+            url "https://dvs1.progwml6.com/files/maven/"
         }
         maven { url "https://maven.architectury.dev/" }
         maven { url 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/' }
@@ -96,6 +100,8 @@ subprojects {
             officialMojangMappings()
             parchment("org.parchmentmc.data:parchment-1.19.2:2022.08.10@zip")
         }
+
+        compileOnly 'com.google.errorprone:error_prone_annotations:2.16'
     }
 
     processResources {
