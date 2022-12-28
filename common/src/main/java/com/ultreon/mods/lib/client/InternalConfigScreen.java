@@ -18,6 +18,23 @@ public class InternalConfigScreen extends GenericMenuScreen {
 
         addButtonRow(Component.translatable("gui.ultreonlib.config.theme").append(UltreonLib.getTheme().getDisplayName()), this::changeTheme);
         addButtonRow(Component.translatable("gui.ultreonlib.config.title_style").append(UltreonLib.getTitleStyle().getDisplayName()), this::changeTitleStyle);
+
+        if (Platform.isDevelopmentEnvironment()) {
+            addButtonRow(Component.literal("Tab Screen Test"), this::openTabTest);
+        }
+    }
+
+    private void openTabTest() {
+        LeftSideTabScreen tabScreenTest = new LeftSideTabScreen(Component.literal("Tab Screen Test"));
+
+        tabScreenTest.addTab(Component.literal("Home"));
+        tabScreenTest.addTab(Component.literal("Personalization"));
+        tabScreenTest.addTab(Component.literal("General Settings"));
+        tabScreenTest.addTab(Component.literal("Experimental"));
+        tabScreenTest.addTab(Component.literal("Advanced"));
+        tabScreenTest.addTab(Component.literal("(Developer Options)"));
+
+        tabScreenTest.open();
     }
 
     private void changeTheme(BaseButton button) {

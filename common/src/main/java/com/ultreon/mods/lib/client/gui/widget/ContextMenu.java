@@ -107,7 +107,7 @@ public class ContextMenu extends AbstractContainerWidget {
         }
 
         Font font = Minecraft.getInstance().font;
-        BaseScreen.renderFrame(pose, x, y, width - 14, height - 4 - (hasTitle ? 0 : font.lineHeight + 1), theme, 42);
+        BaseScreen.renderFrame(pose, x, y, width - 14, height - 4 - (hasTitle ? 0 : font.lineHeight + 1), theme, 2);
 
         //noinspection ConstantConditions
         if (message != null) {

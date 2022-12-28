@@ -1,7 +1,6 @@
 package com.ultreon.mods.lib.client.gui.widget;
 
 import com.ultreon.mods.lib.client.HasContextMenu;
-import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.Nullable;
 
@@ -24,8 +23,9 @@ public abstract class ToolbarItem extends BaseWidget implements IToolbarItem, Ha
         return getHeight();
     }
 
+    @Nullable
     @Override
-    public @Nullable ContextMenu contextMenu(int mouseX, int mouseY, int button) {
+    public ContextMenu contextMenu(int mouseX, int mouseY, int button) {
         return null;
     }
 }

@@ -37,7 +37,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Objects;
 
 public abstract class BaseScreen extends Screen implements ReloadsTheme {
-    private static final String CLOSE_ICON = "\u00D7";
+    private static final String CLOSE_ICON = "×";
     private static final String CLOSE_ICON_HOVER = ChatFormatting.RED + CLOSE_ICON;
 
     private static final ResourceLocation WIDGETS_DARK = UltreonLib.res("textures/gui/widgets_dark.png");
@@ -228,21 +228,22 @@ public abstract class BaseScreen extends Screen implements ReloadsTheme {
     }
 
     @SuppressWarnings("PointlessArithmeticExpression")
-    public static void renderFrame(PoseStack pose, int x, int y, int width, int height, Theme theme, int u) {
+    public static void renderFrame(PoseStack pose, int x, int y, int width, int height, Theme theme, int index) {
         RenderSystem.setShaderTexture(0, switch (theme) {
             case DARK -> WIDGETS_DARK;
             case LIGHT, MIX -> WIDGETS_LIGHT;
             default -> WIDGETS;
         });
-        blit(pose, x, y, 7, 7, u + 0, 0, 7, 7, 256, 256);
-        blit(pose, x + 7, y, width, 7, u + 7, 0, 7, 7, 256, 256);
-        blit(pose, x + 7 + width, y, 7, 7, u + 14, 0, 7, 7, 256, 256);
-        blit(pose, x, y + 7, 7, height, u + 0, 7, 7, 7, 256, 256);
-        blit(pose, x + 7, y + 7, width, height, u + 7, 7, 7, 7, 256, 256);
-        blit(pose, x + 7 + width, y + 7, 7, height, u + 14, 7, 7, 7, 256, 256);
-        blit(pose, x, y + 7 + height, 7, 7, u + 0, 14, 7, 7, 256, 256);
-        blit(pose, x + 7, y + 7 + height, width, 7, u + 7, 14, 7, 7, 256, 256);
-        blit(pose, x + 7 + width, y + 7 + height, 7, 7, u + 14, 14, 7, 7, 256, 256);
+        index *= 21;
+        blit(pose, x, y, 7, 7, index + 0, 0, 7, 7, 256, 256);
+        blit(pose, x + 7, y, width, 7, index + 7, 0, 7, 7, 256, 256);
+        blit(pose, x + 7 + width, y, 7, 7, index + 14, 0, 7, 7, 256, 256);
+        blit(pose, x, y + 7, 7, height, index + 0, 7, 7, 7, 256, 256);
+        blit(pose, x + 7, y + 7, width, height, index + 7, 7, 7, 7, 256, 256);
+        blit(pose, x + 7 + width, y + 7, 7, height, index + 14, 7, 7, 7, 256, 256);
+        blit(pose, x, y + 7 + height, 7, 7, index + 0, 14, 7, 7, 256, 256);
+        blit(pose, x + 7, y + 7 + height, width, 7, index + 7, 14, 7, 7, 256, 256);
+        blit(pose, x + 7 + width, y + 7 + height, 7, 7, index + 14, 14, 7, 7, 256, 256);
     }
 
     @Deprecated
