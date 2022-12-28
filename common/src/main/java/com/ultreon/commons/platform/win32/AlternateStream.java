@@ -1,6 +1,7 @@
 package com.ultreon.commons.platform.win32;
 
 import java.io.*;
+import java.nio.file.Path;
 
 /**
  * Alternate Data Streams
@@ -24,5 +25,9 @@ public record AlternateStream(File file, String id) {
 
     public String getPath() {
         return file.getPath() + ":" + id;
+    }
+
+    public Path toPath() {
+        return file.toPath();
     }
 }
