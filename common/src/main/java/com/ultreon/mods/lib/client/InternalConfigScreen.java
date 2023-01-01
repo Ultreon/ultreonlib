@@ -6,7 +6,6 @@ import com.ultreon.mods.lib.client.gui.screen.GenericMenuScreen;
 import com.ultreon.mods.lib.client.gui.screen.TitleStyle;
 import com.ultreon.mods.lib.client.gui.widget.BaseButton;
 import com.ultreon.mods.lib.util.KeyboardHelper;
-import dev.architectury.platform.Platform;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 
