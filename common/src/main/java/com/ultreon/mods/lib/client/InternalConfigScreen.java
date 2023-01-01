@@ -3,7 +3,6 @@ package com.ultreon.mods.lib.client;
 import com.ultreon.mods.lib.UltreonLib;
 import com.ultreon.mods.lib.client.gui.Theme;
 import com.ultreon.mods.lib.client.gui.screen.GenericMenuScreen;
-import com.ultreon.mods.lib.client.gui.screen.LeftSideTabScreen;
 import com.ultreon.mods.lib.client.gui.screen.TitleStyle;
 import com.ultreon.mods.lib.client.gui.widget.BaseButton;
 import com.ultreon.mods.lib.util.KeyboardHelper;
