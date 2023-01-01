@@ -3,6 +3,7 @@ plugins {
     id "dev.architectury.loom" version "1.0-SNAPSHOT" apply false
     id "io.github.pacifistmc.forgix" version "1.2.2"
 }
+
 repositories {
     gradlePluginPortal()
 }
@@ -46,6 +47,7 @@ println "forgix.outputDir = $forgix.outputDir"
 
 subprojects {
     apply plugin: "dev.architectury.loom"
+    apply plugin: "maven-publish"
 
     loom {
         silentMojangMappingsLicense()
