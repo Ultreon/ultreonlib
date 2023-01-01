@@ -1,2 +1,5 @@
 before-install:
-  - sdk install java 17.0.5-oracle gradle 7.4;sdk use java 17.0.5-oracle gradle 7.4
+  - sdk install java 17.0.5-oracle;sdk use java 17.0.5-oracle gradle 7.4
+  - sdk install gradle 7.4
+  - sdk use java 17.0.5-oracle
+  - sdk use gradle 7.4
