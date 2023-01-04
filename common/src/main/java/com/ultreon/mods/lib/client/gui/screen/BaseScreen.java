@@ -23,7 +23,7 @@ import com.ultreon.mods.lib.client.input.MouseButton;
 import com.ultreon.mods.lib.mixin.common.ScreenAccess;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.components.Widget;
+import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
@@ -37,7 +37,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Objects;
 
 public abstract class BaseScreen extends Screen implements ReloadsTheme {
-    private static final String CLOSE_ICON = "\u00D7";
+    private static final String CLOSE_ICON = "×";
     private static final String CLOSE_ICON_HOVER = ChatFormatting.RED + CLOSE_ICON;
 
     private static final ResourceLocation WIDGETS_DARK = UltreonLib.res("textures/gui/widgets_dark.png");
@@ -64,6 +64,7 @@ public abstract class BaseScreen extends Screen implements ReloadsTheme {
         show(this);
     }
 
+    @SuppressWarnings("unused")
     private static void show(BaseScreen screen) {
         throw new AssertionError();
     }
@@ -85,7 +86,7 @@ public abstract class BaseScreen extends Screen implements ReloadsTheme {
 
         int mx = flag ? Integer.MIN_VALUE : mouseX;
         int my = flag ? Integer.MIN_VALUE : mouseY;
-        for (Widget widget : ((ScreenAccess) this).getRenderables()) {
+        for (Renderable widget : ((ScreenAccess) this).getRenderables()) {
             widget.render(pose, mx, my, partialTicks);
         }
 
@@ -134,8 +135,8 @@ public abstract class BaseScreen extends Screen implements ReloadsTheme {
 
     private boolean isHoveringContextMenu(int mouseX, int mouseY) {
         return contextMenu != null &&
-                mouseX >= contextMenu.x && mouseX <= contextMenu.x + contextMenu.getWidth() &&
-                mouseY >= contextMenu.y && mouseY <= contextMenu.y + contextMenu.getHeight();
+                mouseX >= contextMenu.getX() && mouseX <= contextMenu.getX() + contextMenu.getWidth() &&
+                mouseY >= contextMenu.getY() && mouseY <= contextMenu.getY() + contextMenu.getHeight();
     }
 
     @Override

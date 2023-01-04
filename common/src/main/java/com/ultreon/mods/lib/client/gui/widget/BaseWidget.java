@@ -67,7 +67,7 @@ public abstract class BaseWidget extends AbstractWidget implements Clickable {
     @Override
     public final void rightClick() {
         if (this instanceof HasContextMenu hasContextMenu) {
-            hasContextMenu.contextMenu(x, y, InputConstants.MOUSE_BUTTON_RIGHT);
+            hasContextMenu.contextMenu(getX(), getY(), InputConstants.MOUSE_BUTTON_RIGHT);
         } else {
             onRightClick();
         }

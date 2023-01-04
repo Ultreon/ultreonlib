@@ -19,7 +19,7 @@ public abstract class MenuItem extends BaseWidget {
     private int maxWidth = Integer.MAX_VALUE;
 
     public MenuItem(int height, ContextMenu menu, Component message) {
-        super(menu.x, menu.y, menu.getWidth(), height, message);
+        super(menu.getX(), menu.getY(), menu.getWidth(), height, message);
         this.menu = menu;
     }
 

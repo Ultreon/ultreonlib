@@ -32,7 +32,7 @@ dependencies {
     // Remove the next line if you don't want to depend on the API
     modApi "dev.architectury:architectury-fabric:${rootProject.architectury_version}"
 
-    modImplementation "curse.maven:forgeapiportfabric-547434:3946675"
+    modImplementation "fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${forge_config_api_port_version}"
     modImplementation 'com.electronwill.night-config:core:3.6.5'
     modImplementation 'com.electronwill.night-config:toml:3.6.5'
 
@@ -44,7 +44,8 @@ dependencies {
     modImplementation "com.terraformersmc:modmenu:4.0.6", {
         exclude module: "fabric-api"
     }
-    modImplementation "curse.maven:configured-fabric-667378:4010582", {
+
+    modRuntimeOnly "curse.maven:configured-fabric-667378:4166864", {
         exclude module: "fabric-api"
     }
 
@@ -71,6 +72,7 @@ shadowJar {
 
 remapJar {
     injectAccessWidener = true
+    //noinspection GrDeprecatedAPIUsage
     input.set shadowJar.archiveFile
     dependsOn shadowJar
     classifier null
@@ -94,8 +96,10 @@ components.java {
 
 publishing {
     publications {
+        //noinspection GroovyAssignabilityCheck
         mavenFabric(MavenPublication) {
             artifactId = rootProject.archives_base_name + "-" + project.name
+            //noinspection GroovyAssignabilityCheck
             from components.java
         }
     }

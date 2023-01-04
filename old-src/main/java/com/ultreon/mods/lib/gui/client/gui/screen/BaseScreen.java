@@ -22,7 +22,7 @@ import com.ultreon.mods.lib.gui.client.gui.widget.ContextMenu;
 import com.ultreon.mods.lib.gui.client.input.MouseButton;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.components.Widget;
+import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
@@ -73,7 +73,7 @@ public abstract class BaseScreen extends Screen implements ReloadsTheme {
 
         int mx = flag ? Integer.MIN_VALUE : mouseX;
         int my = flag ? Integer.MIN_VALUE : mouseY;
-        for (Widget widget : this.renderables) {
+        for (Renderable widget : this.renderables) {
             widget.render(pose, mx, my, partialTicks);
         }
 

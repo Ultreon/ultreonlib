@@ -21,7 +21,7 @@ package com.ultreon.mods.lib.world;
 import com.ultreon.mods.lib.nbt.NbtKeys;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -71,7 +71,7 @@ public final class Location {
                 tags.getInt(NbtKeys.X),
                 tags.getInt(NbtKeys.Y),
                 tags.getInt(NbtKeys.Z),
-                ResourceKey.create(Registry.DIMENSION_REGISTRY, new ResourceLocation(tags.getString(NbtKeys.DIMENSION))));
+                ResourceKey.create(Registries.DIMENSION, new ResourceLocation(tags.getString(NbtKeys.DIMENSION))));
     }
 
     public int getX() {

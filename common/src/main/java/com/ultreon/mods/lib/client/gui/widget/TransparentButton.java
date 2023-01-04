@@ -3,18 +3,17 @@ package com.ultreon.mods.lib.client.gui.widget;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
 
 import java.awt.*;
 
-public class TransparentButton extends Button {
-    public TransparentButton(int x, int y, int width, int height, Component title, OnPress pressedAction) {
-        super(x, y, width, height, title, pressedAction);
+public class TransparentButton extends BaseButton {
+    public TransparentButton(int x, int y, int width, int height, Component title, CommandCallback action) {
+        super(x, y, width, height, title, action);
     }
 
-    public TransparentButton(int x, int y, int width, int height, Component title, OnPress pressedAction, OnTooltip onTooltip) {
-        super(x, y, width, height, title, pressedAction, onTooltip);
+    public TransparentButton(int x, int y, int width, int height, Component title, CommandCallback action, TooltipFactory factory) {
+        super(x, y, width, height, title, action, factory);
     }
 
     @Override
@@ -24,7 +23,7 @@ public class TransparentButton extends Button {
 
         int col = new Color(0, 0, 0, 127).getRGB();
 
-        fill(matrixStack, x, y, x + width, y + height, col);
+        fill(matrixStack, getX(), getY(), getX() + width, getY() + height, col);
 
         int hov = new Color(255, 255, 0, 255).getRGB();
         int nrm = new Color(255, 255, 255, 255).getRGB();
@@ -42,9 +41,9 @@ public class TransparentButton extends Button {
         }
 
         if (isHovered && active) {
-            drawCenteredString(matrixStack, font, this.getMessage(), (this.x + this.width / 2) + 1, (this.y + (this.height - 8) / 2) + 1, j);
+            drawCenteredString(matrixStack, font, this.getMessage(), (this.getX() + this.width / 2) + 1, (this.getY() + (this.height - 8) / 2) + 1, j);
         } else {
-            drawCenteredString(matrixStack, font, this.getMessage(), this.x + this.width / 2, this.y + (this.height - 8) / 2, j);
+            drawCenteredString(matrixStack, font, this.getMessage(), this.getX() + this.width / 2, this.getY() + (this.height - 8) / 2, j);
         }
     }
 }

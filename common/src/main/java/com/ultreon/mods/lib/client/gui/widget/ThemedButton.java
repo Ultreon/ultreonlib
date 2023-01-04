@@ -26,7 +26,7 @@ public non-sealed class ThemedButton extends TexturedButton implements ReloadsTh
         setTextColor(type.textColor);
     }
 
-    public ThemedButton(int x, int y, int width, int height, Component title, CommandCallback onClick, TooltipHandler onTooltip, Type type) {
+    public ThemedButton(int x, int y, int width, int height, Component title, CommandCallback onClick, TooltipFactory onTooltip, Type type) {
         super(x, y, width, height, title, onClick, onTooltip);
         this.type = type;
         setTextColor(type.textColor);
@@ -38,7 +38,7 @@ public non-sealed class ThemedButton extends TexturedButton implements ReloadsTh
         setTextColor(type.textColor);
     }
 
-    public ThemedButton(Component title, CommandCallback onClick, TooltipHandler onTooltip, Type type) {
+    public ThemedButton(Component title, CommandCallback onClick, TooltipFactory onTooltip, Type type) {
         super(0, 0, 0, 0, title, onClick, onTooltip);
         this.type = type;
         setTextColor(type.textColor);
@@ -70,10 +70,6 @@ public non-sealed class ThemedButton extends TexturedButton implements ReloadsTh
 
         private final ResourceLocation res;
         private final int textColor;
-
-        Type(ResourceLocation res) {
-            this(res, 0xffffff);
-        }
 
         Type(ResourceLocation res, int textColor) {
             this.res = res;

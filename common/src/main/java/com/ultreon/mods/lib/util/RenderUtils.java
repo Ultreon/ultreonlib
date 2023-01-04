@@ -3,13 +3,12 @@ package com.ultreon.mods.lib.util;
 import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import org.joml.Quaternionf;
 
 public class RenderUtils {
     public static void renderEntityInGui(int posX, int posY, int scale, float mouseX, float mouseY, LivingEntity livingEntity) {
@@ -31,8 +30,8 @@ public class RenderUtils {
         pose.translate(0.0D, 0.0D, 1000.0D);
         pose.scale(scale, scale, scale);
 
-        Quaternion flipped = Vector3f.ZP.rotationDegrees(180.0F);
-        Quaternion quaternion = Vector3f.XP.rotationDegrees(xRot * 20.0F);
+        Quaternionf flipped = new Quaternionf().rotationZ((float)Math.toRadians(180.0F));
+        Quaternionf quaternion = new Quaternionf().rotationX((float)Math.toRadians(xRot * 20.0f));
         flipped.mul(quaternion);
         pose.mulPose(flipped);
 
@@ -50,7 +49,7 @@ public class RenderUtils {
         Lighting.setupForEntityInInventory();
 
         EntityRenderDispatcher dispatcher = Minecraft.getInstance().getEntityRenderDispatcher();
-        quaternion.conj();
+        quaternion.conjugate();
         dispatcher.overrideCameraOrientation(quaternion);
         dispatcher.setRenderShadow(false);
         MultiBufferSource.BufferSource bufferSource = Minecraft.getInstance().renderBuffers().bufferSource();
@@ -98,8 +97,8 @@ public class RenderUtils {
         pose.translate(0.0D, 0.0D, 1000.0D);
         pose.scale(scale, scale, scale);
 
-        Quaternion flipped = Vector3f.ZP.rotationDegrees(180.0F);
-        Quaternion quaternion = Vector3f.XP.rotationDegrees(xRot * 20.0F);
+        Quaternionf flipped = new Quaternionf().rotationZ((float)Math.toRadians(180.0F));
+        Quaternionf quaternion = new Quaternionf().rotationX((float)Math.toRadians(xRot * 20.0f));
         flipped.mul(quaternion);
         pose.mulPose(flipped);
 
@@ -111,7 +110,7 @@ public class RenderUtils {
         Lighting.setupForEntityInInventory();
 
         EntityRenderDispatcher dispatcher = Minecraft.getInstance().getEntityRenderDispatcher();
-        quaternion.conj();
+        quaternion.conjugate();
         dispatcher.overrideCameraOrientation(quaternion);
         dispatcher.setRenderShadow(false);
         MultiBufferSource.BufferSource bufferSource = Minecraft.getInstance().renderBuffers().bufferSource();

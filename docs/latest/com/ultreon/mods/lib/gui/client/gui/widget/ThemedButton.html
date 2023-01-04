@@ -89,7 +89,7 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>All Implemented Interfaces:</dt>
-<dd><code><a href="../Clickable.html" title="interface in com.ultreon.mods.lib.gui.client.gui">Clickable</a></code>, <code><a href="../ReloadsTheme.html" title="interface in com.ultreon.mods.lib.gui.client.gui">ReloadsTheme</a></code>, <code>net.minecraft.client.gui.components.events.GuiEventListener</code>, <code>net.minecraft.client.gui.components.Widget</code>, <code>net.minecraft.client.gui.narration.NarratableEntry</code>, <code>net.minecraft.client.gui.narration.NarrationSupplier</code></dd>
+<dd><code><a href="../Clickable.html" title="interface in com.ultreon.mods.lib.gui.client.gui">Clickable</a></code>, <code><a href="../ReloadsTheme.html" title="interface in com.ultreon.mods.lib.gui.client.gui">ReloadsTheme</a></code>, <code>net.minecraft.client.gui.components.events.GuiEventListener</code>, <code>net.minecraft.client.gui.components.Renderable</code>, <code>net.minecraft.client.gui.narration.NarratableEntry</code>, <code>net.minecraft.client.gui.narration.NarrationSupplier</code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public non-sealed class </span><span class="element-name type-name-label">ThemedButton</span>
@@ -113,7 +113,7 @@ implements <a href="../ReloadsTheme.html" title="interface in com.ultreon.mods.l
 </div>
 <div class="inherited-list">
 <h2 id="nested-classes-inherited-from-class-net.minecraft.client.gui.components.Button">Nested classes/interfaces inherited from class&nbsp;net.minecraft.client.gui.components.Button</h2>
-<code>net.minecraft.client.gui.components.Button.OnPress, net.minecraft.client.gui.components.Button.OnTooltip</code></div>
+<code>net.minecraft.client.gui.components.Button.OnPress, net.minecraft.client.gui.components.Button.CreateNarration</code></div>
 <div class="inherited-list">
 <h2 id="nested-classes-inherited-from-class-net.minecraft.client.gui.narration.NarratableEntry">Nested classes/interfaces inherited from interface&nbsp;net.minecraft.client.gui.narration.NarratableEntry</h2>
 <code>net.minecraft.client.gui.narration.NarratableEntry.NarrationPriority</code></div>
@@ -153,22 +153,22 @@ implements <a href="../ReloadsTheme.html" title="interface in com.ultreon.mods.l
  net.minecraft.client.gui.components.Button.OnPress&nbsp;pressedAction,
  <a href="ThemedButton.Type.html" title="enum class in com.ultreon.mods.lib.gui.client.gui.widget">ThemedButton.Type</a>&nbsp;type)</code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(int,int,int,int,net.minecraft.network.chat.Component,net.minecraft.client.gui.components.Button.OnPress,net.minecraft.client.gui.components.Button.OnTooltip,com.ultreon.mods.lib.gui.client.gui.widget.ThemedButton.Type)" class="member-name-link">ThemedButton</a><wbr>(int&nbsp;x,
+<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(int,int,int,int,net.minecraft.network.chat.Component,net.minecraft.client.gui.components.Button.OnPress,net.minecraft.client.gui.components.Button.CreateNarration,com.ultreon.mods.lib.gui.client.gui.widget.ThemedButton.Type)" class="member-name-link">ThemedButton</a><wbr>(int&nbsp;x,
  int&nbsp;y,
  int&nbsp;width,
  int&nbsp;height,
  net.minecraft.network.chat.Component&nbsp;title,
  net.minecraft.client.gui.components.Button.OnPress&nbsp;pressedAction,
- net.minecraft.client.gui.components.Button.OnTooltip&nbsp;onTooltip,
+ net.minecraft.client.gui.components.Button.CreateNarration&nbsp;onTooltip,
  <a href="ThemedButton.Type.html" title="enum class in com.ultreon.mods.lib.gui.client.gui.widget">ThemedButton.Type</a>&nbsp;type)</code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(net.minecraft.network.chat.Component,net.minecraft.client.gui.components.Button.OnPress,com.ultreon.mods.lib.gui.client.gui.widget.ThemedButton.Type)" class="member-name-link">ThemedButton</a><wbr>(net.minecraft.network.chat.Component&nbsp;title,
  net.minecraft.client.gui.components.Button.OnPress&nbsp;pressedAction,
  <a href="ThemedButton.Type.html" title="enum class in com.ultreon.mods.lib.gui.client.gui.widget">ThemedButton.Type</a>&nbsp;type)</code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(net.minecraft.network.chat.Component,net.minecraft.client.gui.components.Button.OnPress,net.minecraft.client.gui.components.Button.OnTooltip,com.ultreon.mods.lib.gui.client.gui.widget.ThemedButton.Type)" class="member-name-link">ThemedButton</a><wbr>(net.minecraft.network.chat.Component&nbsp;title,
+<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(net.minecraft.network.chat.Component,net.minecraft.client.gui.components.Button.OnPress,net.minecraft.client.gui.components.Button.CreateNarration,com.ultreon.mods.lib.gui.client.gui.widget.ThemedButton.Type)" class="member-name-link">ThemedButton</a><wbr>(net.minecraft.network.chat.Component&nbsp;title,
  net.minecraft.client.gui.components.Button.OnPress&nbsp;pressedAction,
- net.minecraft.client.gui.components.Button.OnTooltip&nbsp;onTooltip,
+ net.minecraft.client.gui.components.Button.CreateNarration&nbsp;onTooltip,
  <a href="ThemedButton.Type.html" title="enum class in com.ultreon.mods.lib.gui.client.gui.widget">ThemedButton.Type</a>&nbsp;type)</code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
 </div>
@@ -242,7 +242,7 @@ implements <a href="../ReloadsTheme.html" title="interface in com.ultreon.mods.l
 </section>
 </li>
 <li>
-<section class="detail" id="&lt;init&gt;(int,int,int,int,net.minecraft.network.chat.Component,net.minecraft.client.gui.components.Button.OnPress,net.minecraft.client.gui.components.Button.OnTooltip,com.ultreon.mods.lib.gui.client.gui.widget.ThemedButton.Type)">
+<section class="detail" id="&lt;init&gt;(int,int,int,int,net.minecraft.network.chat.Component,net.minecraft.client.gui.components.Button.OnPress,net.minecraft.client.gui.components.Button.CreateNarration,com.ultreon.mods.lib.gui.client.gui.widget.ThemedButton.Type)">
 <h3>ThemedButton</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">ThemedButton</span><wbr><span class="parameters">(int&nbsp;x,
  int&nbsp;y,
@@ -250,7 +250,7 @@ implements <a href="../ReloadsTheme.html" title="interface in com.ultreon.mods.l
  int&nbsp;height,
  net.minecraft.network.chat.Component&nbsp;title,
  net.minecraft.client.gui.components.Button.OnPress&nbsp;pressedAction,
- net.minecraft.client.gui.components.Button.OnTooltip&nbsp;onTooltip,
+ net.minecraft.client.gui.components.Button.CreateNarration&nbsp;onTooltip,
  <a href="ThemedButton.Type.html" title="enum class in com.ultreon.mods.lib.gui.client.gui.widget">ThemedButton.Type</a>&nbsp;type)</span></div>
 </section>
 </li>
@@ -263,11 +263,11 @@ implements <a href="../ReloadsTheme.html" title="interface in com.ultreon.mods.l
 </section>
 </li>
 <li>
-<section class="detail" id="&lt;init&gt;(net.minecraft.network.chat.Component,net.minecraft.client.gui.components.Button.OnPress,net.minecraft.client.gui.components.Button.OnTooltip,com.ultreon.mods.lib.gui.client.gui.widget.ThemedButton.Type)">
+<section class="detail" id="&lt;init&gt;(net.minecraft.network.chat.Component,net.minecraft.client.gui.components.Button.OnPress,net.minecraft.client.gui.components.Button.CreateNarration,com.ultreon.mods.lib.gui.client.gui.widget.ThemedButton.Type)">
 <h3>ThemedButton</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">ThemedButton</span><wbr><span class="parameters">(net.minecraft.network.chat.Component&nbsp;title,
  net.minecraft.client.gui.components.Button.OnPress&nbsp;pressedAction,
- net.minecraft.client.gui.components.Button.OnTooltip&nbsp;onTooltip,
+ net.minecraft.client.gui.components.Button.CreateNarration&nbsp;onTooltip,
  <a href="ThemedButton.Type.html" title="enum class in com.ultreon.mods.lib.gui.client.gui.widget">ThemedButton.Type</a>&nbsp;type)</span></div>
 </section>
 </li>

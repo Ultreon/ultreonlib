@@ -85,7 +85,7 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>All Implemented Interfaces:</dt>
-<dd><code><a href="../Clickable.html" title="interface in com.ultreon.mods.lib.gui.client.gui">Clickable</a></code>, <code>net.minecraft.client.gui.components.events.GuiEventListener</code>, <code>net.minecraft.client.gui.components.Widget</code>, <code>net.minecraft.client.gui.narration.NarratableEntry</code>, <code>net.minecraft.client.gui.narration.NarrationSupplier</code></dd>
+<dd><code><a href="../Clickable.html" title="interface in com.ultreon.mods.lib.gui.client.gui">Clickable</a></code>, <code>net.minecraft.client.gui.components.events.GuiEventListener</code>, <code>net.minecraft.client.gui.components.Renderable</code>, <code>net.minecraft.client.gui.narration.NarratableEntry</code>, <code>net.minecraft.client.gui.narration.NarrationSupplier</code></dd>
 </dl>
 <dl class="notes">
 <dt>Direct Known Subclasses:</dt>
@@ -104,7 +104,7 @@ implements <a href="../Clickable.html" title="interface in com.ultreon.mods.lib.
 <h2>Nested Class Summary</h2>
 <div class="inherited-list">
 <h2 id="nested-classes-inherited-from-class-net.minecraft.client.gui.components.Button">Nested classes/interfaces inherited from class&nbsp;net.minecraft.client.gui.components.Button</h2>
-<code>net.minecraft.client.gui.components.Button.OnPress, net.minecraft.client.gui.components.Button.OnTooltip</code></div>
+<code>net.minecraft.client.gui.components.Button.OnPress, net.minecraft.client.gui.components.Button.CreateNarration</code></div>
 <div class="inherited-list">
 <h2 id="nested-classes-inherited-from-class-net.minecraft.client.gui.narration.NarratableEntry">Nested classes/interfaces inherited from interface&nbsp;net.minecraft.client.gui.narration.NarratableEntry</h2>
 <code>net.minecraft.client.gui.narration.NarratableEntry.NarrationPriority</code></div>
@@ -143,13 +143,13 @@ implements <a href="../Clickable.html" title="interface in com.ultreon.mods.lib.
  net.minecraft.network.chat.Component&nbsp;message,
  net.minecraft.client.gui.components.Button.OnPress&nbsp;onPress)</code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(int,int,int,int,net.minecraft.network.chat.Component,net.minecraft.client.gui.components.Button.OnPress,net.minecraft.client.gui.components.Button.OnTooltip)" class="member-name-link">BaseButton</a><wbr>(int&nbsp;x,
+<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(int,int,int,int,net.minecraft.network.chat.Component,net.minecraft.client.gui.components.Button.OnPress,net.minecraft.client.gui.components.Button.CreateNarration)" class="member-name-link">BaseButton</a><wbr>(int&nbsp;x,
  int&nbsp;y,
  int&nbsp;width,
  int&nbsp;height,
  net.minecraft.network.chat.Component&nbsp;message,
  net.minecraft.client.gui.components.Button.OnPress&nbsp;onPress,
- net.minecraft.client.gui.components.Button.OnTooltip&nbsp;onTooltip)</code></div>
+ net.minecraft.client.gui.components.Button.CreateNarration&nbsp;onTooltip)</code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
 </div>
 </section>
@@ -234,7 +234,7 @@ implements <a href="../Clickable.html" title="interface in com.ultreon.mods.lib.
 </section>
 </li>
 <li>
-<section class="detail" id="&lt;init&gt;(int,int,int,int,net.minecraft.network.chat.Component,net.minecraft.client.gui.components.Button.OnPress,net.minecraft.client.gui.components.Button.OnTooltip)">
+<section class="detail" id="&lt;init&gt;(int,int,int,int,net.minecraft.network.chat.Component,net.minecraft.client.gui.components.Button.OnPress,net.minecraft.client.gui.components.Button.CreateNarration)">
 <h3>BaseButton</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">BaseButton</span><wbr><span class="parameters">(int&nbsp;x,
  int&nbsp;y,
@@ -242,7 +242,7 @@ implements <a href="../Clickable.html" title="interface in com.ultreon.mods.lib.
  int&nbsp;height,
  net.minecraft.network.chat.Component&nbsp;message,
  net.minecraft.client.gui.components.Button.OnPress&nbsp;onPress,
- net.minecraft.client.gui.components.Button.OnTooltip&nbsp;onTooltip)</span></div>
+ net.minecraft.client.gui.components.Button.CreateNarration&nbsp;onTooltip)</span></div>
 </section>
 </li>
 </ul>

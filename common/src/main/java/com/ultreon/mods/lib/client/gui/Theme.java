@@ -111,9 +111,9 @@ public enum Theme {
      */
     public int getButtonTextColor() {
         return switch (this) {
-            case LIGHT, MIX -> 0xFFFFFF;
-            case DARK -> 0xFFFFFF;
-            default -> 0xFFFFFF;
+            case LIGHT, MIX -> 0xffffff;
+            case DARK -> 0xe0e0e0;
+            default -> 0xf0f0f0;
         };
     }
 

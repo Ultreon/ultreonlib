@@ -2,7 +2,7 @@ package com.ultreon.mods.lib.world;
 
 import com.google.common.base.Suppliers;
 import com.ultreon.mods.lib.util.ServerLifecycle;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -36,7 +36,7 @@ public class DimensionId {
     }
 
     public static DimensionId fromPacket(FriendlyByteBuf buf) {
-        ResourceKey<Level> key = ResourceKey.create(Registry.DIMENSION_REGISTRY, buf.readResourceLocation());
+        ResourceKey<Level> key = ResourceKey.create(Registries.DIMENSION, buf.readResourceLocation());
         return new DimensionId(key);
     }
 
@@ -45,7 +45,7 @@ public class DimensionId {
     }
 
     public static DimensionId fromResourceLocation(ResourceLocation location) {
-        ResourceKey<Level> key = ResourceKey.create(Registry.DIMENSION_REGISTRY, location);
+        ResourceKey<Level> key = ResourceKey.create(Registries.DIMENSION, location);
         return new DimensionId(key);
     }
 

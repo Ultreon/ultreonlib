@@ -89,7 +89,7 @@ public class ContextMenu extends AbstractContainerWidget {
      * @param narration output for narration elements.
      */
     @Override
-    public void updateNarration(@NotNull NarrationElementOutput narration) {
+    public void updateWidgetNarration(@NotNull NarrationElementOutput narration) {
         narration.add(NarratedElementType.TITLE, this.createNarrationMessage());
     }
 
@@ -107,19 +107,19 @@ public class ContextMenu extends AbstractContainerWidget {
         }
 
         Font font = Minecraft.getInstance().font;
-        BaseScreen.renderFrame(pose, x, y, width - 14, height - 4 - (hasTitle ? 0 : font.lineHeight + 1), theme, 42);
+        BaseScreen.renderFrame(pose, getX(), getY(), width - 14, height - 4 - (hasTitle ? 0 : font.lineHeight + 1), theme, 42);
 
         //noinspection ConstantConditions
         if (message != null) {
-            font.draw(pose, message, x + 7, y + 5, theme == Theme.DARK ? 0xffffffff : 0xff333333);
+            font.draw(pose, message, getX() + 7, getY() + 5, theme == Theme.DARK ? 0xffffffff : 0xff333333);
         }
 
-        this.isHovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
+        this.isHovered = mouseX >= this.getX() && mouseY >= this.getY() && mouseX < this.getX() + this.width && mouseY < this.getY() + this.height;
 
         pose.pushPose();
 //        pose.translate(x + 5, y + 5, 0);
-        int y = this.y + 5 + (hasTitle ? font.lineHeight + 1 : 0);
-        int x = this.x + 5;
+        int y = this.getY() + 5 + (hasTitle ? font.lineHeight + 1 : 0);
+        int x = this.getX() + 5;
         Stream<MenuItem> entryStream = entries.stream();
         IntStream minWidths = entryStream.mapToInt(MenuItem::getMinWidth);
 //        IntStream maxWidths = entryStream.mapToInt(MenuItem::getMaxWidth);
@@ -133,8 +133,8 @@ public class ContextMenu extends AbstractContainerWidget {
         }
 
         for (MenuItem menuItem : entries) {
-            menuItem.x = x;
-            menuItem.y = y;
+            menuItem.setX(x);
+            menuItem.setY(y);
             menuItem.setWidth(Mth.clamp(maxMinWidth, menuItem.getMinWidth(), menuItem.getMaxWidth()));
             menuItem.render(pose, mouseX, mouseY, partialTicks);
 
@@ -153,8 +153,8 @@ public class ContextMenu extends AbstractContainerWidget {
      */
     public <T extends MenuItem> T add(T menuItem) {
         entries.add(menuItem);
-        menuItem.x = x + 5;
-        menuItem.y = y + 5;
+        menuItem.setX(getX() + 5);
+        menuItem.setY(getY() + 5);
         invalidateSize();
         return menuItem;
     }

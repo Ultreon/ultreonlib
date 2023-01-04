@@ -1,9 +1,7 @@
 package com.ultreon.mods.lib.client.gui.widget;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.ultreon.mods.lib.client.gui.Clickable;
-import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.narration.NarratedElementType;
+import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.network.chat.Component;
 
@@ -11,23 +9,28 @@ import java.util.function.Consumer;
 
 public class BaseButton extends BaseWidget implements Clickable {
     private CommandCallback callback;
-    private TooltipHandler tooltipHandler;
+    private TooltipFactory tooltipFactory;
 
     public BaseButton(int x, int y, int width, int height, Component message, CommandCallback callback) {
-        this(x, y, width, height, message, callback, (button, pose, mouseX, mouseY) -> {});
+        this(x, y, width, height, message, callback, (button) -> null);
     }
 
-    public BaseButton(int x, int y, int width, int height, Component message, CommandCallback callback, TooltipHandler tooltipHandler) {
+    public BaseButton(int x, int y, int width, int height, Component message, CommandCallback callback, TooltipFactory tooltipFactory) {
         super(x, y, width, height, message);
         this.setTextColor(0xffffff);
         this.callback = callback;
-        this.tooltipHandler = tooltipHandler;
+        this.tooltipFactory = tooltipFactory;
+
+        updateTooltip();
+    }
+
+    public void updateTooltip() {
+        setTooltip(tooltipFactory.create(this));
     }
 
     @Override
-    public void updateNarration(NarrationElementOutput narrationElementOutput) {
+    protected void updateWidgetNarration(NarrationElementOutput narrationElementOutput) {
         this.defaultButtonNarrationText(narrationElementOutput);
-        this.tooltipHandler.narrateTooltip(component -> narrationElementOutput.add(NarratedElementType.HINT, component));
     }
 
     @Override
@@ -39,8 +42,8 @@ public class BaseButton extends BaseWidget implements Clickable {
         this.callback = callback;
     }
 
-    public void setTooltipHandler(TooltipHandler tooltipHandler) {
-        this.tooltipHandler = tooltipHandler;
+    public void setTooltipFactory(TooltipFactory tooltipFactory) {
+        this.tooltipFactory = tooltipFactory;
     }
 
     @FunctionalInterface
@@ -49,8 +52,8 @@ public class BaseButton extends BaseWidget implements Clickable {
     }
 
     @FunctionalInterface
-    public interface TooltipHandler {
-        void onTooltip(Button button, PoseStack pose, int mouseX, int mouseY);
+    public interface TooltipFactory {
+        Tooltip create(BaseButton button);
 
         default void narrateTooltip(Consumer<Component> contents) {
         }

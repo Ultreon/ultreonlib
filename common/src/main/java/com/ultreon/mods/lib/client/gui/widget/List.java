@@ -14,11 +14,13 @@ package com.ultreon.mods.lib.client.gui.widget;
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.ultreon.mods.lib.UltreonLibConfig;
 import com.ultreon.mods.lib.UltreonLib;
+import com.ultreon.mods.lib.UltreonLibConfig;
 import com.ultreon.mods.lib.client.gui.ReloadsTheme;
 import com.ultreon.mods.lib.client.gui.Theme;
 import com.ultreon.mods.lib.client.gui.screen.GenericMenuScreen;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.components.AbstractWidget;
@@ -30,12 +32,9 @@ import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarratableEntry;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FastColor;
 import net.minecraft.util.Mth;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -104,8 +103,8 @@ public class List extends AbstractWidget implements ContainerEventHandler, Reloa
             this.searchBox = new EditBox(this.font, x + LIST_BORDER_WIDTH + 28, y + LIST_BORDER_WIDTH + 78, width - 28 - LIST_BORDER_WIDTH * 2, 16, SEARCH_HINT) {
                 @Override
                 public void render(@NotNull PoseStack pose, int mouseX, int mouseY, float partialTicks) {
-                    this.x = List.this.x + LIST_BORDER_WIDTH + 4 + 12 + 4;
-                    this.y = List.this.y + LIST_BORDER_WIDTH + 4 + 1;
+                    this.setX(List.this.getX() + LIST_BORDER_WIDTH + 4 + 12 + 4);
+                    this.setY(List.this.getY() + LIST_BORDER_WIDTH + 4 + 1);
 
                     super.render(pose, mouseX, mouseY, partialTicks);
                 }
@@ -123,7 +122,7 @@ public class List extends AbstractWidget implements ContainerEventHandler, Reloa
         this.list = new ListWidget(this, mc, screen.width, screen.height, y + LIST_BORDER_WIDTH, y + height - LIST_BORDER_WIDTH * 2 + headerHeight, ENTRY_HEIGHT) {
             @Override
             public int getRowLeft() {
-                return List.this.x + LIST_BORDER_WIDTH;
+                return List.this.getX() + LIST_BORDER_WIDTH;
             }
 
             @Override
@@ -133,8 +132,8 @@ public class List extends AbstractWidget implements ContainerEventHandler, Reloa
 
             @Override
             public void render(@NotNull PoseStack pose, int mouseX, int mouseY, float partialTicks) {
-                this.y0 = List.this.y + LIST_BORDER_WIDTH + List.this.headerHeight;
-                this.y1 = List.this.y + LIST_BORDER_WIDTH + List.this.height - LIST_BORDER_WIDTH * 2;
+                this.y0 = List.this.getY() + LIST_BORDER_WIDTH + List.this.headerHeight;
+                this.y1 = List.this.getY() + LIST_BORDER_WIDTH + List.this.height - LIST_BORDER_WIDTH * 2;
 
                 super.render(pose, mouseX, mouseY, partialTicks);
             }
@@ -163,17 +162,17 @@ public class List extends AbstractWidget implements ContainerEventHandler, Reloa
         final int lb = LIST_BORDER_WIDTH; // lb == List Border
 
         // End pos
-        final int x1 = x + width;
-        final int y1 = y + height;
+        final int x1 = getX() + width;
+        final int y1 = getY() + height;
 
         // Pos X
-        final int sx = x;
-        final int mx = x + lb;
+        final int sx = getX();
+        final int mx = getX() + lb;
         final int ex = x1 - lb;
 
         // Pos Y
-        final int ty = y;
-        final int my = y + lb;
+        final int ty = getY();
+        final int my = getY() + lb;
         final int by = y1 - lb;
 
         // Inner size
@@ -201,7 +200,7 @@ public class List extends AbstractWidget implements ContainerEventHandler, Reloa
         blit(pose, ex, by, lb, lb, eu, bv, lb, lb, TEX_W, TEX_H); // Bottom right
 
         // Search glass
-        blit(pose, x + lb + 3, y + lb + 3, 12, 12, 51, 1, 12, 12, TEX_W, TEX_H);
+        blit(pose, getX() + lb + 3, getY() + lb + 3, 12, 12, 51, 1, 12, 12, TEX_W, TEX_H);
 
         this.list.render(pose, mouseX, mouseY, partialTicks);
         if (searchBox != null) {
@@ -330,7 +329,7 @@ public class List extends AbstractWidget implements ContainerEventHandler, Reloa
     }
 
     @Override
-    public void updateNarration(@NotNull NarrationElementOutput p_169152_) {
+    public void updateWidgetNarration(@NotNull NarrationElementOutput p_169152_) {
 
     }
 

@@ -28,10 +28,7 @@ import com.ultreon.mods.lib.mixin.common.AbstractWidgetAccessor;
 import com.ultreon.mods.lib.mixin.common.TitleScreenAccessor;
 import dev.architectury.injectables.annotations.ExpectPlatform;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.components.AbstractWidget;
-import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.components.EditBox;
-import net.minecraft.client.gui.components.Widget;
+import net.minecraft.client.gui.components.*;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarratableEntry;
 import net.minecraft.client.gui.screens.Screen;
@@ -82,46 +79,50 @@ public abstract class GenericMenuScreen extends BaseScreen implements ReloadsThe
         reloadTheme();
     }
 
+    private static void emptyAction(BaseButton btn) {
+    }
+
+    private static Tooltip nullTooltip(BaseButton btn) {
+        return null;
+    }
+
+    @NotNull
+    private static BaseButton.CommandCallback createCallbackWrapper(Runnable callback) {
+        return (btn) -> callback.run();
+    }
+
     protected final boolean initialized() {
         return initialized;
     }
 
     @SuppressWarnings("unused")
     public Pair<BaseButton, BaseButton> addButtonRow(Component componentL, Component componentR) {
-        return addButtonRow(componentL, btn -> {
-        }, componentR, btn -> {
-        });
+        return addButtonRow(componentL, GenericMenuScreen::emptyAction, componentR, GenericMenuScreen::emptyAction);
     }
 
     @SuppressWarnings("unused")
     public Pair<BaseButton, BaseButton> addButtonRow(Component componentL, BaseButton.CommandCallback onPressL, Component componentR, BaseButton.CommandCallback onPressR) {
-        return addButtonRow(componentL, onPressL, (btn, stack, mx, my) -> {
-        }, componentR, onPressR, (btn, stack, mx, my) -> {
-        });
+        return addButtonRow(componentL, onPressL, GenericMenuScreen::nullTooltip, componentR, onPressR, GenericMenuScreen::nullTooltip);
     }
 
     @SuppressWarnings("unused")
     public Pair<BaseButton, BaseButton> addButtonRow(Component componentL, Runnable onPressL, Component componentR, Runnable onPressR) {
-        return addButtonRow(componentL, btn -> onPressL.run(), (btn, stack, mx, my) -> {
-        }, componentR, btn -> onPressR.run(), (btn, stack, mx, my) -> {
-        });
+        return addButtonRow(componentL, createCallbackWrapper(onPressL), GenericMenuScreen::nullTooltip, componentR, createCallbackWrapper(onPressR), GenericMenuScreen::nullTooltip);
     }
 
     @SuppressWarnings("unused")
-    public Pair<BaseButton, BaseButton> addButtonRow(Component componentL, BaseButton.CommandCallback onPressL, BaseButton.TooltipHandler onTooltipL, Component componentR, BaseButton.CommandCallback onPressR, BaseButton.TooltipHandler onTooltipR) {
+    public Pair<BaseButton, BaseButton> addButtonRow(Component componentL, BaseButton.CommandCallback onPressL, BaseButton.TooltipFactory onTooltipL, Component componentR, BaseButton.CommandCallback onPressR, BaseButton.TooltipFactory onTooltipR) {
         return addButtonRow(componentL, ThemedButton.Type.of(theme), onPressL, onTooltipL, componentR, ThemedButton.Type.of(theme), onPressR, onTooltipR);
     }
 
     @SuppressWarnings("unused")
-    public Pair<BaseButton, BaseButton> addButtonRow(Component componentL, Runnable onPressL, BaseButton.TooltipHandler onTooltipL, Component componentR, Runnable onPressR, BaseButton.TooltipHandler onTooltipR) {
-        return addButtonRow(componentL, ThemedButton.Type.of(theme), btn -> onPressL.run(), onTooltipL, componentR, ThemedButton.Type.of(theme), btn -> onPressR.run(), onTooltipR);
+    public Pair<BaseButton, BaseButton> addButtonRow(Component componentL, Runnable onPressL, BaseButton.TooltipFactory onTooltipL, Component componentR, Runnable onPressR, BaseButton.TooltipFactory onTooltipR) {
+        return addButtonRow(componentL, ThemedButton.Type.of(theme), createCallbackWrapper(onPressL), onTooltipL, componentR, ThemedButton.Type.of(theme), createCallbackWrapper(onPressR), onTooltipR);
     }
 
     @SuppressWarnings("unused")
     public Pair<BaseButton, BaseButton> addButtonRow(Component componentL, ThemedButton.Type typeL, Component componentR, ThemedButton.Type typeR) {
-        return addButtonRow(componentL, typeL, btn -> {
-        }, componentR, typeR, btn -> {
-        });
+        return addButtonRow(componentL, typeL, GenericMenuScreen::emptyAction, componentR, typeR, GenericMenuScreen::emptyAction);
     }
 
     @SuppressWarnings("unused")
@@ -131,7 +132,7 @@ public abstract class GenericMenuScreen extends BaseScreen implements ReloadsThe
 
     @SuppressWarnings("unused")
     public Pair<BaseButton, BaseButton> addButtonRow(Component componentL, ThemedButton.Type typeL, Runnable onPressL, Component componentR, Runnable onPressR) {
-        return addButtonRow(componentL, typeL, btn -> onPressL.run(), componentR, ThemedButton.Type.of(theme), btn -> onPressR.run());
+        return addButtonRow(componentL, typeL, createCallbackWrapper(onPressL), componentR, ThemedButton.Type.of(theme), createCallbackWrapper(onPressR));
     }
 
     @SuppressWarnings("unused")
@@ -141,30 +142,26 @@ public abstract class GenericMenuScreen extends BaseScreen implements ReloadsThe
 
     @SuppressWarnings("unused")
     public Pair<BaseButton, BaseButton> addButtonRow(Component componentL, Runnable onPressL, Component componentR, ThemedButton.Type typeR, Runnable onPressR) {
-        return addButtonRow(componentL, ThemedButton.Type.of(theme), btn -> onPressL.run(), componentR, typeR, btn -> onPressR.run());
+        return addButtonRow(componentL, ThemedButton.Type.of(theme), createCallbackWrapper(onPressL), componentR, typeR, createCallbackWrapper(onPressR));
     }
 
     @SuppressWarnings("unused")
     public Pair<BaseButton, BaseButton> addButtonRow(Component componentL, ThemedButton.Type typeL, BaseButton.CommandCallback onPressL, Component componentR, ThemedButton.Type typeR, BaseButton.CommandCallback onPressR) {
-        return addButtonRow(componentL, typeL, onPressL, (btn, stack, mx, my) -> {
-        }, componentR, typeR, onPressR, (btn, stack, mx, my) -> {
-        });
+        return addButtonRow(componentL, typeL, onPressL, GenericMenuScreen::nullTooltip, componentR, typeR, onPressR, GenericMenuScreen::nullTooltip);
     }
 
     @SuppressWarnings("unused")
     public Pair<BaseButton, BaseButton> addButtonRow(Component componentL, ThemedButton.Type typeL, Runnable onPressL, Component componentR, ThemedButton.Type typeR, Runnable onPressR) {
-        return addButtonRow(componentL, typeL, btn -> onPressL.run(), (btn, stack, mx, my) -> {
-        }, componentR, typeR, btn -> onPressR.run(), (btn, stack, mx, my) -> {
-        });
+        return addButtonRow(componentL, typeL, createCallbackWrapper(onPressL), GenericMenuScreen::nullTooltip, componentR, typeR, createCallbackWrapper(onPressR), GenericMenuScreen::nullTooltip);
     }
 
     @SuppressWarnings("unused")
-    public Pair<BaseButton, BaseButton> addButtonRow(Component componentL, ThemedButton.Type typeL, Runnable onPressL, BaseButton.TooltipHandler onTooltipL, Component componentR, ThemedButton.Type typeR, Runnable onPressR, BaseButton.TooltipHandler onTooltipR) {
-        return addButtonRow(componentL, typeL, btn -> onPressL.run(), onTooltipL, componentR, typeR, btn -> onPressR.run(), onTooltipR);
+    public Pair<BaseButton, BaseButton> addButtonRow(Component componentL, ThemedButton.Type typeL, Runnable onPressL, BaseButton.TooltipFactory onTooltipL, Component componentR, ThemedButton.Type typeR, Runnable onPressR, BaseButton.TooltipFactory onTooltipR) {
+        return addButtonRow(componentL, typeL, createCallbackWrapper(onPressL), onTooltipL, componentR, typeR, createCallbackWrapper(onPressR), onTooltipR);
     }
 
     @SuppressWarnings("unused")
-    public Pair<BaseButton, BaseButton> addButtonRow(Component componentL, ThemedButton.Type typeL, BaseButton.CommandCallback onPressL, BaseButton.TooltipHandler onTooltipL, Component componentR, ThemedButton.Type typeR, BaseButton.CommandCallback onPressR, BaseButton.TooltipHandler onTooltipR) {
+    public Pair<BaseButton, BaseButton> addButtonRow(Component componentL, ThemedButton.Type typeL, BaseButton.CommandCallback onPressL, BaseButton.TooltipFactory onTooltipL, Component componentR, ThemedButton.Type typeR, BaseButton.CommandCallback onPressR, BaseButton.TooltipFactory onTooltipR) {
         if (this.frozen) {
             return null;
         }
@@ -172,9 +169,9 @@ public abstract class GenericMenuScreen extends BaseScreen implements ReloadsThe
         BaseButton left = new ThemedButton(0, 0, 0, 0, componentL, onPressL, onTooltipL, typeL);
         BaseButton right = new ThemedButton(0, 0, 0, 0, componentR, onPressR, onTooltipR, typeR);
 
-        left.setWidth(((width() - 5 - 5) / 2) - 1);
-        right.setWidth(((width() - 5 - 5) / 2) - 1);
-        this.rows.add(new Row(ImmutableList.of(left, right), 24, ((width() - 5 - 5) / 2) - 3, 20, 6, 2, 4, 0, 77));
+        left.setWidth((width() - 5 - 5) / 2 - 1);
+        right.setWidth((width() - 5 - 5) / 2 - 1);
+        this.rows.add(new Row(ImmutableList.of(left, right), 24, (width() - 5 - 5) / 2 - 3, 20, 6, 2, 4, 0, 77));
         addRenderableWidget(left);
         addRenderableWidget(right);
         return new Pair<>(left, right);
@@ -182,57 +179,51 @@ public abstract class GenericMenuScreen extends BaseScreen implements ReloadsThe
 
     @SuppressWarnings("unused")
     public BaseButton addButtonRow(Component component) {
-        return addButtonRow(component, btn -> {
-        });
+        return addButtonRow(component, GenericMenuScreen::emptyAction);
     }
 
     @SuppressWarnings("unused")
     public BaseButton addButtonRow(Component component, Runnable onPress) {
-        return addButtonRow(component, btn -> onPress.run(), (btn, stack, mx, my) -> {
-        });
+        return addButtonRow(component, btn -> onPress.run(), GenericMenuScreen::nullTooltip);
     }
 
     @SuppressWarnings("unused")
     public BaseButton addButtonRow(Component component, BaseButton.CommandCallback onPress) {
-        return addButtonRow(component, onPress, (btn, stack, mx, my) -> {
-        });
+        return addButtonRow(component, onPress, GenericMenuScreen::nullTooltip);
     }
 
     @SuppressWarnings("unused")
-    public BaseButton addButtonRow(Component component, Runnable onPress, BaseButton.TooltipHandler onTooltip) {
+    public BaseButton addButtonRow(Component component, Runnable onPress, BaseButton.TooltipFactory onTooltip) {
         return addButtonRow(component, ThemedButton.Type.of(theme), btn -> onPress.run(), onTooltip);
     }
 
     @SuppressWarnings("unused")
-    public BaseButton addButtonRow(Component component, BaseButton.CommandCallback onPress, BaseButton.TooltipHandler onTooltip) {
+    public BaseButton addButtonRow(Component component, BaseButton.CommandCallback onPress, BaseButton.TooltipFactory onTooltip) {
         return addButtonRow(component, ThemedButton.Type.of(theme), onPress, onTooltip);
     }
 
     @SuppressWarnings("unused")
     public BaseButton addButtonRow(Component component, ThemedButton.Type type) {
-        return addButtonRow(component, type, btn -> {
-        });
+        return addButtonRow(component, type, GenericMenuScreen::emptyAction);
     }
 
     @SuppressWarnings("unused")
     public BaseButton addButtonRow(Component component, ThemedButton.Type type, BaseButton.CommandCallback onPress) {
-        return addButtonRow(component, type, onPress, (btn, stack, mx, my) -> {
-        });
+        return addButtonRow(component, type, onPress, GenericMenuScreen::nullTooltip);
     }
 
     @SuppressWarnings("unused")
     public BaseButton addButtonRow(Component component, ThemedButton.Type type, Runnable onPress) {
-        return addButtonRow(component, type, btn -> onPress.run(), (btn, stack, mx, my) -> {
-        });
+        return addButtonRow(component, type, btn -> onPress.run(), GenericMenuScreen::nullTooltip);
     }
 
     @SuppressWarnings("unused")
-    public BaseButton addButtonRow(Component component, ThemedButton.Type type, Runnable onPress, BaseButton.TooltipHandler onTooltip) {
+    public BaseButton addButtonRow(Component component, ThemedButton.Type type, Runnable onPress, BaseButton.TooltipFactory onTooltip) {
         return addButtonRow(component, type, btn -> onPress.run(), onTooltip);
     }
 
     @SuppressWarnings("unused")
-    public BaseButton addButtonRow(Component component, ThemedButton.Type type, BaseButton.CommandCallback onPress, BaseButton.TooltipHandler onTooltip) {
+    public BaseButton addButtonRow(Component component, ThemedButton.Type type, BaseButton.CommandCallback onPress, BaseButton.TooltipFactory onTooltip) {
         if (this.frozen) {
             return null;
         }
@@ -282,7 +273,7 @@ public abstract class GenericMenuScreen extends BaseScreen implements ReloadsThe
     }
 
     @SuppressWarnings("unused")
-    public <T extends Widget> T addStatic(T widget, int height, int widgetWidth, int deltaX, int deltaY, int widgetOffset) {
+    public <T extends Renderable> T addStatic(T widget, int height, int widgetWidth, int deltaX, int deltaY, int widgetOffset) {
         if (this.frozen) {
             return null;
         }
@@ -293,7 +284,7 @@ public abstract class GenericMenuScreen extends BaseScreen implements ReloadsThe
     }
 
     @SuppressWarnings("unused")
-    public <T extends Widget> T addStatic(T widget, int height, int widgetWidth, int deltaX, int deltaY, int widgetOffset, int u, int v) {
+    public <T extends Renderable> T addStatic(T widget, int height, int widgetWidth, int deltaX, int deltaY, int widgetOffset, int u, int v) {
         if (this.frozen) {
             return null;
         }
@@ -304,7 +295,7 @@ public abstract class GenericMenuScreen extends BaseScreen implements ReloadsThe
     }
 
     @SuppressWarnings("unused")
-    public <T extends Widget> T addStatic(T widget, int height, int widgetWidth, int widgetHeight, int deltaX, int deltaY, int widgetOffset, int u, int v) {
+    public <T extends Renderable> T addStatic(T widget, int height, int widgetWidth, int widgetHeight, int deltaX, int deltaY, int widgetOffset, int u, int v) {
         if (this.frozen) {
             return null;
         }
@@ -315,7 +306,7 @@ public abstract class GenericMenuScreen extends BaseScreen implements ReloadsThe
     }
 
     @SuppressWarnings("unused")
-    public <T extends Widget> T addStatic(T widget, int height, int widgetWidth, int widgetHeight, int deltaX, int deltaY, int widgetOffset, int u, int v, int uh) {
+    public <T extends Renderable> T addStatic(T widget, int height, int widgetWidth, int widgetHeight, int deltaX, int deltaY, int widgetOffset, int u, int v, int uh) {
         if (this.frozen) {
             return null;
         }
@@ -326,7 +317,7 @@ public abstract class GenericMenuScreen extends BaseScreen implements ReloadsThe
     }
 
     @SuppressWarnings("unused")
-    public <T extends Widget> T addStatic(T widget, int height, int widgetWidth, int widgetHeight, int deltaX, int deltaY, int widgetOffset, int u, int v, int uh, int uw) {
+    public <T extends Renderable> T addStatic(T widget, int height, int widgetWidth, int widgetHeight, int deltaX, int deltaY, int widgetOffset, int u, int v, int uh, int uw) {
         if (this.frozen) {
             return null;
         }
@@ -337,7 +328,7 @@ public abstract class GenericMenuScreen extends BaseScreen implements ReloadsThe
     }
 
     @SuppressWarnings("unused")
-    public <T extends GuiEventListener & Widget & NarratableEntry> T addRenderableWidget(T widget, int height, int widgetWidth, int deltaX, int deltaY, int widgetOffset) {
+    public <T extends GuiEventListener & Renderable & NarratableEntry> T addRenderableWidget(T widget, int height, int widgetWidth, int deltaX, int deltaY, int widgetOffset) {
         if (this.frozen) {
             return null;
         }
@@ -348,7 +339,7 @@ public abstract class GenericMenuScreen extends BaseScreen implements ReloadsThe
     }
 
     @SuppressWarnings("unused")
-    public <T extends GuiEventListener & Widget & NarratableEntry> T addRenderableWidget(T widget, int height, int widgetWidth, int deltaX, int deltaY, int widgetOffset, int u, int v) {
+    public <T extends GuiEventListener & Renderable & NarratableEntry> T addRenderableWidget(T widget, int height, int widgetWidth, int deltaX, int deltaY, int widgetOffset, int u, int v) {
         if (this.frozen) {
             return null;
         }
@@ -359,7 +350,7 @@ public abstract class GenericMenuScreen extends BaseScreen implements ReloadsThe
     }
 
     @SuppressWarnings("unused")
-    public <T extends GuiEventListener & Widget & NarratableEntry> T addRenderableWidget(T widget, int height, int widgetWidth, int widgetHeight, int deltaX, int deltaY, int widgetOffset, int u, int v) {
+    public <T extends GuiEventListener & Renderable & NarratableEntry> T addRenderableWidget(T widget, int height, int widgetWidth, int widgetHeight, int deltaX, int deltaY, int widgetOffset, int u, int v) {
         if (this.frozen) {
             return null;
         }
@@ -370,7 +361,7 @@ public abstract class GenericMenuScreen extends BaseScreen implements ReloadsThe
     }
 
     @SuppressWarnings("unused")
-    public <T extends GuiEventListener & Widget & NarratableEntry> T addRenderableWidget(T widget, int height, int widgetWidth, int widgetHeight, int deltaX, int deltaY, int widgetOffset, int u, int v, int uh) {
+    public <T extends GuiEventListener & Renderable & NarratableEntry> T addRenderableWidget(T widget, int height, int widgetWidth, int widgetHeight, int deltaX, int deltaY, int widgetOffset, int u, int v, int uh) {
         if (this.frozen) {
             return null;
         }
@@ -381,7 +372,7 @@ public abstract class GenericMenuScreen extends BaseScreen implements ReloadsThe
     }
 
     @SuppressWarnings("unused")
-    public <T extends GuiEventListener & Widget & NarratableEntry> T addRenderableWidget(T widget, int height, int widgetWidth, int widgetHeight, int deltaX, int deltaY, int widgetOffset, int u, int v, int uh, int uw) {
+    public <T extends GuiEventListener & Renderable & NarratableEntry> T addRenderableWidget(T widget, int height, int widgetWidth, int widgetHeight, int deltaX, int deltaY, int widgetOffset, int u, int v, int uh, int uw) {
         if (this.frozen) {
             return null;
         }
@@ -537,7 +528,6 @@ public abstract class GenericMenuScreen extends BaseScreen implements ReloadsThe
 
     protected void init() {
         frozen = true;
-        this.mc.keyboardHandler.setSendRepeatsToGui(true);
         initialized = true;
     }
 
@@ -547,7 +537,7 @@ public abstract class GenericMenuScreen extends BaseScreen implements ReloadsThe
     }
 
     public void removed() {
-        this.mc.keyboardHandler.setSendRepeatsToGui(false);
+        
     }
 
     @Override
@@ -690,7 +680,7 @@ public abstract class GenericMenuScreen extends BaseScreen implements ReloadsThe
         // Render row.
         if (row.widgets.size() == 1) {
             // Render row with single widget.
-            Widget widget = row.widgets.get(0);
+            Renderable widget = row.widgets.get(0);
             renderRowWidget(
                     widget,
                     left() + row.deltaX(),
@@ -704,7 +694,7 @@ public abstract class GenericMenuScreen extends BaseScreen implements ReloadsThe
         } else {
             // Render row with multiple widgets.
             int x = left() + row.deltaX();
-            for (Widget widget : row.widgets()) {
+            for (Renderable widget : row.widgets()) {
                 renderRowWidget(widget,
                         x,
                         curY + row.deltaY(),
@@ -720,10 +710,10 @@ public abstract class GenericMenuScreen extends BaseScreen implements ReloadsThe
         }
     }
 
-    private void renderRowWidget(Widget widget, int x, int y, int width, int height, @NotNull PoseStack matrices, int mouseX, int mouseY, float partialTicks) {
+    private void renderRowWidget(Renderable widget, int x, int y, int width, int height, @NotNull PoseStack matrices, int mouseX, int mouseY, float partialTicks) {
         if (widget instanceof AbstractWidget absWidget && absWidget instanceof AbstractWidgetAccessor accessor) {
-            absWidget.x = x;
-            absWidget.y = y;
+            absWidget.setX(x);
+            absWidget.setY(y);
             absWidget.setWidth(width);
             accessor.setHeight(height);
         } else if (widget instanceof Label label) {
@@ -758,7 +748,7 @@ public abstract class GenericMenuScreen extends BaseScreen implements ReloadsThe
     @Override
     public void tick() {
         for (Row row : rows) {
-            for (Widget widget : row.widgets()) {
+            for (Renderable widget : row.widgets()) {
                 if (widget instanceof EditBox editBox) {
                     editBox.tick();
                 }
@@ -776,7 +766,7 @@ public abstract class GenericMenuScreen extends BaseScreen implements ReloadsThe
             }
             case DETACHED -> {
                 int iconX = right() - 9 - 5;
-                int iconY = top() + 1 + (int) (((25 - 6) / 2f - font.lineHeight / 2f));
+                int iconY = top() + 1 + (int) ((25 - 6) / 2f - font.lineHeight / 2f);
                 return new Vec2(iconX, iconY);
             }
         }
@@ -785,7 +775,7 @@ public abstract class GenericMenuScreen extends BaseScreen implements ReloadsThe
 
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
         for (Row row : rows) {
-            for (Widget widget : row.widgets()) {
+            for (Renderable widget : row.widgets()) {
                 if (widget instanceof EditBox editBox) {
                     if (editBox.isFocused()) {
                         editBox.mouseClicked(mouseX, mouseY, button);
@@ -821,27 +811,27 @@ public abstract class GenericMenuScreen extends BaseScreen implements ReloadsThe
         }
     }
 
-    private record Row(ImmutableList<Widget> widgets, int height, int widgetWidth, int widgetHeight,
+    private record Row(ImmutableList<Renderable> widgets, int height, int widgetWidth, int widgetHeight,
                        int deltaX, int deltaY, int widgetOffset, int u, int v, int uw, int vh) {
 
-        public Row(ImmutableList<Widget> widgets, int height, int widgetWidth, int deltaX, int deltaY, int widgetOffset) {
+        public Row(ImmutableList<Renderable> widgets, int height, int widgetWidth, int deltaX, int deltaY, int widgetOffset) {
             this(widgets, height, widgetWidth, deltaX, deltaY, widgetOffset, 0, 216);
         }
 
-        public Row(ImmutableList<Widget> widgets, int height, int widgetWidth, int deltaX, int deltaY, int widgetOffset, int u, int v) {
+        public Row(ImmutableList<Renderable> widgets, int height, int widgetWidth, int deltaX, int deltaY, int widgetOffset, int u, int v) {
             this(widgets, height, widgetWidth, height, deltaX, deltaY, widgetOffset, u, v);
         }
 
-        public Row(ImmutableList<Widget> widgets, int height, int widgetWidth, int widgetHeight, int deltaX, int deltaY, int widgetOffset, int u, int v) {
+        public Row(ImmutableList<Renderable> widgets, int height, int widgetWidth, int widgetHeight, int deltaX, int deltaY, int widgetOffset, int u, int v) {
             this(widgets, height, widgetWidth, widgetHeight, deltaX, deltaY, widgetOffset, u, v, height);
         }
 
-        public Row(ImmutableList<Widget> widgets, int height, int widgetWidth, int widgetHeight, int deltaX, int deltaY, int widgetOffset, int u, int v, int uh) {
+        public Row(ImmutableList<Renderable> widgets, int height, int widgetWidth, int widgetHeight, int deltaX, int deltaY, int widgetOffset, int u, int v, int uh) {
             this(widgets, height, widgetWidth, widgetHeight, deltaX, deltaY, widgetOffset, u, v, 176, uh);
         }
 
         public void reloadTheme() {
-            for (Widget widget : widgets) {
+            for (Renderable widget : widgets) {
                 if (widget instanceof ReloadsTheme abstractWidget) {
                     abstractWidget.reloadTheme();
                 }

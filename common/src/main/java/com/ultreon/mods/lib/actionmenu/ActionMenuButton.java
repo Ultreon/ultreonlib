@@ -26,7 +26,7 @@ public class ActionMenuButton extends TransparentButton implements IActionMenuIn
         this.item = item;
     }
 
-    public ActionMenuButton(@NotNull ActionMenuScreen screen, @NotNull ActionMenuItem item, int x, int y, int width, int height, OnTooltip onTooltip) {
+    public ActionMenuButton(@NotNull ActionMenuScreen screen, @NotNull ActionMenuItem item, int x, int y, int width, int height, TooltipFactory onTooltip) {
         super(x, y, width, height, item.getText(), (btn) -> item.activate(), onTooltip);
         this.screen = screen;
         this.item = item;
@@ -44,7 +44,7 @@ public class ActionMenuButton extends TransparentButton implements IActionMenuIn
             background = new Color(0, 0, 0, (int) Math.min(Math.max(127 - (51.2 * (menuIndex)), 0), 127)).getRGB();
         }
 
-        fill(pose, x, y, x + width, y + height, background);
+        fill(pose, getX(), getY(), getX() + width, getY() + height, background);
 
         int hoverColor;
         int normalColor;
@@ -83,9 +83,9 @@ public class ActionMenuButton extends TransparentButton implements IActionMenuIn
         }
 
         if (isHovered && menuIndex == 0 && active) {
-            drawCenteredString(pose, font, this.getMessage(), (this.x + this.width / 2) + 1, (this.y + (this.height - 8) / 2) + 1, textColor);
+            drawCenteredString(pose, font, this.getMessage(), (this.getX() + this.width / 2) + 1, (this.getY() + (this.height - 8) / 2) + 1, textColor);
         } else {
-            drawCenteredString(pose, font, this.getMessage(), this.x + this.width / 2, this.y + (this.height - 8) / 2, textColor);
+            drawCenteredString(pose, font, this.getMessage(), this.getX() + this.width / 2, this.getY() + (this.height - 8) / 2, textColor);
         }
 
         if (item instanceof SubmenuItem) {
@@ -98,19 +98,19 @@ public class ActionMenuButton extends TransparentButton implements IActionMenuIn
             RenderSystem.enableDepthTest();
             if (active) {
                 if (isHovered && menuIndex == 0) {
-                    blit(pose, x + width - 6, y + height / 2 - 4, 6, 9, 12, 0, 6, 9, 64, 64);
+                    blit(pose, getX() + width - 6, getY() + height / 2 - 4, 6, 9, 12, 0, 6, 9, 64, 64);
                 } else {
-                    blit(pose, x + width - 6, y + height / 2 - 4, 6, 9, 6, 0, 6, 9, 64, 64);
+                    blit(pose, getX() + width - 6, getY() + height / 2 - 4, 6, 9, 6, 0, 6, 9, 64, 64);
                 }
             } else {
-                blit(pose, x + width - 6, y + height / 2 - 4, 6, 9, 0, 0, 6, 9, 64, 64);
+                blit(pose, getX() + width - 6, getY() + height / 2 - 4, 6, 9, 0, 0, 6, 9, 64, 64);
             }
             pose.popPose();
 
             if (client.screen instanceof ActionMenuScreen currentScreen) {
                 if (isHovered && active) {
                     if (currentScreen.getMenuIndex() >= screen.getMenuIndex()) {
-                        screen.setButtonRectangle(new Rectangle(x, y, width + 1, height));
+                        screen.setButtonRectangle(new Rectangle(getX(), getY(), width + 1, height));
                         screen.setActiveItem(this);
                         client.setScreen(new ActionMenuScreen(screen, ((SubmenuItem) item).getHandler().getMenu(), screen.getMenuIndex() + 1, item.getText()));
                     }
@@ -126,10 +126,6 @@ public class ActionMenuButton extends TransparentButton implements IActionMenuIn
                     screen.scheduleDisplay(screen);
                 }
             }
-        }
-
-        if (this.isHovered) {
-            this.renderToolTip(pose, mouseX, mouseY);
         }
     }
 

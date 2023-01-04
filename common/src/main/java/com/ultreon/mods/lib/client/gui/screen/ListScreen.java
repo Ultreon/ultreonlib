@@ -14,6 +14,8 @@ package com.ultreon.mods.lib.client.gui.screen;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.ultreon.mods.lib.UltreonLib;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
@@ -23,12 +25,8 @@ import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarratableEntry;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FastColor;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -109,7 +107,6 @@ public final class ListScreen extends Screen {
     protected void init() {
         onInit.init();
 
-        Objects.requireNonNull(this.minecraft).keyboardHandler.setSendRepeatsToGui(true);
         if (this.initialized && this.list != null) {
             this.list.updateSize(this.width, this.height, 88, this.func1());
         } else {
@@ -130,7 +127,7 @@ public final class ListScreen extends Screen {
     }
 
     public void removed() {
-        Objects.requireNonNull(this.minecraft).keyboardHandler.setSendRepeatsToGui(false);
+
     }
 
     public void renderBackground(@NotNull PoseStack pose) {
@@ -161,7 +158,7 @@ public final class ListScreen extends Screen {
         }
 
         if (!this.searchBox.isFocused() && this.searchBox.getValue().isEmpty()) {
-            drawString(pose, this.minecraft.font, SEARCH_HINT, this.searchBox.x, this.searchBox.y, -1);
+            drawString(pose, this.minecraft.font, SEARCH_HINT, this.searchBox.getX(), this.searchBox.getY(), -1);
         } else {
             this.searchBox.render(pose, mouseX, mouseY, partialTicks);
         }
@@ -302,7 +299,7 @@ public final class ListScreen extends Screen {
 
                 Component description = this.getDescription();
                 int l;
-                if (description == Component.empty()) {
+                if (Objects.equals(description, Component.empty())) {
                     fill(pose, left, top, left + width, top + height, EMPTY_COLOR);
                     l = top + (height - 9) / 2;
                 } else {
@@ -317,8 +314,8 @@ public final class ListScreen extends Screen {
                 int btnIndex = 0;
                 for (GuiEventListener guiEventListener : buttons) {
                     if (guiEventListener instanceof Button button) {
-                        button.x = left + width - 8 - (BUTTON_WIDTH + 4) * (btnIndex + 1);
-                        button.y = top + height / 2 - 10;
+                        button.setX(left + width - 8 - (BUTTON_WIDTH + 4) * (btnIndex + 1));
+                        button.setY(top + height / 2 - 10);
                         button.render(pose, mouseX, mouseY, partialTicks);
                         btnIndex++;
                     }

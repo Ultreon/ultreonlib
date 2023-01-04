@@ -24,25 +24,25 @@ public class LabelItem extends MenuItem {
 
     @Override
     public void render(@NotNull PoseStack pose, int mouseX, int mouseY, float partialTicks) {
-        this.font.drawShadow(pose, getMessage(), x, y + 6 - font.lineHeight / 2f, getTextColor());
+        this.font.drawShadow(pose, getMessage(), getX(), getY() + 6 - font.lineHeight / 2f, getTextColor());
         if (isHoveredOrFocused()) {
-            int x1 = x + width;
-            int y1 = y + height;
-            fill(pose, x, y, x1, y, getTextColor());   // top
-            fill(pose, x, y1, x1, y1, getTextColor()); // bottom
-            fill(pose, x, y, x, y1, getTextColor());   // left
-            fill(pose, x1, y, x1, y1, getTextColor()); // right
+            int x1 = getX() + width;
+            int y1 = getY() + height;
+            fill(pose, getX(), getY(), x1, getY(), getTextColor());   // top
+            fill(pose, getX(), y1, x1, y1, getTextColor()); // bottom
+            fill(pose, getX(), getY(), getX(), y1, getTextColor());   // left
+            fill(pose, x1, getY(), x1, y1, getTextColor()); // right
         }
     }
 
     @Override
-    public void updateNarration(@NotNull NarrationElementOutput narrator) {
-        narrator.add(NarratedElementType.TITLE, this.createNarrationMessage());
+    public void updateWidgetNarration(@NotNull NarrationElementOutput narration) {
+        narration.add(NarratedElementType.TITLE, this.createNarrationMessage());
         if (this.active) {
             if (this.isFocused()) {
-                narrator.add(NarratedElementType.USAGE, Component.translatable("narration.button.usage.focused"));
+                narration.add(NarratedElementType.USAGE, Component.translatable("narration.button.usage.focused"));
             } else {
-                narrator.add(NarratedElementType.USAGE, Component.translatable("narration.button.usage.hovered"));
+                narration.add(NarratedElementType.USAGE, Component.translatable("narration.button.usage.hovered"));
             }
         }
     }

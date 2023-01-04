@@ -29,8 +29,8 @@ public class ButtonMenuItem extends AbstractButtonMenuItem {
     }
 
     @Override
-    public void updateNarration(@NotNull NarrationElementOutput narrator) {
-        this.defaultButtonNarrationText(narrator);
+    public void updateNarration(@NotNull NarrationElementOutput narration) {
+        this.defaultButtonNarrationText(narration);
     }
 
     @Override

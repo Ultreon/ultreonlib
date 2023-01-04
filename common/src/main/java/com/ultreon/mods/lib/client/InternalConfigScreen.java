@@ -22,7 +22,6 @@ public class InternalConfigScreen extends GenericMenuScreen {
         Theme theme = UltreonLib.getTheme();
         theme = KeyboardHelper.isShiftDown() ? theme.previous() : theme.next();
         UltreonLib.setTheme(theme);
-        System.out.println("theme.getDescriptionId() = " + theme.getDescriptionId());
         button.setMessage(Component.translatable("gui.ultreonlib.config.theme").append(theme.getDisplayName()));
     }
 

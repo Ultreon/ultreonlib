@@ -48,8 +48,8 @@ public abstract class FullscreenRenderScreen extends BaseScreen {
         for (IToolbarItem item : items) {
             int width1 = item.width();
             if (item instanceof ToolbarItem toolbarItem) {
-                toolbarItem.x = x;
-                toolbarItem.y = y;
+                toolbarItem.setX(x);
+                toolbarItem.setY(y);
             }
             item.render(pose, mouseX, mouseY, partialTicks);
 

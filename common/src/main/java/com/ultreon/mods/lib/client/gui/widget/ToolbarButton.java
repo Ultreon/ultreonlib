@@ -35,7 +35,7 @@ public class ToolbarButton extends ToolbarItem implements ReloadsTheme, Clickabl
     }
 
     @Override
-    public void updateNarration(@NotNull NarrationElementOutput narration) {
+    public void updateWidgetNarration(@NotNull NarrationElementOutput narration) {
         narration.add(NarratedElementType.TITLE, getMessage());
     }
 
@@ -68,15 +68,11 @@ public class ToolbarButton extends ToolbarItem implements ReloadsTheme, Clickabl
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
         RenderSystem.enableDepthTest();
-        this.blit(pose, this.x, this.y, 0, 46 + i * 20, this.width / 2, this.height);
-        this.blit(pose, this.x + this.width / 2, this.y, 200 - this.width / 2, 46 + i * 20, this.width / 2, this.height);
+        this.blit(pose, this.getX(), this.getY(), 0, 46 + i * 20, this.width / 2, this.height);
+        this.blit(pose, this.getX() + this.width / 2, this.getY(), 200 - this.width / 2, 46 + i * 20, this.width / 2, this.height);
         this.renderBg(pose, minecraft, mouseX, mouseY);
         int j = getTextColor();
-        drawCenteredString(pose, font, this.getMessage(), this.x + this.width / 2, this.y + (this.height - 8) / 2, j | Mth.ceil(this.alpha * 255.0F) << 24);
-
-        if (this.isHoveredOrFocused()) {
-            this.renderToolTip(pose, mouseX, mouseY);
-        }
+        drawCenteredString(pose, font, this.getMessage(), this.getX() + this.width / 2, this.getY() + (this.height - 8) / 2, j | Mth.ceil(this.alpha * 255.0F) << 24);
     }
 
     @Override

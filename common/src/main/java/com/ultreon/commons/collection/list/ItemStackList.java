@@ -3,7 +3,7 @@ package com.ultreon.commons.collection.list;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.core.HolderSet;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -17,7 +17,7 @@ import java.util.Optional;
 
 public class ItemStackList extends ArrayList<ItemStack> {
     public static ItemStackList of(TagKey<Item> tagKey) {
-        Optional<HolderSet.Named<Item>> tag = Registry.ITEM.getTag(tagKey);
+        Optional<HolderSet.Named<Item>> tag = BuiltInRegistries.ITEM.getTag(tagKey);
         ItemStackList itemStacks = new ItemStackList();
         tag.ifPresent(holderSet -> holderSet.unwrap().ifRight(holders -> holders.forEach(itemHolder -> itemHolder.unwrap().ifRight(item -> itemStacks.add(new ItemStack(item))))));
         return itemStacks;

@@ -25,14 +25,10 @@ public class ActionMenuTitle extends AbstractWidget implements IActionMenuIndexa
         Color color = new Color(0, 0, 0, 127 / (menuIndex + 1));
         int col = color.getRGB();
 
-        fill(matrixStack, x + (this.width / 2 - width / 2) - 1, y + (this.height / 2 - 5) - 1 - 2, x + (this.width / 2 + width / 2), y + (this.height / 2 - 5) + 12, col);
+        fill(matrixStack, getX() + (this.width / 2 - width / 2) - 1, getY() + (this.height / 2 - 5) - 1 - 2, getX() + (this.width / 2 + width / 2), getY() + (this.height / 2 - 5) + 12, col);
 
         int j = new Color(255, 255, 255, 255 / (menuIndex + 1)).getRGB(); // White : Light Grey
-        drawCenteredString(matrixStack, font, this.getMessage(), this.x + this.width / 2, this.y + (this.height - 8) / 2, j);
-
-        if (this.isHovered) {
-            this.renderToolTip(matrixStack, mouseX, mouseY);
-        }
+        drawCenteredString(matrixStack, font, this.getMessage(), this.getX() + this.width / 2, this.getY() + (this.height - 8) / 2, j);
     }
 
     @Override
@@ -41,7 +37,7 @@ public class ActionMenuTitle extends AbstractWidget implements IActionMenuIndexa
     }
 
     @Override
-    public void updateNarration(NarrationElementOutput output) {
+    public void updateWidgetNarration(NarrationElementOutput output) {
         this.defaultButtonNarrationText(output);
     }
 }

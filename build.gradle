@@ -13,9 +13,6 @@ architectury {
     minecraft = rootProject.minecraft_version
 }
 
-def hashCode = new Random().nextInt()
-def hash = "%08x".formatted(hashCode)
-
 version = "${mod_version}"
 
 println "Mod version: $version"
@@ -28,6 +25,7 @@ forgix {
     mergedJarName = "ultreon-lib-${version}.jar"
     outputDir = "build/libs/merged"
 
+    //noinspection GroovyAssignabilityCheck
     forge {
         projectName = "merge-forge"
         jarLocation = "build/libs/ultreon-lib-${version}.jar"
@@ -37,6 +35,7 @@ forgix {
    //     mixin "ultreon-lib.mixins.json"
     }
 
+    //noinspection GroovyAssignabilityCheck
     fabric {
         projectName = "merge-fabric"
         jarLocation = "build/libs/ultreon-lib-${version}.jar"
@@ -92,6 +91,10 @@ subprojects {
             name "Progwml6 maven"
             url "https://dvs1.progwml6.com/files/maven/"
         }
+        maven {
+            name "Fuzs Mod Resources"
+            url "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/"
+        }
         maven { url "https://maven.architectury.dev/" }
         maven { url 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/' }
     }
@@ -134,9 +137,11 @@ allprojects {
         }
     }
 
-    tasks.withType(JavaCompile) {
-        options.encoding = "UTF-8"
-        options.release = 17
+    tasks.withType(JavaCompile).tap {
+        configureEach {
+            options.encoding = "UTF-8"
+            options.release.set(17 as Integer)
+        }
     }
 
     java {

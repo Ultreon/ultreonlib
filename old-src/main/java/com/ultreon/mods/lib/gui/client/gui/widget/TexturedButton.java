@@ -27,7 +27,7 @@ public abstract sealed class TexturedButton extends BaseButton permits ThemedBut
         super(x, y, width, height, title, pressedAction);
     }
 
-    public TexturedButton(int x, int y, int width, int height, Component title, OnPress pressedAction, OnTooltip onTooltip) {
+    public TexturedButton(int x, int y, int width, int height, Component title, OnPress pressedAction, CreateNarration onTooltip) {
         super(x, y, width, height, title, pressedAction, onTooltip);
     }
 

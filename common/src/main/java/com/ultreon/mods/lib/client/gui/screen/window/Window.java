@@ -1,5 +1,6 @@
 package com.ultreon.mods.lib.client.gui.screen.window;
 
+import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.ultreon.mods.lib.UltreonLib;
 import com.ultreon.mods.lib.client.gui.Anchor;
@@ -12,7 +13,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.components.AbstractWidget;
-import net.minecraft.client.gui.components.Widget;
+import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarratedElementType;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
@@ -73,7 +74,7 @@ public class Window extends BaseContainerWidget implements ReloadsTheme {
     }
 
     @Override
-    public void updateNarration(@NotNull NarrationElementOutput narrationElementOutput) {
+    public void updateWidgetNarration(@NotNull NarrationElementOutput narrationElementOutput) {
         narrationElementOutput.add(NarratedElementType.TITLE, getTitle());
     }
 
@@ -158,6 +159,7 @@ public class Window extends BaseContainerWidget implements ReloadsTheme {
      * If the window is invalid or already destroyed, this method will return false.
      * @see #isValid()
      */
+    @CanIgnoreReturnValue
     public final boolean destroy() {
         if (valid) {
             this.invalidate();
@@ -208,8 +210,8 @@ public class Window extends BaseContainerWidget implements ReloadsTheme {
 
         if (isVisible()) {
             // Window is shown, so render it.
-            renderTitle(pose, mouseX, mouseY, partialTicks);
-            renderFrame(pose, mouseX, mouseY, partialTicks);
+            renderTitle(pose, mouseX, mouseY);
+            renderFrame(pose);
             renderContents(pose, mouseX, mouseY, partialTicks);
         }
     }
@@ -224,7 +226,7 @@ public class Window extends BaseContainerWidget implements ReloadsTheme {
      */
     private void renderContents(PoseStack pose, int mouseX, int mouseY, float partialTicks) {
         for (GuiEventListener widget : children()) {
-            if (widget instanceof Widget) {
+            if (widget instanceof Renderable) {
                 ((AbstractWidget) widget).render(pose, mouseX, mouseY, partialTicks);
             }
         }
@@ -236,13 +238,12 @@ public class Window extends BaseContainerWidget implements ReloadsTheme {
      * @param pose         The pose-stack to render with.
      * @param mouseX       The x position of the mouse.
      * @param mouseY       The y position of the mouse.
-     * @param partialTicks The partial ticks.
      */
-    private void renderTitle(PoseStack pose, int mouseX, int mouseY, float partialTicks) {
-        BaseScreen.renderTitleFrame(pose, x, y - 20, width, 12, theme);
-        drawCenteredString(pose, minecraft.font, getTitle(), x + width / 2, y - 12, theme.getTitleColor());
+    private void renderTitle(PoseStack pose, int mouseX, int mouseY) {
+        BaseScreen.renderTitleFrame(pose, getX(), getY() - 20, width, 12, theme);
+        drawCenteredString(pose, minecraft.font, getTitle(), getX() + width / 2, getY() - 12, theme.getTitleColor());
 
-        renderCloseButton(pose, mouseX, mouseY, partialTicks, x + width - 12, y - 12);
+        renderCloseButton(pose, mouseX, mouseY, getX() + width - 12, getY() - 12);
     }
 
     /**
@@ -251,11 +252,10 @@ public class Window extends BaseContainerWidget implements ReloadsTheme {
      * @param pose         The pose-stack to render with.
      * @param mouseX       The x position of the mouse.
      * @param mouseY       The y position of the mouse.
-     * @param partialTicks The partial ticks.
      * @param x            The x position of the close button.
      * @param y            The y position of the close button.
      */
-    private void renderCloseButton(PoseStack pose, int mouseX, int mouseY, float partialTicks, int x, int y) {
+    private void renderCloseButton(PoseStack pose, int mouseX, int mouseY, int x, int y) {
         if (isMouseOver(mouseX, mouseY, x, y, 12, 12)) {
             drawCenteredString(pose, minecraft.font, CLOSE_ICON_HOVER, x + 6, y + 6, theme.getTitleColor());
         } else {
@@ -274,34 +274,19 @@ public class Window extends BaseContainerWidget implements ReloadsTheme {
      * @param height The height of the area
      * @return true if the mouse is over the area, false if it is not.
      */
+    @SuppressWarnings("SameParameterValue")
     private boolean isMouseOver(int mouseX, int mouseY, int x, int y, int width, int height) {
         return mouseX >= x && mouseX <= x + width && mouseY >= y && mouseY <= y + height;
     }
 
     public final Vec2 getCloseButtonOffset() {
-        int iconX = (x + width) - 9 - 5;
-        int iconY = (y - 21) + 1 + (int) (((25 - 6) / 2f - font.lineHeight / 2f));
+        int iconX = (getX() + width) - 9 - 5;
+        int iconY = (getY() - 21) + 1 + (int) (((25 - 6) / 2f - font.lineHeight / 2f));
         return new Vec2(iconX, iconY);
     }
 
-    private void renderFrame(PoseStack pose, int mouseX, int mouseY, float partialTicks) {
+    private void renderFrame(PoseStack pose) {
         BaseScreen.renderFrame(pose, getX(), getY(), getWidth(), getHeight(), UltreonLib.getTheme());
-    }
-
-    public int getX() {
-        return x;
-    }
-
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    public void setY(int y) {
-        this.y = y;
     }
 
     @Override
@@ -551,6 +536,6 @@ public class Window extends BaseContainerWidget implements ReloadsTheme {
 
     @NotNull
     public String getPlainTitle() {
-        return Objects.requireNonNull(ChatFormatting.stripFormatting(getTitle().getString()), () -> "Wtf happened here?");
+        return Objects.requireNonNull(ChatFormatting.stripFormatting(getTitle().getString()), "Wtf happened here?");
     }
 }

@@ -4,9 +4,9 @@ import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiComponent;
-import net.minecraft.client.gui.components.Widget;
+import net.minecraft.client.gui.components.Renderable;
 
-public class Hud extends GuiComponent implements Widget {
+public class Hud extends GuiComponent implements Renderable {
     protected final Minecraft minecraft;
     private final Window window;
 

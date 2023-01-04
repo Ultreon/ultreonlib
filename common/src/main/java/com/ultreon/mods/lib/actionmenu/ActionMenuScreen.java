@@ -1,13 +1,13 @@
 package com.ultreon.mods.lib.actionmenu;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.ultreon.mods.lib.mixin.common.ScreenAccess;
 import com.ultreon.mods.lib.network.UltreonLibNetwork;
 import com.ultreon.mods.lib.network.packet.AMenuItemPermissionRequestPacket;
-import com.ultreon.mods.lib.mixin.common.ScreenAccess;
 import net.minecraft.CrashReport;
 import net.minecraft.ReportedException;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.components.Widget;
+import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
@@ -46,6 +46,7 @@ public class ActionMenuScreen extends Screen {
     @Override
     protected void init() {
         if (parent != null && initialized) {
+            assert minecraft != null;
             parent.init(minecraft, width, height);
         }
         this.clearWidgets();
@@ -150,7 +151,7 @@ public class ActionMenuScreen extends Screen {
             parent.render(matrixStack, mouseX, mouseY, partialTicks);
         }
 
-        for (Widget widget : ((ScreenAccess)(Screen)this).getRenderables()) {
+        for (Renderable widget : ((ScreenAccess) this).getRenderables()) {
             if (widget instanceof IActionMenuIndexable indexable) {
                 indexable.setMenuIndex(childIndex - this.menuIndex);
             }

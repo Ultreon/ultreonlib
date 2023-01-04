@@ -9,10 +9,12 @@ import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.FormattedCharSequence;
+import org.jetbrains.annotations.ApiStatus;
 
 import java.util.Iterator;
 import java.util.List;
 
+@ApiStatus.Internal
 public class DevPreviewScreen extends Screen {
     private static final Component DESCRIPTION = Component.translatable("screen.ultreonlib.dev_preview.description");
     private final List<String> modNames;
@@ -32,17 +34,17 @@ public class DevPreviewScreen extends Screen {
 
     @Override
     protected void init() {
-        this.continueBtn = addRenderableWidget(new Button(width / 2 - 105, 0, 100, 20, CommonComponents.GUI_PROCEED, button -> {
+        this.continueBtn = addRenderableWidget(Button.builder(CommonComponents.GUI_PROCEED, button -> {
             assert minecraft != null;
             minecraft.setScreen(titleScreen);
-        }));
-        this.cancelBtn = addRenderableWidget(new Button(width / 2 + 5, 0, 100, 20, CommonComponents.GUI_CANCEL, button -> {
+        }).pos(width / 2 - 105, 0).width(100).build());
+        this.cancelBtn = addRenderableWidget(Button.builder(CommonComponents.GUI_CANCEL, button -> {
             assert minecraft != null;
             if (WindowCloseEvent.EVENT.invoker().onWindowClose(minecraft.getWindow(), WindowCloseEvent.Source.OTHER).isTrue()) {
                 return;
             }
             minecraft.destroy();
-        }));
+        }).pos(width / 2 + 5, 0).width(100).build());
 
         initialized = true;
     }
@@ -69,8 +71,8 @@ public class DevPreviewScreen extends Screen {
             drawCenteredString(poseStack, font, formattedCharSequence, width / 2, y, 0xaaaaaa);
         }
         
-        continueBtn.y = y + 16;
-        cancelBtn.y = y + 16;
+        continueBtn.setY(y + 16);
+        cancelBtn.setY(y + 16);
 
         super.render(poseStack, mouseX, mouseY, partialTick);
     }

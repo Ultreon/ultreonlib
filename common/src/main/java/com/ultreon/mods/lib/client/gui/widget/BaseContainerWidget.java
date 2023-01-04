@@ -102,7 +102,7 @@ public abstract class BaseContainerWidget extends BaseWidget implements Containe
     }
 
     @Override
-    public void updateNarration(NarrationElementOutput p_169152_) {
+    public void updateWidgetNarration(NarrationElementOutput narration) {
 
     }
 
