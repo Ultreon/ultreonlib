@@ -30,6 +30,7 @@ dependencies {
 }
 
 processResources {
+    dependsOn ":fabric:jar"
 //    inputs.property "version", rootProject.getIngame_version()
 //
 //    filesMatching("fabric.mod.json") {
@@ -38,11 +39,13 @@ processResources {
 }
 
 shadowJar {
+    dependsOn ":fabric:shadowJar"
     configurations = [project.configurations.shadowCommon]
     classifier "dev-shadow"
 }
 
 remapJar {
+    dependsOn ":fabric:remapJar"
     injectAccessWidener = true
     //noinspection GrDeprecatedAPIUsage
     input.set shadowJar.archiveFile
@@ -51,10 +54,12 @@ remapJar {
 }
 
 jar {
+    dependsOn ":fabric:jar"
     classifier "dev"
 }
 
 sourcesJar {
+    dependsOn ":fabric:sourcesJar"
     def commonSources = project(":common").sourcesJar
     dependsOn commonSources
     from commonSources.archiveFile.map { zipTree(it) }

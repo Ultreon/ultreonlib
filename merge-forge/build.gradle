@@ -31,10 +31,11 @@ dependencies {
 }
 
 processResources {
-
+    dependsOn ":forge:jar"
 }
 
 shadowJar {
+    dependsOn ":forge:shadowJar"
     exclude "fabric.mod.json"
 
     configurations = [project.configurations.shadowCommon]
@@ -42,6 +43,7 @@ shadowJar {
 }
 
 remapJar {
+    dependsOn ":forge:remapJar"
     //noinspection GrDeprecatedAPIUsage
     input.set shadowJar.archiveFile
     dependsOn shadowJar
@@ -49,10 +51,12 @@ remapJar {
 }
 
 jar {
+    dependsOn ":forge:jar"
     classifier "dev"
 }
 
 sourcesJar {
+    dependsOn ":forge:sourcesJar"
     def commonSources = project(":common").sourcesJar
     dependsOn commonSources
     from commonSources.archiveFile.map { zipTree(it) }

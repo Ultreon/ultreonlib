@@ -17,9 +17,11 @@ version = "${mod_version}"
 
 println "Mod version: $version"
 
+@SuppressWarnings('unused')
 Object getModDescription() {
     return "${mod_description}"
 }
+
 forgix {
     group = "com.ultreon.mods"
     mergedJarName = "ultreon-lib-${version}.jar"
@@ -29,18 +31,50 @@ forgix {
     forge {
         projectName = "merge-forge"
         jarLocation = "build/libs/ultreon-lib-${version}.jar"
-       // additionalRelocate("com.ultreon.ultreonlib", "forge.com.ultreon.ultreonlib")
-
-    //    mixin "ultreonlib-common.mixins.json"
-   //     mixin "ultreon-lib.mixins.json"
     }
 
     //noinspection GroovyAssignabilityCheck
     fabric {
         projectName = "merge-fabric"
         jarLocation = "build/libs/ultreon-lib-${version}.jar"
-     //   additionalRelocate("com.ultreon.ultreonlib", "fabric.com.ultreon.ultreonlib")
     }
+}
+
+tasks.register('collectJars') {
+    dependsOn "mergeJars"
+    dependsOn ":forge:build"
+    dependsOn ":fabric:build"
+    dependsOn ":common:build"
+
+    doFirst {
+        delete fileTree("$buildDir/libs/collected")
+        mkdir "$buildDir/libs/collected"
+        copy {
+            from "$projectDir/common/build/libs/$archivesBaseName-${version}.jar"
+            into "$buildDir/libs/collected"
+            rename ".*", "$archivesBaseName-common-${version}.jar"
+        }
+        copy {
+            from "$projectDir/forge/build/libs/$archivesBaseName-${version}.jar"
+            into "$buildDir/libs/collected"
+            rename ".*", "$archivesBaseName-forge-${version}.jar"
+        }
+        copy {
+            from "$projectDir/fabric/build/libs/$archivesBaseName-${version}.jar"
+            into "$buildDir/libs/collected"
+            rename ".*", "$archivesBaseName-fabric-${version}.jar"
+        }
+        copy {
+            from "$buildDir/libs/merged/$archivesBaseName-${version}.jar"
+            into "$buildDir/libs/collected"
+        }
+    }
+}
+
+mergeJars {
+    finalizedBy "collectJars"
+    dependsOn ":merge-forge:build"
+    dependsOn ":merge-fabric:build"
 }
 
 println "forgix.outputDir = $forgix.outputDir"
