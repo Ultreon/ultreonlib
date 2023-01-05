@@ -1,4 +1,4 @@
-package generated_lVbWOD6w96OhcZ4;
+package com.ultreon.wrapper.mods.lib;
 
 import net.minecraftforge.fml.common.Mod;
 

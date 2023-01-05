@@ -5,6 +5,7 @@ license = "Ultreon API License v1.1"
 # The main mod, and all sub-mods.
 [[mods]]
 modId = "ultreonlib_forge"
+displayName = "UltreonLib Wrapper"
 description = '''
 Forge wrapper for ultreonlib mod
 '''
