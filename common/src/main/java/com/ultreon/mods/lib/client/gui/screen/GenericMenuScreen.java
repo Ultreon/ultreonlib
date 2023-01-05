@@ -731,21 +731,6 @@ public abstract class GenericMenuScreen extends BaseScreen implements ReloadsThe
     }
 
     @Override
-    @NotNull
-    public java.util.List<? extends GuiEventListener> children() {
-        ArrayList<GuiEventListener> list = new ArrayList<>(super.children());
-        for (Row row : rows) {
-            list.addAll(row.widgets()
-                    .stream()
-                    .filter(widget -> widget instanceof GuiEventListener)
-                    .map(widget -> (GuiEventListener) widget)
-                    .toList());
-        }
-
-        return list;
-    }
-
-    @Override
     public void tick() {
         for (Row row : rows) {
             for (Renderable widget : row.widgets()) {

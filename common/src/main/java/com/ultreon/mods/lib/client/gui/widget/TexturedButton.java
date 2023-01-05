@@ -23,12 +23,12 @@ import org.jetbrains.annotations.NotNull;
 
 @SuppressWarnings("DuplicatedCode")
 public abstract sealed class TexturedButton extends BaseButton permits ThemedButton {
-    public TexturedButton(int x, int y, int width, int height, Component title, CommandCallback pressedAction) {
-        super(x, y, width, height, title, pressedAction);
+    public TexturedButton(int x, int y, int width, int height, Component title, CommandCallback callback) {
+        super(x, y, width, height, title, callback);
     }
 
-    public TexturedButton(int x, int y, int width, int height, Component title, CommandCallback pressedAction, TooltipFactory onTooltip) {
-        super(x, y, width, height, title, pressedAction, onTooltip);
+    public TexturedButton(int x, int y, int width, int height, Component title, CommandCallback callback, TooltipFactory onTooltip) {
+        super(x, y, width, height, title, callback, onTooltip);
     }
 
     /**

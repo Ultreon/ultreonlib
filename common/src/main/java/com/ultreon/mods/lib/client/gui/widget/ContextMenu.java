@@ -117,16 +117,11 @@ public class ContextMenu extends AbstractContainerWidget {
         this.isHovered = mouseX >= this.getX() && mouseY >= this.getY() && mouseX < this.getX() + this.width && mouseY < this.getY() + this.height;
 
         pose.pushPose();
-//        pose.translate(x + 5, y + 5, 0);
         int y = this.getY() + 5 + (hasTitle ? font.lineHeight + 1 : 0);
         int x = this.getX() + 5;
         Stream<MenuItem> entryStream = entries.stream();
         IntStream minWidths = entryStream.mapToInt(MenuItem::getMinWidth);
-//        IntStream maxWidths = entryStream.mapToInt(MenuItem::getMaxWidth);
         int maxMinWidth = minWidths.max().orElse(0);
-//        int maxMaxWidth = maxWidths.max().orElse(0);
-//        int minMinWidth = minWidths.min().orElse(0);
-//        int minMaxWidth = maxWidths.min().orElse(0);
 
         for (MenuItem menuItem : entries) {
             width = Math.max(width, menuItem.getMinWidth());

@@ -141,6 +141,10 @@ public enum Theme {
      * @return the next theme.
      */
     public Theme next() {
+        for (int i = 0; i < Theme.values().length; i++) {
+            System.out.println("i = " + i + ", " + Theme.values()[i]);
+        }
+        System.out.println("(ordinal() + 1) = " + (ordinal() + 1));
         return Theme.values()[(ordinal() + 1) % Theme.values().length];
     }
 

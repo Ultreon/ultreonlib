@@ -19,6 +19,7 @@ public class InternalConfigScreen extends GenericMenuScreen {
     }
 
     private void changeTheme(BaseButton button) {
+        new RuntimeException().printStackTrace(System.out);
         Theme theme = UltreonLib.getTheme();
         theme = KeyboardHelper.isShiftDown() ? theme.previous() : theme.next();
         UltreonLib.setTheme(theme);

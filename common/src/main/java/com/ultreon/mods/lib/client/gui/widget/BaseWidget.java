@@ -42,7 +42,7 @@ public abstract class BaseWidget extends AbstractWidget implements Clickable {
     }
 
     public void onLeftClick(int clicks) {
-        leftClick();
+
     }
 
     public final void doubleClick() {
