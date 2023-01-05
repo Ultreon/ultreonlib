@@ -87,5 +87,13 @@ public non-sealed class ThemedButton extends TexturedButton implements ReloadsTh
                 default -> NORMAL;
             };
         }
+
+        public static Type ofTitleBar(Theme theme) {
+            return switch (theme) {
+                case LIGHT -> LIGHT;
+                case DARK, MIX -> DARK;
+                default -> NORMAL;
+            };
+        }
     }
 }

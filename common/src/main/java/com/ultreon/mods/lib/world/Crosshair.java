@@ -86,7 +86,7 @@ public final class Crosshair {
         }
     }
 
-    private @NotNull HitResult traceHit(double distance) {
+    public @NotNull HitResult traceHit(double distance) {
         float rotX = entity.getXRot();
         float rotY = entity.getYRot();
 
