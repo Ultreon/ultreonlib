@@ -24,6 +24,7 @@ public final class DevPreviewRegistry extends UtilityClass {
 
     static CompoundEventResult<Screen> onTitleScreen(Screen screen) {
         if (screen instanceof TitleScreen titleScreen && !DevPreviewScreen.isInitialized()) {
+            if (MODS.isEmpty()) return CompoundEventResult.pass();
             return CompoundEventResult.interruptTrue(new DevPreviewScreen(MODS, titleScreen));
         }
         return CompoundEventResult.pass();
