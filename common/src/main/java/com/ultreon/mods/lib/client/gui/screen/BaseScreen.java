@@ -248,26 +248,6 @@ public abstract class BaseScreen extends Screen implements ReloadsTheme {
         blit(pose, x + 7 + width, y + 7 + height, 7, 7, u + 14, 14, 7, 7, 256, 256);
     }
 
-    @Deprecated
-    public static void renderFrame(PoseStack pose, int x, int y, int width, int height, boolean darkMode) {
-        renderFrame(pose, x, y, width, height, darkMode, 0);
-    }
-
-    @Deprecated
-    @SuppressWarnings("PointlessArithmeticExpression")
-    public static void renderFrame(PoseStack pose, int x, int y, int width, int height, boolean darkMode, int u) {
-        RenderSystem.setShaderTexture(0, darkMode ? WIDGETS_DARK : WIDGETS);
-        blit(pose, x, y, 7, 7, u + 0, 0, 7, 7, 256, 256);
-        blit(pose, x + 7, y, width, 7, u + 7, 0, 7, 7, 256, 256);
-        blit(pose, x + 7 + width, y, 7, 7, u + 14, 0, 7, 7, 256, 256);
-        blit(pose, x, y + 7, 7, height, u + 0, 7, 7, 7, 256, 256);
-        blit(pose, x + 7, y + 7, width, height, u + 7, 7, 7, 7, 256, 256);
-        blit(pose, x + 7 + width, y + 7, 7, height, u + 14, 7, 7, 7, 256, 256);
-        blit(pose, x, y + 7 + height, 7, 7, u + 0, 14, 7, 7, 256, 256);
-        blit(pose, x + 7, y + 7 + height, width, 7, u + 7, 14, 7, 7, 256, 256);
-        blit(pose, x + 7 + width, y + 7 + height, 7, 7, u + 14, 14, 7, 7, 256, 256);
-    }
-
     public static void renderTitleFrame(PoseStack pose, int x, int y, int width, int height, Theme theme) {
         renderTitleFrame(pose, x, y, width, height, theme, 0);
     }
