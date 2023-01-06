@@ -1,9 +1,12 @@
 package com.ultreon.mods.lib.actionmenu;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.ultreon.mods.lib.client.gui.screen.PanoramaScreen;
 import com.ultreon.mods.lib.mixin.common.ScreenAccess;
 import com.ultreon.mods.lib.network.UltreonLibNetwork;
+import com.ultreon.mods.lib.network.api.Network;
 import com.ultreon.mods.lib.network.packet.AMenuItemPermissionRequestPacket;
+import com.ultreon.mods.lib.util.CrashReportUtils;
 import net.minecraft.CrashReport;
 import net.minecraft.ReportedException;
 import net.minecraft.client.Minecraft;
@@ -11,13 +14,15 @@ import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.phys.Vec2;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ActionMenuScreen extends Screen {
+public class ActionMenuScreen extends PanoramaScreen {
     private final List<Screen> screens = new ArrayList<>();
     private final @Nullable Screen parent;
     private boolean initialized = false;
@@ -71,10 +76,10 @@ public class ActionMenuScreen extends Screen {
                         actionMenuButton.active = item.isEnabled();
                     }
                 } catch (Throwable t) {
-                    CrashReport crashreport = CrashReport.forThrowable(t, "Failed to load action menu item into screen.");
+                    CrashReport report = CrashReport.forThrowable(t, "Failed to load action menu item into screen.");
 
-//                    CrashReportUtils.addActionMenuItem(crashreport, item, i, x, y);
-                    throw new ReportedException(crashreport);
+                    CrashReportUtils.addActionMenuItem(report, item, i, x, y);
+                    throw new ReportedException(report);
                 }
 
                 y -= 16;
@@ -83,15 +88,18 @@ public class ActionMenuScreen extends Screen {
             y -= 16;
             addRenderableWidget(new ActionMenuTitle(this, x, y, 150, 15));
         } catch (Throwable t) {
-            CrashReport crashreport = CrashReport.forThrowable(t, "Failed to initialize action menu screen.");
+            CrashReport report = CrashReport.forThrowable(t, "Failed to initialize action menu screen.");
 
-//            CrashReportUtils.addActionMenu(crashreport, menu, menuIndex);
-            throw new ReportedException(crashreport);
+            CrashReportUtils.addActionMenu(report, menu, menuIndex);
+            throw new ReportedException(report);
         }
 
         initialized = true;
 
-        UltreonLibNetwork.get().sendToServer(new AMenuItemPermissionRequestPacket());
+        Network network = UltreonLibNetwork.get();
+        if (network != null) {
+            network.sendToServer(new AMenuItemPermissionRequestPacket());
+        }
     }
 
     void setButtonRectangle(Rectangle rect) {
@@ -99,11 +107,14 @@ public class ActionMenuScreen extends Screen {
     }
 
     @Override
-    public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+    public void render(@NotNull PoseStack pose, int mouseX, int mouseY, float partialTicks) {
+        assert this.minecraft != null;
+        if (this.minecraft.level == null) {
+            renderPanorama(pose, partialTicks);
+        }
+
         if (parent instanceof ActionMenuScreen) {
-            ((ActionMenuScreen) parent).render(matrixStack, mouseX, mouseY, partialTicks, this.menuIndex);
-        } else if (parent != null) {
-            parent.render(matrixStack, mouseX, mouseY, partialTicks);
+            ((ActionMenuScreen) parent).render(pose, mouseX, mouseY, partialTicks, this.menuIndex);
         }
 
         for (GuiEventListener widget : this.children()) {
@@ -112,21 +123,12 @@ public class ActionMenuScreen extends Screen {
             }
         }
 
-        super.render(matrixStack, mouseX, mouseY, partialTicks);
+        super.render(pose, mouseX, mouseY, partialTicks);
 
         int startX = 1;
         if (menuIndex > 0) {
             startX = (151 * menuIndex) + 1;
         }
-
-//        int endX = 151;
-//        if (menuIndex > 0) {
-//            endX = (151 * (menuIndex + 1)) + 1;
-//        }
-//
-//        if (mouseX > startX && mouseX < endX) {
-//            wasHovered = true;
-//        }
 
         if (mouseX < startX && Minecraft.getInstance().screen == this) {
             if (buttonRect != null && !buttonRect.contains(mouseX, mouseY)) {
@@ -140,7 +142,12 @@ public class ActionMenuScreen extends Screen {
         screens.clear();
     }
 
-    private void back() {
+    @Override
+    public @Nullable Vec2 getCloseButtonPos() {
+        return null;
+    }
+
+    public void back() {
         Minecraft.getInstance().setScreen(parent);
     }
 

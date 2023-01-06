@@ -168,6 +168,9 @@ public final class ListScreen extends PanoramaScreen {
     public void render(@NotNull PoseStack pose, int mouseX, int mouseY, float partialTicks) {
         Objects.requireNonNull(this.minecraft);
         this.renderBackground(pose, partialTicks);
+
+        renderFrame(pose, this.left() + 3, 35 - 10, this.minecraft.font.width(this.title), 21, getTheme());
+
         drawString(pose, this.minecraft.font, this.title, this.left() + 8, 35, -1);
 
         if (!this.list.isEmpty()) {
