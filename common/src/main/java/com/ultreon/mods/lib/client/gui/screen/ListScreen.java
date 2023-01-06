@@ -29,7 +29,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FastColor;
 import net.minecraft.world.phys.Vec2;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
@@ -109,6 +108,10 @@ public final class ListScreen extends PanoramaScreen {
         return (this.width - 238) / 2;
     }
 
+    private int right() {
+        return (this.width - 238) / 2 + 238;
+    }
+
     public void tick() {
         super.tick();
         this.searchBox.tick();
@@ -169,9 +172,10 @@ public final class ListScreen extends PanoramaScreen {
         Objects.requireNonNull(this.minecraft);
         this.renderBackground(pose, partialTicks);
 
-        renderFrame(pose, this.left() + 3, 35 - 10, this.minecraft.font.width(this.title), 21, getTheme());
+        renderTitleFrame(pose, this.left() + 3, 35 - 7, this.minecraft.font.width(this.title), 7, getTheme());
+        renderTitleFrame(pose, this.right() - 8 - 12, 35 - 7, 7, 7, getTheme());
 
-        drawString(pose, this.minecraft.font, this.title, this.left() + 8, 35, -1);
+        drawString(pose, this.minecraft.font, this.title, this.left() + 9, 35, -1);
 
         if (!this.list.isEmpty()) {
             this.list.render(pose, mouseX, mouseY, partialTicks);
@@ -188,9 +192,10 @@ public final class ListScreen extends PanoramaScreen {
         super.render(pose, mouseX, mouseY, partialTicks);
     }
 
+    @NotNull
     @Override
-    public @Nullable Vec2 getCloseButtonPos() {
-        return null;
+    public Vec2 getCloseButtonPos() {
+        return new Vec2(this.right() - 12, 35);
     }
 
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
@@ -326,7 +331,7 @@ public final class ListScreen extends PanoramaScreen {
             }
 
             public void render(@NotNull PoseStack pose, int index, int top, int left, int width, int height, int mouseX, int mouseY, boolean isMouseOver, float partialTicks) {
-                int i = left + 4;
+                int i = left + 7;
 
                 Component description = this.getDescription();
                 int l;
