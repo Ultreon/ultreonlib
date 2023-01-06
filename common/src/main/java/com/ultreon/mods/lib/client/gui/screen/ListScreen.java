@@ -19,6 +19,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.ContainerObjectSelectionList;
 import net.minecraft.client.gui.components.EditBox;
@@ -27,6 +28,7 @@ import net.minecraft.client.gui.narration.NarratableEntry;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FastColor;
+import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.phys.Vec2;
 import org.jetbrains.annotations.NotNull;
 
@@ -48,8 +50,8 @@ public final class ListScreen extends PanoramaScreen {
     private String searchTerms = "";
     private boolean initialized;
 
-    private static final Component SEARCH_HINT = (Component.translatable("gui.socialInteractions.search_hint")).withStyle(ChatFormatting.ITALIC).withStyle(ChatFormatting.GRAY);
-    private static final Component SEARCH_EMPTY = (Component.translatable("gui.socialInteractions.search_empty")).withStyle(ChatFormatting.GRAY);
+    private static final Component SEARCH_HINT = (Component.translatable("gui.ultreonlib.search_hint")).withStyle(ChatFormatting.ITALIC);
+    private static final Component SEARCH_EMPTY = (Component.translatable("gui.ultreonlib.search_empty"));
     private static final ResourceLocation DARK_TEXTURE = UltreonLib.res("textures/gui/list/dark.png");
     private static final ResourceLocation LIGHT_TEXTURE = UltreonLib.res("textures/gui/list/light.png");
     private static final ResourceLocation NORMAL_TEXTURE = UltreonLib.res("textures/gui/list/normal.png");
@@ -175,16 +177,28 @@ public final class ListScreen extends PanoramaScreen {
         renderTitleFrame(pose, this.left() + 3, 35 - 7, this.minecraft.font.width(this.title), 7, getTheme());
         renderTitleFrame(pose, this.right() - 8 - 12, 35 - 7, 7, 7, getTheme());
 
-        drawString(pose, this.minecraft.font, this.title, this.left() + 9, 35, -1);
+        font.draw(pose, this.title, this.left() + 9, 35, switch (getTheme()) {
+            case DARK, MIX -> 0xffffffff;
+            case LIGHT -> 0xff202020;
+            case NORMAL -> 0xff000000;
+        });
 
         if (!this.list.isEmpty()) {
             this.list.render(pose, mouseX, mouseY, partialTicks);
         } else if (!this.searchBox.getValue().isEmpty()) {
-            drawCenteredString(pose, this.minecraft.font, SEARCH_EMPTY, this.width / 2, (78 + this.func1()) / 2, -1);
+            drawCenteredStringWithoutShadow(pose, this.minecraft.font, SEARCH_EMPTY, this.width / 2, (78 + this.func1()) / 2, switch (getTheme()) {
+                case DARK -> 0xffffffff;
+                case LIGHT, MIX -> 0xff202020;
+                case NORMAL -> 0xff000000;
+            });
         }
 
         if (!this.searchBox.isFocused() && this.searchBox.getValue().isEmpty()) {
-            drawString(pose, this.minecraft.font, SEARCH_HINT, this.searchBox.getX(), this.searchBox.getY(), -1);
+            font.draw(pose, SEARCH_HINT, this.searchBox.getX(), this.searchBox.getY(), switch (getTheme()) {
+                case DARK -> 0xffffffff;
+                case LIGHT, MIX -> 0xff202020;
+                case NORMAL -> 0xff000000;
+            });
         } else {
             this.searchBox.render(pose, mouseX, mouseY, partialTicks);
         }
@@ -308,10 +322,18 @@ public final class ListScreen extends PanoramaScreen {
             private final ListScreen screen;
             private float ticksTooltip;
 
-            public static final int TITLE_COLOR = FastColor.ARGB32.color(255, 255, 255, 255);
-            public static final int DESCRIPTION_COLOR = FastColor.ARGB32.color(140, 255, 255, 255);
-            public static final int EMPTY_COLOR = FastColor.ARGB32.color(255, 74, 74, 74);
-            public static final int NON_EMPTY_COLOR = FastColor.ARGB32.color(255, 48, 48, 48);
+            public static final int DARK_TITLE_COLOR = FastColor.ARGB32.color(255, 255, 255, 255);
+            public static final int LIGHT_TITLE_COLOR = FastColor.ARGB32.color(255, 16, 16, 16);
+            public static final int VANILLA_TITLE_COLOR = FastColor.ARGB32.color(255, 0, 0, 0);
+            public static final int DARK_DESCRIPTION_COLOR = FastColor.ARGB32.color(140, 255, 255, 255);
+            public static final int LIGHT_DESCRIPTION_COLOR = FastColor.ARGB32.color(140, 16, 16, 16);
+            public static final int VANILLA_DESCRIPTION_COLOR = FastColor.ARGB32.color(140, 0, 0, 0);
+            public static final int DARK_EMPTY_COLOR = FastColor.ARGB32.color(255, 74, 74, 74);
+            public static final int DARK_NON_EMPTY_COLOR = FastColor.ARGB32.color(255, 48, 48, 48);
+            public static final int LIGHT_EMPTY_COLOR = FastColor.ARGB32.color(255, 192, 192, 192);
+            public static final int LIGHT_NON_EMPTY_COLOR = FastColor.ARGB32.color(255, 160, 160, 160);
+            public static final int VANILLA_EMPTY_COLOR = FastColor.ARGB32.color(255, 128, 128, 128);
+            public static final int VANILLA_NON_EMPTY_COLOR = FastColor.ARGB32.color(255, 96, 96, 96);
 
             private final Component description;
             private final String id;
@@ -336,15 +358,31 @@ public final class ListScreen extends PanoramaScreen {
                 Component description = this.getDescription();
                 int l;
                 if (Objects.equals(description, Component.empty())) {
-                    fill(pose, left, top, left + width, top + height, EMPTY_COLOR);
+                    fill(pose, left, top, left + width, top + height, switch (screen.getTheme()) {
+                        case DARK -> DARK_EMPTY_COLOR;
+                        case LIGHT, MIX -> LIGHT_EMPTY_COLOR;
+                        default -> VANILLA_EMPTY_COLOR;
+                    });
                     l = top + (height - 9) / 2;
                 } else {
-                    fill(pose, left, top, left + width, top + height, NON_EMPTY_COLOR);
+                    fill(pose, left, top, left + width, top + height, switch (screen.getTheme()) {
+                        case DARK -> DARK_NON_EMPTY_COLOR;
+                        case LIGHT, MIX -> LIGHT_NON_EMPTY_COLOR;
+                        default -> VANILLA_NON_EMPTY_COLOR;
+                    });
                     l = top + (height - (9 + 9)) / 2;
-                    this.mc.font.draw(pose, description, (float) i, (float) (l + 12), DESCRIPTION_COLOR);
+                    this.mc.font.draw(pose, description, (float) i, (float) (l + 12), switch (screen.getTheme()) {
+                        case DARK -> DARK_DESCRIPTION_COLOR;
+                        case LIGHT, MIX -> LIGHT_DESCRIPTION_COLOR;
+                        default -> VANILLA_DESCRIPTION_COLOR;
+                    });
                 }
 
-                this.mc.font.draw(pose, this.entryTitle, (float) i, (float) l, TITLE_COLOR);
+                this.mc.font.draw(pose, this.entryTitle, (float) i, (float) l, switch (screen.getTheme()) {
+                    case DARK -> DARK_TITLE_COLOR;
+                    case LIGHT, MIX -> LIGHT_TITLE_COLOR;
+                    default -> VANILLA_TITLE_COLOR;
+                });
                 float ticksUntilTooltip = this.ticksTooltip;
 
                 int btnIndex = 0;
@@ -398,5 +436,18 @@ public final class ListScreen extends PanoramaScreen {
                 return buttons;
             }
         }
+    }
+
+    public static void drawCenteredStringWithoutShadow(PoseStack poseStack, Font font, String text, int x, int y, int color) {
+        font.draw(poseStack, text, (float)(x - font.width(text) / 2), (float)y, color);
+    }
+
+    public static void drawCenteredStringWithoutShadow(PoseStack poseStack, Font font, Component text, int x, int y, int color) {
+        FormattedCharSequence formattedCharSequence = text.getVisualOrderText();
+        font.draw(poseStack, formattedCharSequence, (float)(x - font.width(formattedCharSequence) / 2), (float)y, color);
+    }
+
+    public static void drawCenteredStringWithoutShadow(PoseStack poseStack, Font font, FormattedCharSequence text, int x, int y, int color) {
+        font.draw(poseStack, text, (float)(x - font.width(text) / 2), (float)y, color);
     }
 }
