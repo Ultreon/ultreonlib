@@ -87,6 +87,10 @@ public final class Crosshair {
     }
 
     public @NotNull HitResult traceHit(double distance) {
+        return traceHit(distance, true);
+    }
+
+    public @NotNull HitResult traceHit(double distance, boolean fluidBlocking) {
         float rotX = entity.getXRot();
         float rotY = entity.getYRot();
 
@@ -102,17 +106,19 @@ public final class Crosshair {
 
         Vec3 distant = eye.add((double) deltaX * distance, (double) deltaY * distance, (double) deltaZ * distance);
 
-        return getHitResult(eye, distant);
+        return getHitResult(eye, distant, fluidBlocking);
     }
 
-    private @NotNull HitResult getHitResult(Vec3 eye, Vec3 distant) {
+    private @NotNull HitResult getHitResult(Vec3 eye, Vec3 distant, boolean fluidBlocking) {
         HitResult block = blockHit(eye, distant);
         distant = getHit(distant, block);
 
-        HitResult fluid = fluidHit(eye, distant);
-        if (fluid != null) {
-            distant = getHit(distant, fluid);
-            block = fluid;
+        if (fluidBlocking) {
+            HitResult fluid = fluidHit(eye, distant);
+            if (fluid != null) {
+                distant = getHit(distant, fluid);
+                block = fluid;
+            }
         }
 
         HitResult entity = entityHit(eye, distant);
