@@ -77,6 +77,6 @@ public abstract class FullscreenRenderScreen extends BaseScreen {
 
     @Override
     public Vec2 getCloseButtonPos() {
-        return new Vec2(width - 6 - 3 - 5, 6 + 3);
+        return new Vec2(width - 6 - 3 - 5, 6 + 2);
     }
 }

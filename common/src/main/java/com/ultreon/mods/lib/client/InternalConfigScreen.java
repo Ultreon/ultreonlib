@@ -4,8 +4,12 @@ import com.ultreon.mods.lib.UltreonLib;
 import com.ultreon.mods.lib.client.gui.Theme;
 import com.ultreon.mods.lib.client.gui.screen.GenericMenuScreen;
 import com.ultreon.mods.lib.client.gui.screen.TitleStyle;
+import com.ultreon.mods.lib.client.gui.screen.test.TestProgressScreen;
+import com.ultreon.mods.lib.client.gui.screen.test.TestsScreen;
 import com.ultreon.mods.lib.client.gui.widget.BaseButton;
+import com.ultreon.mods.lib.client.gui.widget.ThemedButton;
 import com.ultreon.mods.lib.util.KeyboardHelper;
+import dev.architectury.platform.Platform;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 
@@ -16,10 +20,17 @@ public class InternalConfigScreen extends GenericMenuScreen {
 
         addButtonRow(Component.translatable("gui.ultreonlib.config.theme").append(UltreonLib.getTheme().getDisplayName()), this::changeTheme);
         addButtonRow(Component.translatable("gui.ultreonlib.config.title_style").append(UltreonLib.getTitleStyle().getDisplayName()), this::changeTitleStyle);
+
+        if (Platform.isDevelopmentEnvironment()) {
+            addButtonRow(Component.literal("Tests"), ThemedButton.Type.PRIMARY, this::openTests);
+        }
+    }
+
+    private void openTests(BaseButton button) {
+        TestsScreen.open(this);
     }
 
     private void changeTheme(BaseButton button) {
-        new RuntimeException().printStackTrace(System.out);
         Theme theme = UltreonLib.getTheme();
         theme = KeyboardHelper.isShiftDown() ? theme.previous() : theme.next();
         UltreonLib.setTheme(theme);

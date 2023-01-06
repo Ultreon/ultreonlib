@@ -14,6 +14,7 @@ package com.ultreon.mods.lib.client.gui.screen;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.ultreon.mods.lib.UltreonLib;
+import com.ultreon.mods.lib.client.gui.widget.BaseButton;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.ChatFormatting;
@@ -23,19 +24,26 @@ import net.minecraft.client.gui.components.ContainerObjectSelectionList;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarratableEntry;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FastColor;
+import net.minecraft.world.phys.Vec2;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
 /**
  * List screen. A screen that's made for only a list with entries.
  */
-public final class ListScreen extends Screen {
-    private IListFilter listFilter;
+public final class ListScreen extends PanoramaScreen {
+    private IListFilter listFilter = (query, id, title, description) -> {
+        var found = true;
+        for (var part : query.split(" ")) {
+            found &= title.toLowerCase(Locale.ROOT).contains(part.toLowerCase(Locale.ROOT));
+        }
+        return found;
+    };
     private ListWidget list;
     private EditBox searchBox;
     private String searchTerms = "";
@@ -43,7 +51,9 @@ public final class ListScreen extends Screen {
 
     private static final Component SEARCH_HINT = (Component.translatable("gui.socialInteractions.search_hint")).withStyle(ChatFormatting.ITALIC).withStyle(ChatFormatting.GRAY);
     private static final Component SEARCH_EMPTY = (Component.translatable("gui.socialInteractions.search_empty")).withStyle(ChatFormatting.GRAY);
-    private static final ResourceLocation GUI_TEXTURE = UltreonLib.res("textures/gui/list.png");
+    private static final ResourceLocation DARK_TEXTURE = UltreonLib.res("textures/gui/list/dark.png");
+    private static final ResourceLocation LIGHT_TEXTURE = UltreonLib.res("textures/gui/list/light.png");
+    private static final ResourceLocation NORMAL_TEXTURE = UltreonLib.res("textures/gui/list/normal.png");
 
     private IListEntryClick onListEntryClick = (list, entry) -> {
 
@@ -115,7 +125,7 @@ public final class ListScreen extends Screen {
 
         String s = this.searchBox != null ? this.searchBox.getValue() : "";
         this.searchBox = new EditBox(this.font, this.left() + 28, 78, 196, 16, SEARCH_HINT);
-        this.searchBox.setMaxLength(16);
+        this.searchBox.setMaxLength(30);
         this.searchBox.setBordered(false);
         this.searchBox.setVisible(true);
         this.searchBox.setTextColor(16777215);
@@ -130,11 +140,12 @@ public final class ListScreen extends Screen {
 
     }
 
-    public void renderBackground(@NotNull PoseStack pose) {
+    @Override
+    public void renderBackground(@NotNull PoseStack pose, float partialTicks) {
         int i = this.left() + 3;
-        super.renderBackground(pose);
+        super.renderBackground(pose, partialTicks);
 
-        RenderSystem.setShaderTexture(0, GUI_TEXTURE);
+        RenderSystem.setShaderTexture(0, getTexture());
         this.blit(pose, i, 64, 1, 1, 236, 8);
         int j = this.func0();
 
@@ -146,9 +157,17 @@ public final class ListScreen extends Screen {
         this.blit(pose, i + 10, 76, 243, 1, 12, 12);
     }
 
+    private ResourceLocation getTexture() {
+        return switch (getTheme()) {
+            case DARK -> DARK_TEXTURE;
+            case MIX, LIGHT -> LIGHT_TEXTURE;
+            default -> NORMAL_TEXTURE;
+        };
+    }
+
     public void render(@NotNull PoseStack pose, int mouseX, int mouseY, float partialTicks) {
         Objects.requireNonNull(this.minecraft);
-        this.renderBackground(pose);
+        this.renderBackground(pose, partialTicks);
         drawString(pose, this.minecraft.font, this.title, this.left() + 8, 35, -1);
 
         if (!this.list.isEmpty()) {
@@ -166,12 +185,17 @@ public final class ListScreen extends Screen {
         super.render(pose, mouseX, mouseY, partialTicks);
     }
 
+    @Override
+    public @Nullable Vec2 getCloseButtonPos() {
+        return null;
+    }
+
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
         if (this.searchBox.isFocused()) {
             this.searchBox.mouseClicked(mouseX, mouseY, button);
         }
 
-        return super.mouseClicked(mouseX, mouseY, button) || this.list.mouseClicked(mouseX, mouseY, button);
+        return super.mouseClicked(mouseX, mouseY, button);
     }
 
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
@@ -230,7 +254,7 @@ public final class ListScreen extends Screen {
         @Override
         protected int addEntry(@NotNull ListScreen.ListWidget.Entry entry) {
             defaultEntries.add(entry);
-            if (search != null) {
+            if (search == null) {
                 super.addEntry(entry);
             }
             return this.defaultEntries.size() - 1;
@@ -284,7 +308,11 @@ public final class ListScreen extends Screen {
             private final Component description;
             private final String id;
 
-            public Entry(Minecraft minecraft, ListScreen screen, String title, String description, String id, Button... buttons) {
+            public Entry(ListScreen screen, String title, String description, String id, BaseButton... buttons) {
+                this(Minecraft.getInstance(), screen, title, description, id, buttons);
+            }
+
+            public Entry(Minecraft minecraft, ListScreen screen, String title, String description, String id, BaseButton... buttons) {
                 this.mc = minecraft;
                 this.entryTitle = title;
                 this.description = Component.literal(description);

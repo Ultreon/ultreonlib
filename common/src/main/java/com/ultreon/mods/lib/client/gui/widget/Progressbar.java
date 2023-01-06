@@ -5,17 +5,29 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 
 public class Progressbar extends BaseWidget {
-    private static final ResourceLocation BARS = new ResourceLocation("textures/gui/bars.png");
+    private static final ResourceLocation ICONS = new ResourceLocation("textures/gui/icons.png");
     private int maximum;
-    private int value = 0;
-    private ColorType colorType;
-    private Segments segments;
+    private int value;
 
-    public Progressbar(int x, int y, int maximum) {
+    /**
+     * @param x widget center x
+     * @param y widget center y
+     */
+    public Progressbar(int x, int y,  int maximum) {
+        this(x, y, 0, maximum);
+    }
+
+    /**
+     * @param x widget center x
+     * @param y widget center y
+     */
+    public Progressbar(int x, int y, int value, int maximum) {
         super(x, y, 182, 10, Component.empty());
 
+        this.value = Mth.clamp(value, 0, maximum);
         this.maximum = maximum;
     }
 
@@ -24,7 +36,7 @@ public class Progressbar extends BaseWidget {
     }
 
     public void setValue(int value) {
-        this.value = value;
+        this.value = Mth.clamp(value, 0, maximum);
     }
 
     public int getMaximum() {
@@ -33,22 +45,7 @@ public class Progressbar extends BaseWidget {
 
     public void setMaximum(int maximum) {
         this.maximum = maximum;
-    }
-
-    public ColorType getColorType() {
-        return colorType;
-    }
-
-    public void setColorType(ColorType colorType) {
-        this.colorType = colorType;
-    }
-
-    public Segments getSegments() {
-        return segments;
-    }
-
-    public void setSegments(Segments segments) {
-        this.segments = segments;
+        this.value = Mth.clamp(value, 0, maximum);
     }
 
     public double getPercentage() {
@@ -61,61 +58,23 @@ public class Progressbar extends BaseWidget {
 
     @Override
     public void render(PoseStack poseStack, int i, int j, float f) {
-        int colV = colorType.getTextureV();
-        int segV = segments.getTextureV();
+        int x = getX() - 91;
+        int y = getY() - 3;
 
-        RenderSystem.setShaderTexture(0, BARS);
-        blit(poseStack, getX(), getY(), 0, colV, 182, 5);
-        blit(poseStack, getX(), getY(), 0, segV, 182, 5);
+        RenderSystem.setShaderTexture(0, ICONS);
+        blit(poseStack, x, y, 0, 64, 182, 5);
 
-        RenderSystem.setShaderTexture(0, BARS);
-        blit(poseStack, getX(), getY(), 0, colV + 5, (int) (182 * getRatio()), 5);
-        blit(poseStack, getX(), getY(), 0, segV + 5, (int) (182 * getRatio()), 5);
+        RenderSystem.setShaderTexture(0, ICONS);
+        blit(poseStack, x, y, 0, 69, (int) (182 * getRatio()), 5);
+    }
+
+    @Override
+    public void setWidth(int width) {
+
     }
 
     @Override
     protected void updateWidgetNarration(NarrationElementOutput narrationElementOutput) {
 
-    }
-
-    public enum ColorType {
-        PURPLE(0),
-        AQUA(10),
-        RED(20),
-        GREEN(30),
-        YELLOW(40),
-        BLUE(50),
-        WHITE(60),
-        ;
-
-        private final int textureV;
-
-        ColorType(int textureV) {
-
-            this.textureV = textureV;
-        }
-
-        public int getTextureV() {
-            return textureV;
-        }
-    }
-
-    public enum Segments {
-        SIX(80),
-        TEN(90),
-        TWELVE(100),
-        TWENTY(110),
-        ;
-
-        private final int textureV;
-
-        Segments(int textureV) {
-
-            this.textureV = textureV;
-        }
-
-        public int getTextureV() {
-            return textureV;
-        }
     }
 }

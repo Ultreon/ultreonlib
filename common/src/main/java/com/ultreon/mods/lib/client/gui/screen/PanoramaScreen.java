@@ -57,4 +57,23 @@ public abstract class PanoramaScreen extends BaseScreen {
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         blit(pose, 0, 0, this.width, this.height, 0.0F, 0.0F, 16, 128, 16, 128);
     }
+
+    public void renderBackground(PoseStack pose, float partialTicks) {
+        assert this.minecraft != null;
+        if (this.minecraft.level == null) {
+            this.renderPanorama(pose, partialTicks);
+            return;
+        }
+        this.fillGradient(pose, 0, 0, this.width, this.height, 0xC0101010, 0xD0101010);
+    }
+
+    @Override
+    public void renderBackground(PoseStack poseStack, int vOffset) {
+
+    }
+
+    @Override
+    public void renderBackground(PoseStack poseStack) {
+
+    }
 }
