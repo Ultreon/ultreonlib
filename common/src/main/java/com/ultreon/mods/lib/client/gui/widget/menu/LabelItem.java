@@ -9,7 +9,7 @@
  * ONLY the owner can bypass these rules.
  */
 
-package com.ultreon.mods.lib.client.gui.widget;
+package com.ultreon.mods.lib.client.gui.widget.menu;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.narration.NarratedElementType;

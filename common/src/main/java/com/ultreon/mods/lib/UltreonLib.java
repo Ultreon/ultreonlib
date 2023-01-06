@@ -1,6 +1,6 @@
 package com.ultreon.mods.lib;
 
-import com.ultreon.mods.lib.client.gui.ReloadsTheme;
+import com.ultreon.mods.lib.client.gui.Themed;
 import com.ultreon.mods.lib.client.gui.Theme;
 import com.ultreon.mods.lib.client.gui.screen.TitleStyle;
 import com.ultreon.mods.lib.loot.LootTableInjection;
@@ -146,8 +146,8 @@ public class UltreonLib {
 
     @Environment(EnvType.CLIENT)
     public void reloadTheme() {
-        if (Minecraft.getInstance().screen instanceof ReloadsTheme) {
-            ((ReloadsTheme) Minecraft.getInstance().screen).reloadTheme();
+        if (Minecraft.getInstance().screen instanceof Themed) {
+            ((Themed) Minecraft.getInstance().screen).reloadTheme();
         }
     }
 }

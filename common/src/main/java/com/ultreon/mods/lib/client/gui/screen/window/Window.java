@@ -4,7 +4,7 @@ import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.ultreon.mods.lib.UltreonLib;
 import com.ultreon.mods.lib.client.gui.Anchor;
-import com.ultreon.mods.lib.client.gui.ReloadsTheme;
+import com.ultreon.mods.lib.client.gui.Themed;
 import com.ultreon.mods.lib.client.gui.Theme;
 import com.ultreon.mods.lib.client.gui.screen.BaseScreen;
 import com.ultreon.mods.lib.client.gui.widget.BaseContainerWidget;
@@ -36,7 +36,7 @@ import java.util.Objects;
  * @version 1.0
  * @since 0.0.1.6
  */
-public class Window extends BaseContainerWidget implements ReloadsTheme {
+public class Window extends BaseContainerWidget implements Themed {
     private static final String CLOSE_ICON = "×";
     private static final String CLOSE_ICON_HOVER = ChatFormatting.RED + CLOSE_ICON;
 

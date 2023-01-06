@@ -2,8 +2,8 @@ package com.ultreon.mods.lib.client.gui.screen;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.ultreon.mods.lib.UltreonLibConfig;
-import com.ultreon.mods.lib.client.gui.widget.IToolbarItem;
-import com.ultreon.mods.lib.client.gui.widget.ToolbarItem;
+import com.ultreon.mods.lib.client.gui.widget.toolbar.IToolbarItem;
+import com.ultreon.mods.lib.client.gui.widget.toolbar.ToolbarItem;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.phys.Vec2;
 import org.jetbrains.annotations.NotNull;

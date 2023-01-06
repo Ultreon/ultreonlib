@@ -1,4 +1,4 @@
-package com.ultreon.mods.lib.client.gui.widget;
+package com.ultreon.mods.lib.client.gui.widget.toolbar;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.components.Renderable;

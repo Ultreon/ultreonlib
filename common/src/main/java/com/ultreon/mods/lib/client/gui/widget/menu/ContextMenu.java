@@ -9,7 +9,7 @@
  * ONLY the owner can bypass these rules.
  */
 
-package com.ultreon.mods.lib.client.gui.widget;
+package com.ultreon.mods.lib.client.gui.widget.menu;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -17,6 +17,7 @@ import com.ultreon.mods.lib.UltreonLib;
 import com.ultreon.mods.lib.UltreonLibConfig;
 import com.ultreon.mods.lib.client.gui.Theme;
 import com.ultreon.mods.lib.client.gui.screen.BaseScreen;
+import com.ultreon.mods.lib.client.gui.widget.BaseContainerWidget;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.components.events.GuiEventListener;
@@ -37,12 +38,12 @@ import java.util.stream.Stream;
 /**
  * @author Qboi123
  */
-public class ContextMenu extends AbstractContainerWidget {
+public class ContextMenu extends BaseContainerWidget {
     // Constants
     private static final int BORDER_WIDTH = 5;
-    private static final ResourceLocation WIDGETS_DARK = UltreonLib.res("textures/gui/widgets/context_menu/dark");
-    private static final ResourceLocation WIDGETS = UltreonLib.res("textures/gui/widgets/context_menu/normal");
-    private static final ResourceLocation WIDGETS_LIGHT = UltreonLib.res("textures/gui/widgets/context_menu/light");
+    private static final ResourceLocation MENU_DARK = UltreonLib.res("textures/gui/widgets/context_menu/dark");
+    private static final ResourceLocation MENU_LIGHT = UltreonLib.res("textures/gui/widgets/context_menu/light");
+    private static final ResourceLocation MENU_NORMAL = UltreonLib.res("textures/gui/widgets/context_menu/normal");
 
     // Entries
     private final List<MenuItem> entries = new ArrayList<>();
@@ -65,7 +66,9 @@ public class ContextMenu extends AbstractContainerWidget {
      * @param x     position x to place.
      * @param y     position y to place.
      * @param title context menu title.
+     * @deprecated  Use {@link #ContextMenu(int, int, Component, Theme)} instead. As it uses specific themes.
      */
+    @Deprecated
     public ContextMenu(int x, int y, @Nullable Component title, boolean darkMode) {
         this(x, y, title, UltreonLibConfig.THEME.get() == Theme.DARK ? Theme.DARK : Theme.NORMAL);
     }
@@ -95,9 +98,13 @@ public class ContextMenu extends AbstractContainerWidget {
 
     @Override
     public void render(@NotNull PoseStack pose, int mouseX, int mouseY, float partialTicks) {
-        RenderSystem.setShaderTexture(0, WIDGETS);
         pose.pushPose();
         pose.translate(0, 0, 100);
+        RenderSystem.setShaderTexture(0, switch (getTheme()) {
+            case DARK -> MENU_DARK;
+            case LIGHT, MIX -> MENU_LIGHT;
+            default -> MENU_NORMAL;
+        });
 
         Component message = getMessage();
         boolean hasTitle;

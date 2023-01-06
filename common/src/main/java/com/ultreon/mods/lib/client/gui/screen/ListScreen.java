@@ -19,7 +19,6 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.ContainerObjectSelectionList;
 import net.minecraft.client.gui.components.EditBox;
@@ -28,7 +27,6 @@ import net.minecraft.client.gui.narration.NarratableEntry;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FastColor;
-import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.phys.Vec2;
 import org.jetbrains.annotations.NotNull;
 
@@ -87,7 +85,15 @@ public final class ListScreen extends PanoramaScreen {
         this.listFilter = handler;
     }
 
-    public void addEntry(ListWidget.Entry entry) {
+    public void addEntry(String title, String description, String id, BaseButton... buttons) {
+        this.addEntry(new ListWidget.Entry(this, title, description, id, buttons));
+    }
+
+    public void addEntry(String title, String id, BaseButton... buttons) {
+        this.addEntry(title, "", id, buttons);
+    }
+
+    private void addEntry(ListWidget.Entry entry) {
         this.cachedEntries.add(entry);
         if (list != null) {
             this.list.addEntry(entry);
@@ -436,18 +442,5 @@ public final class ListScreen extends PanoramaScreen {
                 return buttons;
             }
         }
-    }
-
-    public static void drawCenteredStringWithoutShadow(PoseStack poseStack, Font font, String text, int x, int y, int color) {
-        font.draw(poseStack, text, (float)(x - font.width(text) / 2), (float)y, color);
-    }
-
-    public static void drawCenteredStringWithoutShadow(PoseStack poseStack, Font font, Component text, int x, int y, int color) {
-        FormattedCharSequence formattedCharSequence = text.getVisualOrderText();
-        font.draw(poseStack, formattedCharSequence, (float)(x - font.width(formattedCharSequence) / 2), (float)y, color);
-    }
-
-    public static void drawCenteredStringWithoutShadow(PoseStack poseStack, Font font, FormattedCharSequence text, int x, int y, int color) {
-        font.draw(poseStack, text, (float)(x - font.width(text) / 2), (float)y, color);
     }
 }

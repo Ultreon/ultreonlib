@@ -1,7 +1,8 @@
-package com.ultreon.mods.lib.client.gui.widget;
+package com.ultreon.mods.lib.client.gui.widget.toolbar;
 
 import com.ultreon.mods.lib.client.HasContextMenu;
-import net.minecraft.client.gui.components.AbstractWidget;
+import com.ultreon.mods.lib.client.gui.widget.BaseWidget;
+import com.ultreon.mods.lib.client.gui.widget.menu.ContextMenu;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.Nullable;
 

@@ -9,11 +9,13 @@
  * ONLY the owner can bypass these rules.
  */
 
-package com.ultreon.mods.lib.client.gui.widget;
+package com.ultreon.mods.lib.client.gui.widget.menu;
 
+import com.ultreon.mods.lib.client.gui.Themed;
+import com.ultreon.mods.lib.client.gui.widget.BaseWidget;
 import net.minecraft.network.chat.Component;
 
-public abstract class MenuItem extends BaseWidget {
+public abstract class MenuItem extends BaseWidget implements Themed {
     private final ContextMenu menu;
     private int minWidth = 0;
     private int maxWidth = Integer.MAX_VALUE;

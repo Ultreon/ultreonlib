@@ -46,6 +46,14 @@ public class BaseButton extends BaseWidget implements Clickable {
         this.tooltipFactory = tooltipFactory;
     }
 
+    @Override
+    public int getTextColor() {
+        if (isUsingCustomTextColor()) {
+            return super.getTextColor();
+        }
+        return getTheme().getButtonTextColor();
+    }
+
     @FunctionalInterface
     public interface CommandCallback {
         void click(BaseButton button);

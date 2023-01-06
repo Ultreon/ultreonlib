@@ -3,6 +3,7 @@ package com.ultreon.mods.lib.client.gui.screen.test;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.ultreon.mods.lib.client.gui.screen.BaseScreen;
 import com.ultreon.mods.lib.client.gui.widget.BaseButton;
+import com.ultreon.mods.lib.client.gui.widget.Button;
 import com.ultreon.mods.lib.client.gui.widget.Progressbar;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.world.phys.Vec2;
@@ -24,7 +25,7 @@ public class TestProgressScreen extends BaseScreen implements TestScreen {
     @Override
     protected void init() {
         progressbar = this.addRenderableWidget(new Progressbar(width / 2, height / 2, 500));
-        proceedBtn = this.addRenderableWidget(new BaseButton(width / 2 + 91 - 50, height / 2 + 3 + 5, 50, 20, CommonComponents.GUI_PROCEED, (btn) -> back()));
+        proceedBtn = this.addRenderableWidget(new Button(width / 2 + 91 - 50, height / 2 + 3 + 5, 50, 20, CommonComponents.GUI_PROCEED, (btn) -> back()));
         proceedBtn.active = false;
     }
 

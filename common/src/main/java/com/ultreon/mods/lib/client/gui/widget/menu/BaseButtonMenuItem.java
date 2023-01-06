@@ -9,21 +9,30 @@
  * ONLY the owner can bypass these rules.
  */
 
-package com.ultreon.mods.lib.client.gui.widget;
+package com.ultreon.mods.lib.client.gui.widget.menu;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 
-public abstract class AbstractButtonMenuItem extends MenuItem {
-    public AbstractButtonMenuItem(ContextMenu menu, Component message) {
+public abstract class BaseButtonMenuItem extends MenuItem {
+    public BaseButtonMenuItem(ContextMenu menu, Component message) {
         super(20, menu, message);
 
         setMinWidth(Minecraft.getInstance().font.width(message) + 8 + 4);
     }
 
-    protected abstract void onPress();
+    protected abstract void click();
 
-    public void onClick(double p_93371_, double p_93372_) {
-        this.onPress();
+    @Override
+    public int getTextColor() {
+        if (isUsingCustomTextColor()) {
+            return super.getTextColor();
+        }
+        return getTheme().getButtonTextColor();
+    }
+
+    @Override
+    public void onLeftClick(int clicks) {
+        click();
     }
 }

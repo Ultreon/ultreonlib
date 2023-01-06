@@ -1,10 +1,10 @@
-package com.ultreon.mods.lib.client.gui.widget;
+package com.ultreon.mods.lib.client.gui.widget.toolbar;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.ultreon.mods.lib.UltreonLib;
 import com.ultreon.mods.lib.client.gui.Clickable;
-import com.ultreon.mods.lib.client.gui.ReloadsTheme;
+import com.ultreon.mods.lib.client.gui.Themed;
 import com.ultreon.mods.lib.client.gui.Theme;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -17,7 +17,7 @@ import net.minecraft.util.Mth;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class ToolbarButton extends ToolbarItem implements ReloadsTheme, Clickable {
+public class ToolbarButton extends ToolbarItem implements Themed, Clickable {
     @Nullable
     private CommandCallback command;
 

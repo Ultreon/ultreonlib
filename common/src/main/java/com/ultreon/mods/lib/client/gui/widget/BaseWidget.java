@@ -12,18 +12,22 @@
 package com.ultreon.mods.lib.client.gui.widget;
 
 import com.mojang.blaze3d.platform.InputConstants;
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.ultreon.mods.lib.client.HasContextMenu;
 import com.ultreon.mods.lib.client.gui.Clickable;
+import com.ultreon.mods.lib.client.gui.Themed;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.FormattedCharSequence;
 
-public abstract class BaseWidget extends AbstractWidget implements Clickable {
+public abstract class BaseWidget extends AbstractWidget implements Clickable, Themed {
     protected final Minecraft minecraft;
     protected final Font font;
     private long multiClickDelay = 500L;
     private int textColor;
+    private boolean usingCustomTextColor;
     private int clicks;
     private long lastClickTime;
 
@@ -113,10 +117,34 @@ public abstract class BaseWidget extends AbstractWidget implements Clickable {
     }
 
     public int getTextColor() {
-        return textColor;
+        if (this.isUsingCustomTextColor()) {
+            return textColor;
+        }
+        return getTheme().getTextColor();
     }
 
     public void setTextColor(int textColor) {
         this.textColor = textColor;
+    }
+
+    public boolean isUsingCustomTextColor() {
+        return usingCustomTextColor;
+    }
+
+    public void setUsingCustomTextColor(boolean usingCustomTextColor) {
+        this.usingCustomTextColor = usingCustomTextColor;
+    }
+
+    public static void drawCenteredStringWithoutShadow(PoseStack poseStack, Font font, String text, int x, int y, int color) {
+        font.draw(poseStack, text, (float)(x - font.width(text) / 2), (float)y, color);
+    }
+
+    public static void drawCenteredStringWithoutShadow(PoseStack poseStack, Font font, Component text, int x, int y, int color) {
+        FormattedCharSequence formattedCharSequence = text.getVisualOrderText();
+        font.draw(poseStack, formattedCharSequence, (float)(x - font.width(formattedCharSequence) / 2), (float)y, color);
+    }
+
+    public static void drawCenteredStringWithoutShadow(PoseStack poseStack, Font font, FormattedCharSequence text, int x, int y, int color) {
+        font.draw(poseStack, text, (float)(x - font.width(text) / 2), (float)y, color);
     }
 }

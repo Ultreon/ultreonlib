@@ -2,7 +2,6 @@ package com.ultreon.mods.lib.client.gui.screen.test;
 
 import com.ultreon.mods.lib.client.gui.screen.BaseScreen;
 import com.ultreon.mods.lib.client.gui.screen.ListScreen;
-import com.ultreon.mods.lib.client.gui.screen.ListScreen.ListWidget.Entry;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 
@@ -31,11 +30,10 @@ public class TestsScreen  {
             try {
                 var type = screen.type();
                 var screenInfo = type.getAnnotation(TestScreenInfo.class);
-                screenTests.addEntry(new Entry(
-                        screenTests,
+                screenTests.addEntry(
                         screenInfo.value(),
                         type.getSimpleName(),
-                        type.getName()));
+                        type.getName());
                 map.put(type.getName(), () -> (BaseScreen) screen.get());
             } catch (Exception e) {
                 e.printStackTrace();

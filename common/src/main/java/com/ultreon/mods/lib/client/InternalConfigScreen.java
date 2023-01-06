@@ -4,10 +4,9 @@ import com.ultreon.mods.lib.UltreonLib;
 import com.ultreon.mods.lib.client.gui.Theme;
 import com.ultreon.mods.lib.client.gui.screen.GenericMenuScreen;
 import com.ultreon.mods.lib.client.gui.screen.TitleStyle;
-import com.ultreon.mods.lib.client.gui.screen.test.TestProgressScreen;
 import com.ultreon.mods.lib.client.gui.screen.test.TestsScreen;
 import com.ultreon.mods.lib.client.gui.widget.BaseButton;
-import com.ultreon.mods.lib.client.gui.widget.ThemedButton;
+import com.ultreon.mods.lib.client.gui.widget.Button;
 import com.ultreon.mods.lib.util.KeyboardHelper;
 import dev.architectury.platform.Platform;
 import net.minecraft.client.gui.screens.Screen;
@@ -22,7 +21,7 @@ public class InternalConfigScreen extends GenericMenuScreen {
         addButtonRow(Component.translatable("gui.ultreonlib.config.title_style").append(UltreonLib.getTitleStyle().getDisplayName()), this::changeTitleStyle);
 
         if (Platform.isDevelopmentEnvironment()) {
-            addButtonRow(Component.literal("Tests"), ThemedButton.Type.PRIMARY, this::openTests);
+            addButtonRow(Component.literal("Tests"), Button.Type.PRIMARY, this::openTests);
         }
     }
 

@@ -12,7 +12,7 @@
 package com.ultreon.mods.lib.client.gui.widget;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.ultreon.mods.lib.client.gui.ReloadsTheme;
+import com.ultreon.mods.lib.client.gui.Themed;
 import com.ultreon.mods.lib.client.gui.Theme;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -20,7 +20,7 @@ import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 
-public class Label implements Renderable, ReloadsTheme {
+public class Label implements Renderable, Themed {
     protected final Minecraft minecraft;
     protected final Font font;
     public int y;

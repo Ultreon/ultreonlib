@@ -15,14 +15,15 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.ultreon.mods.lib.UltreonLib;
 import com.ultreon.mods.lib.client.HasContextMenu;
-import com.ultreon.mods.lib.client.gui.ReloadsTheme;
+import com.ultreon.mods.lib.client.gui.Themed;
 import com.ultreon.mods.lib.client.gui.Theme;
-import com.ultreon.mods.lib.client.gui.widget.ButtonMenuItem;
-import com.ultreon.mods.lib.client.gui.widget.ContextMenu;
+import com.ultreon.mods.lib.client.gui.widget.menu.ButtonMenuItem;
+import com.ultreon.mods.lib.client.gui.widget.menu.ContextMenu;
 import com.ultreon.mods.lib.client.input.MouseButton;
 import com.ultreon.mods.lib.mixin.common.ScreenAccess;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.Screen;
@@ -30,13 +31,14 @@ import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.phys.Vec2;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 
-public abstract class BaseScreen extends Screen implements ReloadsTheme {
+public abstract class BaseScreen extends Screen implements Themed {
     private static final String CLOSE_ICON = "×";
     private static final String CLOSE_ICON_HOVER = ChatFormatting.RED + CLOSE_ICON;
 
@@ -69,7 +71,7 @@ public abstract class BaseScreen extends Screen implements ReloadsTheme {
         throw new AssertionError();
     }
 
-    protected final Theme getTheme() {
+    public final Theme getTheme() {
         return theme;
     }
 
@@ -273,5 +275,18 @@ public abstract class BaseScreen extends Screen implements ReloadsTheme {
     public void open() {
         this.back = Minecraft.getInstance().screen;
         Minecraft.getInstance().setScreen(this);
+    }
+
+    public static void drawCenteredStringWithoutShadow(PoseStack poseStack, Font font, String text, int x, int y, int color) {
+        font.draw(poseStack, text, (float)(x - font.width(text) / 2), (float)y, color);
+    }
+
+    public static void drawCenteredStringWithoutShadow(PoseStack poseStack, Font font, Component text, int x, int y, int color) {
+        FormattedCharSequence formattedCharSequence = text.getVisualOrderText();
+        font.draw(poseStack, formattedCharSequence, (float)(x - font.width(formattedCharSequence) / 2), (float)y, color);
+    }
+
+    public static void drawCenteredStringWithoutShadow(PoseStack poseStack, Font font, FormattedCharSequence text, int x, int y, int color) {
+        font.draw(poseStack, text, (float)(x - font.width(text) / 2), (float)y, color);
     }
 }

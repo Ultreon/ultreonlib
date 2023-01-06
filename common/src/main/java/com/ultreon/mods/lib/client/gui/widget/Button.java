@@ -12,33 +12,49 @@
 package com.ultreon.mods.lib.client.gui.widget;
 
 import com.ultreon.mods.lib.UltreonLib;
-import com.ultreon.mods.lib.client.gui.ReloadsTheme;
+import com.ultreon.mods.lib.client.gui.Themed;
 import com.ultreon.mods.lib.client.gui.Theme;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 
-public non-sealed class ThemedButton extends TexturedButton implements ReloadsTheme {
+public non-sealed class Button extends TexturedButton implements Themed {
     private Type type;
 
-    public ThemedButton(int x, int y, int width, int height, Component title, CommandCallback onClick, Type type) {
+    public Button(int x, int y, int width, int height, Component title, CommandCallback onClick) {
+        this(x, y, width, height, title, onClick, Type.of(UltreonLib.getTheme()));
+    }
+
+    public Button(int x, int y, int width, int height, Component title, CommandCallback onClick, Type type) {
         super(x, y, width, height, title, onClick);
         this.type = type;
         setTextColor(type.textColor);
     }
 
-    public ThemedButton(int x, int y, int width, int height, Component title, CommandCallback onClick, TooltipFactory onTooltip, Type type) {
+    public Button(int x, int y, int width, int height, Component title, CommandCallback onClick, TooltipFactory onTooltip) {
+        this(x, y, width, height, title, onClick, onTooltip, Type.of(UltreonLib.getTheme()));
+    }
+
+    public Button(int x, int y, int width, int height, Component title, CommandCallback onClick, TooltipFactory onTooltip, Type type) {
         super(x, y, width, height, title, onClick, onTooltip);
         this.type = type;
         setTextColor(type.textColor);
     }
 
-    public ThemedButton(Component title, CommandCallback onClick, Type type) {
+    public Button(Component title, CommandCallback onClick) {
+        this(title, onClick, Type.of(UltreonLib.getTheme()));
+    }
+
+    public Button(Component title, CommandCallback onClick, Type type) {
         super(0, 0, 0, 0, title, onClick);
         this.type = type;
         setTextColor(type.textColor);
     }
 
-    public ThemedButton(Component title, CommandCallback onClick, TooltipFactory onTooltip, Type type) {
+    public Button(Component title, CommandCallback onClick, TooltipFactory onTooltip) {
+        this(title, onClick, onTooltip, Type.of(UltreonLib.getTheme()));
+    }
+
+    public Button(Component title, CommandCallback onClick, TooltipFactory onTooltip, Type type) {
         super(0, 0, 0, 0, title, onClick, onTooltip);
         this.type = type;
         setTextColor(type.textColor);

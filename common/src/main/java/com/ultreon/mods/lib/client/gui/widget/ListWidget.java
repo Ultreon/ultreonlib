@@ -16,9 +16,9 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.ultreon.mods.lib.UltreonLib;
 import com.ultreon.mods.lib.UltreonLibConfig;
-import com.ultreon.mods.lib.client.gui.ReloadsTheme;
+import com.ultreon.mods.lib.client.gui.Themed;
 import com.ultreon.mods.lib.client.gui.Theme;
-import com.ultreon.mods.lib.client.gui.screen.GenericMenuScreen;
+import com.ultreon.mods.lib.client.gui.screen.BaseScreen;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
@@ -44,7 +44,7 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 @SuppressWarnings({"FieldCanBeLocal", "UnnecessaryLocalVariable"})
-public class List extends AbstractWidget implements ContainerEventHandler, ReloadsTheme {
+public class ListWidget extends AbstractWidget implements ContainerEventHandler, Themed {
     public static final ResourceLocation TEXTURE_DARK = UltreonLib.res("textures/gui/widgets/list/dark.png");
     public static final ResourceLocation TEXTURE_NORMAL = UltreonLib.res("textures/gui/widgets/list/normal.png");
     public static final ResourceLocation TEXTURE_LIGHT = UltreonLib.res("textures/gui/widgets/list/light.png");
@@ -62,27 +62,27 @@ public class List extends AbstractWidget implements ContainerEventHandler, Reloa
     private final java.util.List<GuiEventListener> children;
     private ResourceLocation guiTexture;
     private EditBox searchBox;
-    private final ListWidget list;
+    private final WrappedList list;
     private final Font font;
     private GuiEventListener focused;
-    private Consumer<ListWidget.Entry> onClick;
-    private BiConsumer<ListWidget.Entry, Button> onClickButton;
-    private final GenericMenuScreen screen;
+    private Consumer<WrappedList.Entry> onClick;
+    private BiConsumer<WrappedList.Entry, Button> onClickButton;
+    private final BaseScreen screen;
     private final Minecraft mc;
     private final int count;
     private final boolean hasSearch;
     private boolean isDragging;
     private Theme theme;
 
-    public List(GenericMenuScreen screen, int x, int y, int width, int count, Component title) {
+    public ListWidget(BaseScreen screen, int x, int y, int width, int count, Component title) {
         this(screen, x, y, width, count, true, title);
     }
 
-    public List(GenericMenuScreen screen, int x, int y, int width, int count, boolean hasSearch, Component title) {
+    public ListWidget(BaseScreen screen, int x, int y, int width, int count, boolean hasSearch, Component title) {
         this(screen, x, y, width, count, hasSearch, title, UltreonLibConfig.THEME.get());
     }
 
-    public List(GenericMenuScreen screen, int x, int y, int width, int count, boolean hasSearch, Component title, Theme theme) {
+    public ListWidget(BaseScreen screen, int x, int y, int width, int count, boolean hasSearch, Component title, Theme theme) {
         super(x, y, width, 0, title);
         this.screen = screen;
         this.count = count;
@@ -103,8 +103,8 @@ public class List extends AbstractWidget implements ContainerEventHandler, Reloa
             this.searchBox = new EditBox(this.font, x + LIST_BORDER_WIDTH + 28, y + LIST_BORDER_WIDTH + 78, width - 28 - LIST_BORDER_WIDTH * 2, 16, SEARCH_HINT) {
                 @Override
                 public void render(@NotNull PoseStack pose, int mouseX, int mouseY, float partialTicks) {
-                    this.setX(List.this.getX() + LIST_BORDER_WIDTH + 4 + 12 + 4);
-                    this.setY(List.this.getY() + LIST_BORDER_WIDTH + 4 + 1);
+                    this.setX(ListWidget.this.getX() + LIST_BORDER_WIDTH + 4 + 12 + 4);
+                    this.setY(ListWidget.this.getY() + LIST_BORDER_WIDTH + 4 + 1);
 
                     super.render(pose, mouseX, mouseY, partialTicks);
                 }
@@ -119,21 +119,21 @@ public class List extends AbstractWidget implements ContainerEventHandler, Reloa
 
         this.height = count * ENTRY_HEIGHT + headerHeight + LIST_BORDER_WIDTH * 2;
 
-        this.list = new ListWidget(this, mc, screen.width, screen.height, y + LIST_BORDER_WIDTH, y + height - LIST_BORDER_WIDTH * 2 + headerHeight, ENTRY_HEIGHT) {
+        this.list = new WrappedList(this, mc, screen.width, screen.height, y + LIST_BORDER_WIDTH, y + height - LIST_BORDER_WIDTH * 2 + headerHeight, ENTRY_HEIGHT) {
             @Override
             public int getRowLeft() {
-                return List.this.getX() + LIST_BORDER_WIDTH;
+                return ListWidget.this.getX() + LIST_BORDER_WIDTH;
             }
 
             @Override
             public int getRowWidth() {
-                return List.this.width - LIST_BORDER_WIDTH * 2;
+                return ListWidget.this.width - LIST_BORDER_WIDTH * 2;
             }
 
             @Override
             public void render(@NotNull PoseStack pose, int mouseX, int mouseY, float partialTicks) {
-                this.y0 = List.this.getY() + LIST_BORDER_WIDTH + List.this.headerHeight;
-                this.y1 = List.this.getY() + LIST_BORDER_WIDTH + List.this.height - LIST_BORDER_WIDTH * 2;
+                this.y0 = ListWidget.this.getY() + LIST_BORDER_WIDTH + ListWidget.this.headerHeight;
+                this.y1 = ListWidget.this.getY() + LIST_BORDER_WIDTH + ListWidget.this.height - LIST_BORDER_WIDTH * 2;
 
                 super.render(pose, mouseX, mouseY, partialTicks);
             }
@@ -277,11 +277,11 @@ public class List extends AbstractWidget implements ContainerEventHandler, Reloa
         return this.list.query;
     }
 
-    public void onClick(Consumer<ListWidget.Entry> consumer) {
+    public void onClick(Consumer<WrappedList.Entry> consumer) {
         if (this.onClick == null) {
             this.onClick = consumer;
         } else {
-            Consumer<ListWidget.Entry> onClick = this.onClick;
+            Consumer<WrappedList.Entry> onClick = this.onClick;
             this.onClick = entry -> {
                 onClick.accept(entry);
                 consumer.accept(entry);
@@ -289,11 +289,11 @@ public class List extends AbstractWidget implements ContainerEventHandler, Reloa
         }
     }
 
-    public void onClickButton(BiConsumer<ListWidget.Entry, Button> consumer) {
+    public void onClickButton(BiConsumer<WrappedList.Entry, Button> consumer) {
         if (this.onClickButton == null) {
             this.onClickButton = consumer;
         } else {
-            BiConsumer<ListWidget.Entry, Button> onClickButton = this.onClickButton;
+            BiConsumer<WrappedList.Entry, Button> onClickButton = this.onClickButton;
             this.onClickButton = (entry, btn) -> {
                 onClickButton.accept(entry, btn);
                 consumer.accept(entry, btn);
@@ -337,7 +337,7 @@ public class List extends AbstractWidget implements ContainerEventHandler, Reloa
         return count;
     }
 
-    public GenericMenuScreen getScreen() {
+    public BaseScreen getScreen() {
         return screen;
     }
 
@@ -346,17 +346,17 @@ public class List extends AbstractWidget implements ContainerEventHandler, Reloa
     }
 
     @Nullable
-    public ListWidget.Entry getSelected() {
-        ListWidget.Entry selected = list.getSelected();
+    public ListWidget.WrappedList.Entry getSelected() {
+        WrappedList.Entry selected = list.getSelected();
         return selected;
     }
 
-    public ListWidget.Entry addEntry(String title, String description) {
+    public WrappedList.Entry addEntry(String title, String description) {
         return addEntry(() -> null, 0, 0, 16, 16, 16, 16, title, description);
     }
 
-    public ListWidget.Entry addEntry(Supplier<@Nullable ResourceLocation> icon, int u, int v, int uWidth, int vHeight, int texW, int texH, String title, String description) {
-        ListWidget.Entry entry = new ListWidget.Entry(Minecraft.getInstance(), list, title, description, icon, u, v, uWidth, vHeight, texW, texH);
+    public WrappedList.Entry addEntry(Supplier<@Nullable ResourceLocation> icon, int u, int v, int uWidth, int vHeight, int texW, int texH, String title, String description) {
+        WrappedList.Entry entry = new WrappedList.Entry(Minecraft.getInstance(), list, title, description, icon, u, v, uWidth, vHeight, texW, texH);
         list.addEntry(entry);
         return entry;
     }
@@ -375,19 +375,19 @@ public class List extends AbstractWidget implements ContainerEventHandler, Reloa
         }
     }
 
-    public void setAddEntries(Consumer<ListWidget> consumer) {
+    public void setAddEntries(Consumer<WrappedList> consumer) {
         this.list.setAddEntries(consumer);
     }
 
-    public static class ListWidget extends ContainerObjectSelectionList<ListWidget.Entry> {
+    public static class WrappedList extends ContainerObjectSelectionList<WrappedList.Entry> {
         private final Minecraft mc;
-        private final List widget;
+        private final ListWidget widget;
         private final Object entriesLock = new Object();
         private ResourceLocation guiTexture;
         private String query;
-        private Consumer<ListWidget> addEntries;
+        private Consumer<WrappedList> addEntries;
 
-        public ListWidget(List widget, Minecraft mc, int width, int height, int top, int bottom, int itemHeight) {
+        public WrappedList(ListWidget widget, Minecraft mc, int width, int height, int top, int bottom, int itemHeight) {
             super(mc, width, height, top, bottom, itemHeight);
             this.mc = mc;
 
@@ -450,13 +450,6 @@ public class List extends AbstractWidget implements ContainerEventHandler, Reloa
 
         @Override
         public boolean mouseClicked(double pMouseX, double pMouseY, int pButton) {
-//            if (pButton == 0) {
-//                Entry entry = getEntryAtPosition(pMouseX, pMouseY);
-//                if (entry != null && entry.click()) {
-//                    setSelected(entry);
-//                    return true;
-//                }
-//            }
             return super.mouseClicked(pMouseX, pMouseY, pButton);
         }
 
@@ -493,11 +486,11 @@ public class List extends AbstractWidget implements ContainerEventHandler, Reloa
             }
         }
 
-        public List getWidget() {
+        public ListWidget getWidget() {
             return widget;
         }
 
-        public void setAddEntries(Consumer<ListWidget> addEntries) {
+        public void setAddEntries(Consumer<WrappedList> addEntries) {
             this.addEntries = addEntries;
         }
 
@@ -515,7 +508,7 @@ public class List extends AbstractWidget implements ContainerEventHandler, Reloa
             public static final int TEXT_COLOR = FastColor.ARGB32.color(140, 255, 255, 255);
 
             private final Minecraft mc;
-            private final @NotNull ListWidget list;
+            private final @NotNull ListWidget.WrappedList list;
             private final String entryTitle;
             private final Supplier<ResourceLocation> texture;
             private final int u;
@@ -529,7 +522,7 @@ public class List extends AbstractWidget implements ContainerEventHandler, Reloa
             private float ticksTooltip;
             private final ResourceLocation guiTexture;
 
-            public Entry(@NotNull Minecraft minecraft, @NotNull ListWidget list, @NotNull String title, String description, @NotNull Supplier<@Nullable ResourceLocation> texture, int u, int v, int uWidth, int vHeight, int texW, int texH) {
+            public Entry(@NotNull Minecraft minecraft, @NotNull ListWidget.WrappedList list, @NotNull String title, String description, @NotNull Supplier<@Nullable ResourceLocation> texture, int u, int v, int uWidth, int vHeight, int texW, int texH) {
                 this.mc = minecraft;
                 this.list = list;
                 this.guiTexture = list.guiTexture;
@@ -627,7 +620,7 @@ public class List extends AbstractWidget implements ContainerEventHandler, Reloa
                 return description;
             }
 
-            public @NotNull ListWidget getList() {
+            public @NotNull ListWidget.WrappedList getList() {
                 return list;
             }
 
