@@ -96,6 +96,8 @@ public class ContextMenu extends AbstractContainerWidget {
     @Override
     public void render(@NotNull PoseStack pose, int mouseX, int mouseY, float partialTicks) {
         RenderSystem.setShaderTexture(0, WIDGETS);
+        pose.pushPose();
+        pose.translate(0, 0, 100);
 
         Component message = getMessage();
         boolean hasTitle;
@@ -136,6 +138,7 @@ public class ContextMenu extends AbstractContainerWidget {
             y += menuItem.getHeight() + 2;
         }
 
+        pose.popPose();
         pose.popPose();
     }
 
