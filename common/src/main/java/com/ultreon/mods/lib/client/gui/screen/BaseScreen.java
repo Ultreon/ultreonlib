@@ -269,7 +269,7 @@ public abstract class BaseScreen extends Screen implements ReloadsTheme {
     }
 
     public static void renderTitleFrame(PoseStack pose, int x, int y, int width, int height, Theme theme) {
-        renderFrame(pose, x, y + 5, width, height - 10, theme, 0);
+        renderTitleFrame(pose, x, y, width, height, theme, 0);
     }
 
     @SuppressWarnings("PointlessArithmeticExpression")
