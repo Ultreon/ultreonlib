@@ -292,7 +292,7 @@ public final class ListScreen extends PanoramaScreen {
         }
 
         public boolean isEmpty() {
-            return defaultEntries.isEmpty();
+            return children().isEmpty();
         }
 
         public void loadCache() {
