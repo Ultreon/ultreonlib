@@ -22,7 +22,7 @@ dependencies {
     modCompileOnly 'com.electronwill.night-config:core:3.6.3'
     modCompileOnly 'com.electronwill.night-config:toml:3.6.3'
 
-    implementation("com.ultreon:ubo-data:1.0.0+3")
+    implementation("com.github.Ultreon:ultreon-data:d6e10585a7")
 }
 
 sourceSets {

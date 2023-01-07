@@ -112,6 +112,10 @@ subprojects {
             url 'https://maven.quiltmc.org/repository/release/'
         }
 
+        maven {
+            name 'Jitpack'
+            url 'https://jitpack.io/'
+        }
 
         maven {
             name "Cursemaven"

@@ -27,7 +27,7 @@ dependencies {
     forge "net.minecraftforge:forge:${rootProject.architectury.minecraft}-${rootProject.forge_version}"
     forgeRuntimeLibrary project(":forge")
     include(project(":forge"))
-    include("com.ultreon:ubo-data:1.0.0+3")
+    include("com.github.Ultreon:ultreon-data:d6e10585a7")
 }
 
 processResources {
