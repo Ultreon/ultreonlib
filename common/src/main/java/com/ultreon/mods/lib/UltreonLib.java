@@ -53,7 +53,7 @@ public class UltreonLib {
     }
 
     @ApiStatus.Internal
-    public static UltreonLib create() {
+    public synchronized static UltreonLib create() {
         if (instance != null) {
             throw new IllegalStateException("The mod is already instantiated.");
         }
