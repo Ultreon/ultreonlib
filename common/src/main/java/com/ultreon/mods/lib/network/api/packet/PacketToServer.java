@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Objects;
 import java.util.function.Supplier;
 
-public abstract non-sealed class PacketToServer<T extends PacketToServer<T>> extends BasePacket<T> {
+public abstract non-sealed class PacketToServer<T extends PacketToServer<T>> extends BasePacket<T> implements ServerEndpoint {
     @Override
     public final boolean handle(Supplier<NetworkManager.PacketContext> context) {
         NetworkManager.PacketContext ctx = context.get();

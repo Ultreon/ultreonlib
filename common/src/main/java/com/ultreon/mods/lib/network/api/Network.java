@@ -1,6 +1,8 @@
 package com.ultreon.mods.lib.network.api;
 
 import com.ultreon.mods.lib.network.api.packet.BasePacket;
+import com.ultreon.mods.lib.network.api.packet.ClientEndpoint;
+import com.ultreon.mods.lib.network.api.packet.ServerEndpoint;
 import dev.architectury.networking.NetworkChannel;
 import dev.architectury.networking.NetworkManager.PacketContext;
 import dev.architectury.utils.Env;
@@ -54,7 +56,7 @@ public abstract class Network {
     }
 
     @Environment(EnvType.CLIENT)
-    public <T extends BasePacket<T>> void sendToServer(T message) {
+    public <T extends BasePacket<T> & ServerEndpoint> void sendToServer(T message) {
         if (Minecraft.getInstance().getConnection() != null) {
             channel.sendToServer(message);
         } else {
@@ -63,7 +65,7 @@ public abstract class Network {
         }
     }
 
-    public <T extends BasePacket<T>> void sendToClient(BasePacket<T> messageNotification, Player player) { // has to be ServerPlayer if world is not null
+    public <T extends BasePacket<T> & ClientEndpoint> void sendToClient(BasePacket<T> messageNotification, Player player) { // has to be ServerPlayer if world is not null
         if (player == null) {
             messageNotification.handlePacket(() -> new PacketContext() {
                 @Override

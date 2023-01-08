@@ -5,7 +5,7 @@ import net.minecraft.server.level.ServerPlayer;
 
 import java.util.function.Supplier;
 
-public abstract non-sealed class BiDirectionalPacket<T extends BiDirectionalPacket<T>> extends BasePacket<T> {
+public abstract non-sealed class BiDirectionalPacket<T extends BiDirectionalPacket<T>> extends BasePacket<T> implements ClientEndpoint, ServerEndpoint {
     public BiDirectionalPacket() {
         super();
     }

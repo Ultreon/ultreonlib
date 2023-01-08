@@ -5,7 +5,7 @@ import dev.architectury.utils.Env;
 
 import java.util.function.Supplier;
 
-public abstract non-sealed class PacketToClient<T extends PacketToClient<T>> extends BasePacket<T> {
+public abstract non-sealed class PacketToClient<T extends PacketToClient<T>> extends BasePacket<T> implements ClientEndpoint {
     public PacketToClient() {
         super();
     }
