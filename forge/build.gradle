@@ -27,16 +27,16 @@ configurations {
 }
 
 dependencies {
-    forge "net.minecraftforge:forge:${rootProject.architectury.minecraft}-${rootProject.forge_version}"
+    forge "net.minecraftforge:forge:${rootProject.architectury.minecraft}-${forge_version}"
     // Remove the next line if you don't want to depend on the API
-    modApi "dev.architectury:architectury-forge:${rootProject.architectury_version}"
+    modApi "dev.architectury:architectury-forge:${architectury_version}"
 
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionForge")) { transitive = false }
 
     modRuntimeOnly "curse.maven:configured-457570:4166861"
 
-    forgeRuntimeLibrary("com.github.Ultreon:ultreon-data:d6e10585a7")
+    forgeRuntimeLibrary("com.github.Ultreon:ultreon-data:${ultreon_data_version}")
 }
 
 processResources {
@@ -45,7 +45,6 @@ processResources {
     inputs.property "loaderVersion", rootProject.forge_version.toString().split("\\.")[0]
     inputs.property "forgeVersion", rootProject.forge_version
     inputs.property "minecraftVersion", rootProject.architectury.minecraft
-    System.out.println(inputs.getProperties())
 
     filesMatching("META-INF/mods.toml") {
         HashMap<String, ?> p = new HashMap<>()
