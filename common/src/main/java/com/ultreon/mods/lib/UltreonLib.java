@@ -1,12 +1,11 @@
 package com.ultreon.mods.lib;
 
-import com.ultreon.mods.lib.client.gui.Themed;
 import com.ultreon.mods.lib.client.gui.Theme;
+import com.ultreon.mods.lib.client.gui.Themed;
 import com.ultreon.mods.lib.client.gui.screen.TitleStyle;
 import com.ultreon.mods.lib.loot.LootTableInjection;
 import com.ultreon.mods.lib.network.api.NetworkManager;
 import com.ultreon.mods.lib.util.ModMessages;
-import dev.architectury.event.events.client.ClientGuiEvent;
 import dev.architectury.event.events.common.LootEvent;
 import dev.architectury.event.events.common.PlayerEvent;
 import dev.architectury.platform.Mod;
@@ -48,8 +47,6 @@ public class UltreonLib {
         LootEvent.MODIFY_LOOT_TABLE.register(LootTableInjection::runModifications);
 
         PlayerEvent.PLAYER_JOIN.register(ModMessages::sendOnLogin);
-
-        ClientGuiEvent.SET_SCREEN.register(DevPreviewRegistry::onTitleScreen);
     }
 
     @ApiStatus.Internal

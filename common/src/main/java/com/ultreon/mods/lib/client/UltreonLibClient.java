@@ -46,6 +46,7 @@ public class UltreonLibClient {
         ClientGuiEvent.RENDER_PRE.register(ScreenHooks::onDrawScreen);
 
         ClientGuiEvent.SET_SCREEN.register(this::onTitleScreenInit);
+        ClientGuiEvent.SET_SCREEN.register(DevPreviewRegistry::onTitleScreen);
     }
 
     /**

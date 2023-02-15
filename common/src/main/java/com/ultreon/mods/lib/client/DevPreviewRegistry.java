@@ -1,4 +1,4 @@
-package com.ultreon.mods.lib;
+package com.ultreon.mods.lib.client;
 
 import com.ultreon.mods.lib.client.gui.DevPreviewScreen;
 import com.ultreon.mods.lib.util.UtilityClass;
