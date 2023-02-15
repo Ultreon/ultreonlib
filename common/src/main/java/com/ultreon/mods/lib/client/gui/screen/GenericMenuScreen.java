@@ -564,7 +564,7 @@ public abstract class GenericMenuScreen extends BaseScreen implements Themed {
 
         // Renders the background.
         if (this.panorama) renderPanorama(pose, partialTicks);
-        renderBackground(pose);
+        else renderBackground(pose);
 
         int curY = top();
         int index = 0;

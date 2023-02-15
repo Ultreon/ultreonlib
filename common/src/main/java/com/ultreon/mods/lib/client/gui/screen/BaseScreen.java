@@ -82,8 +82,6 @@ public abstract class BaseScreen extends Screen implements Themed {
 
     @Override
     public void render(@NotNull PoseStack pose, int mouseX, int mouseY, float partialTicks) {
-        renderBackground(pose);
-
         renderCloseButton(pose, mouseX, mouseY);
 
         boolean flag = contextMenu != null && contextMenu.isMouseOver(mouseX, mouseY);
