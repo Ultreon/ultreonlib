@@ -24,6 +24,7 @@ import com.ultreon.mods.lib.client.gui.widget.BaseButton;
 import com.ultreon.mods.lib.client.gui.widget.Label;
 import com.ultreon.mods.lib.client.gui.widget.ListWidget;
 import com.ultreon.mods.lib.client.gui.widget.Button;
+import com.ultreon.mods.lib.mixin.common.AbstractSelectionListAccessor;
 import com.ultreon.mods.lib.mixin.common.AbstractWidgetAccessor;
 import com.ultreon.mods.lib.mixin.common.TitleScreenAccessor;
 import dev.architectury.injectables.annotations.ExpectPlatform;
@@ -652,7 +653,7 @@ public abstract class GenericMenuScreen extends BaseScreen implements Themed {
             for (Row row : rows.subList(0, rows.size() - 1)) {
                 // Render the row background and widgets.
                 renderRowBackground(pose, y, row);
-                renderRowWidgets(pose, mouseX, mouseY, partialTicks, y, row);
+                renderSubWidgets(pose, mouseX, mouseY, partialTicks, y, row);
 
                 // Advance in index, and add the current row height to the current y coordinate.
                 y += row.height();
@@ -666,7 +667,7 @@ public abstract class GenericMenuScreen extends BaseScreen implements Themed {
 
             // Render the row background and widgets.
             renderRowBackground(pose, y, row);
-            renderRowWidgets(pose, mouseX, mouseY, partialTicks, y, row);
+            renderSubWidgets(pose, mouseX, mouseY, partialTicks, y, row);
 
             y += row.height();
         }
@@ -676,12 +677,12 @@ public abstract class GenericMenuScreen extends BaseScreen implements Themed {
         this.blit(pose, left(), y, 0, 252, width(), 4);
     }
 
-    private void renderRowWidgets(@NotNull PoseStack pose, int mouseX, int mouseY, float partialTicks, int curY, Row row) {
+    private void renderSubWidgets(@NotNull PoseStack pose, int mouseX, int mouseY, float partialTicks, int curY, Row row) {
         // Render row.
         if (row.widgets.size() == 1) {
             // Render row with single widget.
             Renderable widget = row.widgets.get(0);
-            renderRowWidget(
+            repositionAndRender(
                     widget,
                     left() + row.deltaX(),
                     curY + row.deltaY(),
@@ -695,7 +696,7 @@ public abstract class GenericMenuScreen extends BaseScreen implements Themed {
             // Render row with multiple widgets.
             int x = left() + row.deltaX();
             for (Renderable widget : row.widgets()) {
-                renderRowWidget(widget,
+                repositionAndRender(widget,
                         x,
                         curY + row.deltaY(),
                         row.widgetWidth(),
@@ -710,17 +711,30 @@ public abstract class GenericMenuScreen extends BaseScreen implements Themed {
         }
     }
 
-    private void renderRowWidget(Renderable widget, int x, int y, int width, int height, @NotNull PoseStack matrices, int mouseX, int mouseY, float partialTicks) {
+    private void repositionAndRender(Renderable widget, int x, int y, int width, int height, @NotNull PoseStack matrices, int mouseX, int mouseY, float partialTicks) {
         if (widget instanceof AbstractWidget absWidget && absWidget instanceof AbstractWidgetAccessor accessor) {
             absWidget.setX(x);
             absWidget.setY(y);
             absWidget.setWidth(width);
             accessor.setHeight(height);
+        } else if (widget instanceof AbstractSelectionList<?> absWidget && absWidget instanceof AbstractSelectionListAccessor accessor) {
+            accessor.setX0(x);
+            accessor.setY0(y);
+            accessor.setX1(x + width);
+            accessor.setY1(y + height);
+            accessor.setWidth(width);
+            accessor.setHeight(height);
         } else if (widget instanceof Label label) {
             label.x = x;
             label.y = y;
+        } else {
+            onReposition(widget, x, y, width, height, matrices, mouseX, mouseY, partialTicks);
         }
         widget.render(matrices, mouseX, mouseY, partialTicks);
+    }
+
+    public void onReposition(Renderable widget, int x, int y, int width, int height, PoseStack matrices, int mouseX, int mouseY, float partialTicks) {
+
     }
 
     private void renderRowBackground(@NotNull PoseStack pose, int y, Row row) {
