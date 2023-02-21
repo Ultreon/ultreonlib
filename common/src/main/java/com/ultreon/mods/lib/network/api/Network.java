@@ -24,7 +24,7 @@ public abstract class Network {
         return Objects.requireNonNull(Minecraft.getInstance().getConnection()).getConnection();
     }
 
-    private NetworkChannel channel;
+    protected NetworkChannel channel;
 
     protected Network(String modId, String channelName) {
         this.modId = modId;
