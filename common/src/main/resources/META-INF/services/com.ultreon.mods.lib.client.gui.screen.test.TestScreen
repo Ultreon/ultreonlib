@@ -1,2 +1,4 @@
 com.ultreon.mods.lib.client.gui.screen.test.TestProgressScreen
 com.ultreon.mods.lib.client.gui.screen.test.TestActionMenuScreen
+com.ultreon.mods.lib.client.gui.screen.test.TestFullscreenRenderScreen
+com.ultreon.mods.lib.client.gui.screen.test.TestDesktopScreen

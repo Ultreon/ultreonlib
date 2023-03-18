@@ -2,6 +2,7 @@ package com.ultreon.mods.lib.client.gui.screen.test;
 
 import com.ultreon.mods.lib.client.gui.screen.BaseScreen;
 import com.ultreon.mods.lib.client.gui.screen.ListScreen;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 
@@ -24,7 +25,7 @@ public class TestsScreen  {
 
     public static void open(final Screen back) {
         var screenTests = new ListScreen(Component.literal("Screen Tests"));
-        var map = new HashMap<String, Supplier<BaseScreen>>();
+        var map = new HashMap<String, Supplier<Screen>>();
 
         for (var screen : SCREENS) {
             try {
@@ -34,7 +35,7 @@ public class TestsScreen  {
                         screenInfo.value(),
                         type.getSimpleName(),
                         type.getName());
-                map.put(type.getName(), () -> (BaseScreen) screen.get());
+                map.put(type.getName(), () -> (Screen) screen.get());
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -44,7 +45,14 @@ public class TestsScreen  {
             var supplier = map.get(entry.getId());
             if (supplier != null) {
                 try {
-                    TestLaunchContext.withinContext(Component.nullToEmpty(entry.getTitle()), () -> supplier.get().open());
+                    TestLaunchContext.withinContext(Component.nullToEmpty(entry.getTitle()), () -> {
+                        var screen = supplier.get();
+                        if (screen instanceof BaseScreen baseScreen) {
+                            baseScreen.open();
+                        } else {
+                            Minecraft.getInstance().setScreen(screen);
+                        }
+                    });
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

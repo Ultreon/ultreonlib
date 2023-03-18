@@ -39,7 +39,7 @@ dependencies {
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionFabric")) { transitive false }
 
-    modImplementation "com.terraformersmc:modmenu:4.0.6", {
+    modImplementation "com.terraformersmc:modmenu:5.0.2", {
         exclude module: "fabric-api"
     }
 
