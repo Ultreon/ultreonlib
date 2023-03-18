@@ -71,8 +71,28 @@ public class McWindow extends McContainer {
             ScissorStack.popScissor();
         }
 
+        int tcr = getX() + getWidth() + 1; // Title Controls Right
+        if (isMouseOver(mouseX, mouseY, tcr - 24, getY() + 1, 24, 12)) {
+            fill(poseStack, tcr - 24, getY() + 1, tcr, getY() + 13, 0xffff5555);
+            drawCenteredStringWithoutShadow(poseStack, font, "×", tcr - 12, getY() + 3, 0xffffffff);
+        } else drawCenteredStringWithoutShadow(poseStack, font, "×", tcr - 12, getY() + 3, 0xffffffff);
+
+        if (isMouseOver(mouseX, mouseY, tcr - 48, getY() + 1, 24, 12)) {
+            fill(poseStack, tcr - 48, getY() + 1, tcr - 24, getY() + 13, 0xff777777);
+            drawCenteredStringWithoutShadow(poseStack, font, "□", tcr - 36, getY() + 3, 0xff55ffff);
+        } else drawCenteredStringWithoutShadow(poseStack, font, "□", tcr - 36, getY() + 3, 0xffffffff);
+
+        if (isMouseOver(mouseX, mouseY, tcr - 72, getY() + 1, 24, 12)) {
+            fill(poseStack, tcr - 72, getY() + 1, tcr - 48, getY() + 13, 0xff777777);
+            drawCenteredStringWithoutShadow(poseStack, font, "-", tcr - 60, getY() + 3, 0xff55ffff);
+        } else drawCenteredStringWithoutShadow(poseStack, font, "-", tcr - 60, getY() + 3, 0xffffffff);
+
         // Do content rendering.
         super.render(poseStack, mouseX, mouseY, partialTicks);
+    }
+
+    private boolean isMouseOver(int mouseX, int mouseY, int x, int y, int width, int height) {
+        return this.active && this.visible && mouseX >= (double)x && mouseY >= (double)y && mouseX < (double)(x + width) && mouseY < (double)(y + height);
     }
 
     @Override
