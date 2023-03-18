@@ -3,15 +3,18 @@ package com.ultreon.mods.lib.client.gui.v2;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.network.chat.Component;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 abstract class McWindowManager extends McComponent {
     private final List<McWindow> windows;
     private final Object wmLock = new Object();
+    private McWindow windowPress;
 
     public McWindowManager(int x, int y, int width, int height, List<McWindow> windows) {
         super(x, y, width, height, Component.empty());
-        this.windows = windows;
+        this.windows = windows instanceof CopyOnWriteArrayList<McWindow> ? windows : new CopyOnWriteArrayList<>(windows);
         windows.forEach(window -> window.wm = this);
     }
 
@@ -21,8 +24,12 @@ abstract class McWindowManager extends McComponent {
     }
 
     private void renderWindows(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
-        for (var window : windows) {
-            window.render(poseStack, mouseX, mouseY, partialTicks);
+        var windows = new ArrayList<>(this.windows);
+        for (int i = windows.size() - 1; i > -1; i--) {
+            var window = windows.get(i);
+
+            if (i < windows.size() - 1) window.render(poseStack, Integer.MAX_VALUE, Integer.MAX_VALUE, partialTicks);
+            else window.render(poseStack, mouseX, mouseY, partialTicks);
         }
     }
 
@@ -48,14 +55,17 @@ abstract class McWindowManager extends McComponent {
             if (!this.windows.contains(window)) throw new IllegalArgumentException("Window doesn't exist.");
 
             this.windows.remove(window);
-            this.windows.add(window);
+            this.windows.add(0, window);
         }
     }
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
         for (var window : windows) {
-            if (window.isMouseOver(mouseX, mouseY) && window.mouseClicked(mouseX, mouseY, button)) {
+            if (window.isMouseOver(mouseX, mouseY)) {
+                this.moveToForeground(window);
+                windowPress = window;
+                window.mouseClicked(mouseX, mouseY, button);
                 return true;
             }
         }
@@ -64,20 +74,18 @@ abstract class McWindowManager extends McComponent {
 
     @Override
     public boolean mouseReleased(double mouseX, double mouseY, int button) {
-        var ret = false;
-        for (var window : windows) {
-            ret |= window.mouseReleased(mouseX, mouseY, button);
+        if (windowPress != null) {
+            windowPress.mouseReleased(mouseX, mouseY, button);
+            return true;
         }
-        if (ret) return true;
         return super.mouseReleased(mouseX, mouseY, button);
     }
 
     @Override
     public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
-        for (var window : windows) {
-            if (window.isMouseOver(mouseX, mouseY) && window.mouseDragged(mouseX, mouseY, button, dragX, dragY)) {
-                return true;
-            }
+        if (windowPress != null) {
+            windowPress.mouseDragged(mouseX, mouseY, button, dragX, dragY);
+            return true;
         }
         return super.mouseDragged(mouseX, mouseY, button, dragX, dragY);
     }
@@ -85,7 +93,10 @@ abstract class McWindowManager extends McComponent {
     @Override
     public void mouseMoved(double mouseX, double mouseY) {
         for (var window : windows) {
-            window.mouseMoved(mouseX, mouseY);
+            if (window.isMouseOver(mouseX, mouseY)) {
+                window.mouseMoved(mouseX, mouseY);
+                return;
+            }
         }
         super.mouseMoved(mouseX, mouseY);
     }

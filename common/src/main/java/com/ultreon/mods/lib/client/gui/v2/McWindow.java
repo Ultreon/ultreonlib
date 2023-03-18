@@ -47,21 +47,13 @@ public class McWindow extends McContainer {
         if (width <= 0 || height <= 0)
             throw new IllegalStateException("Size must be positive, got: %d * %d".formatted(width, height));
 
-        if (this.holdingTitle) {
-            var fromX = (int) this.holdingTitleFrom.x;
-            var fromY = (int) this.holdingTitleFrom.y;
-            var sinceX = (int) this.holdingTitleSince.x;
-            var sinceY = (int) this.holdingTitleSince.y;
-
-            var deltaX = mouseX - fromX;
-            var deltaY = mouseY - fromY;
-
-            setX(sinceX + deltaX);
-            setY(sinceY + deltaY);
-        }
+        fixPosition();
 
         var titleWidth = Math.min(this.width - 24, 150);
         var titleHeight = this.height - getBorder().top - 1;
+
+        // Shadow
+        fill(poseStack, getX() - 1, getY() - 1, getX() + this.width + getBorder().left + getBorder().right + 1, getY() + this.height + getBorder().top + getBorder().bottom + 1, 0x40000000);
 
         // Title frame.
         fill(poseStack, getX(), getY(), getX() + this.width + getBorder().left + getBorder().right, getY() + this.height + getBorder().top + getBorder().bottom, 0xff555555);
@@ -81,6 +73,19 @@ public class McWindow extends McContainer {
 
         // Do content rendering.
         super.render(poseStack, mouseX, mouseY, partialTicks);
+    }
+
+    private void fixPosition() {
+        int wmWidth = wm.getWidth();
+        int wmHeight = wm.getHeight();
+
+        // Fix position when the window is outside of the WM.
+        if (getX() + wmHeight > wmWidth) setX(wmWidth - width);
+        if (getY() + height > wmHeight) setY(wmHeight - height);
+
+        // Fix position when the position is negative.
+        if (getX() < 0) setX(0);
+        if (getY() < 0) setY(0);
     }
 
     public final void destroy() {
@@ -111,7 +116,6 @@ public class McWindow extends McContainer {
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
         if (isMouseOverTitle(mouseX, mouseY)) {
-            this.wm.moveToForeground(this);
             if (button == 0) {
                 this.holdingTitleFrom = new Vector2d(mouseX, mouseY);
                 this.holdingTitleSince = new Vector2d(getX(), getY());
@@ -124,6 +128,19 @@ public class McWindow extends McContainer {
     @Override
     public void mouseMoved(double mouseX, double mouseY) {
         super.mouseMoved(mouseX, mouseY);
+        if (this.holdingTitle) {
+            var fromX = (int) this.holdingTitleFrom.x;
+            var fromY = (int) this.holdingTitleFrom.y;
+            var sinceX = (int) this.holdingTitleSince.x;
+            var sinceY = (int) this.holdingTitleSince.y;
+
+            var deltaX = (int)mouseX - fromX;
+            var deltaY = (int)mouseY - fromY;
+
+            setX(sinceX + deltaX);
+            setY(sinceY + deltaY);
+        }
+
     }
 
     private boolean isMouseOverTitle(double mouseX, double mouseY) {

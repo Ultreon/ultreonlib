@@ -2,6 +2,7 @@ package com.ultreon.mods.lib.client.gui.v2;
 
 import com.google.common.collect.Lists;
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import org.apache.commons.compress.utils.Sets;
@@ -9,12 +10,14 @@ import org.apache.commons.compress.utils.Sets;
 import java.util.Set;
 
 public class DesktopScreen extends Screen {
-    private final McDesktop desktop;
+    private final Screen back;
+    private McDesktop desktop;
 
     public DesktopScreen(LaunchOptions options) {
         super(options.title);
 
         this.desktop = new McDesktop(width, height, Lists.newArrayList(options.windows));
+        this.back = options.back;
     }
 
     @Override
@@ -87,12 +90,23 @@ public class DesktopScreen extends Screen {
         return desktop.charTyped(codePoint, modifiers);
     }
 
+    public void shutdown() {
+        this.desktop = null;
+        Minecraft.getInstance().setScreen(back);
+    }
+
     public static class LaunchOptions {
         private Component title;
+        private Screen back;
         private final Set<McWindow> windows = Sets.newHashSet();
 
         public LaunchOptions title(Component title) {
             this.title = title;
+            return this;
+        }
+
+        public LaunchOptions back(Screen back) {
+            this.back = back;
             return this;
         }
 
