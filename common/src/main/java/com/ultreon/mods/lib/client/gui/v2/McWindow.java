@@ -75,12 +75,17 @@ public class McWindow extends McContainer {
         super.render(poseStack, mouseX, mouseY, partialTicks);
     }
 
+    @Override
+    public boolean isMouseOver(double mouseX, double mouseY) {
+        return this.active && this.visible && mouseX >= (double)this.getX() && mouseY >= (double)this.getY() && mouseX < (double)(this.getX() + this.width + getBorder().left + getBorder().right) && mouseY < (double)(this.getY() + this.height + getBorder().top + getBorder().bottom);
+    }
+
     private void fixPosition() {
         int wmWidth = wm.getWidth();
         int wmHeight = wm.getHeight();
 
         // Fix position when the window is outside of the WM.
-        if (getX() + wmHeight > wmWidth) setX(wmWidth - width);
+        if (getX() + width > wmWidth) setX(wmWidth - width);
         if (getY() + height > wmHeight) setY(wmHeight - height);
 
         // Fix position when the position is negative.
@@ -126,8 +131,7 @@ public class McWindow extends McContainer {
     }
 
     @Override
-    public void mouseMoved(double mouseX, double mouseY) {
-        super.mouseMoved(mouseX, mouseY);
+    public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
         if (this.holdingTitle) {
             var fromX = (int) this.holdingTitleFrom.x;
             var fromY = (int) this.holdingTitleFrom.y;
@@ -141,6 +145,7 @@ public class McWindow extends McContainer {
             setY(sinceY + deltaY);
         }
 
+        return super.mouseDragged(mouseX, mouseY, button, dragX, dragY);
     }
 
     private boolean isMouseOverTitle(double mouseX, double mouseY) {

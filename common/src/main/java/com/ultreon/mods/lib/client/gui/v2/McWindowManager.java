@@ -2,9 +2,11 @@ package com.ultreon.mods.lib.client.gui.v2;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.network.chat.Component;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 abstract class McWindowManager extends McComponent {
@@ -25,12 +27,23 @@ abstract class McWindowManager extends McComponent {
 
     private void renderWindows(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
         var windows = new ArrayList<>(this.windows);
+        McWindow hoveredWindow = getHoveredWindow(mouseX, mouseY);
         for (int i = windows.size() - 1; i > -1; i--) {
             var window = windows.get(i);
 
-            if (i < windows.size() - 1) window.render(poseStack, Integer.MAX_VALUE, Integer.MAX_VALUE, partialTicks);
-            else window.render(poseStack, mouseX, mouseY, partialTicks);
+            if (Objects.equals(window, hoveredWindow)) window.render(poseStack, mouseX, mouseY, partialTicks);
+            else window.render(poseStack, Integer.MAX_VALUE, Integer.MAX_VALUE, partialTicks);
         }
+    }
+
+    @Nullable
+    private McWindow getHoveredWindow(int mouseX, int mouseY) {
+        for (var window : windows) {
+            if (window.isMouseOver(mouseX, mouseY)) {
+                return window;
+            }
+        }
+        return null;
     }
 
     public synchronized void createWindow(McWindow window) {
