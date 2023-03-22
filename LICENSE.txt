@@ -21,7 +21,7 @@ The tool by SpongePowered that allows for modifying code in memory (not directly
 -------------------
 1. Distribution and Modification:
 Copying anything from this project is hereby prohibited.
-Any modification made to the code or resources are prohibited.
+Any modification made to the code or resources is prohibited.
 Project members are allowed to make changes from within the organization/user boundaries.
 Automatic downloading is allowed as long it's not going to be publicly stored.
 
