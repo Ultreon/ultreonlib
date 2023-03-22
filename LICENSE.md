@@ -17,7 +17,7 @@ Copyright © 2022-2023 Qboi123 <qboiwastaken@gmail.com>
 
 ### §2 - Information:
 1. **Distribution and Modification:**  
-   Redistributing to publicly available services (including paid services) is prohibited.  
+   Copying/mirroring to publicly available services (including paid services) is prohibited.  
    Any modification made to the code or resources is prohibited.  
    Project members are allowed to make changes from within the organization/user boundaries.  
    Automatic downloading is allowed as long it's not going to be publicly stored.
