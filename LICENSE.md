@@ -2,7 +2,7 @@ Copyright (c) 2022 Qboi123 <qboiwastaken@gmail.com>
 
 # Ultreon API License version 1.2
 
-## §1 - Meaning:
+### §1 - Meaning:
 1. **"Project owner":**  
    An individual user or organization owner that owns the project being referred.  
 
@@ -15,7 +15,7 @@ Copyright (c) 2022 Qboi123 <qboiwastaken@gmail.com>
 4. **"Mixins":**  
    The tool by SpongePowered that allows for modifying code in memory (not directly at the file).  
 
-## §2 - Information:
+### §2 - Information:
 1. **Distribution and Modification:**  
    Redistributing to publicly available services is prohibited.  
    Any modification made to the code or resources is prohibited.  
@@ -33,6 +33,6 @@ Copyright (c) 2022 Qboi123 <qboiwastaken@gmail.com>
    Mixins are allowed to be used to make changes on runtime level. As long the file itself will be left unchanged.  
    AND it's not allowed to export the mixins.  
 
-## §3 - Notes:  
+### §3 - Notes:  
  * If you notice that the project with originally this license is redistributed in a modified or non-modified form without explicit permission of the original project owner, we advise you to contact that project owner.  
  * Any usage of the project and/or it's contents that violates the license will lead to termination of any of the online accounts / services that violates it.  
