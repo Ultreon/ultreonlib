@@ -8,17 +8,20 @@ Ultreon API License version 1.2
 1. "Project owner":
 An individual user or organization owner that owns the project being referred.
 
-2. "Organization/user boundaries":
+2. "Project members":
+The project owner, and everyone that is allowed by the project owner to modify the project's contents.
+
+3. "Organization/user boundaries":
 The online space that is owned by the organization referred.
 
-3. "Mixins":
+4. "Mixins":
 The tool by SpongePowered that allows for modifying code in memory (not directly at the file).
 
 §2 - Information:
 -------------------
 1. Distribution and Modification:
 Copying anything from this project is hereby prohibited.
-Redistributing isn't allowed, and any modification made to the code or resources is prohibited.
+Any modification made to the code or resources are prohibited.
 Project members are allowed to make changes from within the organization/user boundaries.
 Automatic downloading is allowed as long it's not going to be publicly stored.
 
