@@ -1,4 +1,4 @@
-Copyright (c) 2022 Qboi123 <qboiwastaken@gmail.com>
+Copyright © 2022-2023 Qboi123 <qboiwastaken@gmail.com>
 
 # Ultreon API License version 1.2
 
