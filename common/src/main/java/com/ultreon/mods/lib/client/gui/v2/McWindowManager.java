@@ -57,7 +57,7 @@ abstract class McWindowManager extends McComponent {
 
     synchronized void destroyWindow(McWindow window) {
         synchronized (this.wmLock) {
-            if (this.windows.contains(window)) throw new IllegalArgumentException("Window already exists.");
+            if (!this.windows.contains(window)) throw new IllegalArgumentException("Windows doesn't exist.");
 
             this.windows.add(window);
         }

@@ -5,10 +5,13 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import java.util.ArrayList;
 
 public class McDesktop extends McWindowManager {
+    private final DesktopScreen screen;
     private McImage wallpaper;
 
-    public McDesktop(int width, int height, ArrayList<McWindow> windows) {
+    public McDesktop(DesktopScreen screen, int width, int height, ArrayList<McWindow> windows) {
         super(0, 0, width, height, windows);
+
+        this.screen = screen;
     }
 
     @Override
@@ -59,5 +62,15 @@ public class McDesktop extends McWindowManager {
     @Override
     public final int getY() {
         return 0;
+    }
+
+    @Override
+    public int getWidth() {
+        return screen.width;
+    }
+
+    @Override
+    public int getHeight() {
+        return screen.height;
     }
 }

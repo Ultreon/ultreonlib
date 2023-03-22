@@ -16,7 +16,7 @@ public class DesktopScreen extends Screen {
     public DesktopScreen(LaunchOptions options) {
         super(options.title);
 
-        this.desktop = new McDesktop(width, height, Lists.newArrayList(options.windows));
+        this.desktop = new McDesktop(this, width, height, Lists.newArrayList(options.windows));
         this.back = options.back;
     }
 
@@ -35,14 +35,9 @@ public class DesktopScreen extends Screen {
     }
 
     @Override
-    protected void init() {
-        super.init();
+    public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
         desktop.setWidth(width);
         desktop.setHeight(height);
-    }
-
-    @Override
-    public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
         desktop.render(poseStack, mouseX, mouseY, partialTicks);
     }
 

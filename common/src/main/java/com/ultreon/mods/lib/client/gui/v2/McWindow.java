@@ -5,6 +5,7 @@ import com.ultreon.mods.lib.util.ScissorStack;
 import net.minecraft.network.chat.Component;
 import org.apache.commons.compress.utils.Lists;
 import org.joml.Vector2d;
+import org.joml.Vector2i;
 
 import java.awt.*;
 import java.util.List;
@@ -17,9 +18,16 @@ public class McWindow extends McContainer {
     private boolean holdingTitle;
     private Vector2d holdingTitleFrom;
     private Vector2d holdingTitleSince;
+    private boolean maximized;
+    private boolean minimized;
+    private Vector2i previousSize;
+    private Vector2i previousPos;
 
     public McWindow(int x, int y, int width, int height, Component message) {
         super(x, y, width, height, message);
+
+        this.previousSize = new Vector2i(width, height);
+        this.previousPos = new Vector2i(x, y);
 
         setBorder(new Insets(13, 1, 1, 1));
     }
@@ -47,7 +55,14 @@ public class McWindow extends McContainer {
         if (width <= 0 || height <= 0)
             throw new IllegalStateException("Size must be positive, got: %d * %d".formatted(width, height));
 
-        fixPosition();
+        if (maximized) {
+            setX(-getBorder().left);
+            setY(-1);
+            setWidth(wm.getWidth());
+            setHeight(wm.getHeight() - getBorder().top + 1);
+        } else {
+            fixPosition();
+        }
 
         var titleWidth = Math.min(this.width - 24, 150);
         var titleHeight = this.height - getBorder().top - 1;
@@ -121,15 +136,35 @@ public class McWindow extends McContainer {
     }
 
     public void close() {
-        var doClose = false;
+        var doClose = true;
 
         for (var booleanSupplier : this.onClosing) {
-            doClose |= booleanSupplier.getAsBoolean();
+            doClose &= booleanSupplier.getAsBoolean();
         }
 
         if (doClose) {
             destroy();
         }
+    }
+
+    public void maximize() {
+        previousPos = new Vector2i(getX(), getY());
+        previousSize = new Vector2i(width, height);
+        this.maximized = true;
+    }
+
+    public void minimize() {
+        this.minimized = true;
+    }
+
+    public void restore() {
+        this.maximized = false;
+        this.minimized = false;
+
+        this.setX(previousPos.x);
+        this.setY(previousPos.y);
+        this.setWidth(previousSize.x);
+        this.setHeight(previousSize.y);
     }
 
     @Override
@@ -141,6 +176,20 @@ public class McWindow extends McContainer {
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
         if (isMouseOverTitle(mouseX, mouseY)) {
+            int tcr = getX() + getWidth() + 1; // Title Controls Right
+            if (isMouseOver((int) mouseX, (int) mouseY, tcr - 24, getY() + 1, 24, 12)) {
+                close();
+            }
+
+            if (isMouseOver((int) mouseX, (int) mouseY, tcr - 48, getY() + 1, 24, 12)) {
+                if (maximized) restore();
+                else maximize();
+            }
+
+            if (isMouseOver((int) mouseX, (int) mouseY, tcr - 72, getY() + 1, 24, 12)) {
+                if (minimized) restore();
+                else minimize();
+            }
             if (button == 0) {
                 this.holdingTitleFrom = new Vector2d(mouseX, mouseY);
                 this.holdingTitleSince = new Vector2d(getX(), getY());
