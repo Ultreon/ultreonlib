@@ -1,8 +1,11 @@
 package com.ultreon.mods.lib.client.gui.v2;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.ultreon.mods.lib.UltreonLib;
 import com.ultreon.mods.lib.util.ScissorStack;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import org.apache.commons.compress.utils.Lists;
 import org.joml.Vector2d;
 import org.joml.Vector2i;
@@ -12,6 +15,7 @@ import java.util.List;
 import java.util.function.BooleanSupplier;
 
 public class McWindow extends McContainer {
+    private static final ResourceLocation SHADOW = UltreonLib.res("textures/gui/desktop/window_shadow.png");
     private final List<Runnable> onClosed = Lists.newArrayList();
     private final List<BooleanSupplier> onClosing = Lists.newArrayList();
     McWindowManager wm;
@@ -68,7 +72,24 @@ public class McWindow extends McContainer {
         var titleHeight = this.height - getBorder().top - 1;
 
         // Shadow
-        fill(poseStack, getX() - 1, getY() - 1, getX() + this.width + getBorder().left + getBorder().right + 1, getY() + this.height + getBorder().top + getBorder().bottom + 1, 0x40000000);
+        RenderSystem.setShaderTexture(0, SHADOW);
+        RenderSystem.enableBlend();
+        {
+            // Corners
+            blit(poseStack, getX() - 9, getY() - 9, 9, 9, 0, 0, 9, 9, 256, 256);
+            blit(poseStack, getX() - 9, getY() + getHeight() + getBorder().top + getBorder().bottom, 9, 9, 0, 11, 9, 9, 256, 256);
+            blit(poseStack, getX() + getWidth() + getBorder().left + getBorder().right, getY() - 9, 9, 9, 11, 0, 9, 9, 256, 256);
+            blit(poseStack, getX() + getWidth() + getBorder().left + getBorder().right, getY() + getHeight() + getBorder().top + getBorder().bottom, 9, 9, 11, 11, 9, 9, 256, 256);
+
+            // Vertical Parts
+            blit(poseStack, getX() - 9, getY(), 9, getHeight() + getBorder().top + getBorder().bottom, 0, 10, 9, 1, 256, 256);
+            blit(poseStack, getX() + getWidth() + getBorder().left + getBorder().right, getY(), 9, getHeight() + getBorder().top + getBorder().bottom, 10, 10, 9, 1, 256, 256);
+
+            // Horizontal Parts
+            blit(poseStack, getX(), getY() - 9, getWidth() + getBorder().left + getBorder().right, 9, 10, 0, 1, 9, 256, 256);
+            blit(poseStack, getX(), getY() + getHeight() + getBorder().top + getBorder().bottom, getWidth() + getBorder().left + getBorder().right, 9, 10, 10, 1, 9, 256, 256);
+        }
+        RenderSystem.disableBlend();
 
         // Title frame.
         fill(poseStack, getX(), getY(), getX() + this.width + getBorder().left + getBorder().right, getY() + this.height + getBorder().top + getBorder().bottom, 0xff555555);
