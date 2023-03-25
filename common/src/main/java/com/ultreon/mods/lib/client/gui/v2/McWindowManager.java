@@ -59,7 +59,7 @@ abstract class McWindowManager extends McComponent {
         synchronized (this.wmLock) {
             if (!this.windows.contains(window)) throw new IllegalArgumentException("Windows doesn't exist.");
 
-            this.windows.add(window);
+            this.windows.remove(window);
         }
     }
 
