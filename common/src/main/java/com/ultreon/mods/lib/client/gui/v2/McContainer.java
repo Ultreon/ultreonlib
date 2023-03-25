@@ -24,16 +24,16 @@ public abstract class McContainer extends McComponent {
 
     @Override
     public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
-        var innerX = getX() + border.left;
-        var innerY = getY() + border.top;
+        var innerX = getX() + getBorder().left;
+        var innerY = getY() + getBorder().top;
         ScissorStack.pushScissorTranslated(poseStack,
                 innerX, innerY,
-                getWidth() + border.left, getHeight() + border.top
+                getWidth() + getBorder().left, getHeight() + getBorder().top
         );
         poseStack.pushPose();
         poseStack.translate(innerX, innerY, 0);
-        var translatedX = mouseX - getX() - border.left;
-        var translatedY = mouseY - getY() - border.top;
+        var translatedX = mouseX - getX() - getBorder().left;
+        var translatedY = mouseY - getY() - getBorder().top;
         renderContents(poseStack, translatedX, translatedY, partialTicks);
         poseStack.popPose();
         ScissorStack.popScissor();
@@ -41,7 +41,7 @@ public abstract class McContainer extends McComponent {
     }
 
     private void renderContents(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
-        for (var child : children) {
+        for (var child : children()) {
             child.render(poseStack, mouseX, mouseY, partialTicks);
         }
     }

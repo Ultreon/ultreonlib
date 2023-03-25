@@ -26,6 +26,7 @@ public class TestDesktopScreen extends DesktopScreen implements TestScreen {
 
         @NotNull
         var window = new McWindow(10, 10, 400, 300, Component.literal("Hello World!"));
+        window.addOnClosingListener(() -> false);
 
         window.add(new McButton(10, 10, 50, 14, Component.literal("Log Hello"))).addClickHandler((button) -> UltreonLib.LOGGER.info("Hello, " + minecraft.getUser().getName()));
         window.add(new McButton(70, 10, 50, 14, Component.literal("Shutdown"))).addClickHandler((button) -> {

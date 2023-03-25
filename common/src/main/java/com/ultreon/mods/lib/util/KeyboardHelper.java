@@ -23,4 +23,24 @@ public class KeyboardHelper {
     public static boolean isKeyDown(int keyCode) {
         return InputConstants.isKeyDown(Minecraft.getInstance().getWindow().getWindow(), keyCode);
     }
+
+    public static boolean isKeyDown(Modifier modifier) {
+        return isKeyDown(modifier.left) || isKeyDown(modifier.right);
+    }
+
+    public enum Modifier {
+        SHIFT(InputConstants.KEY_LSHIFT, InputConstants.KEY_RSHIFT),
+        CTRL(InputConstants.KEY_LCONTROL, InputConstants.KEY_RCONTROL),
+        ALT(InputConstants.KEY_LALT, InputConstants.KEY_RALT),
+        META(InputConstants.KEY_LWIN, InputConstants.KEY_RWIN);
+
+        public final int left;
+        public final int right;
+
+        Modifier(int left, int right) {
+
+            this.left = left;
+            this.right = right;
+        }
+    }
 }

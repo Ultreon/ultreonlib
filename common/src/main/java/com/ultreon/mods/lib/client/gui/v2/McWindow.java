@@ -18,6 +18,9 @@ public class McWindow extends McContainer {
     private static final ResourceLocation SHADOW = UltreonLib.res("textures/gui/desktop/window_shadow.png");
     private final List<Runnable> onClosed = Lists.newArrayList();
     private final List<BooleanSupplier> onClosing = Lists.newArrayList();
+    boolean topMost;
+    boolean bottomMost;
+    boolean undecorated;
     McWindowManager wm;
     private boolean holdingTitle;
     private Vector2d holdingTitleFrom;
@@ -32,6 +35,8 @@ public class McWindow extends McContainer {
 
         this.previousSize = new Vector2i(width, height);
         this.previousPos = new Vector2i(x, y);
+
+        setBorderColor(0xff555555);
 
         setBorder(new Insets(13, 1, 1, 1));
     }
@@ -68,12 +73,13 @@ public class McWindow extends McContainer {
             fixPosition();
         }
 
-        var titleWidth = Math.min(this.width - 24, 150);
-        var titleHeight = this.height - getBorder().top - 1;
+        var titleWidth = Math.min(this.getWidth() - 24, 150);
+        var titleHeight = this.getHeight() - getBorder().top - 1;
 
         // Shadow
         RenderSystem.setShaderTexture(0, SHADOW);
         RenderSystem.enableBlend();
+        RenderSystem.setShaderColor(1, 1, 1, 0.5f);
         {
             // Corners
             blit(poseStack, getX() - 9, getY() - 9, 9, 9, 0, 0, 9, 9, 256, 256);
@@ -89,42 +95,55 @@ public class McWindow extends McContainer {
             blit(poseStack, getX(), getY() - 9, getWidth() + getBorder().left + getBorder().right, 9, 10, 0, 1, 9, 256, 256);
             blit(poseStack, getX(), getY() + getHeight() + getBorder().top + getBorder().bottom, getWidth() + getBorder().left + getBorder().right, 9, 10, 10, 1, 9, 256, 256);
         }
+        RenderSystem.setShaderColor(1, 1, 1, 1);
         RenderSystem.disableBlend();
 
         // Title frame.
-        fill(poseStack, getX(), getY(), getX() + this.width + getBorder().left + getBorder().right, getY() + this.height + getBorder().top + getBorder().bottom, 0xff555555);
-        fill(poseStack, getX() + getBorder().left, getY() + getBorder().top, getX() + this.width + getBorder().left, getY() + this.height + getBorder().top, 0xff333333);
+        fill(poseStack, getX(), getY(), getX() + this.getWidth() + getBorder().left + getBorder().right, getY() + this.getHeight() + getBorder().top + getBorder().bottom, getBorderColor());
+        fill(poseStack, getX() + getBorder().left, getY() + getBorder().top, getX() + this.getWidth() + getBorder().left, getY() + this.getHeight() + getBorder().top, 0xff333333);
 
-        if (titleWidth > 0 && titleHeight > 0) {
-            // Scissored title text/
-            ScissorStack.pushScissor(getX() + 1, getY() + 1, titleWidth, titleHeight);
-            {
-                if (this.font.width(message) > titleWidth)
-                    this.font.draw(poseStack, this.font.substrByWidth(message, titleWidth - 4).getString(), getX() + 3, getY() + 3, 0xffdddddd);
-                else
-                    this.font.draw(poseStack, message, getX() + 3, getY() + 3, 0xffdddddd);
+        if (!isUndecorated()) {
+            if (titleWidth > 0 && titleHeight > 0) {
+                // Scissored title text/
+                ScissorStack.pushScissor(getX() + 1, getY() + 1, titleWidth, titleHeight);
+                {
+                    if (this.font.width(message) > titleWidth)
+                        this.font.draw(poseStack, this.font.substrByWidth(message, titleWidth - 4).getString(), getX() + 3, getY() + 3, 0xffdddddd);
+                    else
+                        this.font.draw(poseStack, message, getX() + 3, getY() + 3, 0xffdddddd);
+                }
+                ScissorStack.popScissor();
             }
-            ScissorStack.popScissor();
+
+            RenderSystem.enableBlend();
+            int tcr = getX() + getWidth() + 1; // Title Controls Right
+            if (isMouseOver(mouseX, mouseY, tcr - 23, getY() + 1, 23, 12)) {
+                fill(poseStack, tcr - 23, getY() + 1, tcr, getY() + 13, 0x33ffffff);
+                drawCenteredStringWithoutShadow(poseStack, font, "×", tcr - 11, getY() + 3, 0xffffffff);
+            } else drawCenteredStringWithoutShadow(poseStack, font, "×", tcr - 11, getY() + 3, 0xffffffff);
+
+            if (isMouseOver(mouseX, mouseY, tcr - 46, getY() + 1, 23, 12)) {
+                fill(poseStack, tcr - 46, getY() + 1, tcr - 23, getY() + 13, 0x33ffffff);
+                drawCenteredStringWithoutShadow(poseStack, font, "□", tcr - 34, getY() + 3, 0xffffffff);
+            } else drawCenteredStringWithoutShadow(poseStack, font, "□", tcr - 34, getY() + 3, 0xffffffff);
+
+            if (isMouseOver(mouseX, mouseY, tcr - 69, getY() + 1, 23, 12)) {
+                fill(poseStack, tcr - 69, getY() + 1, tcr - 46, getY() + 13, 0x33ffffff);
+                drawCenteredStringWithoutShadow(poseStack, font, "-", tcr - 57, getY() + 3, 0xffffffff);
+            } else drawCenteredStringWithoutShadow(poseStack, font, "-", tcr - 57, getY() + 3, 0xffffffff);
+            RenderSystem.disableBlend();
         }
-
-        int tcr = getX() + getWidth() + 1; // Title Controls Right
-        if (isMouseOver(mouseX, mouseY, tcr - 24, getY() + 1, 24, 12)) {
-            fill(poseStack, tcr - 24, getY() + 1, tcr, getY() + 13, 0xffff5555);
-            drawCenteredStringWithoutShadow(poseStack, font, "×", tcr - 12, getY() + 3, 0xffffffff);
-        } else drawCenteredStringWithoutShadow(poseStack, font, "×", tcr - 12, getY() + 3, 0xffffffff);
-
-        if (isMouseOver(mouseX, mouseY, tcr - 48, getY() + 1, 24, 12)) {
-            fill(poseStack, tcr - 48, getY() + 1, tcr - 24, getY() + 13, 0xff777777);
-            drawCenteredStringWithoutShadow(poseStack, font, "□", tcr - 36, getY() + 3, 0xff55ffff);
-        } else drawCenteredStringWithoutShadow(poseStack, font, "□", tcr - 36, getY() + 3, 0xffffffff);
-
-        if (isMouseOver(mouseX, mouseY, tcr - 72, getY() + 1, 24, 12)) {
-            fill(poseStack, tcr - 72, getY() + 1, tcr - 48, getY() + 13, 0xff777777);
-            drawCenteredStringWithoutShadow(poseStack, font, "-", tcr - 60, getY() + 3, 0xff55ffff);
-        } else drawCenteredStringWithoutShadow(poseStack, font, "-", tcr - 60, getY() + 3, 0xffffffff);
 
         // Do content rendering.
         super.render(poseStack, mouseX, mouseY, partialTicks);
+    }
+
+    void handleSetActive() {
+        this.setBorderColor(wm.getWindowActiveColor());
+    }
+
+    void handleSetInactive() {
+        this.setBorderColor(wm.getWindowInactiveColor());
     }
 
     private boolean isMouseOver(int mouseX, int mouseY, int x, int y, int width, int height) {
@@ -133,7 +152,7 @@ public class McWindow extends McContainer {
 
     @Override
     public boolean isMouseOver(double mouseX, double mouseY) {
-        return this.active && this.visible && mouseX >= (double)this.getX() && mouseY >= (double)this.getY() && mouseX < (double)(this.getX() + this.width + getBorder().left + getBorder().right) && mouseY < (double)(this.getY() + this.height + getBorder().top + getBorder().bottom);
+        return this.active && this.visible && mouseX >= (double)this.getX() && mouseY >= (double)this.getY() && mouseX < (double)(this.getX() + this.getWidth() + getBorder().left + getBorder().right) && mouseY < (double)(this.getY() + this.getHeight() + getBorder().top + getBorder().bottom);
     }
 
     private void fixPosition() {
@@ -141,12 +160,17 @@ public class McWindow extends McContainer {
         int wmHeight = wm.getHeight();
 
         // Fix position when the window is outside of the WM.
-        if (getX() + width > wmWidth) setX(wmWidth - width);
-        if (getY() + height > wmHeight) setY(wmHeight - height);
+        Insets border = getBorder();
+        Insets wmBorder = wm.getBorder();
+
+        if (getX() + getWidth() > wmWidth - border.left - border.right - wmBorder.left - wmBorder.right)
+            setX(wmWidth - getWidth() - border.left - border.right - wmBorder.left - wmBorder.right);
+        if (getY() > wmHeight - border.top - wmBorder.top - wmBorder.bottom)
+            setY(wmHeight - border.top - wmBorder.top - wmBorder.bottom);
 
         // Fix position when the position is negative.
-        if (getX() < 0) setX(0);
-        if (getY() < 0) setY(0);
+        if (getX() < wmBorder.left) setX(wmBorder.left);
+        if (getY() < wmBorder.top) setY(wmBorder.top);
     }
 
     public final void destroy() {
@@ -244,11 +268,17 @@ public class McWindow extends McContainer {
 
     @Override
     protected final Insets getBorder() {
+        if (undecorated) {
+            return new Insets(0, 0, 0, 0);
+        }
         return super.getBorder();
     }
 
     @Override
     protected final void setBorder(Insets border) {
+        if (undecorated) {
+            return;
+        }
         super.setBorder(border);
     }
 
@@ -260,5 +290,48 @@ public class McWindow extends McContainer {
     @Override
     protected final void setBorderColor(int borderColor) {
         super.setBorderColor(borderColor);
+    }
+
+    public boolean isTopMost() {
+        return topMost;
+    }
+
+    public void setTopMost(boolean topMost) {
+        this.wm.setTopMost(this, topMost);
+    }
+
+    public boolean isBottomMost() {
+        return bottomMost;
+    }
+
+    public void setBottomMost(boolean bottomMost) {
+        this.wm.setBottomMost(this, bottomMost);
+    }
+
+    public boolean isUndecorated() {
+        return undecorated;
+    }
+
+    public boolean isActiveWindow() {
+        return this.wm.isActiveWindow(this);
+    }
+
+    public void setUndecorated(boolean undecorated) {
+        if (undecorated) {
+            this.setX(this.getX() - getBorder().left);
+            this.setY(this.getY() - getBorder().top);
+        } else {
+            this.setX(this.getX() + getBorder().left);
+            this.setY(this.getY() + getBorder().top);
+        }
+        this.undecorated = undecorated;
+    }
+
+    public boolean isMinimized() {
+        return minimized;
+    }
+
+    public boolean isMaximized() {
+        return maximized;
     }
 }

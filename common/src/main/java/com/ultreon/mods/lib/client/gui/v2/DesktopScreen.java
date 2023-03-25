@@ -7,6 +7,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import org.apache.commons.compress.utils.Sets;
 
+import java.awt.*;
 import java.util.Set;
 
 public class DesktopScreen extends Screen {
@@ -16,8 +17,12 @@ public class DesktopScreen extends Screen {
     public DesktopScreen(LaunchOptions options) {
         super(options.title);
 
-        this.desktop = new McDesktop(this, width, height, Lists.newArrayList(options.windows));
         this.back = options.back;
+
+        this.desktop = new McDesktop(this, this.width, this.height, Lists.newArrayList(options.windows));
+        this.desktop.createWindow(new DesktopWindow());
+        this.desktop.createWindow(new TaskbarWindow(20));
+        this.desktop.border = new Insets(0, 0, 20, 0);
     }
 
     @Override
@@ -25,7 +30,7 @@ public class DesktopScreen extends Screen {
         if (this.minecraft != null && this.minecraft.level != null) {
             this.fillGradient(poseStack, 0, 0, this.width, this.height, 0xc0101010, 0xd0101010);
         } else {
-            fill(poseStack, 0, 0, this.width, this.height, 0xff303030);
+            fill(poseStack, 0, 0, this.width, this.height, 0x00000000);
         }
     }
 
@@ -36,23 +41,25 @@ public class DesktopScreen extends Screen {
 
     @Override
     public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
-        desktop.setWidth(width);
-        desktop.setHeight(height);
-        desktop.render(poseStack, mouseX, mouseY, partialTicks);
+        this.renderBackground(poseStack);
+
+        this.desktop.setWidth(this.width);
+        this.desktop.setHeight(this.height);
+        this.desktop.render(poseStack, mouseX, mouseY, partialTicks);
     }
 
     public McDesktop getDesktop() {
-        return desktop;
+        return this.desktop;
     }
 
     @Override
     public void mouseMoved(double mouseX, double mouseY) {
-        desktop.mouseMoved(mouseX, mouseY);
+        this.desktop.mouseMoved(mouseX, mouseY);
     }
 
     @Override
     public boolean mouseReleased(double mouseX, double mouseY, int button) {
-        return desktop.mouseReleased(mouseX, mouseY, button);
+        return this.desktop.mouseReleased(mouseX, mouseY, button);
     }
 
     @Override

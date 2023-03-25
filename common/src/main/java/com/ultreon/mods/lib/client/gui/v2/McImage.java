@@ -21,20 +21,17 @@ import java.util.Random;
 import java.util.UUID;
 import java.util.function.Consumer;
 
-public class McImage extends McComponent {
+public class McImage extends McResImage {
     private ImageLoader loader;
-    private ResourceLocation image;
+    private ResourceLocation resource;
     private final List<ClickCallback> onClick = new ArrayList<>();
-    private int imageWidth;
-    private int imageHeight;
-    private float ticks;
 
     public McImage(int x, int y, int width, int height) {
         this(x, y, width, height, Component.empty());
     }
 
     public McImage(int x, int y, int width, int height, Component altText) {
-        super(x, y, width, height, altText);
+        super(x, y, width, height, 0, 0, width, height, width, height, altText);
     }
 
     public final Component getAltText() {
@@ -100,51 +97,48 @@ public class McImage extends McComponent {
         this.loader.load();
     }
 
-    public ResourceLocation getImgResource() {
-        return image;
+    public ResourceLocation getResource() {
+        return resource;
     }
 
-    public int getImageWidth() {
-        return imageWidth;
-    }
-
-    public int getImageHeight() {
-        return imageHeight;
+    public void setResource(ResourceLocation resource, int imageWidth, int imageHeight) {
+        this.resource = resource;
     }
 
     @Override
     public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
+        ResourceLocation resource = getResource();
         fill(poseStack, getX(), getY(), getX() + getWidth(), getY() + getHeight(), 0xff555555);
         fill(poseStack, getX() + 1, getY() + 1, getX() + getWidth() - 1, getY() + getHeight() - 1, 0xff333333);
-        if (image != null) {
-            RenderSystem.setShaderTexture(0, image);
-            blit(poseStack, getX(), getY(), width, height, 0, 0, imageWidth, imageHeight, imageWidth, imageHeight);
+        if (resource != null) {
+            RenderSystem.setShaderTexture(0, resource);
+            blit(poseStack, getX(), getY(), getWidth(), getHeight(), 0, 0, textureWidth(), textureHeight(), textureWidth(), textureHeight());
         } else if (loader != null && loader.error != null) {
-            drawCenteredStringWithoutShadow(poseStack, font, Component.literal(loader.error.getLocalizedMessage()), getX() + width / 2, getY() + height / 2, 0xffffdddd);
+            drawCenteredStringWithoutShadow(poseStack, font, Component.literal(loader.error.getLocalizedMessage()), getX() + getWidth() / 2, getY() + getHeight() / 2, 0xffffdddd);
         } else {
-            drawLoadingIcon(poseStack, partialTicks);
+            drawLoadingIcon(poseStack, getWidth() / 2, getHeight() / 2);
         }
     }
 
-    private void drawLoadingIcon(PoseStack poseStack, float partialTicks) {
-        var loadingIconFrame = (int) (ticks = (ticks + partialTicks) % 30);
-        var i = loadingIconFrame / 10;
+    public static void drawLoadingIcon(PoseStack poseStack, int x, int y) {
+        var timeWrap = (int)(System.currentTimeMillis() % 1500);
+        var frame = timeWrap / 500;
 
-        switch (i) {
+        switch (frame) {
             case 0 -> {
-                fill(poseStack, width / 2 - 2 - 6 - 1, height / 2 - 2 - 1, width / 2 + 1 - 6 + 1, height / 2 + 1 + 1, 0xff666666);
-                fill(poseStack, width / 2 - 2, height / 2 - 2, width / 2 + 1, height / 2 + 1, 0xff555555);
-                fill(poseStack, width / 2 - 2 + 6, height / 2 - 2, width / 2 + 1 + 6, height / 2 + 1, 0xff555555);
+                fill(poseStack, x - 2 - 6 - 1, y - 2 - 1, x + 1 - 6 + 1, y + 1 + 1, 0xff666666);
+                fill(poseStack, x - 2, y - 2, x + 1, y + 1, 0xff555555);
+                fill(poseStack, x - 2 + 6, y - 2, x + 1 + 6, y + 1, 0xff555555);
             }
             case 1 -> {
-                fill(poseStack, width / 2 - 2 - 6, height / 2 - 2, width / 2 + 1 - 6, height / 2 + 1, 0xff555555);
-                fill(poseStack, width / 2 - 2 - 1, height / 2 - 2 - 1, width / 2 + 1 + 1, height / 2 + 1 + 1, 0xff666666);
-                fill(poseStack, width / 2 - 2 + 6, height / 2 - 2, width / 2 + 1 + 6, height / 2 + 1, 0xff555555);
+                fill(poseStack, x - 2 - 6, y - 2, x + 1 - 6, y + 1, 0xff555555);
+                fill(poseStack, x - 2 - 1, y - 2 - 1, x + 1 + 1, y + 1 + 1, 0xff666666);
+                fill(poseStack, x - 2 + 6, y - 2, x + 1 + 6, y + 1, 0xff555555);
             }
             case 2 -> {
-                fill(poseStack, width / 2 - 2 - 6, height / 2 - 2, width / 2 + 1 - 6, height / 2 + 1, 0xff555555);
-                fill(poseStack, width / 2 - 2, height / 2 - 2, width / 2 + 1, height / 2 + 1, 0xff555555);
-                fill(poseStack, width / 2 - 2 + 6 - 1, height / 2 - 2 - 1, width / 2 + 1 + 6 + 1, height / 2 + 1 + 1, 0xff666666);
+                fill(poseStack, x - 2 - 6, y - 2, x + 1 - 6, y + 1, 0xff555555);
+                fill(poseStack, x - 2, y - 2, x + 1, y + 1, 0xff555555);
+                fill(poseStack, x - 2 + 6 - 1, y - 2 - 1, x + 1 + 6 + 1, y + 1 + 1, 0xff666666);
             }
         }
     }
@@ -156,6 +150,12 @@ public class McImage extends McComponent {
             callback.onClick(this, clicks);
         }
     }
+
+    @Override
+    public boolean isMouseOver(double mouseX, double mouseY) {
+        return this.active && this.visible && mouseX >= (double)this.getX() && mouseY >= (double)this.getY() && mouseX < (double)(this.getX() + this.getWidth()) && mouseY < (double)(this.getY() + this.getHeight());
+    }
+
 
     public void addClickHandler(ClickCallback onClick) {
         this.onClick.add(onClick);
@@ -197,12 +197,12 @@ public class McImage extends McComponent {
         }
 
         protected final void done(ResourceLocation res) {
-            McImage.this.image = res;
+            McImage.this.resource = res;
             this.loaded = true;
         }
 
         protected final void fail(IOException exception) {
-            McImage.this.image = new ResourceLocation("minecraft:");
+            McImage.this.resource = new ResourceLocation("minecraft:");
             this.error = exception;
             this.loaded = true;
         }
@@ -225,8 +225,8 @@ public class McImage extends McComponent {
                 image = NativeImage.read(stream);
             }
             register(image, res -> {
-                McImage.this.imageWidth = image.getWidth();
-                McImage.this.imageHeight = image.getHeight();
+                McImage.this.textureWidth = image.getWidth();
+                McImage.this.textureHeight = image.getHeight();
                 done(res);
             });
         }
@@ -245,8 +245,8 @@ public class McImage extends McComponent {
                 image = NativeImage.read(this.stream);
             }
             register(image, res -> {
-                McImage.this.imageWidth = image.getWidth();
-                McImage.this.imageHeight = image.getHeight();
+                McImage.this.textureWidth = image.getWidth();
+                McImage.this.textureHeight = image.getHeight();
                 done(res);
             });
         }
@@ -265,8 +265,8 @@ public class McImage extends McComponent {
                 image = NativeImage.read(stream);
             }
             register(image, res -> {
-                McImage.this.imageWidth = image.getWidth();
-                McImage.this.imageHeight = image.getHeight();
+                McImage.this.textureWidth = image.getWidth();
+                McImage.this.textureHeight = image.getHeight();
                 done(res);
             });
         }
@@ -283,8 +283,8 @@ public class McImage extends McComponent {
         protected final void doLoad() throws IOException {
             var image = NativeImage.read(this.buffer);
             register(image, res -> {
-                McImage.this.imageWidth = image.getWidth();
-                McImage.this.imageHeight = image.getHeight();
+                McImage.this.textureWidth = image.getWidth();
+                McImage.this.textureHeight = image.getHeight();
                 done(res);
             });
         }
@@ -303,8 +303,8 @@ public class McImage extends McComponent {
                 image = NativeImage.read(stream);
             }
             register(image, res -> {
-                McImage.this.imageWidth = image.getWidth();
-                McImage.this.imageHeight = image.getHeight();
+                McImage.this.textureWidth = image.getWidth();
+                McImage.this.textureHeight = image.getHeight();
                 done(res);
             });
         }
