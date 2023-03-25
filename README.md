@@ -1,4 +1,4 @@
-# Ultreon Mod Library
+# Ultreon Mod Library [![CircleCI](https://dl.circleci.com/status-badge/img/gh/Ultreon/ultreonlib/tree/1.19.3.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/Ultreon/ultreonlib/tree/1.19.3)
 MC Modding Library for Qboi123's Mod(s).
    
 ## CurseForge
