@@ -1,5 +1,6 @@
 package com.ultreon.mods.lib;
 
+import com.ultreon.libs.commons.v0.Identifier;
 import com.ultreon.mods.lib.client.gui.Theme;
 import com.ultreon.mods.lib.client.gui.Themed;
 import com.ultreon.mods.lib.client.gui.screen.TitleStyle;
@@ -47,6 +48,7 @@ public class UltreonLib {
         LootEvent.MODIFY_LOOT_TABLE.register(LootTableInjection::runModifications);
 
         PlayerEvent.PLAYER_JOIN.register(ModMessages::sendOnLogin);
+        Identifier.setDefaultNamespace("minecraft");
     }
 
     @ApiStatus.Internal
