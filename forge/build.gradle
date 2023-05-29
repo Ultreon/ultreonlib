@@ -34,8 +34,6 @@ dependencies {
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionForge")) { transitive = false }
 
-    modRuntimeOnly "curse.maven:configured-457570:4166861"
-
     include forgeRuntimeLibrary("com.github.Ultreon:ultreon-data:${ultreon_data_version}")
 
     include forgeRuntimeLibrary("com.github.Ultreon.corelibs:corelibs-collections-v0:$corelibs_version")
