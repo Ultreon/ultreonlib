@@ -18,12 +18,12 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Pair;
 import com.ultreon.mods.lib.UltreonLib;
 import com.ultreon.mods.lib.UltreonLibConfig;
-import com.ultreon.mods.lib.client.gui.Themed;
 import com.ultreon.mods.lib.client.gui.Theme;
+import com.ultreon.mods.lib.client.gui.Themed;
 import com.ultreon.mods.lib.client.gui.widget.BaseButton;
+import com.ultreon.mods.lib.client.gui.widget.Button;
 import com.ultreon.mods.lib.client.gui.widget.Label;
 import com.ultreon.mods.lib.client.gui.widget.ListWidget;
-import com.ultreon.mods.lib.client.gui.widget.Button;
 import com.ultreon.mods.lib.mixin.common.AbstractSelectionListAccessor;
 import com.ultreon.mods.lib.mixin.common.AbstractWidgetAccessor;
 import com.ultreon.mods.lib.mixin.common.TitleScreenAccessor;
@@ -544,11 +544,6 @@ public abstract class GenericMenuScreen extends BaseScreen implements Themed {
     @Override
     public void renderBackground(@NotNull PoseStack pose) {
         if (!this.panorama) super.renderBackground(pose);
-    }
-
-    @Override
-    public void renderBackground(@NotNull PoseStack pose, int vOffset) {
-        if (!this.panorama) super.renderBackground(pose, vOffset);
     }
 
     public void onPreRender() {

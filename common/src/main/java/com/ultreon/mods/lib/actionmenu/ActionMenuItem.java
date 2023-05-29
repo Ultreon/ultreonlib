@@ -3,8 +3,8 @@ package com.ultreon.mods.lib.actionmenu;
 import com.ultreon.mods.lib.network.UltreonLibNetwork;
 import com.ultreon.mods.lib.network.packet.ActionMenuTransferPacket;
 import dev.architectury.utils.Env;
-import net.minecraft.network.chat.Component;
 import dev.architectury.utils.EnvExecutor;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 

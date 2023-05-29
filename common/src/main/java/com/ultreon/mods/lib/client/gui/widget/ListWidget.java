@@ -16,8 +16,8 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.ultreon.mods.lib.UltreonLib;
 import com.ultreon.mods.lib.UltreonLibConfig;
-import com.ultreon.mods.lib.client.gui.Themed;
 import com.ultreon.mods.lib.client.gui.Theme;
+import com.ultreon.mods.lib.client.gui.Themed;
 import com.ultreon.mods.lib.client.gui.screen.BaseScreen;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -102,7 +102,7 @@ public class ListWidget extends AbstractWidget implements ContainerEventHandler,
         if (hasSearch) {
             this.searchBox = new EditBox(this.font, x + LIST_BORDER_WIDTH + 28, y + LIST_BORDER_WIDTH + 78, width - 28 - LIST_BORDER_WIDTH * 2, 16, SEARCH_HINT) {
                 @Override
-                public void render(@NotNull PoseStack pose, int mouseX, int mouseY, float partialTicks) {
+                public void renderWidget(@NotNull PoseStack pose, int mouseX, int mouseY, float partialTicks) {
                     this.setX(ListWidget.this.getX() + LIST_BORDER_WIDTH + 4 + 12 + 4);
                     this.setY(ListWidget.this.getY() + LIST_BORDER_WIDTH + 4 + 1);
 
@@ -138,7 +138,6 @@ public class ListWidget extends AbstractWidget implements ContainerEventHandler,
                 super.render(pose, mouseX, mouseY, partialTicks);
             }
         };
-        this.list.changeFocus(true);
 
         if (hasSearch) {
             this.children = ImmutableList.of(searchBox, list);
@@ -148,15 +147,15 @@ public class ListWidget extends AbstractWidget implements ContainerEventHandler,
     }
 
     @Override
-    protected void setFocused(boolean focus) {
+    public void setFocused(boolean focus) {
         super.setFocused(focus);
 
-        this.searchBox.setFocus(focus);
-        this.list.changeFocus(focus);
+        this.searchBox.setFocused(focus);
+        this.list.setFocused(focus);
     }
 
     @Override
-    public void render(@NotNull PoseStack pose, int mouseX, int mouseY, float partialTicks) {
+    public void renderWidget(@NotNull PoseStack pose, int mouseX, int mouseY, float partialTicks) {
         RenderSystem.setShaderTexture(0, guiTexture);
         // List border
         final int lb = LIST_BORDER_WIDTH; // lb == List Border
@@ -467,23 +466,6 @@ public class ListWidget extends AbstractWidget implements ContainerEventHandler,
 
         private void addEntries() {
             this.addEntries.accept(this);
-        }
-
-        @Override
-        public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-            switch (keyCode) {
-                case 264 -> {
-                    this.moveSelection(SelectionDirection.DOWN);
-                    return true;
-                }
-                case 265 -> {
-                    this.moveSelection(SelectionDirection.UP);
-                    return true;
-                }
-                default -> {
-                    return false;
-                }
-            }
         }
 
         public ListWidget getWidget() {

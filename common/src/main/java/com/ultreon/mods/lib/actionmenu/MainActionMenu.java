@@ -1,7 +1,5 @@
 package com.ultreon.mods.lib.actionmenu;
 
-import org.intellij.lang.annotations.Identifier;
-
 import java.util.ArrayList;
 import java.util.List;
 

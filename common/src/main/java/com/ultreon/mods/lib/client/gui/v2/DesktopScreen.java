@@ -6,6 +6,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import org.apache.commons.compress.utils.Sets;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.util.Set;
@@ -26,21 +27,22 @@ public class DesktopScreen extends Screen {
     }
 
     @Override
-    public void renderBackground(PoseStack poseStack, int vOffset) {
+    @SuppressWarnings("SuspiciousNameCombination")
+    public void renderBackground(@NotNull PoseStack poseStack) {
         if (this.minecraft != null && this.minecraft.level != null) {
-            this.fillGradient(poseStack, 0, 0, this.width, this.height, 0xc0101010, 0xd0101010);
+            fillGradient(poseStack, 0, 0, this.width, this.height, 0xc0101010, 0xd0101010);
         } else {
             fill(poseStack, 0, 0, this.width, this.height, 0x00000000);
         }
     }
 
     @Override
-    public void renderDirtBackground(int vOffset) {
+    public void renderDirtBackground(@NotNull PoseStack poseStack) {
 
     }
 
     @Override
-    public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
+    public void render(@NotNull PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
         this.renderBackground(poseStack);
 
         this.desktop.setWidth(this.width);

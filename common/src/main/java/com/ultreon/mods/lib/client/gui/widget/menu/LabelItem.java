@@ -23,7 +23,7 @@ public class LabelItem extends MenuItem {
     }
 
     @Override
-    public void render(@NotNull PoseStack pose, int mouseX, int mouseY, float partialTicks) {
+    public void renderWidget(@NotNull PoseStack pose, int mouseX, int mouseY, float partialTicks) {
         this.font.drawShadow(pose, getMessage(), getX(), getY() + 6 - font.lineHeight / 2f, getTextColor());
         if (isHoveredOrFocused()) {
             int x1 = getX() + width;

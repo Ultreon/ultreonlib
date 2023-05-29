@@ -51,7 +51,7 @@ public class BaseButton extends BaseWidget implements Clickable {
         if (isUsingCustomTextColor()) {
             return super.getTextColor();
         }
-        return getTheme().getButtonTextColor();
+        return active ? getTheme().getButtonTextColor() : getTheme().getInactiveTextColor();
     }
 
     @FunctionalInterface

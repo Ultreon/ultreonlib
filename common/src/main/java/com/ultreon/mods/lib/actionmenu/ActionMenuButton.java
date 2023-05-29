@@ -33,7 +33,7 @@ public class ActionMenuButton extends TransparentButton implements IActionMenuIn
     }
 
     @Override
-    public void renderButton(@NotNull PoseStack pose, int mouseX, int mouseY, float partialTicks) {
+    public void renderWidget(@NotNull PoseStack pose, int mouseX, int mouseY, float partialTicks) {
         var client = Minecraft.getInstance();
         var font = client.font;
 

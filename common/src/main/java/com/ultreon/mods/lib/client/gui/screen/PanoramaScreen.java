@@ -19,6 +19,7 @@ import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.PanoramaRenderer;
 import net.minecraft.network.chat.Component;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
@@ -58,22 +59,18 @@ public abstract class PanoramaScreen extends BaseScreen {
         blit(pose, 0, 0, this.width, this.height, 0.0F, 0.0F, 16, 128, 16, 128);
     }
 
+    @SuppressWarnings("SuspiciousNameCombination")
     public void renderBackground(PoseStack pose, float partialTicks) {
         assert this.minecraft != null;
         if (this.minecraft.level == null) {
             this.renderPanorama(pose, partialTicks);
             return;
         }
-        this.fillGradient(pose, 0, 0, this.width, this.height, 0xC0101010, 0xD0101010);
+        fillGradient(pose, 0, 0, this.width, this.height, 0xC0101010, 0xD0101010);
     }
 
     @Override
-    public void renderBackground(PoseStack poseStack, int vOffset) {
-
-    }
-
-    @Override
-    public void renderBackground(PoseStack poseStack) {
+    public void renderBackground(@NotNull PoseStack poseStack) {
 
     }
 }

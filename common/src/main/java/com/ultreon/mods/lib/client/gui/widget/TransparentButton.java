@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.network.chat.Component;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 
@@ -17,13 +18,13 @@ public class TransparentButton extends BaseButton {
     }
 
     @Override
-    public void renderButton(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+    public void renderWidget(@NotNull PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
         Minecraft mc = Minecraft.getInstance();
         Font font = mc.font;
 
         int col = new Color(0, 0, 0, 127).getRGB();
 
-        fill(matrixStack, getX(), getY(), getX() + width, getY() + height, col);
+        fill(poseStack, getX(), getY(), getX() + width, getY() + height, col);
 
         int hov = new Color(255, 255, 0, 255).getRGB();
         int nrm = new Color(255, 255, 255, 255).getRGB();
@@ -41,9 +42,9 @@ public class TransparentButton extends BaseButton {
         }
 
         if (isHovered && active) {
-            drawCenteredString(matrixStack, font, this.getMessage(), (this.getX() + this.width / 2) + 1, (this.getY() + (this.height - 8) / 2) + 1, j);
+            drawCenteredString(poseStack, font, this.getMessage(), (this.getX() + this.width / 2) + 1, (this.getY() + (this.height - 8) / 2) + 1, j);
         } else {
-            drawCenteredString(matrixStack, font, this.getMessage(), this.getX() + this.width / 2, this.getY() + (this.height - 8) / 2, j);
+            drawCenteredString(poseStack, font, this.getMessage(), this.getX() + this.width / 2, this.getY() + (this.height - 8) / 2, j);
         }
     }
 }

@@ -12,8 +12,8 @@
 package com.ultreon.mods.lib.client.gui.widget;
 
 import com.ultreon.mods.lib.UltreonLib;
-import com.ultreon.mods.lib.client.gui.Themed;
 import com.ultreon.mods.lib.client.gui.Theme;
+import com.ultreon.mods.lib.client.gui.Themed;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 

@@ -97,7 +97,7 @@ public class ContextMenu extends BaseContainerWidget {
     }
 
     @Override
-    public void render(@NotNull PoseStack pose, int mouseX, int mouseY, float partialTicks) {
+    public void renderWidget(@NotNull PoseStack pose, int mouseX, int mouseY, float partialTicks) {
         pose.pushPose();
         pose.translate(0, 0, 100);
         RenderSystem.setShaderTexture(0, switch (getTheme()) {

@@ -21,6 +21,7 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.FormattedCharSequence;
+import org.jetbrains.annotations.NotNull;
 
 public abstract class BaseWidget extends AbstractWidget implements Clickable, Themed {
     protected final Minecraft minecraft;
@@ -53,6 +54,11 @@ public abstract class BaseWidget extends AbstractWidget implements Clickable, Th
         clicks = getClicks() + 2;
         lastClickTime = System.currentTimeMillis();
         onLeftClick(clicks);
+    }
+
+    @Override
+    public void renderWidget(@NotNull PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
+
     }
 
     @Override

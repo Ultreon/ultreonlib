@@ -9,7 +9,7 @@ repositories {
 }
 
 architectury {
-    minecraft = rootProject.minecraft_version
+    minecraft = minecraft_version
 }
 
 version = "${mod_version}"

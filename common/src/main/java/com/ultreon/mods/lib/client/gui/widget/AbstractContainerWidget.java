@@ -11,12 +11,12 @@
 
 package com.ultreon.mods.lib.client.gui.widget;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.events.ContainerEventHandler;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.network.chat.Component;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 
 import java.util.Optional;
 
@@ -86,12 +86,9 @@ public abstract class AbstractContainerWidget extends AbstractWidget implements 
     }
 
     @Override
-    public boolean changeFocus(boolean pFocus) {
-        return ContainerEventHandler.super.changeFocus(pFocus);
-    }
-
-    @Override
     public Optional<GuiEventListener> getChildAt(double pMouseX, double pMouseY) {
         return ContainerEventHandler.super.getChildAt(pMouseX, pMouseY);
     }
+
+
 }

@@ -16,6 +16,7 @@ public enum Theme {
 
     private final String id;
     private final ResourceLocation widgetsTexture;
+    private int inactiveTextColor;
 
     Theme(String id, ResourceLocation widgetsTexture) {
         this.id = id;
@@ -85,8 +86,14 @@ public enum Theme {
     public int getTextColor() {
         return switch (this) {
             case LIGHT, MIX -> 0x555555;
-            case DARK -> 0xFFFFFF;
-            default -> 0x111111;
+            default -> 0xFFFFFF;
+        };
+    }
+
+    public int getInactiveTextColor() {
+        return switch (this) {
+            case LIGHT, MIX -> 0x949494;
+            default -> 0xA0A0A0;
         };
     }
 

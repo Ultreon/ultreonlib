@@ -84,11 +84,6 @@ public abstract class BaseContainerWidget extends BaseWidget implements Containe
         return ContainerEventHandler.super.charTyped(pCodePoint, pModifiers);
     }
 
-    @Override
-    public boolean changeFocus(boolean pFocus) {
-        return ContainerEventHandler.super.changeFocus(pFocus);
-    }
-
     @NotNull
     @Override
     public Optional<GuiEventListener> getChildAt(double pMouseX, double pMouseY) {

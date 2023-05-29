@@ -1,7 +1,6 @@
 package com.ultreon.mods.lib.util;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import net.minecraft.Util;
 import net.minecraft.commands.arguments.selector.EntitySelector;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;

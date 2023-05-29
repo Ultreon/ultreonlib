@@ -34,6 +34,6 @@ public class TaskbarWindow extends McWindow {
         fill(poseStack, 0, this.minecraft.getWindow().getGuiScaledHeight() - this.size,
                 20, this.minecraft.getWindow().getGuiScaledHeight(), 0xff292929);
 
-        this.minecraft.getItemRenderer().renderGuiItem(new ItemStack(Items.GRASS_BLOCK), 2, this.minecraft.getWindow().getGuiScaledHeight() - size + 2);
+        this.minecraft.getItemRenderer().renderGuiItem(poseStack, new ItemStack(Items.GRASS_BLOCK), 2, this.minecraft.getWindow().getGuiScaledHeight() - size + 2);
     }
 }

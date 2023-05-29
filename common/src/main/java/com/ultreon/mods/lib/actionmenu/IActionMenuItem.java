@@ -1,8 +1,8 @@
 package com.ultreon.mods.lib.actionmenu;
 
-import net.minecraft.network.chat.Component;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 
 public interface IActionMenuItem {

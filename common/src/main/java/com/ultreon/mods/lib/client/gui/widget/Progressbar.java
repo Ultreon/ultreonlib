@@ -57,7 +57,7 @@ public class Progressbar extends BaseWidget {
     }
 
     @Override
-    public void render(PoseStack poseStack, int i, int j, float f) {
+    public void renderWidget(PoseStack poseStack, int i, int j, float f) {
         int x = getX() - 91;
         int y = getY() - 3;
 
