@@ -35,6 +35,6 @@ side = "BOTH"
 [[dependencies.ultreonlib]]
 modId = "architectury"
 mandatory = true
-versionRange = "[7,8)"
+versionRange = "[8.1,9)"
 ordering = "NONE"
 side = "BOTH"
