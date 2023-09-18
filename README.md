@@ -1,12 +1,12 @@
-# Ultreon Mod Library [![CircleCI](https://dl.circleci.com/status-badge/img/gh/Ultreon/ultreonlib/tree/1.19.3.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/Ultreon/ultreonlib/tree/1.19.3)
-MC Modding Library for Qboi123's Mod(s).
+# Ultreon Mod Library [![CircleCI](https://dl.circleci.com/status-badge/img/gh/Ultreon/ultreonlib/tree/1.19.4.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/Ultreon/ultreonlib/tree/1.19.4)
+MC Modding Library for mod(s) made by Ultreon Team and XyperCode.
    
-## CurseForge
-https://www.curseforge.com/minecraft/mc-mods/qmodlib  
+## Download
+From [CurseForge](https://curseforge.com/minecraft/mc-mods/ultreonlib) or [Modrinth](https://modrinth.com/mod/ultreonlib)
   
 ## Mods that uses this library:
- * [Random Thingz](https://www.curseforge.com/minecraft/mc-mods/random-thingz)
- * [Advanced Debug](https://www.curseforge.com/minecraft/mc-mods/advanced-debug)
+ * ~~Random Thingz: [CurseForge](https://curseforge.com/minecraft/mc-mods/random-thingz)~~ `Abandoned`
+ * Advanced Debug: [CurseForge](https://curseforge.com/minecraft/mc-mods/advanced-debug), [Modrinth](https://modrinth.com/mod/advanced-debug)
 
 ## Using as API
 1) Add the repository (`https://jitpack.io/`)
@@ -18,13 +18,13 @@ https://www.curseforge.com/minecraft/mc-mods/qmodlib
        }
    }
    ```
-2) Add the dependencies (check [JitPack](https://jitpack.io/#Ultreon/ultreonlib) for latest versions)
+2) Add the dependencies (version shown here could be inaccurate with tag/release)
    ForgeGradle:  
    ```gradle
    dependencies {
        // ...
 
-       implementation fg.deobf("com.github.Ultreon.ultreonlib:ultreonlib-forge:1.3.3")
+       implementation fg.deobf("com.github.Ultreon.ultreonlib:ultreonlib-forge:1.4.0")
    }X
    ```
    
@@ -33,7 +33,7 @@ https://www.curseforge.com/minecraft/mc-mods/qmodlib
    dependencies {
        // ...
 
-       modImplementation("com.github.Ultreon.ultreonlib:ultreonlib-fabric:1.3.3")
+       modImplementation("com.github.Ultreon.ultreonlib:ultreonlib-fabric:1.4.0")
    }
    ```
    
@@ -42,7 +42,7 @@ https://www.curseforge.com/minecraft/mc-mods/qmodlib
    dependencies {
        // ...
 
-       modImplementation("com.github.Ultreon.ultreonlib:ultreonlib:1.3.3")
+       modImplementation("com.github.Ultreon.ultreonlib:ultreonlib:1.4.0")
    }
    ```
 3) Reload gradle.
