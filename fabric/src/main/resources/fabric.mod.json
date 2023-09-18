@@ -19,13 +19,12 @@
     }
   ],
   "contact": {
-    "website": "https://ultreon.github.io/web/",
-    "homepage": "https://curseforge.com/minecraft/mc-mods/ultreonlib",
-    "repo": "https://github.com/Ultreon/ultreonlib",
+    "homepage": "https://ultreon.github.io",
+    "sources": "https://github.com/Ultreon/ultreonlib",
     "issues": "https://github.com/Ultreon/ultreonlib/issues"
   },
   "license": "Ultreon API License v1.1",
-  "icon": "ultreonlib.png",
+  "icon": "assets/ultreonlib/icon.png",
   "environment": "*",
   "entrypoints": {
     "main": [
@@ -49,11 +48,15 @@
     "architectury": ">=8.1 <9",
     "forgeconfigapiport": ">=6 <7"
   },
+  "suggests": {
+    "modmenu": "*"
+  },
   "custom": {
     "modmenu": {
       "links": {
         "modmenu.curseforge": "https://curseforge.com/minecraft/mc-mods/ultreonlib",
-        "modmenu.modrinth": "https://modrinth.com/mod/ultreonlib"
+        "modmenu.modrinth": "https://modrinth.com/mod/ultreonlib",
+        "modmenu.discord": "https://discord.gg/WePT9v2CmQ"
       },
       "badges": [ "library" ]
     }
