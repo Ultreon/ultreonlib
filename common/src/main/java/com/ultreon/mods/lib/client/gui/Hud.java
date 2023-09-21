@@ -1,12 +1,12 @@
 package com.ultreon.mods.lib.client.gui;
 
 import com.mojang.blaze3d.platform.Window;
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Renderable;
+import org.jetbrains.annotations.NotNull;
 
-public class Hud extends GuiComponent implements Renderable {
+public class Hud implements Renderable {
     protected final Minecraft minecraft;
     private final Window window;
 
@@ -16,11 +16,11 @@ public class Hud extends GuiComponent implements Renderable {
     }
 
     @Override
-    public final void render(PoseStack poseStack, int mouseX, int mouseY, float partialTick) {
-        this.render(poseStack, partialTick, width(), height());
+    public final void render(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTick) {
+        this.render(gfx, partialTick, width(), height());
     }
 
-    public void render(PoseStack poseStack, float partialTick, int width, int height) {
+    public void render(@NotNull GuiGraphics gfx, float partialTick, int width, int height) {
 
     }
 

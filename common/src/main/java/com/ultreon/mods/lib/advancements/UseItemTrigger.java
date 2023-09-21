@@ -78,7 +78,7 @@ public class UseItemTrigger implements CriterionTrigger<UseItemTrigger.Instance>
         Target target;
 
         Instance(ItemPredicate itempredicate, Target target) {
-            super(UseItemTrigger.ID, EntityPredicate.Composite.ANY);
+            super(UseItemTrigger.ID, ContextAwarePredicate.ANY);
             this.itempredicate = itempredicate;
             this.target = target;
         }

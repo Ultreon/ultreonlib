@@ -1,9 +1,9 @@
 package com.ultreon.mods.lib.client.gui.screen.test;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.ultreon.mods.lib.UltreonLib;
 import com.ultreon.mods.lib.client.gui.screen.FullscreenRenderScreen;
 import com.ultreon.mods.lib.client.gui.widget.toolbar.ToolbarButton;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.phys.Vec2;
 import org.jetbrains.annotations.ApiStatus;
@@ -25,12 +25,12 @@ public class TestFullscreenRenderScreen extends FullscreenRenderScreen implement
     }
 
     @Override
-    public void renderBackground(@NotNull PoseStack poseStack) {
-        fill(poseStack, 0, 0, width, height, 0xff333333);
-        fill(poseStack, 10, 10, width - 10, height - 40, 0xff555555);
-        fill(poseStack, 11, 23, width - 11, height - 41, 0xff333333);
+    public void renderBackground(@NotNull GuiGraphics gfx) {
+        gfx.fill(0, 0, width, height, 0xff333333);
+        gfx.fill(10, 10, width - 10, height - 40, 0xff555555);
+        gfx.fill(11, 23, width - 11, height - 41, 0xff333333);
 
-        font.draw(poseStack, "Hello World", 13, 13, 0xdddddd);
+        gfx.drawString(this.font, "Hello World", 13, 13, 0xdddddd, false);
     }
 
     @Override

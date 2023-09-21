@@ -1,10 +1,11 @@
 package com.ultreon.mods.lib.client.gui.v2;
 
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.ultreon.mods.lib.util.ScissorStack;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -23,26 +24,26 @@ public abstract class McContainer extends McComponent {
     }
 
     @Override
-    public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
+    public void render(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
         var innerX = getX() + getBorder().left;
         var innerY = getY() + getBorder().top;
-        ScissorStack.pushScissorTranslated(poseStack,
+        ScissorStack.pushScissorTranslated(gfx,
                 innerX, innerY,
                 getWidth() + getBorder().left, getHeight() + getBorder().top
         );
-        poseStack.pushPose();
-        poseStack.translate(innerX, innerY, 0);
+        gfx.pose().pushPose();
+        gfx.pose().translate(innerX, innerY, 0);
         var translatedX = mouseX - getX() - getBorder().left;
         var translatedY = mouseY - getY() - getBorder().top;
-        renderContents(poseStack, translatedX, translatedY, partialTicks);
-        poseStack.popPose();
+        renderContents(gfx, translatedX, translatedY, partialTicks);
+        gfx.pose().popPose();
         ScissorStack.popScissor();
-        super.render(poseStack, mouseX, mouseY, partialTicks);
+        super.render(gfx, mouseX, mouseY, partialTicks);
     }
 
-    private void renderContents(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
+    private void renderContents(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
         for (var child : children()) {
-            child.render(poseStack, mouseX, mouseY, partialTicks);
+            child.render(gfx, mouseX, mouseY, partialTicks);
         }
     }
 

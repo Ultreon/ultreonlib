@@ -12,10 +12,9 @@
 package com.ultreon.mods.lib.client.gui.widget;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.components.AbstractButton;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -37,16 +36,15 @@ public abstract sealed class TexturedButton extends BaseButton permits Button {
     protected abstract ResourceLocation getWidgetsTexture();
 
     @Override
-    public void renderWidget(@NotNull PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
+    public void renderWidget(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
         Minecraft minecraft = Minecraft.getInstance();
-        RenderSystem.setShaderTexture(0, getWidgetsTexture());
         RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, this.alpha);
         RenderSystem.enableBlend();
         RenderSystem.enableDepthTest();
-        AbstractButton.blitNineSliced(poseStack, this.getX(), this.getY(), this.getWidth(), this.getHeight(), 20, 4, 200, 20, 0, this.getTexVOffset());
+        gfx.blitNineSliced(getWidgetsTexture(), this.getX(), this.getY(), this.getWidth(), this.getHeight(), 20, 4, 200, 20, 0, this.getTexVOffset());
         RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
         int k = getTextColor();
-        this.renderString(poseStack, minecraft.font, k | Mth.ceil(this.alpha * 255.0f) << 24);
+        this.renderString(gfx, minecraft.font, k | Mth.ceil(this.alpha * 255.0f) << 24);
     }
 
     public int getTexVOffset() {
@@ -59,7 +57,7 @@ public abstract sealed class TexturedButton extends BaseButton permits Button {
         return 46 + i * 20;
     }
 
-    public void renderString(PoseStack poseStack, Font font, int i) {
-        this.renderScrollingString(poseStack, font, 2, i);
+    public void renderString(GuiGraphics gfx, Font font, int i) {
+        this.renderScrollingString(gfx, font, 2, i);
     }
 }

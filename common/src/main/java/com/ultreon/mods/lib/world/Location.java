@@ -63,7 +63,7 @@ public final class Location {
     }
 
     public static Location of(Entity entity) {
-        return new Location(entity.blockPosition(), entity.level.dimension());
+        return new Location(entity.blockPosition(), entity.level().dimension());
     }
 
     public static Location read(CompoundTag tags) {

@@ -13,7 +13,6 @@ package com.ultreon.mods.lib.client.gui.widget;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.ultreon.mods.lib.UltreonLib;
 import com.ultreon.mods.lib.UltreonLibConfig;
 import com.ultreon.mods.lib.client.gui.Theme;
@@ -23,6 +22,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.ContainerObjectSelectionList;
@@ -102,11 +102,11 @@ public class ListWidget extends AbstractWidget implements ContainerEventHandler,
         if (hasSearch) {
             this.searchBox = new EditBox(this.font, x + LIST_BORDER_WIDTH + 28, y + LIST_BORDER_WIDTH + 78, width - 28 - LIST_BORDER_WIDTH * 2, 16, SEARCH_HINT) {
                 @Override
-                public void renderWidget(@NotNull PoseStack pose, int mouseX, int mouseY, float partialTicks) {
+                public void renderWidget(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
                     this.setX(ListWidget.this.getX() + LIST_BORDER_WIDTH + 4 + 12 + 4);
                     this.setY(ListWidget.this.getY() + LIST_BORDER_WIDTH + 4 + 1);
 
-                    super.render(pose, mouseX, mouseY, partialTicks);
+                    super.render(gfx, mouseX, mouseY, partialTicks);
                 }
             };
             this.searchBox.setMaxLength(32);
@@ -131,11 +131,11 @@ public class ListWidget extends AbstractWidget implements ContainerEventHandler,
             }
 
             @Override
-            public void render(@NotNull PoseStack pose, int mouseX, int mouseY, float partialTicks) {
+            public void render(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
                 this.y0 = ListWidget.this.getY() + LIST_BORDER_WIDTH + ListWidget.this.headerHeight;
                 this.y1 = ListWidget.this.getY() + LIST_BORDER_WIDTH + ListWidget.this.height - LIST_BORDER_WIDTH * 2;
 
-                super.render(pose, mouseX, mouseY, partialTicks);
+                super.render(gfx, mouseX, mouseY, partialTicks);
             }
         };
 
@@ -155,7 +155,7 @@ public class ListWidget extends AbstractWidget implements ContainerEventHandler,
     }
 
     @Override
-    public void renderWidget(@NotNull PoseStack pose, int mouseX, int mouseY, float partialTicks) {
+    public void renderWidget(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
         RenderSystem.setShaderTexture(0, guiTexture);
         // List border
         final int lb = LIST_BORDER_WIDTH; // lb == List Border
@@ -188,22 +188,22 @@ public class ListWidget extends AbstractWidget implements ContainerEventHandler,
         final int eu = lb + lb;
 
         // Render
-        blit(pose, sx, ty, lb, lb, su, tv, lb, lb, TEX_W, TEX_H); // Top left
-        blit(pose, mx, ty, iw, lb, lb, tv, lb, lb, TEX_W, TEX_H); // Top
-        blit(pose, ex, ty, lb, lb, eu, tv, lb, lb, TEX_W, TEX_H); // Top right
-        blit(pose, sx, my, lb, ih, su, mv, lb, lb, TEX_W, TEX_H); // Middle left
-        blit(pose, mx, my, iw, ih, lb, mv, lb, lb, TEX_W, TEX_H); // Middle
-        blit(pose, ex, my, lb, ih, eu, mv, lb, lb, TEX_W, TEX_H); // Middle right
-        blit(pose, sx, by, lb, lb, su, bv, lb, lb, TEX_W, TEX_H); // Bottom left
-        blit(pose, mx, by, iw, lb, lb, bv, lb, lb, TEX_W, TEX_H); // Bottom
-        blit(pose, ex, by, lb, lb, eu, bv, lb, lb, TEX_W, TEX_H); // Bottom right
+        gfx.blit(guiTexture, sx, ty, lb, lb, su, tv, lb, lb, TEX_W, TEX_H); // Top left
+        gfx.blit(guiTexture, mx, ty, iw, lb, lb, tv, lb, lb, TEX_W, TEX_H); // Top
+        gfx.blit(guiTexture, ex, ty, lb, lb, eu, tv, lb, lb, TEX_W, TEX_H); // Top right
+        gfx.blit(guiTexture, sx, my, lb, ih, su, mv, lb, lb, TEX_W, TEX_H); // Middle left
+        gfx.blit(guiTexture, mx, my, iw, ih, lb, mv, lb, lb, TEX_W, TEX_H); // Middle
+        gfx.blit(guiTexture, ex, my, lb, ih, eu, mv, lb, lb, TEX_W, TEX_H); // Middle right
+        gfx.blit(guiTexture, sx, by, lb, lb, su, bv, lb, lb, TEX_W, TEX_H); // Bottom left
+        gfx.blit(guiTexture, mx, by, iw, lb, lb, bv, lb, lb, TEX_W, TEX_H); // Bottom
+        gfx.blit(guiTexture, ex, by, lb, lb, eu, bv, lb, lb, TEX_W, TEX_H); // Bottom right
 
         // Search glass
-        blit(pose, getX() + lb + 3, getY() + lb + 3, 12, 12, 51, 1, 12, 12, TEX_W, TEX_H);
+        gfx.blit(guiTexture, getX() + lb + 3, getY() + lb + 3, 12, 12, 51, 1, 12, 12, TEX_W, TEX_H);
 
-        this.list.render(pose, mouseX, mouseY, partialTicks);
+        this.list.render(gfx, mouseX, mouseY, partialTicks);
         if (searchBox != null) {
-            this.searchBox.render(pose, mouseX, mouseY, partialTicks);
+            this.searchBox.render(gfx, mouseX, mouseY, partialTicks);
         }
     }
 
@@ -430,7 +430,7 @@ public class ListWidget extends AbstractWidget implements ContainerEventHandler,
         }
 
         @Override
-        public void render(@NotNull PoseStack pose, int mouseX, int mouseY, float partialTicks) {
+        public void render(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
             double scaleFactor = this.mc.getWindow().getGuiScale();
 
             int yi = y0 + (60 - 18); // Idk anymore
@@ -442,7 +442,7 @@ public class ListWidget extends AbstractWidget implements ContainerEventHandler,
                     (int) ((double) (yj) * scaleFactor)
             );
             synchronized (entriesLock) {
-                super.render(pose, mouseX, mouseY, partialTicks);
+                super.render(gfx, mouseX, mouseY, partialTicks);
             }
             RenderSystem.disableScissor();
         }
@@ -521,15 +521,13 @@ public class ListWidget extends AbstractWidget implements ContainerEventHandler,
             }
 
             @SuppressWarnings("UnnecessaryLocalVariable")
-            public void render(@NotNull PoseStack pose, int index, int top, int left, int width, int height, int mouseX, int mouseY, boolean isMouseOver, float partialTicks) {
+            public void render(@NotNull GuiGraphics gfx, int index, int top, int left, int width, int height, int mouseX, int mouseY, boolean isMouseOver, float partialTicks) {
                 height = list.itemHeight;
 
                 final int i = left + 1;
                 final int j = top + (height - ICON_SIZE) / 2;
                 final int k = i + 8 + 4 + 2;
                 final int l = top + (height - mc.font.lineHeight) / 2;
-
-                RenderSystem.setShaderTexture(0, guiTexture);
 
                 // Entry section
                 final int es = 4;
@@ -563,22 +561,20 @@ public class ListWidget extends AbstractWidget implements ContainerEventHandler,
                 final int eu = es + es;
 
                 // Render
-                blit(pose, sx, ty, es, es, su, tv, es, es, TEX_W, TEX_H); // Top left
-                blit(pose, mx, ty, iw, es, es, tv, es, es, TEX_W, TEX_H); // Top
-                blit(pose, ex, ty, es, es, eu, tv, es, es, TEX_W, TEX_H); // Top right
-                blit(pose, sx, my, es, ih, su, mv, es, es, TEX_W, TEX_H); // Middle left
-                blit(pose, mx, my, iw, ih, es, mv, es, es, TEX_W, TEX_H); // Middle
-                blit(pose, ex, my, es, ih, eu, mv, es, es, TEX_W, TEX_H); // Middle right
-                blit(pose, sx, by, es, es, su, bv, es, es, TEX_W, TEX_H); // Bottom left
-                blit(pose, mx, by, iw, es, es, bv, es, es, TEX_W, TEX_H); // Bottom
-                blit(pose, ex, by, es, es, eu, bv, es, es, TEX_W, TEX_H); // Bottom right
+                gfx.blit(guiTexture, sx, ty, es, es, su, tv, es, es, TEX_W, TEX_H); // Top left
+                gfx.blit(guiTexture, mx, ty, iw, es, es, tv, es, es, TEX_W, TEX_H); // Top
+                gfx.blit(guiTexture, ex, ty, es, es, eu, tv, es, es, TEX_W, TEX_H); // Top right
+                gfx.blit(guiTexture, sx, my, es, ih, su, mv, es, es, TEX_W, TEX_H); // Middle left
+                gfx.blit(guiTexture, mx, my, iw, ih, es, mv, es, es, TEX_W, TEX_H); // Middle
+                gfx.blit(guiTexture, ex, my, es, ih, eu, mv, es, es, TEX_W, TEX_H); // Middle right
+                gfx.blit(guiTexture, sx, by, es, es, su, bv, es, es, TEX_W, TEX_H); // Bottom left
+                gfx.blit(guiTexture, mx, by, iw, es, es, bv, es, es, TEX_W, TEX_H); // Bottom
+                gfx.blit(guiTexture, ex, by, es, es, eu, bv, es, es, TEX_W, TEX_H); // Bottom right
 
-                RenderSystem.setShaderTexture(0, this.texture.get());
-//                blit(pose, i, j, ICON_SIZE, ICON_SIZE, 8.0F, 8.0F, 8, 8, 64, 64);
                 RenderSystem.enableBlend();
-                blit(pose, i, j, ICON_SIZE, ICON_SIZE, u, v, uWidth, vHeight, texW, texH);
+                gfx.blit(this.texture.get(), i, j, ICON_SIZE, ICON_SIZE, u, v, uWidth, vHeight, texW, texH);
                 RenderSystem.disableBlend();
-                this.mc.font.draw(pose, this.entryTitle, (float) k, (float) l + 1, list.widget.theme.getTextColor());
+                gfx.drawString(this.mc.font, this.entryTitle, k, (int) ((float) l + 1), list.widget.theme.getTextColor(), false);
 
                 float f = this.ticksTooltip;
 

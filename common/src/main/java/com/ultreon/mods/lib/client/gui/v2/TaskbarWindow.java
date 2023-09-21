@@ -1,9 +1,10 @@
 package com.ultreon.mods.lib.client.gui.v2;
 
-import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import org.jetbrains.annotations.NotNull;
 
 public class TaskbarWindow extends McWindow {
     private final int size;
@@ -20,20 +21,20 @@ public class TaskbarWindow extends McWindow {
     }
 
     @Override
-    public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
+    public void render(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
         setWidth(this.minecraft.getWindow().getGuiScaledWidth());
         setHeight(this.size);
         setX(0);
         setY(this.minecraft.getWindow().getGuiScaledHeight() - size);
         setTopMost(true);
 
-        fill(poseStack, 0, this.minecraft.getWindow().getGuiScaledHeight() - this.size,
+        gfx.fill(0, this.minecraft.getWindow().getGuiScaledHeight() - this.size,
                 this.minecraft.getWindow().getGuiScaledWidth(),
                 this.minecraft.getWindow().getGuiScaledHeight(), 0xff111111);
 
-        fill(poseStack, 0, this.minecraft.getWindow().getGuiScaledHeight() - this.size,
+        gfx.fill(0, this.minecraft.getWindow().getGuiScaledHeight() - this.size,
                 20, this.minecraft.getWindow().getGuiScaledHeight(), 0xff292929);
 
-        this.minecraft.getItemRenderer().renderGuiItem(poseStack, new ItemStack(Items.GRASS_BLOCK), 2, this.minecraft.getWindow().getGuiScaledHeight() - size + 2);
+        gfx.renderItem(new ItemStack(Items.GRASS_BLOCK), 2, this.minecraft.getWindow().getGuiScaledHeight() - size + 2);
     }
 }

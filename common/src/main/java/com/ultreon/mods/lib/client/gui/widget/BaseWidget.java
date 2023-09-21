@@ -18,6 +18,7 @@ import com.ultreon.mods.lib.client.gui.Clickable;
 import com.ultreon.mods.lib.client.gui.Themed;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.FormattedCharSequence;
@@ -57,7 +58,7 @@ public abstract class BaseWidget extends AbstractWidget implements Clickable, Th
     }
 
     @Override
-    public void renderWidget(@NotNull PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
+    public void renderWidget(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
 
     }
 
@@ -141,16 +142,16 @@ public abstract class BaseWidget extends AbstractWidget implements Clickable, Th
         this.usingCustomTextColor = usingCustomTextColor;
     }
 
-    public static void drawCenteredStringWithoutShadow(PoseStack poseStack, Font font, String text, int x, int y, int color) {
-        font.draw(poseStack, text, (float)(x - font.width(text) / 2), (float)y, color);
+    public static void drawCenteredStringWithoutShadow(GuiGraphics gfx, Font font, String text, int x, int y, int color) {
+        gfx.drawString(font, text, x - font.width(text) / 2, y, color, false);
     }
 
-    public static void drawCenteredStringWithoutShadow(PoseStack poseStack, Font font, Component text, int x, int y, int color) {
+    public static void drawCenteredStringWithoutShadow(GuiGraphics gfx, Font font, Component text, int x, int y, int color) {
         FormattedCharSequence formattedCharSequence = text.getVisualOrderText();
-        font.draw(poseStack, formattedCharSequence, (float)(x - font.width(formattedCharSequence) / 2), (float)y, color);
+        gfx.drawString(font, formattedCharSequence, x - font.width(formattedCharSequence) / 2, y, color, false);
     }
 
-    public static void drawCenteredStringWithoutShadow(PoseStack poseStack, Font font, FormattedCharSequence text, int x, int y, int color) {
-        font.draw(poseStack, text, (float)(x - font.width(text) / 2), (float)y, color);
+    public static void drawCenteredStringWithoutShadow(GuiGraphics gfx, Font font, FormattedCharSequence text, int x, int y, int color) {
+        gfx.drawString(font, text, x - font.width(text) / 2, y, color, false);
     }
 }

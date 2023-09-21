@@ -12,9 +12,7 @@
 package com.ultreon.mods.lib.client.gui.screen;
 
 import com.google.common.collect.ImmutableList;
-import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Pair;
 import com.ultreon.mods.lib.UltreonLib;
 import com.ultreon.mods.lib.UltreonLibConfig;
@@ -26,23 +24,22 @@ import com.ultreon.mods.lib.client.gui.widget.Label;
 import com.ultreon.mods.lib.client.gui.widget.ListWidget;
 import com.ultreon.mods.lib.mixin.common.AbstractSelectionListAccessor;
 import com.ultreon.mods.lib.mixin.common.AbstractWidgetAccessor;
-import com.ultreon.mods.lib.mixin.common.TitleScreenAccessor;
 import dev.architectury.injectables.annotations.ExpectPlatform;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.*;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarratableEntry;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec2;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 @SuppressWarnings({"UnusedReturnValue", "unused", "SameParameterValue"})
 public abstract class GenericMenuScreen extends BaseScreen implements Themed {
@@ -542,8 +539,8 @@ public abstract class GenericMenuScreen extends BaseScreen implements Themed {
     }
 
     @Override
-    public void renderBackground(@NotNull PoseStack pose) {
-        if (!this.panorama) super.renderBackground(pose);
+    public void renderBackground(@NotNull GuiGraphics gfx) {
+        if (!this.panorama) super.renderBackground(gfx);
     }
 
     public void onPreRender() {
@@ -554,13 +551,13 @@ public abstract class GenericMenuScreen extends BaseScreen implements Themed {
 
     }
 
-    public final void render(@NotNull PoseStack pose, int mouseX, int mouseY, float partialTicks) {
+    public final void render(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
         // Pre rendering.
         onPreRender();
 
         // Renders the background.
-        if (this.panorama) renderPanorama(pose, partialTicks);
-        else renderBackground(pose);
+        if (this.panorama) renderPanorama(gfx, partialTicks);
+        else renderBackground(gfx);
 
         int curY = top();
         int index = 0;
@@ -569,39 +566,39 @@ public abstract class GenericMenuScreen extends BaseScreen implements Themed {
         switch (this.titleStyle) {
             // Render no title. Only the top border.
             case HIDDEN -> {
-                RenderSystem.setShaderTexture(0, background);
+                RenderSystem.setShaderTexture(0, this.background);
 
                 // Draw the top part of the frame.
-                blit(pose, left(), top(), 0, 21, width(), 4);
+                gfx.blit(this.background, left(), top(), 0, 21, width(), 4);
                 index++;
                 curY += 4;
             }
             // Render normal title and the top border.
             case NORMAL -> {
-                RenderSystem.setShaderTexture(0, titleBackground);
+                RenderSystem.setShaderTexture(0, this.titleBackground);
 
                 // Draw the title background.
-                blit(pose, left(), top(), 0, 21, width(), 16);
+                gfx.blit(this.titleBackground, left(), top(), 0, 21, width(), 16);
 
                 // Draw the title.
-                font.draw(pose, this.title, (int) (left() + width() / 2f - this.font.width(this.title.getString()) / 2), top() + 6, this.titleColor);
+                gfx.drawString(this.font, this.title, (int) (left() + width() / 2f - this.font.width(this.title.getString()) / 2), top() + 6, this.titleColor, false);
 
                 index++;
                 curY += 16;
             }
             // Render detached title and the top border.
             case DETACHED -> {
-                RenderSystem.setShaderTexture(0, titleBackground);
+                RenderSystem.setShaderTexture(0, this.titleBackground);
 
                 // Detached part of frame, where the title is.
-                blit(pose, left(), top(), 0, 0, width(), 20);
+                gfx.blit(this.titleBackground, left(), top(), 0, 0, width(), 20);
 
                 // Render the frame part (attached part) with the normal background (fixes issues with mixed theme).
-                RenderSystem.setShaderTexture(0, background);
-                blit(pose, left(), top() + 21, 0, 21, width(), 16);
+                RenderSystem.setShaderTexture(0, this.background);
+                gfx.blit(this.background, left(), top() + 21, 0, 21, width(), 16);
 
                 // Draw the title.
-                font.draw(pose, this.title, (int) (left() + width() / 2f - this.font.width(this.title.getString()) / 2), top() + 6, this.titleColor);
+                gfx.drawString(this.font, this.title, (int) (left() + width() / 2f - this.font.width(this.title.getString()) / 2), top() + 6, this.titleColor, false);
 
                 index++;
                 curY += 25;
@@ -613,10 +610,10 @@ public abstract class GenericMenuScreen extends BaseScreen implements Themed {
         RenderSystem.setShaderTexture(0, background);
 
         // Render the widget rows.
-        renderRows(pose, mouseX, mouseY, partialTicks, curY, index);
+        renderRows(gfx, mouseX, mouseY, partialTicks, curY, index);
 
         // Post rendering.
-        super.render(pose, mouseX, mouseY, partialTicks);
+        super.render(gfx, mouseX, mouseY, partialTicks);
         onPostRender();
     }
 
@@ -629,26 +626,26 @@ public abstract class GenericMenuScreen extends BaseScreen implements Themed {
         }
     }
 
-    @SuppressWarnings({"DuplicatedCode"})
-    public void renderPanorama(PoseStack pose, float partialTicks) {
-        // Non-null requirements.
-        Objects.requireNonNull(this.minecraft, "The screen's Minecraft instance cannot be null!");
-
-        PanoramaScreen.panorama.render(partialTicks, minecraft.screen == this ? 1f : 0f);
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
-        RenderSystem.setShaderTexture(0, TitleScreenAccessor.getPanoramaOverlay());
+    /**
+     * Render the panorama background/
+     *
+     * @param gfx         pose stack.
+     * @param partialTicks render frame time.
+     */
+    public void renderPanorama(GuiGraphics gfx, float partialTicks) {
+        PanoramaScreen.PANORAMA.render(partialTicks, Mth.clamp(1.0f, 0.0f, 1.0f));
         RenderSystem.enableBlend();
-        RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        blit(pose, 0, 0, this.width, this.height, 0.0F, 0.0F, 16, 128, 16, 128);
+        gfx.setColor(1.0f, 1.0f, 1.0f, 1.0f);
+        gfx.blit(PanoramaScreen.PANORAMA_OVERLAY, 0, 0, this.width, this.height, 0.0f, 0.0f, 16, 128, 16, 128);
+        gfx.setColor(1.0f, 1.0f, 1.0f, 1.0f);
     }
 
-    private void renderRows(@NotNull PoseStack pose, int mouseX, int mouseY, float partialTicks, int y, int index) {
+    private void renderRows(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTicks, int y, int index) {
         if (rows.size() > 0) {
             for (Row row : rows.subList(0, rows.size() - 1)) {
                 // Render the row background and widgets.
-                renderRowBackground(pose, y, row);
-                renderSubWidgets(pose, mouseX, mouseY, partialTicks, y, row);
+                renderRowBackground(gfx, y, row);
+                renderSubWidgets(gfx, mouseX, mouseY, partialTicks, y, row);
 
                 // Advance in index, and add the current row height to the current y coordinate.
                 y += row.height();
@@ -661,18 +658,17 @@ public abstract class GenericMenuScreen extends BaseScreen implements Themed {
             Row row = rows.get(rows.size() - 1);
 
             // Render the row background and widgets.
-            renderRowBackground(pose, y, row);
-            renderSubWidgets(pose, mouseX, mouseY, partialTicks, y, row);
+            renderRowBackground(gfx, y, row);
+            renderSubWidgets(gfx, mouseX, mouseY, partialTicks, y, row);
 
             y += row.height();
         }
 
         // Render bottom border.
-        RenderSystem.setShaderTexture(0, background);
-        this.blit(pose, left(), y, 0, 252, width(), 4);
+        gfx.blit(this.background, left(), y, 0, 252, width(), 4);
     }
 
-    private void renderSubWidgets(@NotNull PoseStack pose, int mouseX, int mouseY, float partialTicks, int curY, Row row) {
+    private void renderSubWidgets(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTicks, int curY, Row row) {
         // Render row.
         if (row.widgets.size() == 1) {
             // Render row with single widget.
@@ -683,7 +679,7 @@ public abstract class GenericMenuScreen extends BaseScreen implements Themed {
                     curY + row.deltaY(),
                     row.widgetWidth(),
                     row.widgetHeight(),
-                    pose,
+                    gfx,
                     mouseX, mouseY,
                     partialTicks
             );
@@ -696,7 +692,7 @@ public abstract class GenericMenuScreen extends BaseScreen implements Themed {
                         curY + row.deltaY(),
                         row.widgetWidth(),
                         row.widgetHeight(),
-                        pose,
+                        gfx,
                         mouseX, mouseY,
                         partialTicks);
 
@@ -706,7 +702,7 @@ public abstract class GenericMenuScreen extends BaseScreen implements Themed {
         }
     }
 
-    private void repositionAndRender(Renderable widget, int x, int y, int width, int height, @NotNull PoseStack matrices, int mouseX, int mouseY, float partialTicks) {
+    private void repositionAndRender(Renderable widget, int x, int y, int width, int height, @NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
         if (widget instanceof AbstractWidget absWidget && absWidget instanceof AbstractWidgetAccessor accessor) {
             absWidget.setX(x);
             absWidget.setY(y);
@@ -723,20 +719,19 @@ public abstract class GenericMenuScreen extends BaseScreen implements Themed {
             label.x = x;
             label.y = y;
         } else {
-            onReposition(widget, x, y, width, height, matrices, mouseX, mouseY, partialTicks);
+            onReposition(widget, x, y, width, height, gfx, mouseX, mouseY, partialTicks);
         }
-        widget.render(matrices, mouseX, mouseY, partialTicks);
+        widget.render(gfx, mouseX, mouseY, partialTicks);
     }
 
-    public void onReposition(Renderable widget, int x, int y, int width, int height, PoseStack matrices, int mouseX, int mouseY, float partialTicks) {
+    public void onReposition(Renderable widget, int x, int y, int width, int height, GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
 
     }
 
-    private void renderRowBackground(@NotNull PoseStack pose, int y, Row row) {
+    private void renderRowBackground(@NotNull GuiGraphics gfx, int y, Row row) {
         // Render row background.
         RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
-        RenderSystem.setShaderTexture(0, background);
-        blit(pose, left(), y, width(), row.height(), row.u(), row.v(), row.uw(), row.vh(), 256, 256);
+        gfx.blit(background, left(), y, width(), row.height(), row.u(), row.v(), row.uw(), row.vh(), 256, 256);
     }
 
     @Override

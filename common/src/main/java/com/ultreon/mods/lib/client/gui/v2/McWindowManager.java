@@ -1,8 +1,9 @@
 package com.ultreon.mods.lib.client.gui.v2;
 
 import com.google.common.collect.Iterators;
-import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
@@ -36,48 +37,48 @@ abstract class McWindowManager extends McComponent {
     }
 
     @Override
-    public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
-        renderWindows(poseStack, mouseX, mouseY, partialTicks);
+    public void render(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
+        renderWindows(gfx, mouseX, mouseY, partialTicks);
     }
 
-    private void renderWindows(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
+    private void renderWindows(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
         synchronized (wmLock) {
-            renderWindowsBS(poseStack, mouseX, mouseY, partialTicks);
-            renderWindowsNS(poseStack, mouseX, mouseY, partialTicks);
-            renderWindowsTS(poseStack, mouseX, mouseY, partialTicks);
+            renderWindowsBS(gfx, mouseX, mouseY, partialTicks);
+            renderWindowsNS(gfx, mouseX, mouseY, partialTicks);
+            renderWindowsTS(gfx, mouseX, mouseY, partialTicks);
         }
     }
 
-    private void renderWindowsNS(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
+    private void renderWindowsNS(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
         var windows = new ArrayList<>(this.midStack);
         var hoveredWindow = getHoveredWindow(mouseX, mouseY);
         for (var i = windows.size() - 1; i > -1; i--) {
             var window = windows.get(i);
 
-            if (Objects.equals(window, hoveredWindow)) window.render(poseStack, mouseX, mouseY, partialTicks);
-            else window.render(poseStack, Integer.MAX_VALUE, Integer.MAX_VALUE, partialTicks);
+            if (Objects.equals(window, hoveredWindow)) window.render(gfx, mouseX, mouseY, partialTicks);
+            else window.render(gfx, Integer.MAX_VALUE, Integer.MAX_VALUE, partialTicks);
         }
     }
 
-    private void renderWindowsTS(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
+    private void renderWindowsTS(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
         var windows = new ArrayList<>(this.topStack);
         var hoveredWindow = getHoveredWindow(mouseX, mouseY);
         for (var i = windows.size() - 1; i > -1; i--) {
             var window = windows.get(i);
 
-            if (Objects.equals(window, hoveredWindow)) window.render(poseStack, mouseX, mouseY, partialTicks);
-            else window.render(poseStack, Integer.MAX_VALUE, Integer.MAX_VALUE, partialTicks);
+            if (Objects.equals(window, hoveredWindow)) window.render(gfx, mouseX, mouseY, partialTicks);
+            else window.render(gfx, Integer.MAX_VALUE, Integer.MAX_VALUE, partialTicks);
         }
     }
 
-    private void renderWindowsBS(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
+    private void renderWindowsBS(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
         var windows = new ArrayList<>(this.bottomStack);
         var hoveredWindow = getHoveredWindow(mouseX, mouseY);
         for (var i = windows.size() - 1; i > -1; i--) {
             var window = windows.get(i);
 
-            if (Objects.equals(window, hoveredWindow)) window.render(poseStack, mouseX, mouseY, partialTicks);
-            else window.render(poseStack, Integer.MAX_VALUE, Integer.MAX_VALUE, partialTicks);
+            if (Objects.equals(window, hoveredWindow)) window.render(gfx, mouseX, mouseY, partialTicks);
+            else window.render(gfx, Integer.MAX_VALUE, Integer.MAX_VALUE, partialTicks);
         }
     }
 

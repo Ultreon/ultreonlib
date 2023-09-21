@@ -1,8 +1,9 @@
 package com.ultreon.mods.lib.client.gui.v2;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.ultreon.mods.lib.util.ScissorStack;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
+import org.jetbrains.annotations.NotNull;
 
 public class McLabel extends McComponent {
     public McLabel(int x, int y, int width, int height, Component altText) {
@@ -10,10 +11,10 @@ public class McLabel extends McComponent {
     }
 
     @Override
-    public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
-        ScissorStack.pushScissorTranslated(poseStack, getX(), getY(), width, height);
+    public void render(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
+        ScissorStack.pushScissorTranslated(gfx, getX(), getY(), width, height);
         {
-            drawCenteredStringWithoutShadow(poseStack, font, getMessage(), getX() + width / 2, getY() + height / 2, 0xffffffff);
+            drawCenteredStringWithoutShadow(gfx, font, getMessage(), getX() + width / 2, getY() + height / 2, 0xffffffff);
         }
         ScissorStack.popScissor();
     }

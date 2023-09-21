@@ -1,17 +1,15 @@
 package com.ultreon.mods.lib.client.gui.widget.toolbar;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.ultreon.mods.lib.UltreonLib;
 import com.ultreon.mods.lib.client.gui.Clickable;
 import com.ultreon.mods.lib.client.gui.Theme;
 import com.ultreon.mods.lib.client.gui.Themed;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.components.AbstractButton;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.narration.NarratedElementType;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
-import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -59,16 +57,15 @@ public class ToolbarButton extends ToolbarItem implements Themed, Clickable {
     }
 
     @Override
-    public void renderWidget(@NotNull PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
+    public void renderWidget(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
         Minecraft minecraft = Minecraft.getInstance();
-        RenderSystem.setShaderTexture(0, getWidgetsTexture());
         RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, this.alpha);
         RenderSystem.enableBlend();
         RenderSystem.enableDepthTest();
-        AbstractButton.blitNineSliced(poseStack, this.getX(), this.getY(), this.getWidth(), this.getHeight(), 20, 4, 200, 20, 0, this.getTexVOffset());
+        gfx.blitNineSliced(getWidgetsTexture(), this.getX(), this.getY(), this.getWidth(), this.getHeight(), 20, 4, 200, 20, 0, this.getTexVOffset());
         RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
         int k = getTextColor();
-        this.renderString(poseStack, minecraft.font, k | Mth.ceil(this.alpha * 255.0f) << 24);
+        this.renderString(gfx, minecraft.font, k | Mth.ceil(this.alpha * 255.0f) << 24);
     }
 
     public int getTexVOffset() {
@@ -81,8 +78,8 @@ public class ToolbarButton extends ToolbarItem implements Themed, Clickable {
         return 46 + i * 20;
     }
 
-    public void renderString(PoseStack poseStack, Font font, int i) {
-        this.renderScrollingString(poseStack, font, 2, i);
+    public void renderString(@NotNull GuiGraphics gfx, Font font, int i) {
+        this.renderScrollingString(gfx, font, 2, i);
     }
 
     @Override

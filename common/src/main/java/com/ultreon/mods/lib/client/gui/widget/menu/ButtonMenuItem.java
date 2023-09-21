@@ -12,9 +12,9 @@
 package com.ultreon.mods.lib.client.gui.widget.menu;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
@@ -34,7 +34,7 @@ public class ButtonMenuItem extends BaseButtonMenuItem {
     }
 
     @Override
-    public void renderWidget(@NotNull PoseStack pose, int mouseX, int mouseY, float partialTicks) {
+    public void renderWidget(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
         Minecraft minecraft = Minecraft.getInstance();
         Font font = minecraft.font;
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
@@ -54,8 +54,8 @@ public class ButtonMenuItem extends BaseButtonMenuItem {
             case LIGHT, MIX -> isHovered ? 0xff404040 : 0xff101010;
             default -> isHovered ? 0xfffffff : 0xff303030;
         };
-        fill(pose, getX(), getY(), getX() + getWidth(), getY() + getHeight(), color);
-        drawCenteredStringWithoutShadow(pose, font, this.getMessage(), this.getX() + this.width / 2, this.getY() + (this.height - 8) / 2, textColor | Mth.ceil(this.alpha * 255.0F) << 24);
+        gfx.fill(getX(), getY(), getX() + getWidth(), getY() + getHeight(), color);
+        drawCenteredStringWithoutShadow(gfx, font, this.getMessage(), this.getX() + this.width / 2, this.getY() + (this.height - 8) / 2, textColor | Mth.ceil(this.alpha * 255.0F) << 24);
     }
 
     @Override

@@ -1,12 +1,13 @@
 package com.ultreon.mods.lib.client.gui.v2;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.ultreon.mods.lib.UltreonLib;
 import com.ultreon.mods.lib.util.ScissorStack;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import org.apache.commons.compress.utils.Lists;
+import org.jetbrains.annotations.NotNull;
 import org.joml.Vector2d;
 import org.joml.Vector2i;
 
@@ -58,7 +59,7 @@ public class McWindow extends McContainer {
     }
 
     @Override
-    public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
+    public void render(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
         var message = getMessage();
 
         if (width <= 0 || height <= 0)
@@ -82,25 +83,25 @@ public class McWindow extends McContainer {
         RenderSystem.setShaderColor(1, 1, 1, 0.5f);
         {
             // Corners
-            blit(poseStack, getX() - 9, getY() - 9, 9, 9, 0, 0, 9, 9, 256, 256);
-            blit(poseStack, getX() - 9, getY() + getHeight() + getBorder().top + getBorder().bottom, 9, 9, 0, 11, 9, 9, 256, 256);
-            blit(poseStack, getX() + getWidth() + getBorder().left + getBorder().right, getY() - 9, 9, 9, 11, 0, 9, 9, 256, 256);
-            blit(poseStack, getX() + getWidth() + getBorder().left + getBorder().right, getY() + getHeight() + getBorder().top + getBorder().bottom, 9, 9, 11, 11, 9, 9, 256, 256);
+            gfx.blit(SHADOW, getX() - 9, getY() - 9, 9, 9, 0, 0, 9, 9, 256, 256);
+            gfx.blit(SHADOW, getX() - 9, getY() + getHeight() + getBorder().top + getBorder().bottom, 9, 9, 0, 11, 9, 9, 256, 256);
+            gfx.blit(SHADOW, getX() + getWidth() + getBorder().left + getBorder().right, getY() - 9, 9, 9, 11, 0, 9, 9, 256, 256);
+            gfx.blit(SHADOW, getX() + getWidth() + getBorder().left + getBorder().right, getY() + getHeight() + getBorder().top + getBorder().bottom, 9, 9, 11, 11, 9, 9, 256, 256);
 
             // Vertical Parts
-            blit(poseStack, getX() - 9, getY(), 9, getHeight() + getBorder().top + getBorder().bottom, 0, 10, 9, 1, 256, 256);
-            blit(poseStack, getX() + getWidth() + getBorder().left + getBorder().right, getY(), 9, getHeight() + getBorder().top + getBorder().bottom, 10, 10, 9, 1, 256, 256);
+            gfx.blit(SHADOW, getX() - 9, getY(), 9, getHeight() + getBorder().top + getBorder().bottom, 0, 10, 9, 1, 256, 256);
+            gfx.blit(SHADOW, getX() + getWidth() + getBorder().left + getBorder().right, getY(), 9, getHeight() + getBorder().top + getBorder().bottom, 10, 10, 9, 1, 256, 256);
 
             // Horizontal Parts
-            blit(poseStack, getX(), getY() - 9, getWidth() + getBorder().left + getBorder().right, 9, 10, 0, 1, 9, 256, 256);
-            blit(poseStack, getX(), getY() + getHeight() + getBorder().top + getBorder().bottom, getWidth() + getBorder().left + getBorder().right, 9, 10, 10, 1, 9, 256, 256);
+            gfx.blit(SHADOW, getX(), getY() - 9, getWidth() + getBorder().left + getBorder().right, 9, 10, 0, 1, 9, 256, 256);
+            gfx.blit(SHADOW, getX(), getY() + getHeight() + getBorder().top + getBorder().bottom, getWidth() + getBorder().left + getBorder().right, 9, 10, 10, 1, 9, 256, 256);
         }
         RenderSystem.setShaderColor(1, 1, 1, 1);
         RenderSystem.disableBlend();
 
         // Title frame.
-        fill(poseStack, getX(), getY(), getX() + this.getWidth() + getBorder().left + getBorder().right, getY() + this.getHeight() + getBorder().top + getBorder().bottom, getBorderColor());
-        fill(poseStack, getX() + getBorder().left, getY() + getBorder().top, getX() + this.getWidth() + getBorder().left, getY() + this.getHeight() + getBorder().top, 0xff333333);
+        gfx.fill(getX(), getY(), getX() + this.getWidth() + getBorder().left + getBorder().right, getY() + this.getHeight() + getBorder().top + getBorder().bottom, getBorderColor());
+        gfx.fill(getX() + getBorder().left, getY() + getBorder().top, getX() + this.getWidth() + getBorder().left, getY() + this.getHeight() + getBorder().top, 0xff333333);
 
         if (!isUndecorated()) {
             if (titleWidth > 0 && titleHeight > 0) {
@@ -108,9 +109,9 @@ public class McWindow extends McContainer {
                 ScissorStack.pushScissor(getX() + 1, getY() + 1, titleWidth, titleHeight);
                 {
                     if (this.font.width(message) > titleWidth)
-                        this.font.draw(poseStack, this.font.substrByWidth(message, titleWidth - 4).getString(), getX() + 3, getY() + 3, 0xffdddddd);
+                        gfx.drawString(this.font, this.font.substrByWidth(message, titleWidth - 4).getString(), getX() + 3, getY() + 3, 0xffdddddd, false);
                     else
-                        this.font.draw(poseStack, message, getX() + 3, getY() + 3, 0xffdddddd);
+                        gfx.drawString(this.font, message, getX() + 3, getY() + 3, 0xffdddddd, false);
                 }
                 ScissorStack.popScissor();
             }
@@ -118,24 +119,24 @@ public class McWindow extends McContainer {
             RenderSystem.enableBlend();
             int tcr = getX() + getWidth() + 1; // Title Controls Right
             if (isMouseOver(mouseX, mouseY, tcr - 23, getY() + 1, 23, 12)) {
-                fill(poseStack, tcr - 23, getY() + 1, tcr, getY() + 13, 0x33ffffff);
-                drawCenteredStringWithoutShadow(poseStack, font, "×", tcr - 11, getY() + 3, 0xffffffff);
-            } else drawCenteredStringWithoutShadow(poseStack, font, "×", tcr - 11, getY() + 3, 0xffffffff);
+                gfx.fill(tcr - 23, getY() + 1, tcr, getY() + 13, 0x33ffffff);
+                drawCenteredStringWithoutShadow(gfx, font, "×", tcr - 11, getY() + 3, 0xffffffff);
+            } else drawCenteredStringWithoutShadow(gfx, font, "×", tcr - 11, getY() + 3, 0xffffffff);
 
             if (isMouseOver(mouseX, mouseY, tcr - 46, getY() + 1, 23, 12)) {
-                fill(poseStack, tcr - 46, getY() + 1, tcr - 23, getY() + 13, 0x33ffffff);
-                drawCenteredStringWithoutShadow(poseStack, font, "□", tcr - 34, getY() + 3, 0xffffffff);
-            } else drawCenteredStringWithoutShadow(poseStack, font, "□", tcr - 34, getY() + 3, 0xffffffff);
+                gfx.fill(tcr - 46, getY() + 1, tcr - 23, getY() + 13, 0x33ffffff);
+                drawCenteredStringWithoutShadow(gfx, font, "□", tcr - 34, getY() + 3, 0xffffffff);
+            } else drawCenteredStringWithoutShadow(gfx, font, "□", tcr - 34, getY() + 3, 0xffffffff);
 
             if (isMouseOver(mouseX, mouseY, tcr - 69, getY() + 1, 23, 12)) {
-                fill(poseStack, tcr - 69, getY() + 1, tcr - 46, getY() + 13, 0x33ffffff);
-                drawCenteredStringWithoutShadow(poseStack, font, "-", tcr - 57, getY() + 3, 0xffffffff);
-            } else drawCenteredStringWithoutShadow(poseStack, font, "-", tcr - 57, getY() + 3, 0xffffffff);
+                gfx.fill(tcr - 69, getY() + 1, tcr - 46, getY() + 13, 0x33ffffff);
+                drawCenteredStringWithoutShadow(gfx, font, "-", tcr - 57, getY() + 3, 0xffffffff);
+            } else drawCenteredStringWithoutShadow(gfx, font, "-", tcr - 57, getY() + 3, 0xffffffff);
             RenderSystem.disableBlend();
         }
 
         // Do content rendering.
-        super.render(poseStack, mouseX, mouseY, partialTicks);
+        super.render(gfx, mouseX, mouseY, partialTicks);
     }
 
     void handleSetActive() {

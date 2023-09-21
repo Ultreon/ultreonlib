@@ -1,11 +1,12 @@
 package com.ultreon.mods.lib.client.gui.widget;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import org.jetbrains.annotations.NotNull;
 
 public class Progressbar extends BaseWidget {
     private static final ResourceLocation ICONS = new ResourceLocation("textures/gui/icons.png");
@@ -57,15 +58,12 @@ public class Progressbar extends BaseWidget {
     }
 
     @Override
-    public void renderWidget(PoseStack poseStack, int i, int j, float f) {
+    public void renderWidget(@NotNull GuiGraphics gfx, int i, int j, float f) {
         int x = getX() - 91;
         int y = getY() - 3;
 
-        RenderSystem.setShaderTexture(0, ICONS);
-        blit(poseStack, x, y, 0, 64, 182, 5);
-
-        RenderSystem.setShaderTexture(0, ICONS);
-        blit(poseStack, x, y, 0, 69, (int) (182 * getRatio()), 5);
+        gfx.blit(ICONS, x, y, 0, 64, 182, 5);
+        gfx.blit(ICONS, x, y, 0, 69, (int) (182 * getRatio()), 5);
     }
 
     @Override

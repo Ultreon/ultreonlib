@@ -1,8 +1,8 @@
 package com.ultreon.mods.lib.client.gui;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.ultreon.mods.lib.event.WindowCloseEvent;
 import dev.architectury.platform.Mod;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.TitleScreen;
@@ -10,6 +10,7 @@ import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.FormattedCharSequence;
 import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Iterator;
 import java.util.List;
@@ -50,31 +51,31 @@ public class DevPreviewScreen extends Screen {
     }
 
     @Override
-    public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTick) {
-        renderBackground(poseStack);
+    public void render(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTick) {
+        renderBackground(gfx);
 
         int maxWidth = width - 100;
         int modLinesHeight = font.wordWrapHeight(modNamesStr, maxWidth);
         int lineHeight = 20 + 16 + modLinesHeight + 16 + font.lineHeight + 24 + font.lineHeight * 2;
 
-        poseStack.pushPose();
-        poseStack.scale(2, 2, 2);
-        drawCenteredString(poseStack, font, title, (width / 2) / 2, (height / 2 - lineHeight / 2 + font.lineHeight) / 2, 0xffaa00);
-        poseStack.popPose();
+        gfx.pose().pushPose();
+        gfx.pose().scale(2, 2, 2);
+        gfx.drawCenteredString(font, title, (width / 2) / 2, (height / 2 - lineHeight / 2 + font.lineHeight) / 2, 0xffaa00);
+        gfx.pose().popPose();
 
-        drawCenteredString(poseStack, font, DESCRIPTION, width / 2, height / 2 - lineHeight / 2 + font.lineHeight / 2 + 24 + font.lineHeight * 2, 0xffffff);
+        gfx.drawCenteredString(font, DESCRIPTION, width / 2, height / 2 - lineHeight / 2 + font.lineHeight / 2 + 24 + font.lineHeight * 2, 0xffffff);
 
         int y = height / 2 - lineHeight / 2 + 16 + font.lineHeight + 24 + font.lineHeight * 2 + font.lineHeight / 2;
 
         for(Iterator<FormattedCharSequence> var7 = font.split(Component.literal(modNamesStr), maxWidth).iterator(); var7.hasNext(); y += 9) {
             FormattedCharSequence formattedCharSequence = var7.next();
-            drawCenteredString(poseStack, font, formattedCharSequence, width / 2, y, 0xaaaaaa);
+            gfx.drawCenteredString(font, formattedCharSequence, width / 2, y, 0xaaaaaa);
         }
         
         continueBtn.setY(y + 16);
         cancelBtn.setY(y + 16);
 
-        super.render(poseStack, mouseX, mouseY, partialTick);
+        super.render(gfx, mouseX, mouseY, partialTick);
     }
 
     public List<String> getModNames() {

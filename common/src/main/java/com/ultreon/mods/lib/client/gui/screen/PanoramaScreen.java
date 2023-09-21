@@ -11,17 +11,14 @@
 
 package com.ultreon.mods.lib.client.gui.screen;
 
-import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.ultreon.mods.lib.mixin.common.TitleScreenAccessor;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.TitleScreen;
-import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.PanoramaRenderer;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Objects;
 
 /**
  * Panorama screen, for rendering a panorama in the background of your screen / menu.
@@ -29,7 +26,8 @@ import java.util.Objects;
  * @author Qboi123
  */
 public abstract class PanoramaScreen extends BaseScreen {
-    public static final PanoramaRenderer panorama = new PanoramaRenderer(TitleScreen.CUBE_MAP);
+    public static final PanoramaRenderer PANORAMA = new PanoramaRenderer(TitleScreen.CUBE_MAP);
+    public static final ResourceLocation PANORAMA_OVERLAY = new ResourceLocation("textures/gui/title/background/panorama_overlay.png");
 
     /**
      * Panorama screen constructor.
@@ -43,34 +41,29 @@ public abstract class PanoramaScreen extends BaseScreen {
     /**
      * Render the panorama background/
      *
-     * @param pose         pose stack.
+     * @param gfx         pose stack.
      * @param partialTicks render frame time.
      */
-    public void renderPanorama(PoseStack pose, float partialTicks) {
-        // Nonnull Requirements
-        Objects.requireNonNull(this.minecraft);
-
-        panorama.render(partialTicks, 1.0f);
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
-        RenderSystem.setShaderTexture(0, TitleScreenAccessor.getPanoramaOverlay());
+    public void renderPanorama(GuiGraphics gfx, float partialTicks) {
+        PANORAMA.render(partialTicks, Mth.clamp(1.0f, 0.0f, 1.0f));
         RenderSystem.enableBlend();
-        RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        blit(pose, 0, 0, this.width, this.height, 0.0F, 0.0F, 16, 128, 16, 128);
+        gfx.setColor(1.0f, 1.0f, 1.0f, 1.0f);
+        gfx.blit(PANORAMA_OVERLAY, 0, 0, this.width, this.height, 0.0f, 0.0f, 16, 128, 16, 128);
+        gfx.setColor(1.0f, 1.0f, 1.0f, 1.0f);
     }
 
     @SuppressWarnings("SuspiciousNameCombination")
-    public void renderBackground(PoseStack pose, float partialTicks) {
+    public void renderBackground(GuiGraphics gfx, float partialTicks) {
         assert this.minecraft != null;
         if (this.minecraft.level == null) {
-            this.renderPanorama(pose, partialTicks);
+            this.renderPanorama(gfx, partialTicks);
             return;
         }
-        fillGradient(pose, 0, 0, this.width, this.height, 0xC0101010, 0xD0101010);
+        gfx.fillGradient(0, 0, this.width, this.height, 0xC0101010, 0xD0101010);
     }
 
     @Override
-    public void renderBackground(@NotNull PoseStack poseStack) {
+    public void renderBackground(@NotNull GuiGraphics gfx) {
 
     }
 }

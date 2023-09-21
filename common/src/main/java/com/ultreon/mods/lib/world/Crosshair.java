@@ -30,7 +30,7 @@ public final class Crosshair {
 
     public Crosshair(@NotNull Entity entity) {
         this.entity = entity;
-        this.level = entity.level;
+        this.level = entity.level();
     }
 
     public static Crosshair get() {

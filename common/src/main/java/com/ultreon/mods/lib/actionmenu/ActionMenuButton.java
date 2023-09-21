@@ -1,10 +1,10 @@
 package com.ultreon.mods.lib.actionmenu;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.ultreon.mods.lib.UltreonLib;
 import com.ultreon.mods.lib.client.gui.widget.TransparentButton;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 
@@ -33,7 +33,7 @@ public class ActionMenuButton extends TransparentButton implements IActionMenuIn
     }
 
     @Override
-    public void renderWidget(@NotNull PoseStack pose, int mouseX, int mouseY, float partialTicks) {
+    public void renderWidget(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
         var client = Minecraft.getInstance();
         var font = client.font;
 
@@ -44,7 +44,7 @@ public class ActionMenuButton extends TransparentButton implements IActionMenuIn
             background = new Color(0, 0, 0, (int) Math.min(Math.max(127 - (51.2 * (menuIndex)), 0), 127)).getRGB();
         }
 
-        fill(pose, getX(), getY(), getX() + width, getY() + height, background);
+        gfx.fill(getX(), getY(), getX() + width, getY() + height, background);
 
         int hoverColor;
         int normalColor;
@@ -83,29 +83,29 @@ public class ActionMenuButton extends TransparentButton implements IActionMenuIn
         }
 
         if (isHovered && menuIndex == 0 && active) {
-            drawCenteredString(pose, font, this.getMessage(), (this.getX() + this.width / 2) + 1, (this.getY() + (this.height - 8) / 2) + 1, textColor);
+            gfx.drawCenteredString(font, this.getMessage(), (this.getX() + this.width / 2) + 1, (this.getY() + (this.height - 8) / 2) + 1, textColor);
         } else {
-            drawCenteredString(pose, font, this.getMessage(), this.getX() + this.width / 2, this.getY() + (this.height - 8) / 2, textColor);
+            gfx.drawCenteredString(font, this.getMessage(), this.getX() + this.width / 2, this.getY() + (this.height - 8) / 2, textColor);
         }
 
         if (item instanceof SubmenuItem) {
             RenderSystem.setShaderTexture(0, ICONS);
 
-            pose.pushPose();
+            gfx.pose().pushPose();
             RenderSystem.setShaderColor(1f, 1f, 1f, 1f / (menuIndex + 1));
             RenderSystem.enableBlend();
             RenderSystem.defaultBlendFunc();
             RenderSystem.enableDepthTest();
             if (active) {
                 if (isHovered && menuIndex == 0) {
-                    blit(pose, getX() + width - 6, getY() + height / 2 - 4, 6, 9, 12, 0, 6, 9, 64, 64);
+                    gfx.blit(ICONS, getX() + width - 6, getY() + height / 2 - 4, 6, 9, 12, 0, 6, 9, 64, 64);
                 } else {
-                    blit(pose, getX() + width - 6, getY() + height / 2 - 4, 6, 9, 6, 0, 6, 9, 64, 64);
+                    gfx.blit(ICONS, getX() + width - 6, getY() + height / 2 - 4, 6, 9, 6, 0, 6, 9, 64, 64);
                 }
             } else {
-                blit(pose, getX() + width - 6, getY() + height / 2 - 4, 6, 9, 0, 0, 6, 9, 64, 64);
+                gfx.blit(ICONS, getX() + width - 6, getY() + height / 2 - 4, 6, 9, 0, 0, 6, 9, 64, 64);
             }
-            pose.popPose();
+            gfx.pose().popPose();
 
             if (client.screen instanceof ActionMenuScreen currentScreen) {
                 if (isHovered && active) {

@@ -1,10 +1,10 @@
 package com.ultreon.mods.lib.client.gui.screen.test;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.ultreon.mods.lib.client.gui.screen.BaseScreen;
 import com.ultreon.mods.lib.client.gui.widget.BaseButton;
 import com.ultreon.mods.lib.client.gui.widget.Button;
 import com.ultreon.mods.lib.client.gui.widget.Progressbar;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.world.phys.Vec2;
 import org.jetbrains.annotations.ApiStatus;
@@ -30,10 +30,10 @@ public class TestProgressScreen extends BaseScreen implements TestScreen {
     }
 
     @Override
-    public void render(@NotNull PoseStack pose, int mouseX, int mouseY, float partialTicks) {
-        renderBackground(pose);
+    public void render(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
+        renderBackground(gfx);
 
-        super.render(pose, mouseX, mouseY, partialTicks);
+        super.render(gfx, mouseX, mouseY, partialTicks);
     }
 
     @Override

@@ -1,6 +1,6 @@
 package com.ultreon.mods.lib.client.gui.screen.window;
 
-import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiGraphics;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -76,11 +76,11 @@ public final class WindowManager {
         return windows.contains(window);
     }
 
-    public void renderAllWindows(@NotNull PoseStack pose, int mouseX, int mouseY, float partialTicks) {
+    public void renderAllWindows(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
         List<Window> windows = new ArrayList<>(this.windows);
-        pose.pushPose();
+        gfx.pose().pushPose();
         {
-            pose.translate(0, 0, -200);
+            gfx.pose().translate(0, 0, -200);
             for (int i = windows.size() - 1; i >= 0; i--) {
                 Window window = windows.get(i);
                 if (!window.isValid()) {
@@ -88,13 +88,13 @@ public final class WindowManager {
                 }
 
                 if (window.isVisible() && window.isValid()) {
-                    pose.pushPose();
-                    window.render(pose, mouseX, mouseY, partialTicks);
-                    pose.popPose();
+                    gfx.pose().pushPose();
+                    window.render(gfx, mouseX, mouseY, partialTicks);
+                    gfx.pose().popPose();
                 }
             }
         }
-        pose.popPose();
+        gfx.pose().popPose();
     }
 
     @Nullable

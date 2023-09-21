@@ -1,9 +1,10 @@
 package com.ultreon.mods.lib.client.gui.v2;
 
 import com.mojang.blaze3d.platform.Window;
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 
@@ -22,7 +23,7 @@ public class DesktopWindow extends McWindow {
     }
 
     @Override
-    public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
+    public void render(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
         this.setUndecorated(true);
         this.setX(0);
         this.setY(0);
@@ -35,7 +36,7 @@ public class DesktopWindow extends McWindow {
 
         this.setBottomMost(true);
 
-        super.render(poseStack, mouseX, mouseY, partialTicks);
+        super.render(gfx, mouseX, mouseY, partialTicks);
     }
 
     public void setWallpaper(McImage wallpaper) {

@@ -1,9 +1,9 @@
 package com.ultreon.mods.lib.client.gui.screen;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.ultreon.mods.lib.UltreonLibConfig;
 import com.ultreon.mods.lib.client.gui.widget.toolbar.IToolbarItem;
 import com.ultreon.mods.lib.client.gui.widget.toolbar.ToolbarItem;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.phys.Vec2;
 import org.jetbrains.annotations.NotNull;
@@ -21,20 +21,20 @@ public abstract class FullscreenRenderScreen extends BaseScreen {
     }
 
     @Override
-    public abstract void renderBackground(@NotNull PoseStack pose);
+    public abstract void renderBackground(@NotNull GuiGraphics gfx);
 
     @Override
-    public void render(@NotNull PoseStack pose, int mouseX, int mouseY, float partialTicks) {
-        renderBackground(pose);
+    public void render(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
+        renderBackground(gfx);
 
-        renderToolbar(pose, mouseX, mouseY, partialTicks);
+        renderToolbar(gfx, mouseX, mouseY, partialTicks);
 
-        drawCenteredString(pose, font, getTitle(), width / 2, 9, 0xFFFFFF);
+        gfx.drawCenteredString(font, getTitle(), width / 2, 9, 0xFFFFFF);
 
-        super.render(pose, mouseX, mouseY, partialTicks);
+        super.render(gfx, mouseX, mouseY, partialTicks);
     }
 
-    private void renderToolbar(PoseStack pose, int mouseX, int mouseY, float partialTicks) {
+    private void renderToolbar(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
         final int paddings = ITEM_PADDING * Math.max(items.size() - 1, 0);
         final int width = items.stream().mapToInt(IToolbarItem::width).sum() + paddings;
         final int height = items.stream().mapToInt(IToolbarItem::height).max().orElse(0);
@@ -42,7 +42,7 @@ public abstract class FullscreenRenderScreen extends BaseScreen {
         final int frameHeight = height - 4;
         final int frameX = this.width / 2 - frameWidth / 2 - 5;
         final int frameY = this.height - frameHeight - BOTTOM_MARGIN - 14;
-        renderFrame(pose, frameX, frameY, frameWidth, frameHeight, UltreonLibConfig.THEME.get());
+        renderFrame(gfx, frameX, frameY, frameWidth, frameHeight, UltreonLibConfig.THEME.get());
         int x = frameX + 5;
         final int y = frameY + 2 + 7 - 4;
         for (IToolbarItem item : items) {
@@ -51,7 +51,7 @@ public abstract class FullscreenRenderScreen extends BaseScreen {
                 toolbarItem.setX(x);
                 toolbarItem.setY(y);
             }
-            item.render(pose, mouseX, mouseY, partialTicks);
+            item.render(gfx, mouseX, mouseY, partialTicks);
 
             x += width1 + ITEM_PADDING;
         }

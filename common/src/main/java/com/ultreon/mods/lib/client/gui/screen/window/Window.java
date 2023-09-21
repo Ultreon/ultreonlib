@@ -1,7 +1,6 @@
 package com.ultreon.mods.lib.client.gui.screen.window;
 
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.ultreon.mods.lib.UltreonLib;
 import com.ultreon.mods.lib.client.gui.Anchor;
 import com.ultreon.mods.lib.client.gui.Theme;
@@ -12,6 +11,7 @@ import com.ultreon.mods.lib.common.Scale;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.components.events.GuiEventListener;
@@ -197,37 +197,37 @@ public class Window extends BaseContainerWidget implements Themed {
     /**
      * Renders the window including the border and title.
      *
-     * @param pose         The pose-stack of the window.
+     * @param gfx          The pose-stack of the window.
      * @param mouseX       The x position of the mouse
      * @param mouseY       The y position of the mouse
      * @param partialTicks The partial ticks
      * @throws IllegalStateException If the window is not valid.
      */
     @Override
-    public void render(@NotNull PoseStack pose, int mouseX, int mouseY, float partialTicks) {
+    public void render(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
         // Check for valid window.
         checkValid();
 
         if (isVisible()) {
             // Window is shown, so render it.
-            renderTitle(pose, mouseX, mouseY);
-            renderFrame(pose);
-            renderContents(pose, mouseX, mouseY, partialTicks);
+            renderTitle(gfx, mouseX, mouseY);
+            renderFrame(gfx);
+            renderContents(gfx, mouseX, mouseY, partialTicks);
         }
     }
 
     /**
      * Render the content area.
      *
-     * @param pose         The pose-stack to render with.
+     * @param gfx          The pose-stack to render with.
      * @param mouseX       The x position of the mouse.
      * @param mouseY       The y position of the mouse.
      * @param partialTicks The partial ticks.
      */
-    private void renderContents(PoseStack pose, int mouseX, int mouseY, float partialTicks) {
+    private void renderContents(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
         for (GuiEventListener widget : children()) {
             if (widget instanceof Renderable) {
-                ((AbstractWidget) widget).render(pose, mouseX, mouseY, partialTicks);
+                ((AbstractWidget) widget).render(gfx, mouseX, mouseY, partialTicks);
             }
         }
     }
@@ -235,31 +235,31 @@ public class Window extends BaseContainerWidget implements Themed {
     /**
      * Renders the title bar.
      *
-     * @param pose         The pose-stack to render with.
-     * @param mouseX       The x position of the mouse.
-     * @param mouseY       The y position of the mouse.
+     * @param gfx    The pose-stack to render with.
+     * @param mouseX The x position of the mouse.
+     * @param mouseY The y position of the mouse.
      */
-    private void renderTitle(PoseStack pose, int mouseX, int mouseY) {
-        BaseScreen.renderTitleFrame(pose, getX(), getY() - 20, width, 12, theme);
-        drawCenteredString(pose, minecraft.font, getTitle(), getX() + width / 2, getY() - 12, theme.getTitleColor());
+    private void renderTitle(@NotNull GuiGraphics gfx, int mouseX, int mouseY) {
+        BaseScreen.renderTitleFrame(gfx, getX(), getY() - 20, width, 12, theme);
+        gfx.drawCenteredString(minecraft.font, getTitle(), getX() + width / 2, getY() - 12, theme.getTitleColor());
 
-        renderCloseButton(pose, mouseX, mouseY, getX() + width - 12, getY() - 12);
+        renderCloseButton(gfx, mouseX, mouseY, getX() + width - 12, getY() - 12);
     }
 
     /**
      * Renders the close button.
      *
-     * @param pose         The pose-stack to render with.
-     * @param mouseX       The x position of the mouse.
-     * @param mouseY       The y position of the mouse.
-     * @param x            The x position of the close button.
-     * @param y            The y position of the close button.
+     * @param gfx    The pose-stack to render with.
+     * @param mouseX The x position of the mouse.
+     * @param mouseY The y position of the mouse.
+     * @param x      The x position of the close button.
+     * @param y      The y position of the close button.
      */
-    private void renderCloseButton(PoseStack pose, int mouseX, int mouseY, int x, int y) {
+    private void renderCloseButton(@NotNull GuiGraphics gfx, int mouseX, int mouseY, int x, int y) {
         if (isMouseOver(mouseX, mouseY, x, y, 12, 12)) {
-            drawCenteredString(pose, minecraft.font, CLOSE_ICON_HOVER, x + 6, y + 6, theme.getTitleColor());
+            gfx.drawCenteredString(minecraft.font, CLOSE_ICON_HOVER, x + 6, y + 6, theme.getTitleColor());
         } else {
-            drawCenteredString(pose, minecraft.font, CLOSE_ICON, x + 6, y + 6, theme.getTitleColor());
+            gfx.drawCenteredString(minecraft.font, CLOSE_ICON, x + 6, y + 6, theme.getTitleColor());
         }
     }
 
@@ -285,8 +285,8 @@ public class Window extends BaseContainerWidget implements Themed {
         return new Vec2(iconX, iconY);
     }
 
-    private void renderFrame(PoseStack pose) {
-        BaseScreen.renderFrame(pose, getX(), getY(), getWidth(), getHeight(), UltreonLib.getTheme());
+    private void renderFrame(@NotNull GuiGraphics gfx) {
+        BaseScreen.renderFrame(gfx, getX(), getY(), getWidth(), getHeight(), UltreonLib.getTheme());
     }
 
     @Override

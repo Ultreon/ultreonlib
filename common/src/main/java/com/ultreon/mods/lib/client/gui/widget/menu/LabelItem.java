@@ -11,7 +11,7 @@
 
 package com.ultreon.mods.lib.client.gui.widget.menu;
 
-import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.narration.NarratedElementType;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.network.chat.Component;
@@ -23,15 +23,15 @@ public class LabelItem extends MenuItem {
     }
 
     @Override
-    public void renderWidget(@NotNull PoseStack pose, int mouseX, int mouseY, float partialTicks) {
-        this.font.drawShadow(pose, getMessage(), getX(), getY() + 6 - font.lineHeight / 2f, getTextColor());
+    public void renderWidget(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
+        gfx.drawString(this.font, getMessage(), getX(), (int) (getY() + 6 - font.lineHeight / 2f), getTextColor());
         if (isHoveredOrFocused()) {
             int x1 = getX() + width;
             int y1 = getY() + height;
-            fill(pose, getX(), getY(), x1, getY(), getTextColor());   // top
-            fill(pose, getX(), y1, x1, y1, getTextColor()); // bottom
-            fill(pose, getX(), getY(), getX(), y1, getTextColor());   // left
-            fill(pose, x1, getY(), x1, y1, getTextColor()); // right
+            gfx.fill(getX(), getY(), x1, getY(), getTextColor());   // top
+            gfx.fill(getX(), y1, x1, y1, getTextColor()); // bottom
+            gfx.fill(getX(), getY(), getX(), y1, getTextColor());   // left
+            gfx.fill(x1, getY(), x1, y1, getTextColor()); // right
         }
     }
 

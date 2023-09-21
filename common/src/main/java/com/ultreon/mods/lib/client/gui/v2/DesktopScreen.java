@@ -1,8 +1,8 @@
 package com.ultreon.mods.lib.client.gui.v2;
 
 import com.google.common.collect.Lists;
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import org.apache.commons.compress.utils.Sets;
@@ -28,26 +28,26 @@ public class DesktopScreen extends Screen {
 
     @Override
     @SuppressWarnings("SuspiciousNameCombination")
-    public void renderBackground(@NotNull PoseStack poseStack) {
+    public void renderBackground(@NotNull GuiGraphics gfx) {
         if (this.minecraft != null && this.minecraft.level != null) {
-            fillGradient(poseStack, 0, 0, this.width, this.height, 0xc0101010, 0xd0101010);
+            gfx.fillGradient(0, 0, this.width, this.height, 0xc0101010, 0xd0101010);
         } else {
-            fill(poseStack, 0, 0, this.width, this.height, 0x00000000);
+            gfx.fill(0, 0, this.width, this.height, 0x00000000);
         }
     }
 
     @Override
-    public void renderDirtBackground(@NotNull PoseStack poseStack) {
+    public void renderDirtBackground(@NotNull GuiGraphics gfx) {
 
     }
 
     @Override
-    public void render(@NotNull PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
-        this.renderBackground(poseStack);
+    public void render(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
+        this.renderBackground(gfx);
 
         this.desktop.setWidth(this.width);
         this.desktop.setHeight(this.height);
-        this.desktop.render(poseStack, mouseX, mouseY, partialTicks);
+        this.desktop.render(gfx, mouseX, mouseY, partialTicks);
     }
 
     public McDesktop getDesktop() {

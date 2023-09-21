@@ -1,9 +1,8 @@
 package com.ultreon.mods.lib.client.gui.v2;
 
 import com.mojang.blaze3d.platform.NativeImage;
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.nbt.ByteArrayTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -106,39 +105,39 @@ public class McImage extends McResImage {
     }
 
     @Override
-    public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
+    public void render(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
         ResourceLocation resource = getResource();
-        fill(poseStack, getX(), getY(), getX() + getWidth(), getY() + getHeight(), 0xff555555);
-        fill(poseStack, getX() + 1, getY() + 1, getX() + getWidth() - 1, getY() + getHeight() - 1, 0xff333333);
+        gfx.fill(getX(), getY(), getX() + getWidth(), getY() + getHeight(), 0xff555555);
+        gfx.fill(getX() + 1, getY() + 1, getX() + getWidth() - 1, getY() + getHeight() - 1, 0xff333333);
+
         if (resource != null) {
-            RenderSystem.setShaderTexture(0, resource);
-            blit(poseStack, getX(), getY(), getWidth(), getHeight(), 0, 0, textureWidth(), textureHeight(), textureWidth(), textureHeight());
+            gfx.blit(resource, getX(), getY(), getWidth(), getHeight(), 0, 0, textureWidth(), textureHeight(), textureWidth(), textureHeight());
         } else if (loader != null && loader.error != null) {
-            drawCenteredStringWithoutShadow(poseStack, font, Component.literal(loader.error.getLocalizedMessage()), getX() + getWidth() / 2, getY() + getHeight() / 2, 0xffffdddd);
+            drawCenteredStringWithoutShadow(gfx, font, Component.literal(loader.error.getLocalizedMessage()), getX() + getWidth() / 2, getY() + getHeight() / 2, 0xffffdddd);
         } else {
-            drawLoadingIcon(poseStack, getWidth() / 2, getHeight() / 2);
+            drawLoadingIcon(gfx, getWidth() / 2, getHeight() / 2);
         }
     }
 
-    public static void drawLoadingIcon(PoseStack poseStack, int x, int y) {
+    public static void drawLoadingIcon(GuiGraphics gfx, int x, int y) {
         var timeWrap = (int)(System.currentTimeMillis() % 1500);
         var frame = timeWrap / 500;
 
         switch (frame) {
             case 0 -> {
-                fill(poseStack, x - 2 - 6 - 1, y - 2 - 1, x + 1 - 6 + 1, y + 1 + 1, 0xff666666);
-                fill(poseStack, x - 2, y - 2, x + 1, y + 1, 0xff555555);
-                fill(poseStack, x - 2 + 6, y - 2, x + 1 + 6, y + 1, 0xff555555);
+                gfx.fill(x - 2 - 6 - 1, y - 2 - 1, x + 1 - 6 + 1, y + 1 + 1, 0xff666666);
+                gfx.fill(x - 2, y - 2, x + 1, y + 1, 0xff555555);
+                gfx.fill(x - 2 + 6, y - 2, x + 1 + 6, y + 1, 0xff555555);
             }
             case 1 -> {
-                fill(poseStack, x - 2 - 6, y - 2, x + 1 - 6, y + 1, 0xff555555);
-                fill(poseStack, x - 2 - 1, y - 2 - 1, x + 1 + 1, y + 1 + 1, 0xff666666);
-                fill(poseStack, x - 2 + 6, y - 2, x + 1 + 6, y + 1, 0xff555555);
+                gfx.fill(x - 2 - 6, y - 2, x + 1 - 6, y + 1, 0xff555555);
+                gfx.fill(x - 2 - 1, y - 2 - 1, x + 1 + 1, y + 1 + 1, 0xff666666);
+                gfx.fill(x - 2 + 6, y - 2, x + 1 + 6, y + 1, 0xff555555);
             }
             case 2 -> {
-                fill(poseStack, x - 2 - 6, y - 2, x + 1 - 6, y + 1, 0xff555555);
-                fill(poseStack, x - 2, y - 2, x + 1, y + 1, 0xff555555);
-                fill(poseStack, x - 2 + 6 - 1, y - 2 - 1, x + 1 + 6 + 1, y + 1 + 1, 0xff666666);
+                gfx.fill(x - 2 - 6, y - 2, x + 1 - 6, y + 1, 0xff555555);
+                gfx.fill(x - 2, y - 2, x + 1, y + 1, 0xff555555);
+                gfx.fill(x - 2 + 6 - 1, y - 2 - 1, x + 1 + 6 + 1, y + 1 + 1, 0xff666666);
             }
         }
     }

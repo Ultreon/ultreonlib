@@ -12,13 +12,13 @@
 package com.ultreon.mods.lib.client.gui.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.ultreon.mods.lib.UltreonLib;
 import com.ultreon.mods.lib.client.gui.widget.BaseButton;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.ContainerObjectSelectionList;
 import net.minecraft.client.gui.components.EditBox;
@@ -152,20 +152,20 @@ public final class ListScreen extends PanoramaScreen {
     }
 
     @Override
-    public void renderBackground(@NotNull PoseStack pose, float partialTicks) {
+    public void renderBackground(@NotNull GuiGraphics gfx, float partialTicks) {
         int i = this.left() + 3;
-        super.renderBackground(pose, partialTicks);
+        super.renderBackground(gfx, partialTicks);
 
-        RenderSystem.setShaderTexture(0, getTexture());
-        this.blit(pose, i, 64, 1, 1, 236, 8);
+        ResourceLocation tex = getTexture();
+        gfx.blit(tex, i, 64, 1, 1, 236, 8);
         int j = this.func0();
 
         for (int k = 0; k < j; ++k) {
-            this.blit(pose, i, 72 + 16 * k, 1, 10, 236, 16);
+            gfx.blit(tex, i, 72 + 16 * k, 1, 10, 236, 16);
         }
 
-        this.blit(pose, i, 72 + 16 * j, 1, 27, 236, 8);
-        this.blit(pose, i + 10, 76, 243, 1, 12, 12);
+        gfx.blit(tex, i, 72 + 16 * j, 1, 27, 236, 8);
+        gfx.blit(tex, i + 10, 76, 243, 1, 12, 12);
     }
 
     private ResourceLocation getTexture() {
@@ -176,23 +176,23 @@ public final class ListScreen extends PanoramaScreen {
         };
     }
 
-    public void render(@NotNull PoseStack pose, int mouseX, int mouseY, float partialTicks) {
+    public void render(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
         Objects.requireNonNull(this.minecraft);
-        this.renderBackground(pose, partialTicks);
+        this.renderBackground(gfx, partialTicks);
 
-        renderTitleFrame(pose, this.left() + 3, 35 - 7, this.minecraft.font.width(this.title), 7, getTheme());
-        renderTitleFrame(pose, this.right() - 8 - 12, 35 - 7, 7, 7, getTheme());
+        renderTitleFrame(gfx, this.left() + 3, 35 - 7, this.minecraft.font.width(this.title), 7, getTheme());
+        renderTitleFrame(gfx, this.right() - 8 - 12, 35 - 7, 7, 7, getTheme());
 
-        font.draw(pose, this.title, this.left() + 9, 35, switch (getTheme()) {
+        gfx.drawString(this.font, this.title, this.left() + 9, 35, switch (getTheme()) {
             case DARK, MIX -> 0xffffffff;
             case LIGHT -> 0xff202020;
             case NORMAL -> 0xff000000;
-        });
+        }, false);
 
         if (!this.list.isEmpty()) {
-            this.list.render(pose, mouseX, mouseY, partialTicks);
+            this.list.render(gfx, mouseX, mouseY, partialTicks);
         } else if (!this.searchBox.getValue().isEmpty()) {
-            drawCenteredStringWithoutShadow(pose, this.minecraft.font, SEARCH_EMPTY, this.width / 2, (78 + this.func1()) / 2, switch (getTheme()) {
+            drawCenteredStringWithoutShadow(gfx, this.minecraft.font, SEARCH_EMPTY, this.width / 2, (78 + this.func1()) / 2, switch (getTheme()) {
                 case DARK -> 0xffffffff;
                 case LIGHT, MIX -> 0xff202020;
                 case NORMAL -> 0xff000000;
@@ -200,16 +200,16 @@ public final class ListScreen extends PanoramaScreen {
         }
 
         if (!this.searchBox.isFocused() && this.searchBox.getValue().isEmpty()) {
-            font.draw(pose, SEARCH_HINT, this.searchBox.getX(), this.searchBox.getY(), switch (getTheme()) {
+            gfx.drawString(this.font, SEARCH_HINT, this.searchBox.getX(), this.searchBox.getY(), switch (getTheme()) {
                 case DARK -> 0xffffffff;
                 case LIGHT, MIX -> 0xff202020;
                 case NORMAL -> 0xff000000;
-            });
+            }, false);
         } else {
-            this.searchBox.render(pose, mouseX, mouseY, partialTicks);
+            this.searchBox.render(gfx, mouseX, mouseY, partialTicks);
         }
 
-        super.render(pose, mouseX, mouseY, partialTicks);
+        super.render(gfx, mouseX, mouseY, partialTicks);
     }
 
     @NotNull
@@ -292,10 +292,10 @@ public final class ListScreen extends PanoramaScreen {
             return this.width / 2 + 105; // 124 default
         }
 
-        public void render(@NotNull PoseStack pose, int mouseX, int mouseY, float partialTicks) {
+        public void render(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
             double scaleFactor = this.mc.getWindow().getGuiScale();
             RenderSystem.enableScissor((int) ((double) this.getRowLeft() * scaleFactor), (int) ((double) (this.height - this.y1) * scaleFactor), (int) ((double) (this.getScrollbarPosition() + 6) * scaleFactor), (int) ((double) (this.height - (this.height - this.y1) - this.y0 - 4) * scaleFactor));
-            super.render(pose, mouseX, mouseY, partialTicks);
+            super.render(gfx, mouseX, mouseY, partialTicks);
             RenderSystem.disableScissor();
         }
 
@@ -358,37 +358,37 @@ public final class ListScreen extends PanoramaScreen {
                 this.buttons = Arrays.asList(buttons);
             }
 
-            public void render(@NotNull PoseStack pose, int index, int top, int left, int width, int height, int mouseX, int mouseY, boolean isMouseOver, float partialTicks) {
+            public void render(@NotNull GuiGraphics gfx, int index, int top, int left, int width, int height, int mouseX, int mouseY, boolean isMouseOver, float partialTicks) {
                 int i = left + 7;
 
                 Component description = this.getDescription();
                 int l;
                 if (Objects.equals(description, Component.empty())) {
-                    fill(pose, left, top, left + width, top + height, switch (screen.getTheme()) {
+                    gfx.fill(left, top, left + width, top + height, switch (screen.getTheme()) {
                         case DARK -> DARK_EMPTY_COLOR;
                         case LIGHT, MIX -> LIGHT_EMPTY_COLOR;
                         default -> VANILLA_EMPTY_COLOR;
                     });
                     l = top + (height - 9) / 2;
                 } else {
-                    fill(pose, left, top, left + width, top + height, switch (screen.getTheme()) {
+                    gfx.fill(left, top, left + width, top + height, switch (screen.getTheme()) {
                         case DARK -> DARK_NON_EMPTY_COLOR;
                         case LIGHT, MIX -> LIGHT_NON_EMPTY_COLOR;
                         default -> VANILLA_NON_EMPTY_COLOR;
                     });
                     l = top + (height - (9 + 9)) / 2;
-                    this.mc.font.draw(pose, description, (float) i, (float) (l + 12), switch (screen.getTheme()) {
+                    gfx.drawString(this.mc.font, description, i, l + 12, switch (screen.getTheme()) {
                         case DARK -> DARK_DESCRIPTION_COLOR;
                         case LIGHT, MIX -> LIGHT_DESCRIPTION_COLOR;
                         default -> VANILLA_DESCRIPTION_COLOR;
-                    });
+                    }, false);
                 }
 
-                this.mc.font.draw(pose, this.entryTitle, (float) i, (float) l, switch (screen.getTheme()) {
+                gfx.drawString(this.mc.font, this.entryTitle, (int) i, (int) l, switch (screen.getTheme()) {
                     case DARK -> DARK_TITLE_COLOR;
                     case LIGHT, MIX -> LIGHT_TITLE_COLOR;
                     default -> VANILLA_TITLE_COLOR;
-                });
+                }, false);
                 float ticksUntilTooltip = this.ticksTooltip;
 
                 int btnIndex = 0;
@@ -396,7 +396,7 @@ public final class ListScreen extends PanoramaScreen {
                     if (guiEventListener instanceof Button button) {
                         button.setX(left + width - 8 - (BUTTON_WIDTH + 4) * (btnIndex + 1));
                         button.setY(top + height / 2 - 10);
-                        button.render(pose, mouseX, mouseY, partialTicks);
+                        button.render(gfx, mouseX, mouseY, partialTicks);
                         btnIndex++;
                     }
                 }

@@ -11,11 +11,11 @@
 
 package com.ultreon.mods.lib.client.gui.widget;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.ultreon.mods.lib.client.gui.Theme;
 import com.ultreon.mods.lib.client.gui.Themed;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
@@ -46,11 +46,11 @@ public class Label implements Renderable, Themed {
     }
 
     @Override
-    public void render(@NotNull PoseStack pose, int mouseX, int mouseY, float partialTicks) {
-        if (shadow) {
-            this.font.drawShadow(pose, message, x, y, getColor());
+    public void render(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
+        if (this.shadow) {
+            gfx.drawString(this.font, this.message, this.x, this.y, getColor());
         } else {
-            this.font.draw(pose, message, x, y, getColor());
+            gfx.drawString(this.font, this.message, this.x, this.y, getColor(), false);
         }
     }
 

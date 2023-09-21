@@ -1,9 +1,10 @@
 package com.ultreon.mods.lib.client.gui.v2;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.ultreon.mods.lib.client.gui.widget.BaseWidget;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.network.chat.Component;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class McComponent extends BaseWidget {
@@ -17,7 +18,7 @@ public class McComponent extends BaseWidget {
     }
 
     @Override
-    public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
+    public void render(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
 
     }
 

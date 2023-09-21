@@ -1,11 +1,12 @@
 package com.ultreon.mods.lib.client.gui.screen.window;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.ultreon.mods.lib.UltreonLibConfig;
 import com.ultreon.mods.lib.util.KeyboardHelper;
 import dev.architectury.event.EventResult;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
+import org.jetbrains.annotations.NotNull;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.Optional;
@@ -129,10 +130,10 @@ public class ScreenHooks {
         return eventResult.get();
     }
 
-    public static EventResult onDrawScreen(Screen screen, PoseStack matrices, int mouseX, int mouseY, float delta) {
+    public static EventResult onDrawScreen(Screen screen, @NotNull GuiGraphics gfx, int mouseX, int mouseY, float delta) {
         AtomicReference<EventResult> eventResult = new AtomicReference<>(EventResult.pass());
 
-        WindowManager.INSTANCE.renderAllWindows(matrices, mouseX, mouseY, delta);
+        WindowManager.INSTANCE.renderAllWindows(gfx, mouseX, mouseY, delta);
 
         return eventResult.get();
     }

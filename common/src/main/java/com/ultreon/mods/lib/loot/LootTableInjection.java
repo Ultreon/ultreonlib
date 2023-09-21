@@ -3,8 +3,8 @@ package com.ultreon.mods.lib.loot;
 import com.ultreon.mods.lib.util.UtilityClass;
 import dev.architectury.event.events.common.LootEvent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.storage.loot.LootDataManager;
 import net.minecraft.world.level.storage.loot.LootPool;
-import net.minecraft.world.level.storage.loot.LootTables;
 import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
 import net.minecraft.world.level.storage.loot.entries.LootTableReference;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
@@ -47,7 +47,7 @@ public class LootTableInjection extends UtilityClass {
     }
 
     /**
-     * Registers a loot table injection, this will load in {@linkplain #runModifications(LootTables, ResourceLocation, LootEvent.LootTableModificationContext, boolean)}
+     * Registers a loot table injection, this will load in {@linkplain #runModifications(LootDataManager, ResourceLocation, LootEvent.LootTableModificationContext, boolean)}
      *
      * @param target    the loot table to inject.
      * @param injection the injection for the loot table.
@@ -57,7 +57,7 @@ public class LootTableInjection extends UtilityClass {
     }
 
     /**
-     * Registers a loot table injection, this will load in {@linkplain #runModifications(LootTables, ResourceLocation, LootEvent.LootTableModificationContext, boolean)}
+     * Registers a loot table injection, this will load in {@linkplain #runModifications(LootDataManager, ResourceLocation, LootEvent.LootTableModificationContext, boolean)}
      *
      * @param target the loot table to inject.
      * @param modId  the mod's id to get the injection from.
@@ -67,7 +67,7 @@ public class LootTableInjection extends UtilityClass {
     }
 
     @ApiStatus.Internal
-    public static void runModifications(LootTables manager, ResourceLocation id, LootEvent.LootTableModificationContext context, boolean builtin) {
+    public static void runModifications(LootDataManager manager, ResourceLocation id, LootEvent.LootTableModificationContext context, boolean builtin) {
         if (builtin) {
             Injector injector = injections.get(id);
             if (injector != null) {

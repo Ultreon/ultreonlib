@@ -12,7 +12,6 @@
 package com.ultreon.mods.lib.client.gui.widget.menu;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.ultreon.mods.lib.UltreonLib;
 import com.ultreon.mods.lib.UltreonLibConfig;
 import com.ultreon.mods.lib.client.gui.Theme;
@@ -20,6 +19,7 @@ import com.ultreon.mods.lib.client.gui.screen.BaseScreen;
 import com.ultreon.mods.lib.client.gui.widget.BaseContainerWidget;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarratedElementType;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
@@ -97,9 +97,9 @@ public class ContextMenu extends BaseContainerWidget {
     }
 
     @Override
-    public void renderWidget(@NotNull PoseStack pose, int mouseX, int mouseY, float partialTicks) {
-        pose.pushPose();
-        pose.translate(0, 0, 100);
+    public void renderWidget(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
+        gfx.pose().pushPose();
+        gfx.pose().translate(0, 0, 100);
         RenderSystem.setShaderTexture(0, switch (getTheme()) {
             case DARK -> MENU_DARK;
             case LIGHT, MIX -> MENU_LIGHT;
@@ -116,16 +116,16 @@ public class ContextMenu extends BaseContainerWidget {
         }
 
         Font font = Minecraft.getInstance().font;
-        BaseScreen.renderFrame(pose, getX(), getY(), width - 14, height - 4 - (hasTitle ? 0 : font.lineHeight + 1), theme, 42);
+        BaseScreen.renderFrame(gfx, getX(), getY(), width - 14, height - 4 - (hasTitle ? 0 : font.lineHeight + 1), theme, 42);
 
         //noinspection ConstantConditions
         if (message != null) {
-            font.draw(pose, message, getX() + 7, getY() + 5, theme == Theme.DARK ? 0xffffffff : 0xff333333);
+            gfx.drawString(font, message, getX() + 7, getY() + 5, theme == Theme.DARK ? 0xffffffff : 0xff333333, false);
         }
 
         this.isHovered = mouseX >= this.getX() && mouseY >= this.getY() && mouseX < this.getX() + this.width && mouseY < this.getY() + this.height;
 
-        pose.pushPose();
+        gfx.pose().pushPose();
         int y = this.getY() + 5 + (hasTitle ? font.lineHeight + 1 : 0);
         int x = this.getX() + 5;
         Stream<MenuItem> entryStream = entries.stream();
@@ -140,13 +140,13 @@ public class ContextMenu extends BaseContainerWidget {
             menuItem.setX(x);
             menuItem.setY(y);
             menuItem.setWidth(Mth.clamp(maxMinWidth, menuItem.getMinWidth(), menuItem.getMaxWidth()));
-            menuItem.render(pose, mouseX, mouseY, partialTicks);
+            menuItem.render(gfx, mouseX, mouseY, partialTicks);
 
             y += menuItem.getHeight() + 2;
         }
 
-        pose.popPose();
-        pose.popPose();
+        gfx.pose().popPose();
+        gfx.pose().popPose();
     }
 
     /**

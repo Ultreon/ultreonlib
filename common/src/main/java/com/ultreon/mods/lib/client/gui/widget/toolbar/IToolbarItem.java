@@ -1,11 +1,12 @@
 package com.ultreon.mods.lib.client.gui.widget.toolbar;
 
-import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Renderable;
+import org.jetbrains.annotations.NotNull;
 
 public interface IToolbarItem extends Renderable {
     @Override
-    void render(PoseStack pose, int mouseX, int mouseY, float partialTicks);
+    void render(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTicks);
 
     int width();
 

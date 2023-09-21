@@ -1,6 +1,5 @@
 package com.ultreon.mods.lib.actionmenu;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.ultreon.mods.lib.client.gui.screen.PanoramaScreen;
 import com.ultreon.mods.lib.mixin.common.ScreenAccess;
 import com.ultreon.mods.lib.network.UltreonLibNetwork;
@@ -10,6 +9,7 @@ import com.ultreon.mods.lib.util.CrashReportUtils;
 import net.minecraft.CrashReport;
 import net.minecraft.ReportedException;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.Screen;
@@ -107,14 +107,14 @@ public class ActionMenuScreen extends PanoramaScreen {
     }
 
     @Override
-    public void render(@NotNull PoseStack pose, int mouseX, int mouseY, float partialTicks) {
+    public void render(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
         assert this.minecraft != null;
         if (this.minecraft.level == null) {
-            renderPanorama(pose, partialTicks);
+            renderPanorama(gfx, partialTicks);
         }
 
         if (parent instanceof ActionMenuScreen) {
-            ((ActionMenuScreen) parent).render(pose, mouseX, mouseY, partialTicks, this.menuIndex);
+            ((ActionMenuScreen) parent).render(gfx, mouseX, mouseY, partialTicks, this.menuIndex);
         }
 
         for (GuiEventListener widget : this.children()) {
@@ -123,7 +123,7 @@ public class ActionMenuScreen extends PanoramaScreen {
             }
         }
 
-        super.render(pose, mouseX, mouseY, partialTicks);
+        super.render(gfx, mouseX, mouseY, partialTicks);
 
         int startX = 1;
         if (menuIndex > 0) {
@@ -151,18 +151,18 @@ public class ActionMenuScreen extends PanoramaScreen {
         Minecraft.getInstance().setScreen(parent);
     }
 
-    public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks, int childIndex) {
+    public void render(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTicks, int childIndex) {
         if (parent instanceof ActionMenuScreen) {
-            ((ActionMenuScreen) parent).render(matrixStack, mouseX, mouseY, partialTicks, childIndex);
+            ((ActionMenuScreen) parent).render(gfx, mouseX, mouseY, partialTicks, childIndex);
         } else if (parent != null) {
-            parent.render(matrixStack, mouseX, mouseY, partialTicks);
+            parent.render(gfx, mouseX, mouseY, partialTicks);
         }
 
         for (Renderable widget : ((ScreenAccess) this).getRenderables()) {
             if (widget instanceof IActionMenuIndexable indexable) {
                 indexable.setMenuIndex(childIndex - this.menuIndex);
             }
-            widget.render(matrixStack, mouseX, mouseY, partialTicks);
+            widget.render(gfx, mouseX, mouseY, partialTicks);
         }
 
         for (Screen screen : screens) {

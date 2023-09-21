@@ -24,6 +24,8 @@ import com.ultreon.mods.lib.mixin.common.ScreenAccess;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.Screen;
@@ -81,25 +83,25 @@ public abstract class BaseScreen extends Screen implements Themed {
     }
 
     @Override
-    public void render(@NotNull PoseStack pose, int mouseX, int mouseY, float partialTicks) {
-        renderCloseButton(pose, mouseX, mouseY);
+    public void render(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
+        renderCloseButton(gfx, mouseX, mouseY);
 
         boolean flag = contextMenu != null && contextMenu.isMouseOver(mouseX, mouseY);
 
         int mx = flag ? Integer.MIN_VALUE : mouseX;
         int my = flag ? Integer.MIN_VALUE : mouseY;
         for (Renderable widget : ((ScreenAccess) this).getRenderables()) {
-            widget.render(pose, mx, my, partialTicks);
+            widget.render(gfx, mx, my, partialTicks);
         }
 
-        renderContextMenu(pose, mouseX, mouseY, partialTicks);
+        renderContextMenu(gfx, mouseX, mouseY, partialTicks);
     }
 
-    private void renderContextMenu(PoseStack pose, int mouseX, int mouseY, float partialTicks) {
+    private void renderContextMenu(GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
         ContextMenu menu = contextMenu;
         if (menu != null) {
             RenderSystem.disableDepthTest();
-            menu.render(pose, mouseX, mouseY, partialTicks);
+            menu.render(gfx, mouseX, mouseY, partialTicks);
         }
     }
 
@@ -113,15 +115,15 @@ public abstract class BaseScreen extends Screen implements Themed {
         return mouseX >= x && mouseY >= y && mouseX <= x1 && mouseY <= y1;
     }
 
-    protected final void renderCloseButton(PoseStack pose, int mouseX, int mouseY) {
+    protected final void renderCloseButton(GuiGraphics gfx, int mouseX, int mouseY) {
         Vec2 iconPos = getCloseButtonPos();
         if (iconPos != null) {
             int iconX = (int) iconPos.x;
             int iconY = (int) iconPos.y;
             if (isPointBetween(mouseX, mouseY, iconX, iconY, 6, 6)) {
-                this.font.draw(pose, CLOSE_ICON_HOVER, iconX, iconY, theme.getTitleColor());
+                gfx.drawString(this.font, CLOSE_ICON_HOVER, iconX, iconY, theme.getTitleColor(), false);
             } else {
-                this.font.draw(pose, CLOSE_ICON, iconX, iconY, theme.getTitleColor());
+                gfx.drawString(this.font, CLOSE_ICON, iconX, iconY, theme.getTitleColor(), false);
             }
         }
     }
@@ -226,48 +228,48 @@ public abstract class BaseScreen extends Screen implements Themed {
         return isAtCloseButton((int) mouseX, (int) mouseY);
     }
 
-    public static void renderFrame(PoseStack pose, int x, int y, int width, int height, Theme theme) {
-        renderFrame(pose, x, y, width, height, theme, 0);
+    public static void renderFrame(GuiGraphics gfx, int x, int y, int width, int height, Theme theme) {
+        renderFrame(gfx, x, y, width, height, theme, 0);
     }
 
     @SuppressWarnings("PointlessArithmeticExpression")
-    public static void renderFrame(PoseStack pose, int x, int y, int width, int height, Theme theme, int u) {
-        RenderSystem.setShaderTexture(0, switch (theme) {
+    public static void renderFrame(GuiGraphics gfx, int x, int y, int width, int height, Theme theme, int u) {
+        var tex = switch (theme) {
             case DARK -> WIDGETS_DARK;
             case LIGHT, MIX -> WIDGETS_LIGHT;
             default -> WIDGETS;
-        });
-        blit(pose, x, y, 7, 7, u + 0, 0, 7, 7, 256, 256);
-        blit(pose, x + 7, y, width, 7, u + 7, 0, 7, 7, 256, 256);
-        blit(pose, x + 7 + width, y, 7, 7, u + 14, 0, 7, 7, 256, 256);
-        blit(pose, x, y + 7, 7, height, u + 0, 7, 7, 7, 256, 256);
-        blit(pose, x + 7, y + 7, width, height, u + 7, 7, 7, 7, 256, 256);
-        blit(pose, x + 7 + width, y + 7, 7, height, u + 14, 7, 7, 7, 256, 256);
-        blit(pose, x, y + 7 + height, 7, 7, u + 0, 14, 7, 7, 256, 256);
-        blit(pose, x + 7, y + 7 + height, width, 7, u + 7, 14, 7, 7, 256, 256);
-        blit(pose, x + 7 + width, y + 7 + height, 7, 7, u + 14, 14, 7, 7, 256, 256);
+        };
+        gfx.blit(tex, x, y, 7, 7, u + 0, 0, 7, 7, 256, 256);
+        gfx.blit(tex, x + 7, y, width, 7, u + 7, 0, 7, 7, 256, 256);
+        gfx.blit(tex, x + 7 + width, y, 7, 7, u + 14, 0, 7, 7, 256, 256);
+        gfx.blit(tex, x, y + 7, 7, height, u + 0, 7, 7, 7, 256, 256);
+        gfx.blit(tex, x + 7, y + 7, width, height, u + 7, 7, 7, 7, 256, 256);
+        gfx.blit(tex, x + 7 + width, y + 7, 7, height, u + 14, 7, 7, 7, 256, 256);
+        gfx.blit(tex, x, y + 7 + height, 7, 7, u + 0, 14, 7, 7, 256, 256);
+        gfx.blit(tex, x + 7, y + 7 + height, width, 7, u + 7, 14, 7, 7, 256, 256);
+        gfx.blit(tex, x + 7 + width, y + 7 + height, 7, 7, u + 14, 14, 7, 7, 256, 256);
     }
 
-    public static void renderTitleFrame(PoseStack pose, int x, int y, int width, int height, Theme theme) {
-        renderTitleFrame(pose, x, y, width, height, theme, 0);
+    public static void renderTitleFrame(GuiGraphics gfx, int x, int y, int width, int height, Theme theme) {
+        renderTitleFrame(gfx, x, y, width, height, theme, 0);
     }
 
     @SuppressWarnings("PointlessArithmeticExpression")
-    public static void renderTitleFrame(PoseStack pose, int x, int y, int width, int height, Theme theme, int u) {
-        RenderSystem.setShaderTexture(0, switch (theme) {
+    public static void renderTitleFrame(GuiGraphics gfx, int x, int y, int width, int height, Theme theme, int u) {
+        var tex =switch (theme) {
             case DARK, MIX -> WIDGETS_DARK;
             case LIGHT -> WIDGETS_LIGHT;
             default -> WIDGETS;
-        });
-        blit(pose, x, y, 7, 7, u + 0, 0, 7, 7, 256, 256);
-        blit(pose, x + 7, y, width, 7, u + 7, 0, 7, 7, 256, 256);
-        blit(pose, x + 7 + width, y, 7, 7, u + 14, 0, 7, 7, 256, 256);
-        blit(pose, x, y + 7, 7, height, u + 0, 7, 7, 7, 256, 256);
-        blit(pose, x + 7, y + 7, width, height, u + 7, 7, 7, 7, 256, 256);
-        blit(pose, x + 7 + width, y + 7, 7, height, u + 14, 7, 7, 7, 256, 256);
-        blit(pose, x, y + 7 + height, 7, 7, u + 0, 14, 7, 7, 256, 256);
-        blit(pose, x + 7, y + 7 + height, width, 7, u + 7, 14, 7, 7, 256, 256);
-        blit(pose, x + 7 + width, y + 7 + height, 7, 7, u + 14, 14, 7, 7, 256, 256);
+        };
+        gfx.blit(tex, x, y, 7, 7, u + 0, 0, 7, 7, 256, 256);
+        gfx.blit(tex, x + 7, y, width, 7, u + 7, 0, 7, 7, 256, 256);
+        gfx.blit(tex, x + 7 + width, y, 7, 7, u + 14, 0, 7, 7, 256, 256);
+        gfx.blit(tex, x, y + 7, 7, height, u + 0, 7, 7, 7, 256, 256);
+        gfx.blit(tex, x + 7, y + 7, width, height, u + 7, 7, 7, 7, 256, 256);
+        gfx.blit(tex, x + 7 + width, y + 7, 7, height, u + 14, 7, 7, 7, 256, 256);
+        gfx.blit(tex, x, y + 7 + height, 7, 7, u + 0, 14, 7, 7, 256, 256);
+        gfx.blit(tex, x + 7, y + 7 + height, width, 7, u + 7, 14, 7, 7, 256, 256);
+        gfx.blit(tex, x + 7 + width, y + 7 + height, 7, 7, u + 14, 14, 7, 7, 256, 256);
     }
 
     public void open() {
@@ -275,16 +277,16 @@ public abstract class BaseScreen extends Screen implements Themed {
         Minecraft.getInstance().setScreen(this);
     }
 
-    public static void drawCenteredStringWithoutShadow(PoseStack poseStack, Font font, String text, int x, int y, int color) {
-        font.draw(poseStack, text, (float)(x - font.width(text) / 2), (float)y, color);
+    public static void drawCenteredStringWithoutShadow(GuiGraphics gfx, Font font, String text, int x, int y, int color) {
+        gfx.drawString(font, text, x - font.width(text) / 2, y, color);
     }
 
-    public static void drawCenteredStringWithoutShadow(PoseStack poseStack, Font font, Component text, int x, int y, int color) {
+    public static void drawCenteredStringWithoutShadow(GuiGraphics gfx, Font font, Component text, int x, int y, int color) {
         FormattedCharSequence formattedCharSequence = text.getVisualOrderText();
-        font.draw(poseStack, formattedCharSequence, (float)(x - font.width(formattedCharSequence) / 2), (float)y, color);
+        gfx.drawString(font, formattedCharSequence, x - font.width(formattedCharSequence) / 2, y, color);
     }
 
-    public static void drawCenteredStringWithoutShadow(PoseStack poseStack, Font font, FormattedCharSequence text, int x, int y, int color) {
-        font.draw(poseStack, text, (float)(x - font.width(text) / 2), (float)y, color);
+    public static void drawCenteredStringWithoutShadow(GuiGraphics gfx, Font font, FormattedCharSequence text, int x, int y, int color) {
+        gfx.drawString(font, text, x - font.width(text) / 2, y, color);
     }
 }
