@@ -366,6 +366,48 @@ abstract sealed class WindowManager extends McComponent permits OperatingSystemI
         }
     }
 
+    @Override
+    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+        Window window = this.activeWindow;
+        if (window != null) {
+            try {
+                if (window.keyPressed(keyCode, scanCode, modifiers)) return true;
+            } catch (Exception e) {
+                crashApplication(window.application, e);
+                return false;
+            }
+        }
+        return super.keyPressed(keyCode, scanCode, modifiers);
+    }
+
+    @Override
+    public boolean keyReleased(int keyCode, int scanCode, int modifiers) {
+        Window window = this.activeWindow;
+        if (window != null) {
+            try {
+                if (window.keyReleased(keyCode, scanCode, modifiers)) return true;
+            } catch (Exception e) {
+                crashApplication(window.application, e);
+                return false;
+            }
+        }
+        return super.keyReleased(keyCode, scanCode, modifiers);
+    }
+
+    @Override
+    public boolean charTyped(char codePoint, int modifiers) {
+        Window window = this.activeWindow;
+        if (window != null) {
+            try {
+                if (window.charTyped(codePoint, modifiers)) return true;
+            } catch (Exception e) {
+                crashApplication(window.application, e);
+                return false;
+            }
+        }
+        return super.charTyped(codePoint, modifiers);
+    }
+
     public boolean isActiveWindow(Window window) {
         return activeWindow == window;
     }
