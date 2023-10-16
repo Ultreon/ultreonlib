@@ -31,7 +31,7 @@ public class TestProgressScreen extends BaseScreen implements TestScreen {
 
     @Override
     public void render(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
-        renderBackground(gfx);
+        this.renderBackground(gfx, mouseX, mouseY, partialTicks);
 
         super.render(gfx, mouseX, mouseY, partialTicks);
     }

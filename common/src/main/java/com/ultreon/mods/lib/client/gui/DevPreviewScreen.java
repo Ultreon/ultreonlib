@@ -52,7 +52,7 @@ public class DevPreviewScreen extends Screen {
 
     @Override
     public void render(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTick) {
-        renderBackground(gfx);
+        this.renderBackground(gfx, mouseX, mouseY, partialTick);
 
         int maxWidth = width - 100;
         int modLinesHeight = font.wordWrapHeight(modNamesStr, maxWidth);

@@ -1,7 +1,7 @@
 package com.ultreon.mods.lib.client;
 
 import com.ultreon.mods.lib.client.gui.screen.window.ScreenHooks;
-import com.ultreon.mods.lib.client.gui.v2.DesktopScreen;
+import com.ultreon.mods.lib.client.gui.v2.DeviceScreen;
 import com.ultreon.mods.lib.event.WindowCloseEvent;
 import com.ultreon.mods.lib.mixin.common.ButtonAccessor;
 import dev.architectury.event.CompoundEventResult;
@@ -51,7 +51,7 @@ public class UltreonLibClient {
 
         WindowCloseEvent.EVENT.register((window, source) -> {
             Minecraft minecraft = Minecraft.getInstance();
-            if (minecraft.screen instanceof DesktopScreen) {
+            if (minecraft.screen instanceof DeviceScreen) {
                 return EventResult.interruptFalse();
             }
             return EventResult.pass();

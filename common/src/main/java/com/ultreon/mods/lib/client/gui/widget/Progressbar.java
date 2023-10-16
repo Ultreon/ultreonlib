@@ -1,6 +1,5 @@
 package com.ultreon.mods.lib.client.gui.widget;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.network.chat.Component;
@@ -9,7 +8,8 @@ import net.minecraft.util.Mth;
 import org.jetbrains.annotations.NotNull;
 
 public class Progressbar extends BaseWidget {
-    private static final ResourceLocation ICONS = new ResourceLocation("textures/gui/icons.png");
+    private static final ResourceLocation BAR_BACKGROUND = new ResourceLocation("hud/experience_bar_background.png");
+    private static final ResourceLocation BAR_PROGRESS = new ResourceLocation("hud/experience_bar_progress.png");
     private int maximum;
     private int value;
 
@@ -62,8 +62,8 @@ public class Progressbar extends BaseWidget {
         int x = getX() - 91;
         int y = getY() - 3;
 
-        gfx.blit(ICONS, x, y, 0, 64, 182, 5);
-        gfx.blit(ICONS, x, y, 0, 69, (int) (182 * getRatio()), 5);
+        gfx.blitSprite(BAR_BACKGROUND, x, y, 0, 64);
+        gfx.blitSprite(BAR_PROGRESS, x, y, 0, 69, 0, 0, (int) (182 * getRatio()), 5);
     }
 
     @Override

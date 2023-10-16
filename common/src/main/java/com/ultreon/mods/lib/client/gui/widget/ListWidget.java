@@ -1,29 +1,17 @@
-/*
- * Copyright (c) 2022. - Qboi SMP Development Team
- * Do NOT redistribute, or copy in any way, and do NOT modify in any way.
- * It is not allowed to hack into the code, use cheats against the code and/or compiled form.
- * And it is not allowed to decompile, modify or/and patch parts of code or classes or in full form.
- * Sharing this file isn't allowed either, and is hereby strictly forbidden.
- * Sharing decompiled code on social media or an online platform will cause in a report on that account.
- *
- * ONLY the owner can bypass these rules.
- */
-
 package com.ultreon.mods.lib.client.gui.widget;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.ultreon.mods.lib.UltreonLib;
-import com.ultreon.mods.lib.UltreonLibConfig;
-import com.ultreon.mods.lib.client.gui.Theme;
-import com.ultreon.mods.lib.client.gui.Themed;
+import com.ultreon.mods.lib.client.gui.FrameType;
 import com.ultreon.mods.lib.client.gui.screen.BaseScreen;
+import com.ultreon.mods.lib.client.theme.GlobalTheme;
+import com.ultreon.mods.lib.client.theme.Stylized;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.ContainerObjectSelectionList;
 import net.minecraft.client.gui.components.EditBox;
@@ -44,11 +32,12 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 @SuppressWarnings({"FieldCanBeLocal", "UnnecessaryLocalVariable"})
-public class ListWidget extends AbstractWidget implements ContainerEventHandler, Themed {
+public class ListWidget extends BaseWidget implements ContainerEventHandler, Stylized {
     public static final ResourceLocation TEXTURE_DARK = UltreonLib.res("textures/gui/widgets/list/dark.png");
-    public static final ResourceLocation TEXTURE_NORMAL = UltreonLib.res("textures/gui/widgets/list/normal.png");
+    public static final ResourceLocation TEXTURE_NORMAL = UltreonLib.res("textures/gui/widgets/list/vanilla.png");
     public static final ResourceLocation TEXTURE_LIGHT = UltreonLib.res("textures/gui/widgets/list/light.png");
     public static final ResourceLocation LIST_ICONS = UltreonLib.res("textures/gui/list_icons.png");
+    private static final ResourceLocation SEARCH_SPRITE = new ResourceLocation("icon/search");
 
     private static final int ICON_SIZE = 12;
     private static final int TEX_W = 64;
@@ -60,7 +49,6 @@ public class ListWidget extends AbstractWidget implements ContainerEventHandler,
     private final int headerHeight;
 
     private final java.util.List<GuiEventListener> children;
-    private ResourceLocation guiTexture;
     private EditBox searchBox;
     private final WrappedList list;
     private final Font font;
@@ -72,30 +60,24 @@ public class ListWidget extends AbstractWidget implements ContainerEventHandler,
     private final int count;
     private final boolean hasSearch;
     private boolean isDragging;
-    private Theme theme;
+    private GlobalTheme globalTheme;
 
     public ListWidget(BaseScreen screen, int x, int y, int width, int count, Component title) {
         this(screen, x, y, width, count, true, title);
     }
 
     public ListWidget(BaseScreen screen, int x, int y, int width, int count, boolean hasSearch, Component title) {
-        this(screen, x, y, width, count, hasSearch, title, UltreonLibConfig.THEME.get());
+        this(screen, x, y, width, count, hasSearch, title, UltreonLib.getTheme());
     }
 
-    public ListWidget(BaseScreen screen, int x, int y, int width, int count, boolean hasSearch, Component title, Theme theme) {
+    public ListWidget(BaseScreen screen, int x, int y, int width, int count, boolean hasSearch, Component title, GlobalTheme globalTheme) {
         super(x, y, width, 0, title);
         this.screen = screen;
         this.count = count;
         this.hasSearch = hasSearch;
         this.mc = Minecraft.getInstance();
         this.font = mc.font;
-        this.theme = theme;
-
-        switch (theme) {
-            case DARK -> guiTexture = TEXTURE_DARK;
-            case LIGHT, MIX -> guiTexture = TEXTURE_LIGHT;
-            default -> guiTexture = TEXTURE_NORMAL;
-        }
+        this.globalTheme = globalTheme;
 
         this.headerHeight = hasSearch ? 18 : 0;
 
@@ -156,50 +138,9 @@ public class ListWidget extends AbstractWidget implements ContainerEventHandler,
 
     @Override
     public void renderWidget(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
-        RenderSystem.setShaderTexture(0, guiTexture);
-        // List border
-        final int lb = LIST_BORDER_WIDTH; // lb == List Border
+        BaseScreen.renderFrame(gfx, getX(), getY(), getWidth(), getHeight(), this.globalTheme.getContentTheme(), FrameType.BORDER);
 
-        // End pos
-        final int x1 = getX() + width;
-        final int y1 = getY() + height;
-
-        // Pos X
-        final int sx = getX();
-        final int mx = getX() + lb;
-        final int ex = x1 - lb;
-
-        // Pos Y
-        final int ty = getY();
-        final int my = getY() + lb;
-        final int by = y1 - lb;
-
-        // Inner size
-        final int iw = width - lb * 2;
-        final int ih = height - lb * 2;
-
-        // Texture V
-        final int tv = 0;
-        final int mv = lb;
-        final int bv = lb + lb;
-
-        // Texture U
-        final int su = 0;
-        final int eu = lb + lb;
-
-        // Render
-        gfx.blit(guiTexture, sx, ty, lb, lb, su, tv, lb, lb, TEX_W, TEX_H); // Top left
-        gfx.blit(guiTexture, mx, ty, iw, lb, lb, tv, lb, lb, TEX_W, TEX_H); // Top
-        gfx.blit(guiTexture, ex, ty, lb, lb, eu, tv, lb, lb, TEX_W, TEX_H); // Top right
-        gfx.blit(guiTexture, sx, my, lb, ih, su, mv, lb, lb, TEX_W, TEX_H); // Middle left
-        gfx.blit(guiTexture, mx, my, iw, ih, lb, mv, lb, lb, TEX_W, TEX_H); // Middle
-        gfx.blit(guiTexture, ex, my, lb, ih, eu, mv, lb, lb, TEX_W, TEX_H); // Middle right
-        gfx.blit(guiTexture, sx, by, lb, lb, su, bv, lb, lb, TEX_W, TEX_H); // Bottom left
-        gfx.blit(guiTexture, mx, by, iw, lb, lb, bv, lb, lb, TEX_W, TEX_H); // Bottom
-        gfx.blit(guiTexture, ex, by, lb, lb, eu, bv, lb, lb, TEX_W, TEX_H); // Bottom right
-
-        // Search glass
-        gfx.blit(guiTexture, getX() + lb + 3, getY() + lb + 3, 12, 12, 51, 1, 12, 12, TEX_W, TEX_H);
+        gfx.blitSprite(SEARCH_SPRITE, getX() + LIST_BORDER_WIDTH + 3, getY() + LIST_BORDER_WIDTH + 3, 12, 12);
 
         this.list.render(gfx, mouseX, mouseY, partialTicks);
         if (searchBox != null) {
@@ -245,8 +186,8 @@ public class ListWidget extends AbstractWidget implements ContainerEventHandler,
     }
 
     @Override
-    public boolean mouseScrolled(double p_94686_, double p_94687_, double p_94688_) {
-        return ContainerEventHandler.super.mouseScrolled(p_94686_, p_94687_, p_94688_);
+    public boolean mouseScrolled(double mouseX, double mouseY, double amountX, double amountY) {
+        return ContainerEventHandler.super.mouseScrolled(mouseX, mouseY, amountX, amountY);
     }
 
     @Override
@@ -362,12 +303,7 @@ public class ListWidget extends AbstractWidget implements ContainerEventHandler,
 
     @Override
     public void reloadTheme() {
-        this.theme = UltreonLib.getTheme();
-        switch (theme) {
-            case DARK -> guiTexture = TEXTURE_DARK;
-            case LIGHT, MIX -> guiTexture = TEXTURE_LIGHT;
-            default -> guiTexture = TEXTURE_NORMAL;
-        }
+        this.globalTheme = UltreonLib.getTheme();
 
         if (list != null) {
             list.reloadTheme();
@@ -391,11 +327,13 @@ public class ListWidget extends AbstractWidget implements ContainerEventHandler,
             this.mc = mc;
 
             this.widget = widget;
-            this.guiTexture = widget.guiTexture;
 
-            this.setRenderSelection(false);
             this.setRenderBackground(false);
-            this.setRenderTopAndBottom(false);
+        }
+
+        @Override
+        protected void renderSelection(@NotNull GuiGraphics gfx, int i, int j, int k, int l, int m) {
+
         }
 
         @Override
@@ -425,6 +363,7 @@ public class ListWidget extends AbstractWidget implements ContainerEventHandler,
             return getRowRight(); // 124 default
         }
 
+        @Override
         public int getMaxScroll() {
             return Math.max(0, this.getMaxPosition() - (this.y1 - this.y0));
         }
@@ -477,7 +416,6 @@ public class ListWidget extends AbstractWidget implements ContainerEventHandler,
         }
 
         public void reloadTheme() {
-            this.guiTexture = widget.guiTexture;
             this.reloadEntries();
         }
 
@@ -520,6 +458,7 @@ public class ListWidget extends AbstractWidget implements ContainerEventHandler,
                 this.buttons = ImmutableList.of();
             }
 
+            @Override
             @SuppressWarnings("UnnecessaryLocalVariable")
             public void render(@NotNull GuiGraphics gfx, int index, int top, int left, int width, int height, int mouseX, int mouseY, boolean isMouseOver, float partialTicks) {
                 height = list.itemHeight;
@@ -574,7 +513,7 @@ public class ListWidget extends AbstractWidget implements ContainerEventHandler,
                 RenderSystem.enableBlend();
                 gfx.blit(this.texture.get(), i, j, ICON_SIZE, ICON_SIZE, u, v, uWidth, vHeight, texW, texH);
                 RenderSystem.disableBlend();
-                gfx.drawString(this.mc.font, this.entryTitle, k, (int) ((float) l + 1), list.widget.theme.getTextColor(), false);
+                gfx.drawString(this.mc.font, this.entryTitle, k, (int) ((float) l + 1), list.widget.getStyle().getHeaderColor().getRgb(), false);
 
                 float f = this.ticksTooltip;
 
@@ -583,6 +522,7 @@ public class ListWidget extends AbstractWidget implements ContainerEventHandler,
                 }
             }
 
+            @Override
             public @NotNull java.util.List<? extends GuiEventListener> children() {
                 //      return screen.getEntryButtons();
                 return this.buttons;

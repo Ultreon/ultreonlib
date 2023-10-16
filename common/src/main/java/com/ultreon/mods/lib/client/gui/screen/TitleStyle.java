@@ -1,24 +1,13 @@
-/*
- * Copyright (c) 2022. - Qboi SMP Development Team
- * Do NOT redistribute, or copy in any way, and do NOT modify in any way.
- * It is not allowed to hack into the code, use cheats against the code and/or compiled form.
- * And it is not allowed to decompile, modify or/and patch parts of code or classes or in full form.
- * Sharing this file isn't allowed either, and is hereby strictly forbidden.
- * Sharing decompiled code on social media or an online platform will cause in a report on that account.
- *
- * ONLY the owner can bypass these rules.
- */
-
 package com.ultreon.mods.lib.client.gui.screen;
 
-import com.ultreon.mods.lib.client.gui.Theme;
+import com.ultreon.mods.lib.client.theme.GlobalTheme;
 import net.minecraft.network.chat.Component;
 
 /**
  * The title style enum class.
  * See {@link #NORMAL} for the default one.
  *
- * @author Qboi123
+ * @author XyperCode
  */
 public enum TitleStyle {
     /**
@@ -36,8 +25,7 @@ public enum TitleStyle {
      * Title bar is shown, and the title is shown.
      * It's also looks detached from the frame.
      */
-    DETACHED(25, 20, "detached"),
-    ;
+    DETACHED(25, 20, "detached");
 
     /**
      * The title bar height for the texture.
@@ -103,6 +91,6 @@ public enum TitleStyle {
      * @return the previous title style.
      */
     public TitleStyle previous() {
-        return TitleStyle.values()[(ordinal() - 1 + Theme.values().length) % TitleStyle.values().length];
+        return TitleStyle.values()[(ordinal() - 1 + TitleStyle.values().length) % TitleStyle.values().length];
     }
 }

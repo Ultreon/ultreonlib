@@ -1,18 +1,7 @@
-/*
- * Copyright (c) 2022. - Qboi SMP Development Team
- * Do NOT redistribute, or copy in any way, and do NOT modify in any way.
- * It is not allowed to hack into the code, use cheats against the code and/or compiled form.
- * And it is not allowed to decompile, modify or/and patch parts of code or classes or in full form.
- * Sharing this file isn't allowed either, and is hereby strictly forbidden.
- * Sharing decompiled code on social media or an online platform will cause in a report on that account.
- *
- * ONLY the owner can bypass these rules.
- */
-
 package com.ultreon.mods.lib.client.gui.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.ultreon.mods.lib.UltreonLib;
+import com.ultreon.mods.lib.client.gui.FrameType;
 import com.ultreon.mods.lib.client.gui.widget.BaseButton;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -35,7 +24,7 @@ import java.util.*;
 /**
  * List screen. A screen that's made for only a list with entries.
  */
-public final class ListScreen extends PanoramaScreen {
+public class ListScreen extends PanoramaScreen {
     private IListFilter listFilter = (query, id, title, description) -> {
         var found = true;
         for (var part : query.split(" ")) {
@@ -50,9 +39,6 @@ public final class ListScreen extends PanoramaScreen {
 
     private static final Component SEARCH_HINT = (Component.translatable("gui.ultreonlib.search_hint")).withStyle(ChatFormatting.ITALIC);
     private static final Component SEARCH_EMPTY = (Component.translatable("gui.ultreonlib.search_empty"));
-    private static final ResourceLocation DARK_TEXTURE = UltreonLib.res("textures/gui/list/dark.png");
-    private static final ResourceLocation LIGHT_TEXTURE = UltreonLib.res("textures/gui/list/light.png");
-    private static final ResourceLocation NORMAL_TEXTURE = UltreonLib.res("textures/gui/list/normal.png");
 
     private IListEntryClick onListEntryClick = (list, entry) -> {
 
@@ -93,45 +79,37 @@ public final class ListScreen extends PanoramaScreen {
         this.addEntry(title, "", id, buttons);
     }
 
-    private void addEntry(ListWidget.Entry entry) {
+    protected void addEntry(ListWidget.Entry entry) {
         this.cachedEntries.add(entry);
         if (list != null) {
             this.list.addEntry(entry);
         }
     }
 
-    private int getListHeight() {
+    protected int listHeight() {
         return Math.max(52, this.height - 128 - 16);
     }
 
-    private int func0() {
-        return this.getListHeight() / 16;
+    protected int listBottomY() {
+        return 80 + this.listHeight() - 8;
     }
 
-    private int func1() {
-        return 80 + this.func0() * 16 - 8;
-    }
-
-    private int left() {
+    protected int left() {
         return (this.width - 238) / 2;
     }
 
-    private int right() {
+    protected int right() {
         return (this.width - 238) / 2 + 238;
     }
 
-    public void tick() {
-        super.tick();
-        this.searchBox.tick();
-    }
-
+    @Override
     protected void init() {
         onInit.init();
 
         if (this.initialized && this.list != null) {
-            this.list.updateSize(this.width, this.height, 88, this.func1());
+            this.list.updateSize(this.width, this.height, 88, this.listBottomY());
         } else {
-            this.list = new ListWidget(this, this.minecraft, this.width, this.height, 88, this.func1(), 36);
+            this.list = new ListWidget(this, this.minecraft, this.width, this.height, 88, this.listBottomY(), 36);
         }
 
         String s = this.searchBox != null ? this.searchBox.getValue() : "";
@@ -147,64 +125,32 @@ public final class ListScreen extends PanoramaScreen {
         this.initialized = true;
     }
 
-    public void removed() {
-
-    }
-
     @Override
     public void renderBackground(@NotNull GuiGraphics gfx, float partialTicks) {
         int i = this.left() + 3;
         super.renderBackground(gfx, partialTicks);
 
-        ResourceLocation tex = getTexture();
-        gfx.blit(tex, i, 64, 1, 1, 236, 8);
-        int j = this.func0();
-
-        for (int k = 0; k < j; ++k) {
-            gfx.blit(tex, i, 72 + 16 * k, 1, 10, 236, 16);
-        }
-
-        gfx.blit(tex, i, 72 + 16 * j, 1, 27, 236, 8);
-        gfx.blit(tex, i + 10, 76, 243, 1, 12, 12);
+        renderFrame(gfx, i, 64, 236, this.listHeight() + 16, this.globalTheme.getContentTheme(), FrameType.BORDER);
     }
 
-    private ResourceLocation getTexture() {
-        return switch (getTheme()) {
-            case DARK -> DARK_TEXTURE;
-            case MIX, LIGHT -> LIGHT_TEXTURE;
-            default -> NORMAL_TEXTURE;
-        };
-    }
-
+    @Override
     public void render(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
         Objects.requireNonNull(this.minecraft);
         this.renderBackground(gfx, partialTicks);
 
-        renderTitleFrame(gfx, this.left() + 3, 35 - 7, this.minecraft.font.width(this.title), 7, getTheme());
-        renderTitleFrame(gfx, this.right() - 8 - 12, 35 - 7, 7, 7, getTheme());
+        renderTitleFrame(gfx, this.left() + 3, 28, this.minecraft.font.width(this.title) + 12, 21, this.globalTheme);
+        renderTitleFrame(gfx, this.right() - 8 - 12, 28, 21, 21, this.globalTheme);
 
-        gfx.drawString(this.font, this.title, this.left() + 9, 35, switch (getTheme()) {
-            case DARK, MIX -> 0xffffffff;
-            case LIGHT -> 0xff202020;
-            case NORMAL -> 0xff000000;
-        }, false);
+        gfx.drawString(this.font, this.title, this.left() + 9, 35, this.getStyle().getTitleColor().getRgb(), false);
 
         if (!this.list.isEmpty()) {
             this.list.render(gfx, mouseX, mouseY, partialTicks);
         } else if (!this.searchBox.getValue().isEmpty()) {
-            drawCenteredStringWithoutShadow(gfx, this.minecraft.font, SEARCH_EMPTY, this.width / 2, (78 + this.func1()) / 2, switch (getTheme()) {
-                case DARK -> 0xffffffff;
-                case LIGHT, MIX -> 0xff202020;
-                case NORMAL -> 0xff000000;
-            });
+            drawCenteredStringWithoutShadow(gfx, this.minecraft.font, SEARCH_EMPTY, this.width / 2, (78 + this.listBottomY()) / 2, this.globalTheme.getContentTheme().getInactiveTextColor().getRgb());
         }
 
         if (!this.searchBox.isFocused() && this.searchBox.getValue().isEmpty()) {
-            gfx.drawString(this.font, SEARCH_HINT, this.searchBox.getX(), this.searchBox.getY(), switch (getTheme()) {
-                case DARK -> 0xffffffff;
-                case LIGHT, MIX -> 0xff202020;
-                case NORMAL -> 0xff000000;
-            }, false);
+            gfx.drawString(this.font, SEARCH_HINT, this.searchBox.getX(), this.searchBox.getY(), this.globalTheme.getContentTheme().getInactiveTextColor().getRgb(), false);
         } else {
             this.searchBox.render(gfx, mouseX, mouseY, partialTicks);
         }
@@ -218,6 +164,7 @@ public final class ListScreen extends PanoramaScreen {
         return new Vec2(this.right() - 12, 35);
     }
 
+    @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
         if (this.searchBox.isFocused()) {
             this.searchBox.mouseClicked(mouseX, mouseY, button);
@@ -226,10 +173,12 @@ public final class ListScreen extends PanoramaScreen {
         return super.mouseClicked(mouseX, mouseY, button);
     }
 
+    @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
         return super.keyPressed(keyCode, scanCode, modifiers);
     }
 
+    @Override
     public boolean isPauseScreen() {
         return false;
     }
@@ -276,7 +225,6 @@ public final class ListScreen extends PanoramaScreen {
             }
 
             this.setRenderBackground(false);
-            this.setRenderTopAndBottom(false);
         }
 
         @Override
@@ -288,10 +236,12 @@ public final class ListScreen extends PanoramaScreen {
             return this.defaultEntries.size() - 1;
         }
 
+        @Override
         protected int getScrollbarPosition() {
             return this.width / 2 + 105; // 124 default
         }
 
+        @Override
         public void render(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
             double scaleFactor = this.mc.getWindow().getGuiScale();
             RenderSystem.enableScissor((int) ((double) this.getRowLeft() * scaleFactor), (int) ((double) (this.height - this.y1) * scaleFactor), (int) ((double) (this.getScrollbarPosition() + 6) * scaleFactor), (int) ((double) (this.height - (this.height - this.y1) - this.y0 - 4) * scaleFactor));
@@ -358,37 +308,22 @@ public final class ListScreen extends PanoramaScreen {
                 this.buttons = Arrays.asList(buttons);
             }
 
+            @Override
             public void render(@NotNull GuiGraphics gfx, int index, int top, int left, int width, int height, int mouseX, int mouseY, boolean isMouseOver, float partialTicks) {
                 int i = left + 7;
 
                 Component description = this.getDescription();
                 int l;
                 if (Objects.equals(description, Component.empty())) {
-                    gfx.fill(left, top, left + width, top + height, switch (screen.getTheme()) {
-                        case DARK -> DARK_EMPTY_COLOR;
-                        case LIGHT, MIX -> LIGHT_EMPTY_COLOR;
-                        default -> VANILLA_EMPTY_COLOR;
-                    });
+                    gfx.fill(left, top, left + width, top + height, this.screen.globalTheme.getContentTheme().getSecondaryColor().darker().getRgb());
                     l = top + (height - 9) / 2;
                 } else {
-                    gfx.fill(left, top, left + width, top + height, switch (screen.getTheme()) {
-                        case DARK -> DARK_NON_EMPTY_COLOR;
-                        case LIGHT, MIX -> LIGHT_NON_EMPTY_COLOR;
-                        default -> VANILLA_NON_EMPTY_COLOR;
-                    });
+                    gfx.fill(left, top, left + width, top + height, this.screen.globalTheme.getContentTheme().getSecondaryColor().darker().getRgb());
                     l = top + (height - (9 + 9)) / 2;
-                    gfx.drawString(this.mc.font, description, i, l + 12, switch (screen.getTheme()) {
-                        case DARK -> DARK_DESCRIPTION_COLOR;
-                        case LIGHT, MIX -> LIGHT_DESCRIPTION_COLOR;
-                        default -> VANILLA_DESCRIPTION_COLOR;
-                    }, false);
+                    gfx.drawString(this.mc.font, description, i, l + 12, this.screen.globalTheme.getContentTheme().getButtonStyle().getTextColor().darker().getRgb(), false);
                 }
 
-                gfx.drawString(this.mc.font, this.entryTitle, (int) i, (int) l, switch (screen.getTheme()) {
-                    case DARK -> DARK_TITLE_COLOR;
-                    case LIGHT, MIX -> LIGHT_TITLE_COLOR;
-                    default -> VANILLA_TITLE_COLOR;
-                }, false);
+                gfx.drawString(this.mc.font, this.entryTitle, i, l, this.screen.globalTheme.getContentTheme().getButtonStyle().getTextColor().getRgb(), false);
                 float ticksUntilTooltip = this.ticksTooltip;
 
                 int btnIndex = 0;

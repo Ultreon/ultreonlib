@@ -1,22 +1,10 @@
-/*
- * Copyright (c) 2022. - Qboi SMP Development Team
- * Do NOT redistribute, or copy in any way, and do NOT modify in any way.
- * It is not allowed to hack into the code, use cheats against the code and/or compiled form.
- * And it is not allowed to decompile, modify or/and patch parts of code or classes or in full form.
- * Sharing this file isn't allowed either, and is hereby strictly forbidden.
- * Sharing decompiled code on social media or an online platform will cause in a report on that account.
- *
- * ONLY the owner can bypass these rules.
- */
-
 package com.ultreon.mods.lib.client.gui.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.ultreon.mods.lib.UltreonLib;
 import com.ultreon.mods.lib.client.HasContextMenu;
-import com.ultreon.mods.lib.client.gui.Theme;
-import com.ultreon.mods.lib.client.gui.Themed;
+import com.ultreon.mods.lib.client.gui.FrameType;
+import com.ultreon.mods.lib.client.theme.*;
 import com.ultreon.mods.lib.client.gui.widget.menu.ButtonMenuItem;
 import com.ultreon.mods.lib.client.gui.widget.menu.ContextMenu;
 import com.ultreon.mods.lib.client.input.MouseButton;
@@ -24,7 +12,6 @@ import com.ultreon.mods.lib.mixin.common.ScreenAccess;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.components.events.GuiEventListener;
@@ -40,7 +27,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 
-public abstract class BaseScreen extends Screen implements Themed {
+public abstract class BaseScreen extends Screen implements Stylized {
     private static final String CLOSE_ICON = "×";
     private static final String CLOSE_ICON_HOVER = ChatFormatting.RED + CLOSE_ICON;
 
@@ -51,16 +38,17 @@ public abstract class BaseScreen extends Screen implements Themed {
     protected static final int BORDER_SIZE = 7;
 
     private ContextMenu contextMenu = null;
-    private Theme theme;
+    protected GlobalTheme globalTheme;
     private Screen back;
 
     protected BaseScreen(Component title) {
-        this(title, null);
+        this(title, Minecraft.getInstance().screen);
+        this.minecraft = Minecraft.getInstance();
     }
 
     protected BaseScreen(Component title, Screen back) {
         super(title);
-        this.theme = UltreonLib.getTheme();
+        this.globalTheme = UltreonLib.getTheme();
         this.back = back;
     }
 
@@ -73,13 +61,14 @@ public abstract class BaseScreen extends Screen implements Themed {
         throw new AssertionError();
     }
 
-    public final Theme getTheme() {
-        return theme;
+    @Override
+    public ThemeComponent getThemeComponent() {
+        return ThemeRootComponent.WINDOW;
     }
 
     @Override
     public void reloadTheme() {
-        this.theme = UltreonLib.getTheme();
+        this.globalTheme = UltreonLib.getTheme();
     }
 
     @Override
@@ -116,25 +105,20 @@ public abstract class BaseScreen extends Screen implements Themed {
     }
 
     protected final void renderCloseButton(GuiGraphics gfx, int mouseX, int mouseY) {
+        if (!this.shouldCloseOnEsc()) {
+            return;
+        }
+
         Vec2 iconPos = getCloseButtonPos();
         if (iconPos != null) {
             int iconX = (int) iconPos.x;
             int iconY = (int) iconPos.y;
             if (isPointBetween(mouseX, mouseY, iconX, iconY, 6, 6)) {
-                gfx.drawString(this.font, CLOSE_ICON_HOVER, iconX, iconY, theme.getTitleColor(), false);
+                gfx.drawString(this.font, CLOSE_ICON_HOVER, iconX, iconY, this.getStyle().getTitleColor().getRgb(), false);
             } else {
-                gfx.drawString(this.font, CLOSE_ICON, iconX, iconY, theme.getTitleColor(), false);
+                gfx.drawString(this.font, CLOSE_ICON, iconX, iconY, this.getStyle().getTitleColor().getRgb(), false);
             }
         }
-    }
-
-    @Override
-    public boolean mouseReleased(double mouseX, double mouseY, int button) {
-        if (isHoveringContextMenu((int) mouseX, (int) mouseY) && contextMenu.mouseReleased(mouseX, mouseY, button)) {
-            return true;
-        }
-
-        return super.mouseReleased(mouseX, mouseY, button);
     }
 
     private boolean isHoveringContextMenu(int mouseX, int mouseY) {
@@ -143,6 +127,12 @@ public abstract class BaseScreen extends Screen implements Themed {
                 mouseY >= contextMenu.getY() && mouseY <= contextMenu.getY() + contextMenu.getHeight();
     }
 
+    /**
+     * Event handler for mouse motion.
+     * 
+     * @param mouseX the X-position of the mouse it moved to.
+     * @param mouseY the Y-position of the mouse it moved to.
+     */
     @Override
     public void mouseMoved(double mouseX, double mouseY) {
         if (isHoveringContextMenu((int) mouseX, (int) mouseY)) {
@@ -153,6 +143,46 @@ public abstract class BaseScreen extends Screen implements Themed {
         super.mouseMoved(mouseX, mouseY);
     }
 
+    /**
+     * Event handler for mouse scrolling.
+     *
+     * @param mouseX the X-position of the mouse it scrolled at.
+     * @param mouseY the Y-position of the mouse it scrolled at.
+     * @param amountX the amount of partial clicks it scrolled in the X-axis.
+     * @param amountY the amount of partial clicks it scrolled in the Y-axis.
+     */
+    @Override
+    public boolean mouseScrolled(double mouseX, double mouseY, double amountX, double amountY) {
+        return super.mouseScrolled(mouseX, mouseY, amountX, amountY);
+    }
+
+    @Override
+    public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
+        return super.mouseDragged(mouseX, mouseY, button, dragX, dragY);
+    }
+
+    /**
+     * Event handler for mouse releasing.
+     *
+     * @param mouseX the X-position of the mouse it released the {@code button} at.
+     * @param mouseY the Y-position of the mouse it released the {@code button} at.
+     * @param button the mouse button the mouse released.
+     */
+    @Override
+    public boolean mouseReleased(double mouseX, double mouseY, int button) {
+        if (isHoveringContextMenu((int) mouseX, (int) mouseY) && contextMenu.mouseReleased(mouseX, mouseY, button)) {
+            return true;
+        }
+
+        return super.mouseReleased(mouseX, mouseY, button);
+    }
+
+    /**
+     * Event handler for mouse clicking.
+     *
+     * @param mouseX the X-position of the mouse it clicked at.
+     * @param mouseY the Y-position of the mouse it clicked at.
+     */
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
         if (isAtCloseButton(mouseX, mouseY)) {
@@ -172,7 +202,7 @@ public abstract class BaseScreen extends Screen implements Themed {
             return true;
         }
         if (button == MouseButton.RIGHT) {
-            ContextMenu menu = getContextMenu((int) mouseX, (int) mouseY);
+            ContextMenu menu = createContextMenu((int) mouseX, (int) mouseY);
             GuiEventListener it = getChildAt(mouseX, mouseY).orElse(null);
             if (it instanceof HasContextMenu contextMenuHolder) {
                 contextMenuHolder.contextMenu((int) mouseX, (int) mouseY, button);
@@ -191,11 +221,20 @@ public abstract class BaseScreen extends Screen implements Themed {
         return super.mouseClicked(mouseX, mouseY, button);
     }
 
+    /**
+     * Closes the screen.
+     */
     public final void closeScreen() {
-        onClose();
+        this.onClose();
     }
 
-    protected ContextMenu getContextMenu(int x, int y) {
+    /**
+     * Event handler for mouse clicking.
+     *
+     * @param x the start X-position of the context menu.
+     * @param y the start Y-position of the context menu.
+     */
+    protected ContextMenu createContextMenu(int x, int y) {
         return null;
     }
 
@@ -215,6 +254,11 @@ public abstract class BaseScreen extends Screen implements Themed {
         Minecraft.getInstance().setScreen(back);
     }
 
+    @Override
+    public void onClose() {
+        this.back();
+    }
+
     protected final boolean isAtCloseButton(int mouseX, int mouseY) {
         Vec2 iconPos = getCloseButtonPos();
         if (iconPos == null) {
@@ -229,47 +273,21 @@ public abstract class BaseScreen extends Screen implements Themed {
     }
 
     public static void renderFrame(GuiGraphics gfx, int x, int y, int width, int height, Theme theme) {
-        renderFrame(gfx, x, y, width, height, theme, 0);
+        renderFrame(gfx, x, y, width, height, theme, FrameType.NORMAL);
     }
 
-    @SuppressWarnings("PointlessArithmeticExpression")
-    public static void renderFrame(GuiGraphics gfx, int x, int y, int width, int height, Theme theme, int u) {
-        var tex = switch (theme) {
-            case DARK -> WIDGETS_DARK;
-            case LIGHT, MIX -> WIDGETS_LIGHT;
-            default -> WIDGETS;
-        };
-        gfx.blit(tex, x, y, 7, 7, u + 0, 0, 7, 7, 256, 256);
-        gfx.blit(tex, x + 7, y, width, 7, u + 7, 0, 7, 7, 256, 256);
-        gfx.blit(tex, x + 7 + width, y, 7, 7, u + 14, 0, 7, 7, 256, 256);
-        gfx.blit(tex, x, y + 7, 7, height, u + 0, 7, 7, 7, 256, 256);
-        gfx.blit(tex, x + 7, y + 7, width, height, u + 7, 7, 7, 7, 256, 256);
-        gfx.blit(tex, x + 7 + width, y + 7, 7, height, u + 14, 7, 7, 7, 256, 256);
-        gfx.blit(tex, x, y + 7 + height, 7, 7, u + 0, 14, 7, 7, 256, 256);
-        gfx.blit(tex, x + 7, y + 7 + height, width, 7, u + 7, 14, 7, 7, 256, 256);
-        gfx.blit(tex, x + 7 + width, y + 7 + height, 7, 7, u + 14, 14, 7, 7, 256, 256);
+    public static void renderFrame(GuiGraphics gfx, int x, int y, int width, int height, Theme theme, FrameType type) {
+        var tex = theme.getFrameSprite();
+        gfx.blitSprite(type.mapSprite(tex), x, y, width, height);
     }
 
-    public static void renderTitleFrame(GuiGraphics gfx, int x, int y, int width, int height, Theme theme) {
-        renderTitleFrame(gfx, x, y, width, height, theme, 0);
+    public static void renderTitleFrame(GuiGraphics gfx, int x, int y, int width, int height, GlobalTheme globalTheme) {
+        renderTitleFrame(gfx, x, y, width, height, globalTheme, FrameType.NORMAL);
     }
 
-    @SuppressWarnings("PointlessArithmeticExpression")
-    public static void renderTitleFrame(GuiGraphics gfx, int x, int y, int width, int height, Theme theme, int u) {
-        var tex =switch (theme) {
-            case DARK, MIX -> WIDGETS_DARK;
-            case LIGHT -> WIDGETS_LIGHT;
-            default -> WIDGETS;
-        };
-        gfx.blit(tex, x, y, 7, 7, u + 0, 0, 7, 7, 256, 256);
-        gfx.blit(tex, x + 7, y, width, 7, u + 7, 0, 7, 7, 256, 256);
-        gfx.blit(tex, x + 7 + width, y, 7, 7, u + 14, 0, 7, 7, 256, 256);
-        gfx.blit(tex, x, y + 7, 7, height, u + 0, 7, 7, 7, 256, 256);
-        gfx.blit(tex, x + 7, y + 7, width, height, u + 7, 7, 7, 7, 256, 256);
-        gfx.blit(tex, x + 7 + width, y + 7, 7, height, u + 14, 7, 7, 7, 256, 256);
-        gfx.blit(tex, x, y + 7 + height, 7, 7, u + 0, 14, 7, 7, 256, 256);
-        gfx.blit(tex, x + 7, y + 7 + height, width, 7, u + 7, 14, 7, 7, 256, 256);
-        gfx.blit(tex, x + 7 + width, y + 7 + height, 7, 7, u + 14, 14, 7, 7, 256, 256);
+    public static void renderTitleFrame(GuiGraphics gfx, int x, int y, int width, int height, GlobalTheme globalTheme, FrameType type) {
+        var tex = globalTheme.getWindowTheme().getFrameSprite();
+        gfx.blitSprite(type.mapSprite(tex), x, y, width, height);
     }
 
     public void open() {

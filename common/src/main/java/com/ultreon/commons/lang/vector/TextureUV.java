@@ -9,10 +9,12 @@ public record TextureUV(double u, double v) {
         return (int) v;
     }
 
+    @Override
     public double u() {
         return u;
     }
 
+    @Override
     public double v() {
         return v;
     }

@@ -7,6 +7,6 @@ import com.ultreon.mods.lib.client.InternalConfigScreen;
 public class UltreonLibModMenuIntegration implements ModMenuApi {
     @Override
     public ConfigScreenFactory<?> getModConfigScreenFactory() {
-        return back -> new InternalConfigScreen(ModMenuApi.createModsScreen(back));
+        return back -> new InternalConfigScreen();
     }
 }

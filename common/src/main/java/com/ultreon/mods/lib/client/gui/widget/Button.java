@@ -1,115 +1,125 @@
-/*
- * Copyright (c) 2022. - Qboi SMP Development Team
- * Do NOT redistribute, or copy in any way, and do NOT modify in any way.
- * It is not allowed to hack into the code, use cheats against the code and/or compiled form.
- * And it is not allowed to decompile, modify or/and patch parts of code or classes or in full form.
- * Sharing this file isn't allowed either, and is hereby strictly forbidden.
- * Sharing decompiled code on social media or an online platform will cause in a report on that account.
- *
- * ONLY the owner can bypass these rules.
- */
-
 package com.ultreon.mods.lib.client.gui.widget;
 
+import com.ultreon.libs.commons.v0.Color;
 import com.ultreon.mods.lib.UltreonLib;
-import com.ultreon.mods.lib.client.gui.Theme;
-import com.ultreon.mods.lib.client.gui.Themed;
+import com.ultreon.mods.lib.client.theme.GlobalTheme;
+import com.ultreon.mods.lib.client.theme.Stylized;
+import com.ultreon.mods.lib.client.theme.Theme;
+import dev.architectury.registry.registries.RegistrySupplier;
+import net.minecraft.client.gui.components.WidgetSprites;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 
-public non-sealed class Button extends TexturedButton implements Themed {
+public non-sealed class Button extends TexturedButton implements Stylized {
     private Type type;
 
     public Button(int x, int y, int width, int height, Component title, CommandCallback onClick) {
-        this(x, y, width, height, title, onClick, Type.of(UltreonLib.getTheme()));
+        this(x, y, width, height, title, onClick, Type.of(UltreonLib.getTheme().getContentTheme()));
     }
 
     public Button(int x, int y, int width, int height, Component title, CommandCallback onClick, Type type) {
         super(x, y, width, height, title, onClick);
         this.type = type;
-        setTextColor(type.textColor);
+        this.setTextColor(type.textColor.getRgb());
     }
 
     public Button(int x, int y, int width, int height, Component title, CommandCallback onClick, TooltipFactory onTooltip) {
-        this(x, y, width, height, title, onClick, onTooltip, Type.of(UltreonLib.getTheme()));
+        this(x, y, width, height, title, onClick, onTooltip, Type.of(UltreonLib.getTheme().getContentTheme()));
     }
 
     public Button(int x, int y, int width, int height, Component title, CommandCallback onClick, TooltipFactory onTooltip, Type type) {
         super(x, y, width, height, title, onClick, onTooltip);
         this.type = type;
-        setTextColor(type.textColor);
+        this.setTextColor(type.textColor.getRgb());
     }
 
     public Button(Component title, CommandCallback onClick) {
-        this(title, onClick, Type.of(UltreonLib.getTheme()));
+        this(title, onClick, Type.of(UltreonLib.getTheme().getContentTheme()));
     }
 
     public Button(Component title, CommandCallback onClick, Type type) {
         super(0, 0, 0, 0, title, onClick);
         this.type = type;
-        setTextColor(type.textColor);
+        this.setTextColor(type.textColor.getRgb());
     }
 
     public Button(Component title, CommandCallback onClick, TooltipFactory onTooltip) {
-        this(title, onClick, onTooltip, Type.of(UltreonLib.getTheme()));
+        this(title, onClick, onTooltip, Type.of(UltreonLib.getTheme().getContentTheme()));
     }
 
     public Button(Component title, CommandCallback onClick, TooltipFactory onTooltip, Type type) {
         super(0, 0, 0, 0, title, onClick, onTooltip);
         this.type = type;
-        setTextColor(type.textColor);
+        this.setTextColor(type.textColor.getRgb());
     }
 
     @Override
+    @Deprecated(forRemoval = true)
     protected final ResourceLocation getWidgetsTexture() {
-        return type.res;
+        return new ResourceLocation("");
+    }
+
+    @Override
+    protected WidgetSprites getWidgetSprites() {
+        return type.sprites;
     }
 
     @Override
     public void reloadTheme() {
-        if (type.usesTheme()) {
-            Theme theme = UltreonLib.getTheme();
-            this.type = Type.of(theme);
-            setTextColor(type.textColor);
+        if (this.type.usesTheme()) {
+            GlobalTheme globalTheme = UltreonLib.getTheme();
+            this.type = Type.of(globalTheme.getContentTheme());
+            this.setTextColor(this.type.textColor.getRgb());
         }
     }
 
+    @Override
+    public int getTextColor() {
+        if (this.isUsingCustomTextColor())
+            return super.getTextColor();
+
+        return this.type.textColor.getRgb();
+    }
+
     public enum Type {
-        LIGHT(UltreonLib.res("textures/gui/widgets/main/light.png"), Theme.LIGHT.getButtonTextColor()),
-        NORMAL(new ResourceLocation("textures/gui/widgets.png"), Theme.NORMAL.getButtonTextColor()),
-        DARK(UltreonLib.res("textures/gui/widgets/main/dark.png"), Theme.DARK.getButtonTextColor()),
-        PRIMARY(UltreonLib.res("textures/gui/widgets/main/primary.png"), Theme.NORMAL.getButtonTextColor()),
-        SUCCESS(UltreonLib.res("textures/gui/widgets/main/success.png"), Theme.NORMAL.getButtonTextColor()),
-        WARNING(UltreonLib.res("textures/gui/widgets/main/warning.png"), Theme.NORMAL.getButtonTextColor()),
-        DANGER(UltreonLib.res("textures/gui/widgets/main/danger.png"), Theme.NORMAL.getButtonTextColor()),
+        VANILLA(Theme.VANILLA),
+        LIGHT(Theme.LIGHT),
+        DARK(Theme.DARK),
+        PRIMARY(UltreonLib.res("primary")),
+        SUCCESS(UltreonLib.res("success")),
+        WARNING(UltreonLib.res("warning")),
+        DANGER(UltreonLib.res("danger")),
         ;
 
-        private final ResourceLocation res;
-        private final int textColor;
+        private final Color textColor;
+        private final WidgetSprites sprites;
+        private final RegistrySupplier<Theme> theme;
 
-        Type(ResourceLocation res, int textColor) {
-            this.res = res;
-            this.textColor = textColor;
+        Type(ResourceLocation spriteRes) {
+            this.textColor = Color.white;
+            this.sprites = Theme.createButtonSprites(new ResourceLocation(spriteRes.getNamespace(), "widget/button/" + spriteRes.getPath()));
+            this.theme = Theme.DARK;
+        }
+
+        Type(RegistrySupplier<Theme> theme) {
+            this.textColor = theme.get().getButtonStyle().getTextColor();
+            this.sprites = theme.get().getButtonSprites();
+            this.theme = theme;
         }
 
         public boolean usesTheme() {
-            return this == LIGHT || this == DARK || this == NORMAL;
+            return this == LIGHT || this == DARK || this == VANILLA;
         }
 
         public static Type of(Theme theme) {
-            return switch (theme) {
-                case LIGHT, MIX -> LIGHT;
-                case DARK -> DARK;
-                default -> NORMAL;
-            };
-        }
-
-        public static Type ofTitleBar(Theme theme) {
-            return switch (theme) {
-                case LIGHT -> LIGHT;
-                case DARK, MIX -> DARK;
-                default -> NORMAL;
-            };
+            for (Type type : values()) {
+                if (type.theme.getOrNull() == theme) {
+                    return type;
+                }
+            }
+            if (!theme.isDark()) return Type.LIGHT;
+            if (theme == Theme.VANILLA.get()) return Type.VANILLA;
+            return Type.DARK;
         }
     }
 }

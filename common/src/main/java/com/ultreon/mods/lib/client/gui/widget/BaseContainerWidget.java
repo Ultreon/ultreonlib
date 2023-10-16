@@ -1,14 +1,3 @@
-/*
- * Copyright (c) 2022. - Qboi SMP Development Team
- * Do NOT redistribute, or copy in any way, and do NOT modify in any way.
- * It is not allowed to hack into the code, use cheats against the code and/or compiled form.
- * And it is not allowed to decompile, modify or/and patch parts of code or classes or in full form.
- * Sharing this file isn't allowed either, and is hereby strictly forbidden.
- * Sharing decompiled code on social media or an online platform will cause in a report on that account.
- *
- * ONLY the owner can bypass these rules.
- */
-
 package com.ultreon.mods.lib.client.gui.widget;
 
 import net.minecraft.client.gui.components.events.ContainerEventHandler;
@@ -31,10 +20,12 @@ public abstract class BaseContainerWidget extends BaseWidget implements Containe
         super(p_93629_, p_93630_, p_93631_, p_93632_, p_93633_);
     }
 
+    @Override
     public final boolean isDragging() {
         return this.isDragging;
     }
 
+    @Override
     public final void setDragging(boolean p_94681_) {
         this.isDragging = p_94681_;
     }
@@ -60,8 +51,8 @@ public abstract class BaseContainerWidget extends BaseWidget implements Containe
     }
 
     @Override
-    public boolean mouseScrolled(double pMouseX, double pMouseY, double pDelta) {
-        return ContainerEventHandler.super.mouseScrolled(pMouseX, pMouseY, pDelta);
+    public boolean mouseScrolled(double pMouseX, double pMouseY, double pAmountX, double pAmountY) {
+        return ContainerEventHandler.super.mouseScrolled(pMouseX, pMouseY, pAmountX, pAmountY);
     }
 
     @Override

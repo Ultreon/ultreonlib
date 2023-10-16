@@ -2,127 +2,165 @@ package com.ultreon.mods.lib.util;
 
 import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import org.jetbrains.annotations.Nullable;
+import org.joml.Matrix4f;
 import org.joml.Quaternionf;
+import org.joml.Vector3f;
 
 public class RenderUtils {
-    public static void renderEntityInGui(int posX, int posY, int scale, float mouseX, float mouseY, LivingEntity livingEntity) {
-        float yRot = (float) Math.atan(mouseX / 40.0F);
-        float xRot = (float) Math.atan(mouseY / 40.0F);
-
-        renderEntityInGui(posX, posY, xRot, yRot, (float) scale, livingEntity);
+    /**
+     * Renders an entity in the GUI or HUD.
+     *
+     * @param gfx the gui graphics provided by the GUI or HUD.
+     * @param posX the x position to render the entity.
+     * @param posY the y position to render the entity.
+     * @param xRot the x rotation override for the entity.
+     * @param yRot the y rotation override for the entity.
+     * @param scale the scale to render the entity in.
+     * @param entity the entity to render.
+     */
+    public static void renderEntityInGui(GuiGraphics gfx, int posX, int posY, float xRot, float yRot, float scale, Entity entity) {
+        renderEntityInGui(gfx, posX, posY, xRot, yRot, scale, 0.0625f, entity);
     }
 
-    @SuppressWarnings("deprecation")
-    private static void renderEntityInGui(int posX, int posY, float xRot, float yRot, float scale, LivingEntity livingEntity) {
-        PoseStack modelView = RenderSystem.getModelViewStack();
-        modelView.pushPose();
-        modelView.translate(posX, posY, 1050.0D);
-        modelView.scale(1.0F, 1.0F, -1.0F);
-
-        RenderSystem.applyModelViewMatrix();
-        PoseStack pose = new PoseStack();
-        pose.translate(0.0D, 0.0D, 1000.0D);
-        pose.scale(scale, scale, scale);
-
-        Quaternionf flipped = new Quaternionf().rotationZ((float)Math.toRadians(180.0F));
-        Quaternionf quaternion = new Quaternionf().rotationX((float)Math.toRadians(xRot * 20.0f));
-        flipped.mul(quaternion);
-        pose.mulPose(flipped);
-
-        float bodyRot = livingEntity.yBodyRot;
-        float oldYRot = livingEntity.getYRot();
-        float oldXRot = livingEntity.getXRot();
-        float headYRot0 = livingEntity.yHeadRotO;
-        float headYRot = livingEntity.yHeadRot;
-        livingEntity.yBodyRot = 180.0F + yRot * 20.0F;
-        livingEntity.setYRot(180.0F + yRot * 40.0F);
-        livingEntity.setXRot(-xRot * 20.0F);
-        livingEntity.yHeadRot = livingEntity.getYRot();
-        livingEntity.yHeadRotO = livingEntity.getYRot();
-
-        Lighting.setupForEntityInInventory();
-
-        EntityRenderDispatcher dispatcher = Minecraft.getInstance().getEntityRenderDispatcher();
-        quaternion.conjugate();
-        dispatcher.overrideCameraOrientation(quaternion);
-        dispatcher.setRenderShadow(false);
-        MultiBufferSource.BufferSource bufferSource = Minecraft.getInstance().renderBuffers().bufferSource();
-        RenderSystem.runAsFancy(() -> dispatcher.render(livingEntity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, pose, bufferSource, 15728880));
-        bufferSource.endBatch();
-        dispatcher.setRenderShadow(true);
-
-        livingEntity.yBodyRot = bodyRot;
-        livingEntity.setYRot(oldYRot);
-        livingEntity.setXRot(oldXRot);
-        livingEntity.yHeadRotO = headYRot0;
-        livingEntity.yHeadRot = headYRot;
-
-        modelView.popPose();
-        RenderSystem.applyModelViewMatrix();
-        Lighting.setupFor3DItems();
+    /**
+     * Renders a living entity in the GUI or HUD.
+     *
+     * @param gfx the gui graphics provided by the GUI or HUD.
+     * @param posX the x position to render the entity.
+     * @param posY the y position to render the entity.
+     * @param xRot the x rotation override for the entity.
+     * @param yRot the y rotation override for the entity.
+     * @param scale the scale to render the entity in.
+     * @param entity the living entity to render.
+     */
+    public static void renderEntityInGui(GuiGraphics gfx, int posX, int posY, float xRot, float yRot, float scale, LivingEntity entity) {
+        renderEntityInGui(gfx, posX, posY, xRot, yRot, scale, 0.0625f, entity);
     }
 
-    public static void renderEntityInGui(int posX, int posY, int scale, float mouseX, float mouseY, Entity entity) {
+    /**
+     * Renders an entity in the GUI or HUD, this method also uses GL Scissor to only render the entity within bounds.
+     *
+     * @param gfx the gui graphics provided by the GUI or HUD.
+     * @param posX the x position to render the entity.
+     * @param posY the y position to render the entity.
+     * @param xRot the x rotation override for the entity.
+     * @param yRot the y rotation override for the entity.
+     * @param scale the scale to render the entity in.
+     * @param cutX the x position of the cut.
+     * @param cutY the x position of the cut.
+     * @param cutWidth the width of the cut.
+     * @param cutHeight the height of the cut.
+     * @param entity the entity to render.
+     */
+    public static void renderEntityInGui(GuiGraphics gfx, int posX, int posY, float xRot, float yRot, float scale, int cutX, int cutY, int cutWidth, int cutHeight, Entity entity) {
+        ScissorStack.pushScissorTranslated(gfx, cutX, cutY, cutWidth, cutHeight);
+        renderEntityInGui(gfx, posX, posY, xRot, yRot, scale, entity);
+        ScissorStack.popScissor();
+    }
+
+    /**
+     * Renders an entity in the GUI or HUD.
+     *
+     * @param gfx the gui graphics provided by the GUI or HUD.
+     * @param posX the x position to render the entity.
+     * @param posY the y position to render the entity.
+     * @param xRot the x rotation override for the entity.
+     * @param yRot the y rotation override for the entity.
+     * @param scale the scale to render the entity in.
+     * @param offset the y-offset of the entity.
+     * @param entity the entity to render.
+     */
+    public static void renderEntityInGui(GuiGraphics gfx, int posX, int posY, float xRot, float yRot, float scale, float offset, Entity entity) {
         if (entity instanceof LivingEntity livingEntity) {
-            renderEntityInGui(posX, posY, scale, mouseX, mouseY, livingEntity);
+            renderEntityInGui(gfx, posX, posY, xRot, yRot, scale, livingEntity);
             return;
         }
 
-        float yRot = (float) Math.atan(mouseX / 40.0F);
-        float xRot = (float) Math.atan(mouseY / 40.0F);
+        Quaternionf rotation = new Quaternionf().rotateZ((float) Math.PI);
+        Quaternionf cameraOrientation = new Quaternionf().rotateX(yRot * 20.0f * ((float) Math.PI / 180));
+        rotation.mul(cameraOrientation);
 
-        renderEntityInGui(posX, posY, xRot, yRot, (float) scale, entity);
+        float entityYRot = entity.getYRot();
+        float entityXRot = entity.getXRot();
+        float yHeadRot = entity.getYHeadRot();
+
+        entity.setYBodyRot(180.0f + xRot * 20.0f);
+        entity.setYRot(180.0f + yRot * 40.0f);
+        entity.setXRot(-yRot * 20.0f);
+        entity.setYHeadRot(entity.getYRot());
+
+        Vector3f position3D = new Vector3f(0.0f, entity.getBbHeight() / 2.0f + offset, 0.0f);
+        RenderUtils.renderEntityInInventory(gfx, posX, posY, (int) scale, position3D, rotation, cameraOrientation, entity);
+
+        entity.setYBodyRot(entityYRot);
+        entity.setYRot(entityYRot);
+        entity.setXRot(entityXRot);
+        entity.setYHeadRot(yHeadRot);
+    }
+
+    /**
+     * Renders a living entity in the GUI or HUD.
+     *
+     * @param gfx the gui graphics provided by the GUI or HUD.
+     * @param posX the x position to render the entity.
+     * @param posY the y position to render the entity.
+     * @param xRot the x rotation override for the entity.
+     * @param yRot the y rotation override for the entity.
+     * @param scale the scale to render the entity in.
+     * @param offset the y-offset of the entity.
+     * @param entity the living entity to render.
+     */
+    public static void renderEntityInGui(GuiGraphics gfx, int posX, int posY, float xRot, float yRot, float scale, float offset, LivingEntity entity) {
+        Quaternionf rotation = new Quaternionf().rotateZ((float) Math.PI);
+        Quaternionf cameraOrientation = new Quaternionf().rotateX(xRot * 20.0f * ((float) Math.PI / 180));
+        rotation.mul(cameraOrientation);
+
+        float yBodyRot = entity.yBodyRot;
+        float entityYRot = entity.getYRot();
+        float entityXRot = entity.getXRot();
+        float yHeadRotO = entity.yHeadRotO;
+        float yHeadRot = entity.yHeadRot;
+
+        entity.yBodyRot = 180.0f + yRot * 20.0f;
+        entity.setYRot(180.0f + yRot * 40.0f);
+        entity.setXRot(-xRot * 20.0f);
+        entity.yHeadRot = entity.getYRot();
+        entity.yHeadRotO = entity.getYRot();
+
+        Vector3f vector3f = new Vector3f(0.0f, entity.getBbHeight() / 2.0f + offset, 0.0f);
+        RenderUtils.renderEntityInInventory(gfx, posX, posY, scale, vector3f, rotation, cameraOrientation, entity);
+
+        entity.yBodyRot = yBodyRot;
+        entity.setYRot(entityYRot);
+        entity.setXRot(entityXRot);
+        entity.yHeadRotO = yHeadRotO;
+        entity.yHeadRot = yHeadRot;
     }
 
     @SuppressWarnings("deprecation")
-    public static void renderEntityInGui(int posX, int posY, float xRot, float yRot, float scale, Entity entity) {
-        if (entity instanceof LivingEntity livingEntity) {
-            renderEntityInGui(posX, posY, xRot, yRot, scale, livingEntity);
-            return;
-        }
-
-        PoseStack modelView = RenderSystem.getModelViewStack();
-        modelView.pushPose();
-        modelView.translate(posX, posY, 1050.0D);
-        modelView.scale(1.0F, 1.0F, -1.0F);
-
-        RenderSystem.applyModelViewMatrix();
-        PoseStack pose = new PoseStack();
-        pose.translate(0.0D, 0.0D, 1000.0D);
-        pose.scale(scale, scale, scale);
-
-        Quaternionf flipped = new Quaternionf().rotationZ((float)Math.toRadians(180.0F));
-        Quaternionf quaternion = new Quaternionf().rotationX((float)Math.toRadians(xRot * 20.0f));
-        flipped.mul(quaternion);
-        pose.mulPose(flipped);
-
-        float oldYRot = entity.getYRot();
-        float oldXRot = entity.getXRot();
-        entity.setYRot(180.0F + yRot * 40.0F);
-        entity.setXRot(-xRot * 20.0F);
-
+    private static void renderEntityInInventory(GuiGraphics gfx, float posX, float posY, float scale, Vector3f position3D, Quaternionf rotation, @Nullable Quaternionf cameraOrientation, Entity entity) {
+        gfx.pose().pushPose();
+        gfx.pose().translate(posX, posY, 50.0);
+        gfx.pose().mulPoseMatrix(new Matrix4f().scaling(scale, scale, -scale));
+        gfx.pose().translate(position3D.x, position3D.y, position3D.z);
+        gfx.pose().mulPose(rotation);
         Lighting.setupForEntityInInventory();
-
         EntityRenderDispatcher dispatcher = Minecraft.getInstance().getEntityRenderDispatcher();
-        quaternion.conjugate();
-        dispatcher.overrideCameraOrientation(quaternion);
+        if (cameraOrientation != null) {
+            cameraOrientation.conjugate();
+            dispatcher.overrideCameraOrientation(cameraOrientation);
+        }
         dispatcher.setRenderShadow(false);
-        MultiBufferSource.BufferSource bufferSource = Minecraft.getInstance().renderBuffers().bufferSource();
-        RenderSystem.runAsFancy(() -> dispatcher.render(entity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, pose, bufferSource, 15728880));
-        bufferSource.endBatch();
+        RenderSystem.runAsFancy(() -> dispatcher.render(entity, 0.0, 0.0, 0.0, 0.0f, 1.0f, gfx.pose(), gfx.bufferSource(), 0xF000F0));
+        gfx.flush();
         dispatcher.setRenderShadow(true);
-
-        entity.setYRot(oldYRot);
-        entity.setXRot(oldXRot);
-
-        modelView.popPose();
-        RenderSystem.applyModelViewMatrix();
+        gfx.pose().popPose();
         Lighting.setupFor3DItems();
     }
 }

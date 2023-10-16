@@ -105,8 +105,10 @@ public interface Table<R, C, V> {
     }
 
     interface Cell<R, C, V> extends Index<R, C> {
+        @Override
         R getRow();
 
+        @Override
         C getColumn();
 
         V getValue();

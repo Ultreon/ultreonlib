@@ -2,7 +2,7 @@ package com.ultreon.mods.lib.client.gui.v2;
 
 import net.minecraft.network.chat.Component;
 
-public class McResImage extends McComponent implements IResImage {
+public class McResImage extends McComponent implements ResolutionImage {
     protected int imageU;
     protected int imageV;
     protected int imageUWidth;

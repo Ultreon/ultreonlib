@@ -1,21 +1,12 @@
-/*
- * Copyright (c) 2022. - Qboi SMP Development Team
- * Do NOT redistribute, or copy in any way, and do NOT modify in any way.
- * It is not allowed to hack into the code, use cheats against the code and/or compiled form.
- * And it is not allowed to decompile, modify or/and patch parts of code or classes or in full form.
- * Sharing this file isn't allowed either, and is hereby strictly forbidden.
- * Sharing decompiled code on social media or an online platform will cause in a report on that account.
- *
- * ONLY the owner can bypass these rules.
- */
-
 package com.ultreon.mods.lib.client.gui.widget.menu;
 
-import com.ultreon.mods.lib.client.gui.Themed;
+import com.ultreon.mods.lib.client.theme.ThemeComponent;
+import com.ultreon.mods.lib.client.theme.ThemeRootComponent;
+import com.ultreon.mods.lib.client.theme.Stylized;
 import com.ultreon.mods.lib.client.gui.widget.BaseWidget;
 import net.minecraft.network.chat.Component;
 
-public abstract class MenuItem extends BaseWidget implements Themed {
+public abstract class MenuItem extends BaseWidget implements Stylized {
     private final ContextMenu menu;
     private int minWidth = 0;
     private int maxWidth = Integer.MAX_VALUE;
@@ -23,6 +14,14 @@ public abstract class MenuItem extends BaseWidget implements Themed {
     public MenuItem(int height, ContextMenu menu, Component message) {
         super(menu.getX(), menu.getY(), menu.getWidth(), height, message);
         this.menu = menu;
+    }
+
+    @Override
+    public int getTextColor() {
+        if (this.isUsingCustomTextColor()) {
+            return this.getTextColor();
+        }
+        return this.getStyle().getTextColor().getRgb();
     }
 
     public int getMinWidth() {
@@ -44,5 +43,10 @@ public abstract class MenuItem extends BaseWidget implements Themed {
 
     public ContextMenu getMenu() {
         return menu;
+    }
+
+    @Override
+    public ThemeComponent getThemeComponent() {
+        return ThemeRootComponent.MENU;
     }
 }

@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * Chat utilities.
  *
- * @author Qboi123
+ * @author XyperCode
  */
 @SuppressWarnings("unused")
 public final class ChatUtils extends UtilityClass {

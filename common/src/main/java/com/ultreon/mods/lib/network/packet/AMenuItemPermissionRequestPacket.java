@@ -20,6 +20,7 @@ public class AMenuItemPermissionRequestPacket extends PacketToServer<AMenuItemPe
 
     }
 
+    @Override
     public void handle(ServerPlayer player) {
         if (player.hasPermissions(4)) {
             UltreonLibNetwork.get().sendToClient(new Reply(true), player);
@@ -28,6 +29,7 @@ public class AMenuItemPermissionRequestPacket extends PacketToServer<AMenuItemPe
         }
     }
 
+    @Override
     @SuppressWarnings("unused")
     public void toBytes(FriendlyByteBuf buffer) {
 
@@ -44,6 +46,7 @@ public class AMenuItemPermissionRequestPacket extends PacketToServer<AMenuItemPe
             this.allowed = allowed;
         }
 
+        @Override
         public void toBytes(FriendlyByteBuf buffer) {
             buffer.writeBoolean(allowed);
         }

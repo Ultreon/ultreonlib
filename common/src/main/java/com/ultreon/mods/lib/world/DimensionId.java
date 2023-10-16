@@ -16,19 +16,31 @@ import java.util.function.Supplier;
 /**
  * Copied from McJtyLib on 2022-09-28. It's pretty useful.
  * <p>
- * <a href="https://github.com/McJtyMods/McJtyLib/blob/1.16/src/main/java/mcjty/lib/varia/DimensionId.java">...</a>
+ * <a href="https://github.com/McJtyMods/McJtyLib/blob/1.16/src/main/java/mcjty/lib/varia/DimensionId.java">Link to original source code</a>
+ * <p>
+ * Edited by <a href="https://github.com/XyperCode">XyperCode</a> for use in modern versions.
  */
 @SuppressWarnings("unused")
 public class DimensionId {
     private final static Supplier<DimensionId> OVERWORLD = Suppliers.memoize(() -> new DimensionId(Level.OVERWORLD));
-    private final ResourceKey<Level> id;
+    private final static Supplier<DimensionId> NETHER = Suppliers.memoize(() -> new DimensionId(Level.NETHER));
+    private final static Supplier<DimensionId> END = Suppliers.memoize(() -> new DimensionId(Level.END));
+    private final ResourceKey<Level> key;
 
-    private DimensionId(ResourceKey<Level> id) {
-        this.id = id;
+    private DimensionId(ResourceKey<Level> key) {
+        this.key = key;
     }
 
     public static DimensionId overworld() {
         return OVERWORLD.get();
+    }
+
+    public static DimensionId nether() {
+        return NETHER.get();
+    }
+
+    public static DimensionId end() {
+        return END.get();
     }
 
     public static DimensionId fromId(ResourceKey<Level> id) {
@@ -40,8 +52,8 @@ public class DimensionId {
         return new DimensionId(key);
     }
 
-    public static DimensionId fromWorld(Level world) {
-        return new DimensionId(world.dimension());
+    public static DimensionId fromLevel(Level level) {
+        return new DimensionId(level.dimension());
     }
 
     public static DimensionId fromResourceLocation(ResourceLocation location) {
@@ -49,54 +61,54 @@ public class DimensionId {
         return new DimensionId(key);
     }
 
-    public static boolean sameDimension(Level world1, Level world2) {
-        return world1.dimension().equals(world2.dimension());
+    public static boolean sameDimension(Level level1, Level level2) {
+        return level1.dimension().equals(level2.dimension());
     }
 
-    public ResourceKey<Level> getId() {
-        return id;
+    public ResourceKey<Level> getKey() {
+        return key;
     }
 
-    public ResourceLocation getRegistryName() {
-        return id.location();
+    public ResourceLocation getLocation() {
+        return key.location();
     }
 
     // Is this a good way to get the dimension name?
     public String getName() {
-        return id.location().getPath();
+        return key.location().getPath();
     }
 
     public boolean isOverworld() {
-        return id.equals(Level.OVERWORLD);
+        return key.equals(Level.OVERWORLD);
     }
 
     public void toBytes(FriendlyByteBuf buf) {
-        // @todo use numerical ID
-        buf.writeResourceLocation(id.location());
+        buf.writeResourceLocation(key.registry());
     }
 
     @SuppressWarnings("ConstantConditions")
+    @Deprecated
     public ServerLevel loadWorld() {
         // Worlds in 1.16 are always loaded
         MinecraftServer server = ServerLifecycle.getCurrentServer();
-        return server.getLevel(id);
+        return server.getLevel(key);
     }
 
     // Do not load the world if it is not there
     @SuppressWarnings("ConstantConditions")
-    public ServerLevel getWorld() {
+    public ServerLevel getLevel() {
         MinecraftServer server = ServerLifecycle.getCurrentServer();
-        return server.getLevel(id);
+        return server.getLevel(key);
     }
 
     @SuppressWarnings("ConstantConditions")
-    public ServerLevel loadWorld(Level otherWorld) {
+    public ServerLevel getLevelFrom(Level other) {
         // Worlds in 1.16 are always loaded
-        return Objects.requireNonNull(otherWorld.getServer()).getLevel(id);
+        return Objects.requireNonNull(other.getServer()).getLevel(key);
     }
 
-    public boolean sameDimension(Level world) {
-        return id.equals(world.dimension());
+    public boolean sameDimension(Level level) {
+        return key.equals(level.dimension());
     }
 
     @Override
@@ -104,11 +116,11 @@ public class DimensionId {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         DimensionId that = (DimensionId) o;
-        return Objects.equals(id, that.id);
+        return Objects.equals(key, that.key);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(key);
     }
 }

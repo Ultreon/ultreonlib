@@ -1,15 +1,15 @@
 package com.ultreon.mods.lib.client.gui;
 
 public interface Clickable {
-    default void leftClick() {
-
+    default boolean leftClick() {
+        return false;
     }
 
-    default void middleClick() {
-
+    default boolean middleClick() {
+        return false;
     }
 
-    default void rightClick() {
-
+    default boolean rightClick() {
+        return false;
     }
 }

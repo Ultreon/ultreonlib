@@ -16,7 +16,7 @@ public class ScissorStack {
     public static Stack<Scissor> scissorStack = new Stack<>();
 
     public static void pushScissor(int x, int y, int width, int height) {
-        if (scissorStack.size() > 0) {
+        if (!scissorStack.isEmpty()) {
             var scissor = scissorStack.peek();
             x = Math.max(scissor.x, x);
             y = Math.max(scissor.y, y);
@@ -35,10 +35,10 @@ public class ScissorStack {
 
     public static void pushScissorTranslated(PoseStack poseStack, int x, int y, int width, int height) {
         var translation = poseStack.last().pose().getTranslation(new Vector3f());
-        x += translation.x;
-        y += translation.y;
+        x += (int) translation.x;
+        y += (int) translation.y;
 
-        if (scissorStack.size() > 0) {
+        if (!scissorStack.isEmpty()) {
             var scissor = scissorStack.peek();
             x = Math.max(scissor.x, x);
             y = Math.max(scissor.y, y);

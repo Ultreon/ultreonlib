@@ -1,43 +1,35 @@
 package com.ultreon.mods.lib.client.gui.screen.test;
 
+import com.ultreon.mods.lib.UltreonLib;
 import com.ultreon.mods.lib.client.gui.screen.BaseScreen;
 import com.ultreon.mods.lib.client.gui.screen.ListScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
+import org.jetbrains.annotations.ApiStatus;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.ServiceLoader;
 import java.util.function.Supplier;
 
 public class TestsScreen  {
-    private static final List<ServiceLoader.Provider<TestScreen>> SCREENS;
-
-    static {
-        var load = ServiceLoader.load(TestScreen.class);
-        List<ServiceLoader.Provider<TestScreen>> list = new ArrayList<>();
-        try {
-            list = load.stream().toList();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        SCREENS = list;
-    }
-
-    public static void open(final Screen back) {
+    public static void open() {
         var screenTests = new ListScreen(Component.literal("Screen Tests"));
         var map = new HashMap<String, Supplier<Screen>>();
 
-        for (var screen : SCREENS) {
+        for (var provider : UltreonLib.getScreens()) {
             try {
-                var type = screen.type();
+                var type = provider.type();
                 var screenInfo = type.getAnnotation(TestScreenInfo.class);
                 screenTests.addEntry(
                         screenInfo.value(),
                         type.getSimpleName(),
                         type.getName());
-                map.put(type.getName(), () -> (Screen) screen.get());
+                map.put(type.getName(), () -> (Screen) provider.get());
             } catch (Exception e) {
-                e.printStackTrace();
+                UltreonLib.LOGGER.warn("Failed to read test provider info for: " + provider.type().getName(), e);
             }
         }
 
@@ -54,7 +46,7 @@ public class TestsScreen  {
                         }
                     });
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    UltreonLib.LOGGER.warn("Failed to open test screen: " + entry.getId(), e);
                 }
             }
         });

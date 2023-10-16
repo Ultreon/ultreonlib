@@ -3,32 +3,33 @@ package com.ultreon.mods.lib.client.gui.widget.toolbar;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.ultreon.mods.lib.UltreonLib;
 import com.ultreon.mods.lib.client.gui.Clickable;
-import com.ultreon.mods.lib.client.gui.Theme;
-import com.ultreon.mods.lib.client.gui.Themed;
+import com.ultreon.mods.lib.client.theme.GlobalTheme;
+import com.ultreon.mods.lib.client.theme.Style;
+import com.ultreon.mods.lib.client.theme.Stylized;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.WidgetSprites;
 import net.minecraft.client.gui.narration.NarratedElementType;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class ToolbarButton extends ToolbarItem implements Themed, Clickable {
+public class ToolbarButton extends ToolbarItem implements Stylized, Clickable {
     @Nullable
     private CommandCallback command;
 
     private final Object lock = new Object();
-    private Theme theme;
+    private GlobalTheme globalTheme;
 
-    public ToolbarButton(int x, int y, int width, Component message) {
-        this(x, y, width, message, null);
+    public ToolbarButton(int width, Component message) {
+        this(width, message, null);
     }
 
-    public ToolbarButton(int x, int y, int width, Component message, @Nullable CommandCallback command) {
-        super(x, y, width, 20, message);
+    public ToolbarButton(int width, Component message, @Nullable CommandCallback command) {
+        super(0, 0, width, 20, message);
         this.command = command;
         reloadTheme();
     }
@@ -38,34 +39,42 @@ public class ToolbarButton extends ToolbarItem implements Themed, Clickable {
         narration.add(NarratedElementType.TITLE, getMessage());
     }
 
-    public void onLeftClick(int clicks) {
+    @Override
+    public boolean onLeftClick(int clicks) {
         synchronized (lock) {
             if (command != null) {
                 command.call(this);
+                return true;
             }
         }
+        return false;
     }
 
-    protected final ResourceLocation getWidgetsTexture() {
-        return theme.getWidgetsTexture();
+    protected final WidgetSprites getWidgetSprites() {
+        return globalTheme.getContentTheme().getButtonSprites();
     }
 
     @Override
     public void reloadTheme() {
-        theme = UltreonLib.getTheme();
-        setTextColor(theme.getButtonTextColor());
+        this.globalTheme = UltreonLib.getTheme();
+        Style buttonStyle = this.globalTheme.getContentButtonStyle();
+        this.setTextColor(buttonStyle.getTextColor().getRgb());
     }
 
     @Override
     public void renderWidget(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
         Minecraft minecraft = Minecraft.getInstance();
-        RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, this.alpha);
+        gfx.setColor(1.0f, 1.0f, 1.0f, this.alpha);
         RenderSystem.enableBlend();
         RenderSystem.enableDepthTest();
-        gfx.blitNineSliced(getWidgetsTexture(), this.getX(), this.getY(), this.getWidth(), this.getHeight(), 20, 4, 200, 20, 0, this.getTexVOffset());
-        RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
-        int k = getTextColor();
-        this.renderString(gfx, minecraft.font, k | Mth.ceil(this.alpha * 255.0f) << 24);
+
+        // Blit sprite texture.
+        gfx.blitSprite(this.getWidgetSprites().get(this.active, this.isHoveredOrFocused()), this.getX(), this.getY(), this.getWidth(), this.getHeight());
+
+        // Set color, and render the button text.
+        gfx.setColor(1.0F, 1.0F, 1.0F, 1.0F);
+        int textColor = this.active ? 0xffffff : 0xa0a0a0;
+        this.renderString(gfx, minecraft.font, textColor | Mth.ceil(this.alpha * 255.0f) << 24);
     }
 
     public int getTexVOffset() {
@@ -83,8 +92,11 @@ public class ToolbarButton extends ToolbarItem implements Themed, Clickable {
     }
 
     @Override
-    public void onClick(double pMouseX, double pMouseY) {
-        leftClick();
+    public boolean mouseClicked(double mouseX, double mouseY, int button) {
+        if (isMouseOver(mouseX, mouseY)) {
+            return this.leftClick();
+        }
+        return super.mouseClicked(mouseX, mouseY, button);
     }
 
     public void setCommand(@Nullable CommandCallback command) {

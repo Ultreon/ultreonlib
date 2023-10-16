@@ -1,6 +1,6 @@
 package com.ultreon.mods.lib;
 
-import com.ultreon.mods.lib.client.gui.Theme;
+import com.ultreon.mods.lib.client.theme.GlobalTheme;
 import com.ultreon.mods.lib.client.gui.screen.TitleStyle;
 import dev.architectury.injectables.annotations.ExpectPlatform;
 import net.minecraftforge.common.ForgeConfigSpec;
@@ -12,7 +12,7 @@ public class UltreonLibConfig {
     public static final ForgeConfigSpec SERVER;
 
     // Values
-    public static final ForgeConfigSpec.EnumValue<Theme> THEME;
+    public static final ForgeConfigSpec.ConfigValue<String> THEME;
     public static final ForgeConfigSpec.EnumValue<TitleStyle> TITLE_STYLE;
     public static final ForgeConfigSpec.BooleanValue WINDOW_MANAGER;
 
@@ -28,7 +28,7 @@ public class UltreonLibConfig {
         {
             THEME = client
                     .comment("The theme to use for the GUI")
-                    .defineEnum("theme", Theme.DARK);
+                    .define("theme", GlobalTheme.VANILLA.getId().toString());
             TITLE_STYLE = client
                     .comment("The style of the title")
                     .defineEnum("title_style", TitleStyle.DETACHED);

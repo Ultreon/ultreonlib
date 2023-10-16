@@ -1,30 +1,26 @@
-/*
- * Copyright (c) 2022. - Qboi SMP Development Team
- * Do NOT redistribute, or copy in any way, and do NOT modify in any way.
- * It is not allowed to hack into the code, use cheats against the code and/or compiled form.
- * And it is not allowed to decompile, modify or/and patch parts of code or classes or in full form.
- * Sharing this file isn't allowed either, and is hereby strictly forbidden.
- * Sharing decompiled code on social media or an online platform will cause in a report on that account.
- *
- * ONLY the owner can bypass these rules.
- */
-
 package com.ultreon.mods.lib.client.gui.widget;
 
+import com.google.common.base.Preconditions;
 import com.mojang.blaze3d.platform.InputConstants;
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.ultreon.mods.lib.client.HasContextMenu;
 import com.ultreon.mods.lib.client.gui.Clickable;
-import com.ultreon.mods.lib.client.gui.Themed;
+import com.ultreon.mods.lib.client.theme.Stylized;
+import com.ultreon.mods.lib.client.theme.ThemeComponent;
+import com.ultreon.mods.lib.client.theme.ThemeRootComponent;
+import com.ultreon.mods.lib.util.ScissorStack;
+import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.FormattedCharSequence;
+import net.minecraft.util.Mth;
 import org.jetbrains.annotations.NotNull;
+import org.lwjgl.glfw.GLFW;
 
-public abstract class BaseWidget extends AbstractWidget implements Clickable, Themed {
+@SuppressWarnings("SameParameterValue")
+public abstract class BaseWidget extends AbstractWidget implements Clickable, Stylized {
     protected final Minecraft minecraft;
     protected final Font font;
     private long multiClickDelay = 500L;
@@ -41,20 +37,61 @@ public abstract class BaseWidget extends AbstractWidget implements Clickable, Th
     }
 
     @Override
-    public final void leftClick() {
+    public final boolean leftClick() {
         clicks = clicks + 1;
         lastClickTime = System.currentTimeMillis();
-        onLeftClick(clicks);
+        return onLeftClick(clicks);
     }
 
-    public void onLeftClick(int clicks) {
-
+    public boolean onLeftClick(int clicks) {
+        return false;
     }
 
-    public final void doubleClick() {
+    public final boolean doubleClick() {
         clicks = getClicks() + 2;
         lastClickTime = System.currentTimeMillis();
-        onLeftClick(clicks);
+        return this.onLeftClick(clicks);
+    }
+
+    protected final void renderScrollingString(@NotNull GuiGraphics gfx, @NotNull Font font, int inset, int color) {
+        int k = this.getX() + inset;
+        int l = this.getX() + this.getWidth() - inset;
+        renderScrollingString0(gfx, font, this.getMessage(), k, this.getY(), l, this.getY() + this.getHeight(), color);
+    }
+
+    protected final void renderScrollingString(GuiGraphics gfx, Font font, int x, int y, int color) {
+        renderScrollingString0(gfx, font, this.getMessage(), x, y, x + this.getWidth(), y + this.getHeight(), color);
+    }
+
+    protected final void renderScrollingString(GuiGraphics gfx, Font font, int x, int y, int width, int height, int color) {
+        renderScrollingString0(gfx, font, this.getMessage(), x, y, x + width, y + height, color);
+    }
+
+    protected void renderScrollingString0(GuiGraphics guiGraphics, Font font, Component component, int x1, int y1, int x2, int y2, int color) {
+        renderScrollingString0(guiGraphics, font, component, (x1 + x2) / 2, x1, y1, x2, y2, color);
+    }
+
+    protected void renderScrollingString0(GuiGraphics gfx, Font font, Component component, int i, int x1, int y1, int x2, int y2, int color) {
+        int textWidth = font.width(component);
+        Preconditions.checkNotNull(font, "font");
+        int textY = ((y1 + y2) - 9) / 2 + 1;
+        int maxWidth = x2 - x1;
+        int textX;
+        if (textWidth > maxWidth) {
+            textX = textWidth - maxWidth;
+            double seconds = (double) Util.getMillis() / 1000.0;
+            double easing = Math.max((double)textX * 0.5, 3.0);
+            double delta = Math.sin(1.5707963267948966 * Math.cos(6.283185307179586 * seconds / easing)) / 2.0 + 0.5;
+            double finalX = Mth.lerp(delta, 0.0, textX);
+
+            ScissorStack.pushScissorTranslated(gfx, x1, y1, maxWidth, y2 - y1);
+            gfx.drawString(font, component, x1 - (int)finalX, textY, color);
+            ScissorStack.popScissor();
+        } else {
+            textX = Mth.clamp(i, x1 + textWidth / 2, x2 - textWidth / 2);
+            gfx.drawCenteredString(font, component, textX, textY, color);
+        }
+
     }
 
     @Override
@@ -63,35 +100,40 @@ public abstract class BaseWidget extends AbstractWidget implements Clickable, Th
     }
 
     @Override
-    public final void middleClick() {
+    public final boolean middleClick() {
         if (this instanceof TabCloseable tabCloseable) {
             tabCloseable.closeTab();
+            return true;
         } else {
-            onMiddleClick();
+            return onMiddleClick();
         }
     }
 
-    public void onMiddleClick() {
-
+    public boolean onMiddleClick() {
+        return false;
     }
 
     @Override
-    public final void rightClick() {
-        if (this instanceof HasContextMenu hasContextMenu) {
-            hasContextMenu.contextMenu(getX(), getY(), InputConstants.MOUSE_BUTTON_RIGHT);
-        } else {
-            onRightClick();
-        }
+    public final boolean rightClick() {
+        if (this instanceof HasContextMenu hasContextMenu)
+            return hasContextMenu.contextMenu(getX(), getY(), InputConstants.MOUSE_BUTTON_RIGHT) != null;
+        else
+            return onRightClick();
     }
 
-    public void onRightClick() {
-
+    public boolean onRightClick() {
+        return false;
     }
 
     public final int getClicks() {
         long timeSinceLastClick = getTimeSinceLastClick();
         clicks = timeSinceLastClick < multiClickDelay ? clicks : 0;
         return clicks;
+    }
+
+    @Override
+    public boolean isFocused() {
+        return GLFW.glfwGetWindowAttrib(this.minecraft.getWindow().getWindow(), GLFW.GLFW_FOCUSED) == GLFW.GLFW_TRUE && super.isFocused();
     }
 
     protected final long getTimeSinceLastClick() {
@@ -101,15 +143,12 @@ public abstract class BaseWidget extends AbstractWidget implements Clickable, Th
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
         if (isMouseOver(mouseX, mouseY)) {
-            switch (button) {
+            return switch (button) {
                 case InputConstants.MOUSE_BUTTON_LEFT -> leftClick();
                 case InputConstants.MOUSE_BUTTON_MIDDLE -> middleClick();
                 case InputConstants.MOUSE_BUTTON_RIGHT -> rightClick();
-                default -> {
-                    return false;
-                }
-            }
-            return true;
+                default -> false;
+            };
         }
 
         return false;
@@ -123,11 +162,16 @@ public abstract class BaseWidget extends AbstractWidget implements Clickable, Th
         this.multiClickDelay = multiClickDelay;
     }
 
+    @Override
+    public ThemeComponent getThemeComponent() {
+        return ThemeRootComponent.CONTENT;
+    }
+
     public int getTextColor() {
         if (this.isUsingCustomTextColor()) {
             return textColor;
         }
-        return getTheme().getTextColor();
+        return this.getStyle().getTextColor().getRgb();
     }
 
     public void setTextColor(int textColor) {
@@ -140,6 +184,11 @@ public abstract class BaseWidget extends AbstractWidget implements Clickable, Th
 
     public void setUsingCustomTextColor(boolean usingCustomTextColor) {
         this.usingCustomTextColor = usingCustomTextColor;
+    }
+
+    public void resize(int width, int height) {
+        this.width = width;
+        this.height = height;
     }
 
     public static void drawCenteredStringWithoutShadow(GuiGraphics gfx, Font font, String text, int x, int y, int color) {

@@ -40,6 +40,7 @@ public class ActionMenuTransferPacket extends PacketToServer<ActionMenuTransferP
         }
     }
 
+    @Override
     public void toBytes(FriendlyByteBuf buffer) {
         buffer.writeInt(id);
     }

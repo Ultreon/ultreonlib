@@ -1,20 +1,8 @@
-/*
- * Copyright (c) 2022. - Qboi SMP Development Team
- * Do NOT redistribute, or copy in any way, and do NOT modify in any way.
- * It is not allowed to hack into the code, use cheats against the code and/or compiled form.
- * And it is not allowed to decompile, modify or/and patch parts of code or classes or in full form.
- * Sharing this file isn't allowed either, and is hereby strictly forbidden.
- * Sharing decompiled code on social media or an online platform will cause in a report on that account.
- *
- * ONLY the owner can bypass these rules.
- */
-
 package com.ultreon.mods.lib.client.gui.widget.menu;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.ultreon.mods.lib.UltreonLib;
-import com.ultreon.mods.lib.UltreonLibConfig;
-import com.ultreon.mods.lib.client.gui.Theme;
+import com.ultreon.mods.lib.client.gui.FrameType;
+import com.ultreon.mods.lib.client.theme.GlobalTheme;
 import com.ultreon.mods.lib.client.gui.screen.BaseScreen;
 import com.ultreon.mods.lib.client.gui.widget.BaseContainerWidget;
 import net.minecraft.client.Minecraft;
@@ -32,11 +20,12 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 /**
- * @author Qboi123
+ * @author XyperCode
  */
 public class ContextMenu extends BaseContainerWidget {
     // Constants
@@ -51,39 +40,45 @@ public class ContextMenu extends BaseContainerWidget {
     // Events.
     private OnClose onClose = menu -> {
     };
-    private Theme theme;
+    private GlobalTheme globalTheme;
 
     /**
      * @param x     position x to place.
      * @param y     position y to place.
+    public Button(int x, int y, int width, int height, Component title, CommandCallback onClick) {
+        this(x, y, width, height, title, onClick, Type.of(UltreonLib.getTheme().getContentTheme()));
+    }
+
      * @param title context menu title.
      */
     public ContextMenu(int x, int y, @Nullable Component title) {
-        this(x, y, title, UltreonLibConfig.THEME.get());
+        this(x, y, title, UltreonLib.getTheme());
     }
 
     /**
      * @param x     position x to place.
      * @param y     position y to place.
      * @param title context menu title.
-     * @deprecated  Use {@link #ContextMenu(int, int, Component, Theme)} instead. As it uses specific themes.
+     * @deprecated  Use {@link #ContextMenu(int, int, Component, GlobalTheme)} instead. As it uses specific themes.
      */
     @Deprecated
     public ContextMenu(int x, int y, @Nullable Component title, boolean darkMode) {
-        this(x, y, title, UltreonLibConfig.THEME.get() == Theme.DARK ? Theme.DARK : Theme.NORMAL);
+        this(x, y, title, darkMode ? GlobalTheme.DARK.get() : GlobalTheme.VANILLA.get());
     }
 
-    public ContextMenu(int x, int y, @Nullable Component title, Theme theme) {
+    public ContextMenu(int x, int y, @Nullable Component title, GlobalTheme globalTheme) {
         super(x, y, BORDER_WIDTH * 2, BORDER_WIDTH * 2, title);
-        this.theme = theme;
+        this.globalTheme = globalTheme;
     }
 
+    @Deprecated
     public boolean isDarkMode() {
-        return theme == Theme.DARK;
+        return Objects.equals(globalTheme, GlobalTheme.DARK.get());
     }
 
+    @Deprecated
     public void setDarkMode(boolean darkMode) {
-        this.theme = darkMode ? Theme.DARK : Theme.NORMAL;
+        this.globalTheme = darkMode ? GlobalTheme.DARK.get() : GlobalTheme.VANILLA.get();
     }
 
     /**
@@ -100,11 +95,6 @@ public class ContextMenu extends BaseContainerWidget {
     public void renderWidget(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
         gfx.pose().pushPose();
         gfx.pose().translate(0, 0, 100);
-        RenderSystem.setShaderTexture(0, switch (getTheme()) {
-            case DARK -> MENU_DARK;
-            case LIGHT, MIX -> MENU_LIGHT;
-            default -> MENU_NORMAL;
-        });
 
         Component message = getMessage();
         boolean hasTitle;
@@ -116,11 +106,11 @@ public class ContextMenu extends BaseContainerWidget {
         }
 
         Font font = Minecraft.getInstance().font;
-        BaseScreen.renderFrame(gfx, getX(), getY(), width - 14, height - 4 - (hasTitle ? 0 : font.lineHeight + 1), theme, 42);
+        BaseScreen.renderFrame(gfx, getX(), getY(), width - 14, height - 4 - (hasTitle ? 0 : font.lineHeight + 1), this.globalTheme.getMenuTheme(), FrameType.MENU);
 
         //noinspection ConstantConditions
         if (message != null) {
-            gfx.drawString(font, message, getX() + 7, getY() + 5, theme == Theme.DARK ? 0xffffffff : 0xff333333, false);
+            gfx.drawString(font, message, getX() + 7, getY() + 5, globalTheme.getMenuTheme().getHeaderColor().getRgb(), false);
         }
 
         this.isHovered = mouseX >= this.getX() && mouseY >= this.getY() && mouseX < this.getX() + this.width && mouseY < this.getY() + this.height;

@@ -11,7 +11,7 @@ import java.util.List;
  * Page size 1 == 1 object, 5 == 5 objects.
  *
  * @param <T> the type of items in the list.
- * @author Qboi123
+ * @author XyperCode
  */
 @SuppressWarnings("unused")
 public class PagedList<T> extends ArrayList<T> {

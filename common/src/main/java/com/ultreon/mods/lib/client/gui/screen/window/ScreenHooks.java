@@ -1,7 +1,7 @@
 package com.ultreon.mods.lib.client.gui.screen.window;
 
 import com.ultreon.mods.lib.UltreonLibConfig;
-import com.ultreon.mods.lib.util.KeyboardHelper;
+import com.ultreon.mods.lib.input.GameKeyboard;
 import dev.architectury.event.EventResult;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -59,12 +59,24 @@ public class ScreenHooks {
         return eventResult.get();
     }
 
+    @Deprecated(forRemoval = true)
     public static EventResult onMouseScroll(Minecraft client, Screen screen, double mouseX, double mouseY, double amount) {
         AtomicReference<EventResult> eventResult = new AtomicReference<>(EventResult.pass());
 
         WindowManager.INSTANCE.getWindowAt(mouseX, mouseY).ifPresent(w -> {
             eventResult.set(EventResult.interruptFalse());
-            w.mouseScrolled(mouseX, mouseY, amount);
+            w.mouseScrolled(mouseX, mouseY, amount, 0.0);
+        });
+
+        return eventResult.get();
+    }
+
+    public static EventResult onMouseScroll(Minecraft client, Screen screen, double mouseX, double mouseY, double amountX, double amountY) {
+        AtomicReference<EventResult> eventResult = new AtomicReference<>(EventResult.pass());
+
+        WindowManager.INSTANCE.getWindowAt(mouseX, mouseY).ifPresent(w -> {
+            eventResult.set(EventResult.interruptFalse());
+            w.mouseScrolled(mouseX, mouseY, amountX, amountY);
         });
 
         return eventResult.get();
@@ -88,15 +100,15 @@ public class ScreenHooks {
             w.keyPressed(keyCode, scanCode, modifiers);
         });
 
-        if (KeyboardHelper.isCtrlDown() && KeyboardHelper.isAltDown() && KeyboardHelper.isShiftDown() && keyCode == GLFW.GLFW_KEY_ESCAPE) {
+        if (GameKeyboard.isCtrlDown() && GameKeyboard.isAltDown() && GameKeyboard.isShiftDown() && keyCode == GLFW.GLFW_KEY_ESCAPE) {
             WindowManager.INSTANCE.closeAllWindows();
         }
 
-        if (KeyboardHelper.isCtrlDown() && keyCode == GLFW.GLFW_KEY_DOWN) {
+        if (GameKeyboard.isCtrlDown() && keyCode == GLFW.GLFW_KEY_DOWN) {
             WindowManager.INSTANCE.getForegroundWindow().ifPresent(Window::hide);
         }
 
-        if (KeyboardHelper.isCtrlDown() && keyCode == GLFW.GLFW_KEY_Q) {
+        if (GameKeyboard.isCtrlDown() && keyCode == GLFW.GLFW_KEY_Q) {
             WindowManager.INSTANCE.getForegroundWindow().ifPresent(Window::close);
         }
 

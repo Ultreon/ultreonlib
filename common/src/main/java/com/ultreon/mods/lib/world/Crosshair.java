@@ -17,9 +17,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * Utility for finding the entity in the crosshair.
+ * Utility for finding what's targeted in the crosshair.
  *
- * @author Qboi123
+ * @author XyperCode
  */
 @SuppressWarnings("unused")
 @Beta

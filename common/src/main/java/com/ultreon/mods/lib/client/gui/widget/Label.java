@@ -1,18 +1,6 @@
-/*
- * Copyright (c) 2022. - Qboi SMP Development Team
- * Do NOT redistribute, or copy in any way, and do NOT modify in any way.
- * It is not allowed to hack into the code, use cheats against the code and/or compiled form.
- * And it is not allowed to decompile, modify or/and patch parts of code or classes or in full form.
- * Sharing this file isn't allowed either, and is hereby strictly forbidden.
- * Sharing decompiled code on social media or an online platform will cause in a report on that account.
- *
- * ONLY the owner can bypass these rules.
- */
-
 package com.ultreon.mods.lib.client.gui.widget;
 
-import com.ultreon.mods.lib.client.gui.Theme;
-import com.ultreon.mods.lib.client.gui.Themed;
+import com.ultreon.mods.lib.client.theme.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
@@ -20,7 +8,7 @@ import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 
-public class Label implements Renderable, Themed {
+public class Label implements Renderable, Stylized {
     protected final Minecraft minecraft;
     protected final Font font;
     public int y;
@@ -28,17 +16,18 @@ public class Label implements Renderable, Themed {
     private Component message;
     private boolean shadow;
     private int color;
-    private Theme theme;
+    private GlobalTheme globalTheme;
+    private ThemeComponent component;
 
-    public Label(int x, int y, Component message, Theme theme) {
-        this(x, y, message, false, theme);
+    public Label(int x, int y, Component message, GlobalTheme globalTheme, ThemeComponent component) {
+        this(x, y, message, false, globalTheme, component);
     }
 
-    public Label(int x, int y, Component message, boolean shadow, Theme theme) {
+    public Label(int x, int y, Component message, boolean shadow, GlobalTheme globalTheme, ThemeComponent component) {
         this.x = x;
         this.y = y;
-        this.theme = theme;
-        this.color = theme.getTextColor();
+        this.component = component;
+        this.color = getStyle().getTextColor().getRgb();
         this.message = message;
         this.minecraft = Minecraft.getInstance();
         this.font = minecraft.font;
@@ -82,17 +71,13 @@ public class Label implements Renderable, Themed {
         setMessage(Component.literal(s));
     }
 
-    public Theme getTheme() {
-        return theme;
-    }
-
-    public void setTheme(Theme theme) {
-        this.theme = theme;
-        this.color = theme.getTextColor();
+    @Override
+    public ThemeComponent getThemeComponent() {
+        return component;
     }
 
     @Override
     public void reloadTheme() {
-        this.color = theme.getTextColor();
+        this.color = getStyle().getTextColor().getRgb();
     }
 }

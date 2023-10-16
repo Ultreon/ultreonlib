@@ -43,10 +43,10 @@
   ],
   "depends": {
     "fabricloader": ">=0.14.22",
-    "minecraft": ">=1.20.1 <1.20.2",
+    "minecraft": ">=1.20.2 <1.20.3",
     "fabric-api": "*",
-    "architectury": ">=9.1 <10",
-    "forgeconfigapiport": ">=8 <9"
+    "architectury": ">=10 <11",
+    "forgeconfigapiport": ">=9 <10"
   },
   "suggests": {
     "modmenu": "*"

@@ -1,20 +1,10 @@
-/*
- * Copyright (c) 2022. - Qboi SMP Development Team
- * Do NOT redistribute, or copy in any way, and do NOT modify in any way.
- * It is not allowed to hack into the code, use cheats against the code and/or compiled form.
- * And it is not allowed to decompile, modify or/and patch parts of code or classes or in full form.
- * Sharing this file isn't allowed either, and is hereby strictly forbidden.
- * Sharing decompiled code on social media or an online platform will cause in a report on that account.
- *
- * ONLY the owner can bypass these rules.
- */
-
 package com.ultreon.mods.lib.client.gui.widget;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.WidgetSprites;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -33,18 +23,25 @@ public abstract sealed class TexturedButton extends BaseButton permits Button {
     /**
      * @return the widgets texture to render the button from.
      */
+    @Deprecated
     protected abstract ResourceLocation getWidgetsTexture();
+
+    protected abstract WidgetSprites getWidgetSprites();
 
     @Override
     public void renderWidget(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
         Minecraft minecraft = Minecraft.getInstance();
-        RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, this.alpha);
+        gfx.setColor(1.0f, 1.0f, 1.0f, this.alpha);
         RenderSystem.enableBlend();
         RenderSystem.enableDepthTest();
-        gfx.blitNineSliced(getWidgetsTexture(), this.getX(), this.getY(), this.getWidth(), this.getHeight(), 20, 4, 200, 20, 0, this.getTexVOffset());
-        RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
-        int k = getTextColor();
-        this.renderString(gfx, minecraft.font, k | Mth.ceil(this.alpha * 255.0f) << 24);
+
+        // Blit sprite texture.
+        gfx.blitSprite(this.getWidgetSprites().get(this.active, this.isHoveredOrFocused()), this.getX(), this.getY(), this.getWidth(), this.getHeight());
+
+        // Set color, and render the button text.
+        gfx.setColor(1.0F, 1.0F, 1.0F, 1.0F);
+        int textColor = this.getTextColor();
+        this.renderString(gfx, minecraft.font, textColor| Mth.ceil(this.alpha * 255.0f) << 24);
     }
 
     public int getTexVOffset() {

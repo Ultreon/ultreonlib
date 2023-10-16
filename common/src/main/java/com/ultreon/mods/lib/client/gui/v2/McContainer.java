@@ -1,6 +1,7 @@
 package com.ultreon.mods.lib.client.gui.v2;
 
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
+import com.ultreon.mods.lib.client.gui.MoreGuiGraphics;
 import com.ultreon.mods.lib.util.ScissorStack;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
@@ -27,50 +28,44 @@ public abstract class McContainer extends McComponent {
     public void render(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
         var innerX = getX() + getBorder().left;
         var innerY = getY() + getBorder().top;
-        ScissorStack.pushScissorTranslated(gfx,
-                innerX, innerY,
-                getWidth() + getBorder().left, getHeight() + getBorder().top
-        );
-        gfx.pose().pushPose();
-        gfx.pose().translate(innerX, innerY, 0);
-        var translatedX = mouseX - getX() - getBorder().left;
-        var translatedY = mouseY - getY() - getBorder().top;
-        renderContents(gfx, translatedX, translatedY, partialTicks);
-        gfx.pose().popPose();
-        ScissorStack.popScissor();
+        MoreGuiGraphics.subInstance(gfx, innerX, innerY, getWidth() + getBorder().left, getHeight() + getBorder().top, () -> {
+            var translatedX = mouseX - getX() - getBorder().left;
+            var translatedY = mouseY - getY() - getBorder().top;
+            renderContents(gfx, translatedX, translatedY, partialTicks);
+        });
         super.render(gfx, mouseX, mouseY, partialTicks);
     }
 
     private void renderContents(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
-        for (var child : children()) {
+        for (var child : children) {
             child.render(gfx, mouseX, mouseY, partialTicks);
         }
     }
 
     @CanIgnoreReturnValue
     @Contract("_->param1")
-    public <T extends McComponent> T add(T widget) {
+    public <T extends @NotNull McComponent> @NotNull T add(@NotNull T widget) {
         widget.parent = this;
-        children.add(widget);
+        this.children.add(widget);
         return widget;
     }
 
     @CanIgnoreReturnValue
-    public boolean remove(McComponent widget) {
+    public boolean remove(@NotNull McComponent widget) {
         widget.parent = null;
-        return children.remove(widget);
+        return this.children.remove(widget);
     }
 
     public void clearWidgets() {
-        children.clear();
+        this.children.clear();
     }
 
     public Collection<McComponent> children() {
-        return Collections.unmodifiableCollection(children);
+        return Collections.unmodifiableCollection(this.children);
     }
     
     protected Insets getBorder() {
-        return border;
+        return this.border;
     }
 
     protected void setBorder(Insets border) {
@@ -78,7 +73,7 @@ public abstract class McContainer extends McComponent {
     }
 
     protected int getBorderColor() {
-        return borderColor;
+        return this.borderColor;
     }
 
     protected void setBorderColor(int borderColor) {
@@ -86,11 +81,28 @@ public abstract class McContainer extends McComponent {
     }
 
     public McComponent getFocused() {
-        return focused;
+        return this.focused;
     }
 
     public void setFocused(McComponent focused) {
         this.focused = focused;
+    }
+
+    @Override
+    public boolean preMouseClicked(double mouseX, double mouseY, int button) {
+        if (!isMouseOver(mouseX, mouseY)) {
+            return false;
+        }
+
+        var translatedX = mouseX - getX() - this.getBorder().left;
+        var translatedY = mouseY - getY() - this.getBorder().top;
+        for (var child : this.children) {
+            if (child.isMouseOver(translatedX, translatedY)) {
+                child.preMouseClicked(translatedX, translatedY, button);
+                break;
+            }
+        }
+        return super.preMouseClicked(mouseX, mouseY, button);
     }
 
     @Override
@@ -99,9 +111,9 @@ public abstract class McContainer extends McComponent {
             return false;
         }
 
-        var translatedX = mouseX - getX() - border.left;
-        var translatedY = mouseY - getY() - border.top;
-        for (var child : children) {
+        var translatedX = mouseX - getX() - this.getBorder().left;
+        var translatedY = mouseY - getY() - this.getBorder().top;
+        for (var child : this.children) {
             if (child.isMouseOver(translatedX, translatedY)) {
                 child.mouseClicked(translatedX, translatedY, button);
                 break;
@@ -113,9 +125,9 @@ public abstract class McContainer extends McComponent {
     @Override
     public boolean mouseReleased(double mouseX, double mouseY, int button) {
         if (this.isHolding()) {
-            var translatedX = mouseX - getX() - border.left;
-            var translatedY = mouseY - getY() - border.top;
-            for (var child : children) {
+            var translatedX = mouseX - getX() - this.getBorder().left;
+            var translatedY = mouseY - getY() - this.getBorder().top;
+            for (var child : this.children) {
                 if (child.isMouseOver(translatedX, translatedY)) {
                     child.mouseReleased(translatedX, translatedY, button);
                     break;
@@ -127,11 +139,11 @@ public abstract class McContainer extends McComponent {
 
     @Override
     public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
-        var translatedX = mouseX - getX() - border.left;
-        var translatedY = mouseY - getY() - border.top;
-        var translatedDragX = dragX - getX() - border.left;
-        var translatedDragY = dragY - getY() - border.top;
-        for (var child : children) {
+        var translatedX = mouseX - getX() - this.getBorder().left;
+        var translatedY = mouseY - getY() - this.getBorder().top;
+        var translatedDragX = dragX - getX() - this.getBorder().left;
+        var translatedDragY = dragY - getY() - this.getBorder().top;
+        for (var child : this.children) {
             if (child.isMouseOver(translatedX, translatedY)) {
                 child.mouseDragged(translatedX, translatedY, button, translatedDragX, translatedDragY);
                 break;
@@ -141,20 +153,20 @@ public abstract class McContainer extends McComponent {
     }
 
     @Override
-    public boolean mouseScrolled(double mouseX, double mouseY, double delta) {
+    public boolean mouseScrolled(double mouseX, double mouseY, double amountX, double amountY) {
         if (!isMouseOver(mouseX, mouseY)) {
             return false;
         }
 
-        var translatedX = mouseX - getX() - border.left;
-        var translatedY = mouseY - getY() - border.top;
-        for (var child : children) {
+        var translatedX = mouseX - getX() - this.getBorder().left;
+        var translatedY = mouseY - getY() - this.getBorder().top;
+        for (var child : this.children) {
             if (child.isMouseOver(translatedX, translatedY)) {
-                child.mouseScrolled(translatedX, translatedY, delta);
+                child.mouseScrolled(translatedX, translatedY, amountX, amountY);
                 break;
             }
         }
-        return super.mouseScrolled(mouseX, mouseY, delta);
+        return super.mouseScrolled(mouseX, mouseY, amountX, amountY);
     }
 
     @Override
@@ -163,9 +175,9 @@ public abstract class McContainer extends McComponent {
             return;
         }
 
-        var translatedX = mouseX - getX() - border.left;
-        var translatedY = mouseY - getY() - border.top;
-        for (var child : children) {
+        var translatedX = mouseX - getX() - this.getBorder().left;
+        var translatedY = mouseY - getY() - this.getBorder().top;
+        for (var child : this.children) {
             if (child.isMouseOver(translatedX, translatedY)) {
                 child.mouseMoved(translatedX, translatedY);
                 break;

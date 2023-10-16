@@ -147,6 +147,7 @@ public class ActionMenuScreen extends PanoramaScreen {
         return null;
     }
 
+    @Override
     public void back() {
         Minecraft.getInstance().setScreen(parent);
     }

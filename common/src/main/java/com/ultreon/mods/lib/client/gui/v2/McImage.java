@@ -1,6 +1,8 @@
 package com.ultreon.mods.lib.client.gui.v2;
 
+import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import com.mojang.blaze3d.platform.NativeImage;
+import com.ultreon.mods.lib.UltreonLib;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.texture.DynamicTexture;
@@ -8,22 +10,34 @@ import net.minecraft.nbt.ByteArrayTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.*;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.ByteBuffer;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
 import java.util.function.Consumer;
 
 public class McImage extends McResImage {
     private ImageLoader loader;
     private ResourceLocation resource;
     private final List<ClickCallback> onClick = new ArrayList<>();
+
+    public McImage() {
+        this(0, 0, 0, 0);
+    }
+
+    public McImage(Component altText) {
+        this(0, 0, 0, 0, altText);
+    }
 
     public McImage(int x, int y, int width, int height) {
         this(x, y, width, height, Component.empty());
@@ -41,7 +55,7 @@ public class McImage extends McResImage {
         setMessage(message);
     }
 
-    public void loadFrom(URL url) {
+    public McImage loadFrom(URL url) {
         @NotNull String protocol = url.getProtocol();
         switch (protocol) {
             case "file" -> {
@@ -55,41 +69,71 @@ public class McImage extends McResImage {
             default -> throw new UnsupportedOperationException("Protocol not supported: " + protocol);
         }
         refresh();
+        return this;
     }
 
-    public void loadFrom(File file) {
+    @Contract("_->this")
+    @CanIgnoreReturnValue
+    public McImage loadFrom(File file) {
         this.loader = new FileImageLoader(file);
         refresh();
+        return this;
     }
 
-    public void loadFrom(InputStream stream) {
+    @Contract("_->this")
+    @CanIgnoreReturnValue
+    public McImage loadFrom(Path path) {
+        this.loader = new FileImageLoader(path.toFile());
+        refresh();
+        return this;
+    }
+
+    @Contract("_->this")
+    @CanIgnoreReturnValue
+    public McImage loadFrom(InputStream stream) {
         this.loader = new InputStreamImageLoader(stream);
         refresh();
+        return this;
     }
 
-    public void loadFrom(byte[] bytes) {
+    @Contract("_->this")
+    @CanIgnoreReturnValue
+    public McImage loadFrom(byte[] bytes) {
         this.loader = new ByteArrayImageLoader(bytes);
         refresh();
+        return this;
     }
 
-    public void loadFrom(ByteArrayTag nbt) {
+    @Contract("_->this")
+    @CanIgnoreReturnValue
+    public McImage loadFrom(ByteArrayTag nbt) {
         this.loader = new ByteArrayImageLoader(nbt.getAsByteArray());
         refresh();
+        return this;
     }
 
-    public void loadFrom(FriendlyByteBuf buf) {
+    @Contract("_->this")
+    @CanIgnoreReturnValue
+    public McImage loadFrom(FriendlyByteBuf buf) {
         this.loader = new ByteArrayImageLoader(buf.readByteArray());
         refresh();
+        return this;
     }
 
-    public void loadFrom(FriendlyByteBuf buf, int maxLength) {
+    @Contract("_,_->this")
+    @CanIgnoreReturnValue
+    public McImage loadFrom(FriendlyByteBuf buf, int maxLength) {
         this.loader = new ByteArrayImageLoader(buf.readByteArray(maxLength));
         refresh();
+        return this;
     }
 
-    public void loadFrom(ByteBuffer buffer) {
+    @Contract("_->this")
+    @CanIgnoreReturnValue
+    public McImage loadFrom(ByteBuffer buffer) {
         this.loader = new ByteBufferImageLoader(buffer);
         refresh();
+        return this;
     }
 
     private void refresh() {
@@ -102,19 +146,23 @@ public class McImage extends McResImage {
 
     public void setResource(ResourceLocation resource, int imageWidth, int imageHeight) {
         this.resource = resource;
+        this.textureWidth = imageWidth;
+        this.textureHeight = imageHeight;
     }
 
     @Override
     public void render(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
         ResourceLocation resource = getResource();
-        gfx.fill(getX(), getY(), getX() + getWidth(), getY() + getHeight(), 0xff555555);
-        gfx.fill(getX() + 1, getY() + 1, getX() + getWidth() - 1, getY() + getHeight() - 1, 0xff333333);
 
         if (resource != null) {
             gfx.blit(resource, getX(), getY(), getWidth(), getHeight(), 0, 0, textureWidth(), textureHeight(), textureWidth(), textureHeight());
-        } else if (loader != null && loader.error != null) {
+        } else if (this.loader != null && this.loader.error != null) {
+            gfx.fill(getX(), getY(), getX() + getWidth(), getY() + getHeight(), 0xff555555);
+            gfx.fill(getX() + 1, getY() + 1, getX() + getWidth() - 1, getY() + getHeight() - 1, 0xff333333);
             drawCenteredStringWithoutShadow(gfx, font, Component.literal(loader.error.getLocalizedMessage()), getX() + getWidth() / 2, getY() + getHeight() / 2, 0xffffdddd);
         } else {
+            gfx.fill(getX(), getY(), getX() + getWidth(), getY() + getHeight(), 0xff555555);
+            gfx.fill(getX() + 1, getY() + 1, getX() + getWidth() - 1, getY() + getHeight() - 1, 0xff333333);
             drawLoadingIcon(gfx, getWidth() / 2, getHeight() / 2);
         }
     }
@@ -143,11 +191,14 @@ public class McImage extends McResImage {
     }
 
     @Override
-    public void onLeftClick(int clicks) {
+    public boolean onLeftClick(int clicks) {
         super.onLeftClick(clicks);
+        boolean flag = false;
         for (var callback : onClick) {
             callback.onClick(this, clicks);
+            flag = true;
         }
+        return flag;
     }
 
     @Override
@@ -167,6 +218,7 @@ public class McImage extends McResImage {
     public abstract class ImageLoader {
         private boolean loaded = false;
         private IOException error = null;
+        private CompletableFuture<Void> future;
 
         protected abstract void doLoad() throws IOException;
 
@@ -174,16 +226,31 @@ public class McImage extends McResImage {
             if (this.loaded) {
                 return;
             }
-            var thread = new Thread(() -> {
+            this.future = CompletableFuture.runAsync(() -> {
                 try {
-                    doLoad();
+                    this.doLoad();
                 } catch (IOException e) {
-                    e.printStackTrace();
-                    fail(e);
+                    throw new RuntimeException(e);
                 }
-            }, "MC-ImageLoader " + getClass().getSimpleName());
-            thread.start();
+            }).handle((value, throwable) -> {
+                if (throwable instanceof CompletionException completionException) {
+                    Throwable cause = completionException.getCause();
+                    if (cause != null && cause.getCause() instanceof IOException ioException) {
+                        UltreonLib.LOGGER.warn("Failed to load image:" + this.getSource(), ioException);
+                        this.fail(ioException);
+                    }
+                }
+
+                UltreonLib.LOGGER.warn("Failed to load image: " + this.getSource(), throwable);
+                return null;
+            });
         }
+
+        public boolean isLoadingDone() {
+            return this.future.isDone();
+        }
+
+        protected abstract String getSource();
 
         protected final void register(NativeImage image, Consumer<ResourceLocation> callback) {
             var minecraft = Minecraft.getInstance();
@@ -218,6 +285,7 @@ public class McImage extends McResImage {
             this.file = file;
         }
 
+        @Override
         protected final void doLoad() throws IOException {
             NativeImage image;
             try (InputStream stream = new FileInputStream(file)) {
@@ -229,6 +297,11 @@ public class McImage extends McResImage {
                 done(res);
             });
         }
+
+        @Override
+        protected String getSource() {
+            return this.file.getPath();
+        }
     }
 
     private class InputStreamImageLoader extends ImageLoader {
@@ -238,6 +311,7 @@ public class McImage extends McResImage {
             this.stream = stream;
         }
 
+        @Override
         protected final void doLoad() throws IOException {
             NativeImage image;
             try (stream) {
@@ -249,6 +323,11 @@ public class McImage extends McResImage {
                 done(res);
             });
         }
+
+        @Override
+        protected String getSource() {
+            return "<I/O Stream>";
+        }
     }
 
     private class ByteArrayImageLoader extends ImageLoader {
@@ -258,6 +337,7 @@ public class McImage extends McResImage {
             this.bytes = bytes;
         }
 
+        @Override
         protected final void doLoad() throws IOException {
             NativeImage image;
             try (InputStream stream = new ByteArrayInputStream(this.bytes)) {
@@ -269,6 +349,11 @@ public class McImage extends McResImage {
                 done(res);
             });
         }
+
+        @Override
+        protected String getSource() {
+            return "<Raw Bytes I/O>";
+        }
     }
 
     private class ByteBufferImageLoader extends ImageLoader {
@@ -279,6 +364,7 @@ public class McImage extends McResImage {
             this.buffer = buffer;
         }
 
+        @Override
         protected final void doLoad() throws IOException {
             var image = NativeImage.read(this.buffer);
             register(image, res -> {
@@ -286,6 +372,11 @@ public class McImage extends McResImage {
                 McImage.this.textureHeight = image.getHeight();
                 done(res);
             });
+        }
+
+        @Override
+        protected String getSource() {
+            return "<Byte Buffer I/O>";
         }
     }
 
@@ -296,9 +387,10 @@ public class McImage extends McResImage {
             this.url = url;
         }
 
+        @Override
         protected final void doLoad() throws IOException {
             NativeImage image;
-            try (var stream = url.openStream()) {
+            try (var stream = this.url.openStream()) {
                 image = NativeImage.read(stream);
             }
             register(image, res -> {
@@ -306,6 +398,11 @@ public class McImage extends McResImage {
                 McImage.this.textureHeight = image.getHeight();
                 done(res);
             });
+        }
+
+        @Override
+        protected String getSource() {
+            return this.url.toString();
         }
     }
 

@@ -1,9 +1,11 @@
 package com.ultreon.mods.lib;
 
 import com.ultreon.libs.commons.v0.Identifier;
-import com.ultreon.mods.lib.client.gui.Theme;
-import com.ultreon.mods.lib.client.gui.Themed;
+import com.ultreon.mods.lib.advancements.UseItemTrigger;
 import com.ultreon.mods.lib.client.gui.screen.TitleStyle;
+import com.ultreon.mods.lib.client.gui.screen.test.TestScreen;
+import com.ultreon.mods.lib.client.theme.GlobalTheme;
+import com.ultreon.mods.lib.client.theme.Stylized;
 import com.ultreon.mods.lib.loot.LootTableInjection;
 import com.ultreon.mods.lib.network.api.NetworkManager;
 import com.ultreon.mods.lib.util.ModMessages;
@@ -11,8 +13,10 @@ import dev.architectury.event.events.common.LootEvent;
 import dev.architectury.event.events.common.PlayerEvent;
 import dev.architectury.platform.Mod;
 import dev.architectury.platform.Platform;
+import dev.architectury.registry.registries.RegistrarManager;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.ApiStatus;
@@ -20,10 +24,21 @@ import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.ServiceLoader;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 @SuppressWarnings("unused")
 public class UltreonLib {
-    private static UltreonLib instance;
     public static final String MOD_ID = "ultreonlib";
+
+    public static final RegistrarManager REGISTRAR_MANAGER = RegistrarManager.get(MOD_ID);
+
+    private static UltreonLib instance;
     public static final String VERSION;
     public static final String DESCRIPTION;
     @Nullable
@@ -34,6 +49,7 @@ public class UltreonLib {
     public static final String SOURCE_CODE;
 
     public static final Logger LOGGER = LoggerFactory.getLogger("UltreonLib");
+    private static List<ServiceLoader.Provider<TestScreen>> testScreens;
 
     static {
         Mod mod = Platform.getMod(MOD_ID);
@@ -44,11 +60,40 @@ public class UltreonLib {
         SOURCE_CODE = mod.getSources().orElse(null);
     }
 
+    private static CompletableFuture<ServiceLoader<TestScreen>> testsInit;
+    private final ExecutorService executor = Executors.newSingleThreadExecutor();
+
+    public static void joinTestsInit() {
+
+    }
+
     private UltreonLib() {
         LootEvent.MODIFY_LOOT_TABLE.register(LootTableInjection::runModifications);
 
         PlayerEvent.PLAYER_JOIN.register(ModMessages::sendOnLogin);
         Identifier.setDefaultNamespace("minecraft");
+
+        UseItemTrigger useItemTrigger = new UseItemTrigger();
+        CriteriaTriggers.CRITERIA.putIfAbsent(useItemTrigger.getId(), useItemTrigger);
+    }
+
+    public static List<ServiceLoader.Provider<TestScreen>> getScreens() {
+        if (testScreens != null) {
+            return testScreens;
+        }
+        UltreonLib.LOGGER.info("Screens initializing!");
+        var load = ServiceLoader.load(TestScreen.class);
+        try {
+            UltreonLib.LOGGER.info("Test screen services loaded!");
+            return testScreens = load.stream().toList();
+        } catch (Exception e) {
+            UltreonLib.LOGGER.warn("Failed to load services:", e);
+        }
+        return Collections.emptyList();
+    }
+
+    public ExecutorService getExecutor() {
+        return this.executor;
     }
 
     @ApiStatus.Internal
@@ -118,13 +163,19 @@ public class UltreonLib {
 
 
     @Environment(EnvType.CLIENT)
-    public static Theme getTheme() {
-        return UltreonLibConfig.THEME.get();
+    public static GlobalTheme getTheme() {
+        ResourceLocation res = ResourceLocation.tryParse(UltreonLibConfig.THEME.get());
+        GlobalTheme theme = GlobalTheme.fromLocationOr(res, null);
+        if (theme == null) {
+            theme = GlobalTheme.VANILLA.get();
+            UltreonLibConfig.THEME.set(theme.getId().toString());
+        }
+        return theme;
     }
 
     @Environment(EnvType.CLIENT)
-    public static void setTheme(Theme theme) {
-        UltreonLibConfig.THEME.set(theme);
+    public static void setTheme(GlobalTheme globalTheme) {
+        UltreonLibConfig.THEME.set(globalTheme.getId().toString());
         UltreonLibConfig.THEME.save();
 
         instance.reloadTheme();
@@ -145,8 +196,8 @@ public class UltreonLib {
 
     @Environment(EnvType.CLIENT)
     public void reloadTheme() {
-        if (Minecraft.getInstance().screen instanceof Themed) {
-            ((Themed) Minecraft.getInstance().screen).reloadTheme();
+        if (Minecraft.getInstance().screen instanceof Stylized) {
+            ((Stylized) Minecraft.getInstance().screen).reloadTheme();
         }
     }
 }

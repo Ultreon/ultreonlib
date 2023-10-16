@@ -1,6 +1,11 @@
 package com.ultreon.mods.lib.client.gui.widget;
 
+import com.ultreon.mods.lib.UltreonLib;
 import com.ultreon.mods.lib.client.gui.Clickable;
+import com.ultreon.mods.lib.client.theme.GlobalTheme;
+import com.ultreon.mods.lib.client.theme.ThemeComponent;
+import com.ultreon.mods.lib.client.theme.ThemeGuiComponent;
+import com.ultreon.mods.lib.client.theme.ThemeRootComponent;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.network.chat.Component;
@@ -8,8 +13,13 @@ import net.minecraft.network.chat.Component;
 import java.util.function.Consumer;
 
 public class BaseButton extends BaseWidget implements Clickable {
+    protected static final ThemeGuiComponent BUTTON_THEME_COMPONENT;
     private CommandCallback callback;
     private TooltipFactory tooltipFactory;
+
+    static {
+        BUTTON_THEME_COMPONENT = ThemeRootComponent.CONTENT.register(UltreonLib.res("button"), ThemeComponent.create(GlobalTheme::getContentButtonStyle));
+    }
 
     public BaseButton(int x, int y, int width, int height, Component message, CommandCallback callback) {
         this(x, y, width, height, message, callback, (button) -> null);
@@ -17,7 +27,6 @@ public class BaseButton extends BaseWidget implements Clickable {
 
     public BaseButton(int x, int y, int width, int height, Component message, CommandCallback callback, TooltipFactory tooltipFactory) {
         super(x, y, width, height, message);
-        this.setTextColor(0xffffff);
         this.callback = callback;
         this.tooltipFactory = tooltipFactory;
 
@@ -34,8 +43,9 @@ public class BaseButton extends BaseWidget implements Clickable {
     }
 
     @Override
-    public void onLeftClick(int clicks) {
+    public boolean onLeftClick(int clicks) {
         callback.click(this);
+        return true;
     }
 
     public void setCallback(CommandCallback callback) {
@@ -51,7 +61,7 @@ public class BaseButton extends BaseWidget implements Clickable {
         if (isUsingCustomTextColor()) {
             return super.getTextColor();
         }
-        return active ? getTheme().getButtonTextColor() : getTheme().getInactiveTextColor();
+        return (active ? getStyle().getTextColor() : getStyle().getInactiveTextColor()).getRgb();
     }
 
     @FunctionalInterface

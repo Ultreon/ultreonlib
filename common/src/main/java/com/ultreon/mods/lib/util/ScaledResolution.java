@@ -15,8 +15,8 @@ public class ScaledResolution {
     }
 
     private void updateScaledWidthAndHeight() {
-        this.scaledWidth = (int) (this.scale * Minecraft.getInstance().getWindow().getScreenWidth());
-        this.scaledHeight = (int) (this.scale * Minecraft.getInstance().getWindow().getScreenHeight());
+        this.scaledWidth = (int) (this.scale * Minecraft.getInstance().getWindow().getWidth());
+        this.scaledHeight = (int) (this.scale * Minecraft.getInstance().getWindow().getHeight());
     }
 
     public double getScaleFactor() {

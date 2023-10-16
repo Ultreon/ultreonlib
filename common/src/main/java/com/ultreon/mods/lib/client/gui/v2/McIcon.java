@@ -1,14 +1,13 @@
 package com.ultreon.mods.lib.client.gui.v2;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 
 public class McIcon extends McImage {
-    private IIcon icon;
+    private Icon icon;
 
-    public McIcon(int x, int y, int size, IIcon icon) {
+    public McIcon(int x, int y, int size, Icon icon) {
         super(x, y, size, size);
         this.icon = icon;
     }
@@ -53,23 +52,23 @@ public class McIcon extends McImage {
         return icon.resource();
     }
 
-    public IIcon getIcon() {
+    public Icon getIcon() {
         return icon;
     }
 
-    public void setIcon(IIcon icon) {
+    public void setIcon(Icon icon) {
         this.icon = icon;
     }
 
     @Override
     public void render(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
         ResourceLocation resource = getResource();
-        gfx.fill(getX(), getY(), getX() + getWidth(), getY() + getHeight(), 0xff555555);
-        gfx.fill(getX() + 1, getY() + 1, getX() + getWidth() - 1, getY() + getHeight() - 1, 0xff333333);
+        gfx.fill(this.getX(), this.getY(), this.getX() + this.getWidth(), this.getY() + this.getHeight(), 0xff555555);
+        gfx.fill(this.getX() + 1, this.getY() + 1, this.getX() + this.getWidth() - 1, this.getY() + this.getHeight() - 1, 0xff333333);
 
         if (resource == null) {
             // Resource not loaded.
-            drawLoadingIcon(gfx, getX() + getWidth() / 2, getY() + getHeight() / 2);
+            McImage.drawLoadingIcon(gfx, getX() + getWidth() / 2, getY() + getHeight() / 2);
             return;
         }
 

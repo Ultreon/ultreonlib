@@ -17,7 +17,7 @@ import java.util.Map;
  * Class for injecting loot data into loot tables.
  * For example a custom entity drop. Or custom items in loot chests etc.
  *
- * @author Qboi123
+ * @author XyperCode
  */
 public class LootTableInjection extends UtilityClass {
     private static final Map<ResourceLocation, Injector> injections = new HashMap<>();

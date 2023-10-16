@@ -196,8 +196,4 @@ public class HashTable<R, C, V> extends AbstractTable<R, C, V> {
         return Set.copyOf(indices);
     }
 
-    @Override
-    public boolean containsAll(Table<R, C, V> table) {
-        return table.cellSet().stream().allMatch(this::contains);
-    }
 }

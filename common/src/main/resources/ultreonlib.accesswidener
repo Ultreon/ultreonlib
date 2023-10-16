@@ -5,3 +5,4 @@ accessible method net/minecraft/client/renderer/LevelRenderer renderEntity (Lnet
 extendable method net/minecraft/client/gui/components/AbstractSelectionList getEntryAtPosition (DD)Lnet/minecraft/client/gui/components/AbstractSelectionList$Entry;
 accessible field net/minecraft/client/gui/screens/Screen renderables Ljava/util/List;
 mutable field net/minecraft/client/gui/components/Button onPress Lnet/minecraft/client/gui/components/Button$OnPress;
+accessible field net/minecraft/advancements/CriteriaTriggers CRITERIA Lcom/google/common/collect/BiMap;

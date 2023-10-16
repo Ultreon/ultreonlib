@@ -4,8 +4,12 @@ import com.google.common.annotations.Beta;
 import org.jetbrains.annotations.Nullable;
 import oshi.SystemInfo;
 
-@Beta
+/**
+ * @deprecated unused, and just a random dumb class.
+ */
+@Deprecated(forRemoval = true)
 public enum VMType {
+    @Deprecated
     VMWARE("VMware, Inc.", "VMware");
 
     private final String manufacturer;
@@ -17,6 +21,7 @@ public enum VMType {
     }
 
     @Nullable
+    @Deprecated
     public static VMType fromManufacturer(String manufacturer) {
         for (VMType vmType : values()) {
             if (vmType.manufacturer.equals(manufacturer)) {
@@ -27,11 +32,13 @@ public enum VMType {
     }
 
     @Nullable
+    @Deprecated
     public static VMType system() {
         SystemInfo systemInfo = new SystemInfo();
         return fromManufacturer(systemInfo.getHardware().getComputerSystem().getManufacturer());
     }
 
+    @Deprecated
     public String getName() {
         return this.name;
     }

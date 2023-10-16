@@ -1,14 +1,3 @@
-/*
- * Copyright (c) 2022. - Qboi SMP Development Team
- * Do NOT redistribute, or copy in any way, and do NOT modify in any way.
- * It is not allowed to hack into the code, use cheats against the code and/or compiled form.
- * And it is not allowed to decompile, modify or/and patch parts of code or classes or in full form.
- * Sharing this file isn't allowed either, and is hereby strictly forbidden.
- * Sharing decompiled code on social media or an online platform will cause in a report on that account.
- *
- * ONLY the owner can bypass these rules.
- */
-
 package com.ultreon.mods.lib.client.gui.screen;
 
 import com.google.common.collect.ImmutableList;
@@ -16,12 +5,13 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.datafixers.util.Pair;
 import com.ultreon.mods.lib.UltreonLib;
 import com.ultreon.mods.lib.UltreonLibConfig;
-import com.ultreon.mods.lib.client.gui.Theme;
-import com.ultreon.mods.lib.client.gui.Themed;
+import com.ultreon.mods.lib.client.theme.GlobalTheme;
+import com.ultreon.mods.lib.client.theme.Stylized;
 import com.ultreon.mods.lib.client.gui.widget.BaseButton;
 import com.ultreon.mods.lib.client.gui.widget.Button;
 import com.ultreon.mods.lib.client.gui.widget.Label;
 import com.ultreon.mods.lib.client.gui.widget.ListWidget;
+import com.ultreon.mods.lib.client.theme.ThemeRootComponent;
 import com.ultreon.mods.lib.mixin.common.AbstractSelectionListAccessor;
 import com.ultreon.mods.lib.mixin.common.AbstractWidgetAccessor;
 import dev.architectury.injectables.annotations.ExpectPlatform;
@@ -42,9 +32,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 
 @SuppressWarnings({"UnusedReturnValue", "unused", "SameParameterValue"})
-public abstract class GenericMenuScreen extends BaseScreen implements Themed {
-    public ResourceLocation background;
-
+public abstract class GenericMenuScreen extends BaseScreen implements Stylized {
     protected final Minecraft mc = Minecraft.getInstance();
 
     @Nullable
@@ -57,16 +45,17 @@ public abstract class GenericMenuScreen extends BaseScreen implements Themed {
     private static final int TITLE_COLOR = 0xff606060;
     private static final int TITLE_COLOR_DARK = 0xffffffff;
     private final boolean panorama;
-    private Theme theme;
+    private GlobalTheme globalTheme;
     private boolean initialized;
-    private ResourceLocation titleBackground;
+    private ResourceLocation contentSprite;
+    private ResourceLocation titleSprite;
 
     protected GenericMenuScreen(Properties properties) {
         super(properties.title);
-        this.theme = properties.theme;
+        this.globalTheme = properties.globalTheme;
         this.panorama = properties.panorama;
 
-        this.titleColor = theme.getTitleColor();
+        this.titleColor = this.globalTheme.getTitleColor(ThemeRootComponent.WINDOW).getRgb();
         this.titleStyle = properties.titleStyle;
 
         this.font = Minecraft.getInstance().font;
@@ -110,12 +99,12 @@ public abstract class GenericMenuScreen extends BaseScreen implements Themed {
 
     @SuppressWarnings("unused")
     public Pair<BaseButton, BaseButton> addButtonRow(Component componentL, BaseButton.CommandCallback onPressL, BaseButton.TooltipFactory onTooltipL, Component componentR, BaseButton.CommandCallback onPressR, BaseButton.TooltipFactory onTooltipR) {
-        return addButtonRow(componentL, Button.Type.of(theme), onPressL, onTooltipL, componentR, Button.Type.of(theme), onPressR, onTooltipR);
+        return addButtonRow(componentL, Button.Type.of(globalTheme.getContentTheme()), onPressL, onTooltipL, componentR, Button.Type.of(globalTheme.getContentTheme()), onPressR, onTooltipR);
     }
 
     @SuppressWarnings("unused")
     public Pair<BaseButton, BaseButton> addButtonRow(Component componentL, Runnable onPressL, BaseButton.TooltipFactory onTooltipL, Component componentR, Runnable onPressR, BaseButton.TooltipFactory onTooltipR) {
-        return addButtonRow(componentL, Button.Type.of(theme), createCallbackWrapper(onPressL), onTooltipL, componentR, Button.Type.of(theme), createCallbackWrapper(onPressR), onTooltipR);
+        return addButtonRow(componentL, Button.Type.of(globalTheme.getContentTheme()), createCallbackWrapper(onPressL), onTooltipL, componentR, Button.Type.of(globalTheme.getContentTheme()), createCallbackWrapper(onPressR), onTooltipR);
     }
 
     @SuppressWarnings("unused")
@@ -125,22 +114,22 @@ public abstract class GenericMenuScreen extends BaseScreen implements Themed {
 
     @SuppressWarnings("unused")
     public Pair<BaseButton, BaseButton> addButtonRow(Component componentL, Button.Type typeL, BaseButton.CommandCallback onPressL, Component componentR, BaseButton.CommandCallback onPressR) {
-        return addButtonRow(componentL, typeL, onPressL, componentR, Button.Type.of(theme), onPressR);
+        return addButtonRow(componentL, typeL, onPressL, componentR, Button.Type.of(globalTheme.getContentTheme()), onPressR);
     }
 
     @SuppressWarnings("unused")
     public Pair<BaseButton, BaseButton> addButtonRow(Component componentL, Button.Type typeL, Runnable onPressL, Component componentR, Runnable onPressR) {
-        return addButtonRow(componentL, typeL, createCallbackWrapper(onPressL), componentR, Button.Type.of(theme), createCallbackWrapper(onPressR));
+        return addButtonRow(componentL, typeL, createCallbackWrapper(onPressL), componentR, Button.Type.of(globalTheme.getContentTheme()), createCallbackWrapper(onPressR));
     }
 
     @SuppressWarnings("unused")
     public Pair<BaseButton, BaseButton> addButtonRow(Component componentL, BaseButton.CommandCallback onPressL, Component componentR, Button.Type typeR, BaseButton.CommandCallback onPressR) {
-        return addButtonRow(componentL, Button.Type.of(theme), onPressL, componentR, typeR, onPressR);
+        return addButtonRow(componentL, Button.Type.of(globalTheme.getContentTheme()), onPressL, componentR, typeR, onPressR);
     }
 
     @SuppressWarnings("unused")
     public Pair<BaseButton, BaseButton> addButtonRow(Component componentL, Runnable onPressL, Component componentR, Button.Type typeR, Runnable onPressR) {
-        return addButtonRow(componentL, Button.Type.of(theme), createCallbackWrapper(onPressL), componentR, typeR, createCallbackWrapper(onPressR));
+        return addButtonRow(componentL, Button.Type.of(globalTheme.getContentTheme()), createCallbackWrapper(onPressL), componentR, typeR, createCallbackWrapper(onPressR));
     }
 
     @SuppressWarnings("unused")
@@ -192,12 +181,12 @@ public abstract class GenericMenuScreen extends BaseScreen implements Themed {
 
     @SuppressWarnings("unused")
     public BaseButton addButtonRow(Component component, Runnable onPress, BaseButton.TooltipFactory onTooltip) {
-        return addButtonRow(component, Button.Type.of(theme), btn -> onPress.run(), onTooltip);
+        return addButtonRow(component, Button.Type.of(globalTheme.getContentTheme()), btn -> onPress.run(), onTooltip);
     }
 
     @SuppressWarnings("unused")
     public BaseButton addButtonRow(Component component, BaseButton.CommandCallback onPress, BaseButton.TooltipFactory onTooltip) {
-        return addButtonRow(component, Button.Type.of(theme), onPress, onTooltip);
+        return addButtonRow(component, Button.Type.of(globalTheme.getContentTheme()), onPress, onTooltip);
     }
 
     @SuppressWarnings("unused")
@@ -264,7 +253,7 @@ public abstract class GenericMenuScreen extends BaseScreen implements Themed {
             return null;
         }
 
-        Label userWidget = new Label(0, 0, component, theme);
+        Label userWidget = new Label(0, 0, component, globalTheme, ThemeRootComponent.CONTENT);
         this.rows.add(new Row(ImmutableList.of(userWidget), font.lineHeight + 4, width() - 5 - 5, font.lineHeight, 8, 2, 4, 0, 226));
         addRenderableOnly(userWidget);
         return userWidget;
@@ -419,6 +408,7 @@ public abstract class GenericMenuScreen extends BaseScreen implements Themed {
      * @see #onPreBack()
      * @see #onPostBack()
      */
+    @Override
     public final void back() {
         if (onPreBack()) return;
 
@@ -484,7 +474,7 @@ public abstract class GenericMenuScreen extends BaseScreen implements Themed {
      * @return gui height.
      */
     protected final int height() {
-        return rows.stream().mapToInt(Row::height).sum() + 4 + getRenderTitleBarHeight();
+        return this.rowsHeight() + 4 + this.getRenderTitleBarHeight();
     }
 
     @Override
@@ -524,6 +514,7 @@ public abstract class GenericMenuScreen extends BaseScreen implements Themed {
         return top() + height();
     }
 
+    @Override
     protected void init() {
         frozen = true;
         initialized = true;
@@ -534,13 +525,9 @@ public abstract class GenericMenuScreen extends BaseScreen implements Themed {
 
     }
 
-    public void removed() {
-        
-    }
-
     @Override
-    public void renderBackground(@NotNull GuiGraphics gfx) {
-        if (!this.panorama) super.renderBackground(gfx);
+    public void renderBackground(@NotNull GuiGraphics gfx, int i, int j, float f) {
+        if (!this.panorama) super.renderBackground(gfx, i, j, f);
     }
 
     public void onPreRender() {
@@ -551,70 +538,47 @@ public abstract class GenericMenuScreen extends BaseScreen implements Themed {
 
     }
 
+    @Override
     public final void render(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
         // Pre rendering.
         onPreRender();
 
+        ResourceLocation contentFrame = UltreonLib.getTheme().getContentTheme().getFrameSprite();
+        ResourceLocation windowFrame = UltreonLib.getTheme().getWindowTheme().getFrameSprite();
+
         // Renders the background.
         if (this.panorama) renderPanorama(gfx, partialTicks);
-        else renderBackground(gfx);
+        else renderBackground(gfx, mouseX, mouseY, partialTicks);
 
-        int curY = top();
-        int index = 0;
+        int rowsHeight = rowsHeight();
 
-        // Title rendering (if present).
         switch (this.titleStyle) {
-            // Render no title. Only the top border.
-            case HIDDEN -> {
-                RenderSystem.setShaderTexture(0, this.background);
-
-                // Draw the top part of the frame.
-                gfx.blit(this.background, left(), top(), 0, 21, width(), 4);
-                index++;
-                curY += 4;
-            }
-            // Render normal title and the top border.
+            case HIDDEN -> gfx.blitSprite(this.contentSprite, left(), top(), width(), height());
             case NORMAL -> {
-                RenderSystem.setShaderTexture(0, this.titleBackground);
-
-                // Draw the title background.
-                gfx.blit(this.titleBackground, left(), top(), 0, 21, width(), 16);
-
-                // Draw the title.
+                gfx.blitSprite(this.contentSprite, left(), top(), width(), height());
                 gfx.drawString(this.font, this.title, (int) (left() + width() / 2f - this.font.width(this.title.getString()) / 2), top() + 6, this.titleColor, false);
-
-                index++;
-                curY += 16;
             }
-            // Render detached title and the top border.
             case DETACHED -> {
-                RenderSystem.setShaderTexture(0, this.titleBackground);
-
-                // Detached part of frame, where the title is.
-                gfx.blit(this.titleBackground, left(), top(), 0, 0, width(), 20);
-
-                // Render the frame part (attached part) with the normal background (fixes issues with mixed theme).
-                RenderSystem.setShaderTexture(0, this.background);
-                gfx.blit(this.background, left(), top() + 21, 0, 21, width(), 16);
-
-                // Draw the title.
+                // Draw title bar frame.
+                gfx.blitSprite(this.titleSprite, left(), top(), width(), getTitleBarHeight());
+                gfx.blitSprite(this.contentSprite, left(), top() + getTitleBarHeight() + 1, width(), height() - getTitleBarHeight() - 1);
                 gfx.drawString(this.font, this.title, (int) (left() + width() / 2f - this.font.width(this.title.getString()) / 2), top() + 6, this.titleColor, false);
-
-                index++;
-                curY += 25;
             }
-            default -> throw new IllegalStateException("Unexpected value: " + titleStyle);
         }
 
-        // Title rendering (if present).
-        RenderSystem.setShaderTexture(0, background);
+        int rowStartY = top() + this.getRenderTitleBarHeight();
+        int index = 1;
 
         // Render the widget rows.
-        renderRows(gfx, mouseX, mouseY, partialTicks, curY, index);
+        this.renderRows(gfx, mouseX, mouseY, partialTicks, rowStartY, index);
 
         // Post rendering.
         super.render(gfx, mouseX, mouseY, partialTicks);
-        onPostRender();
+        this.onPostRender();
+    }
+
+    private int rowsHeight() {
+        return this.rows.stream().mapToInt(Row::height).sum();
     }
 
     @Override
@@ -641,10 +605,9 @@ public abstract class GenericMenuScreen extends BaseScreen implements Themed {
     }
 
     private void renderRows(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTicks, int y, int index) {
-        if (rows.size() > 0) {
+        if (!rows.isEmpty()) {
             for (Row row : rows.subList(0, rows.size() - 1)) {
-                // Render the row background and widgets.
-                renderRowBackground(gfx, y, row);
+                // Render the row widgets.
                 renderSubWidgets(gfx, mouseX, mouseY, partialTicks, y, row);
 
                 // Advance in index, and add the current row height to the current y coordinate.
@@ -657,15 +620,9 @@ public abstract class GenericMenuScreen extends BaseScreen implements Themed {
             // Get the last row if there were rows at least.
             Row row = rows.get(rows.size() - 1);
 
-            // Render the row background and widgets.
-            renderRowBackground(gfx, y, row);
+            // Render the row widgets.
             renderSubWidgets(gfx, mouseX, mouseY, partialTicks, y, row);
-
-            y += row.height();
         }
-
-        // Render bottom border.
-        gfx.blit(this.background, left(), y, 0, 252, width(), 4);
     }
 
     private void renderSubWidgets(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTicks, int curY, Row row) {
@@ -728,23 +685,6 @@ public abstract class GenericMenuScreen extends BaseScreen implements Themed {
 
     }
 
-    private void renderRowBackground(@NotNull GuiGraphics gfx, int y, Row row) {
-        // Render row background.
-        RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
-        gfx.blit(background, left(), y, width(), row.height(), row.u(), row.v(), row.uw(), row.vh(), 256, 256);
-    }
-
-    @Override
-    public void tick() {
-        for (Row row : rows) {
-            for (Renderable widget : row.widgets()) {
-                if (widget instanceof EditBox editBox) {
-                    editBox.tick();
-                }
-            }
-        }
-    }
-
     @Override
     public final Vec2 getCloseButtonPos() {
         switch (titleStyle) {
@@ -762,6 +702,7 @@ public abstract class GenericMenuScreen extends BaseScreen implements Themed {
         return null;
     }
 
+    @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
         for (Row row : rows) {
             for (Renderable widget : row.widgets()) {
@@ -776,25 +717,30 @@ public abstract class GenericMenuScreen extends BaseScreen implements Themed {
         return super.mouseClicked(mouseX, mouseY, button)/* || this.filterList.mouseClicked(mouseX, mouseY, button)*/;
     }
 
+    @Override
     public boolean isPauseScreen() {
         return false;
     }
 
+    @Override
     public void reloadTheme() {
         super.reloadTheme();
-        this.theme = UltreonLib.getTheme();
-        this.titleColor = theme.getTitleColor();
+        this.globalTheme = UltreonLib.getTheme();
+        this.titleColor = globalTheme.getTitleColor(ThemeRootComponent.WINDOW).getRgb();
         this.titleStyle = UltreonLib.getTitleStyle();
-        this.background = UltreonLib.res(switch (theme) {
-            case DARK -> "textures/gui/menu/generic/generic_menu_dark.png";
-            case LIGHT, MIX -> "textures/gui/menu/generic/generic_menu_light.png";
-            default -> "textures/gui/menu/generic/generic_menu.png";
-        });
-        this.titleBackground = UltreonLib.res(switch (theme) {
-            case DARK, MIX -> "textures/gui/menu/generic/generic_menu_dark.png";
-            case LIGHT -> "textures/gui/menu/generic/generic_menu_light.png";
-            default -> "textures/gui/menu/generic/generic_menu.png";
-        });
+        this.contentSprite = UltreonLib.getTheme().getContentTheme().getFrameSprite();
+        this.titleSprite = UltreonLib.getTheme().getWindowTheme().getFrameSprite();
+//        this.background = UltreonLib.res(switch (globalTheme) {
+//            case DARK -> "textures/gui/menu/generic/generic_menu_dark.png";
+//            case LIGHT, MIX -> "textures/gui/menu/generic/generic_menu_light.png";
+//            default -> "textures/gui/menu/generic/generic_menu.png";
+//        });
+//        this.titleBackground = UltreonLib.res(switch (globalTheme) {
+//            case DARK, MIX -> "textures/gui/menu/generic/generic_menu_dark.png";
+//            case LIGHT -> "textures/gui/menu/generic/generic_menu_light.png";
+//            default -> "textures/gui/menu/generic/generic_menu.png";
+//        });
+
         for (Row row : rows) {
             row.reloadTheme();
         }
@@ -821,7 +767,7 @@ public abstract class GenericMenuScreen extends BaseScreen implements Themed {
 
         public void reloadTheme() {
             for (Renderable widget : widgets) {
-                if (widget instanceof Themed abstractWidget) {
+                if (widget instanceof Stylized abstractWidget) {
                     abstractWidget.reloadTheme();
                 }
             }
@@ -831,13 +777,10 @@ public abstract class GenericMenuScreen extends BaseScreen implements Themed {
     public static class Properties {
         private Component title;
         private TitleStyle titleStyle = UltreonLibConfig.TITLE_STYLE.get();
-        private final Theme theme = UltreonLibConfig.THEME.get();
-        @Deprecated
-        @SuppressWarnings("FieldCanBeLocal")
-        private boolean darkMode = theme == Theme.DARK;
+        private final GlobalTheme globalTheme = UltreonLib.getTheme();
         private boolean panorama = Minecraft.getInstance().level == null;
         @Nullable
-        private Screen back = null;
+        private Screen back = Minecraft.getInstance().screen;
 
         public Properties title(Component title) {
             this.title = title;
@@ -859,18 +802,12 @@ public abstract class GenericMenuScreen extends BaseScreen implements Themed {
             return this;
         }
 
-        @Deprecated
-        public Properties darkMode(boolean darkMode) {
-            this.darkMode = darkMode;
-            return this;
-        }
-
         public Properties panorama() {
             this.panorama = true;
             return this;
         }
 
-        public Properties back(Screen back) {
+        public Properties back(@Nullable Screen back) {
             this.back = back;
             return this;
         }

@@ -3,10 +3,11 @@ package com.ultreon.mods.lib.client.gui.screen.window;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import com.ultreon.mods.lib.UltreonLib;
 import com.ultreon.mods.lib.client.gui.Anchor;
-import com.ultreon.mods.lib.client.gui.Theme;
-import com.ultreon.mods.lib.client.gui.Themed;
+import com.ultreon.mods.lib.client.theme.GlobalTheme;
+import com.ultreon.mods.lib.client.theme.Stylized;
 import com.ultreon.mods.lib.client.gui.screen.BaseScreen;
 import com.ultreon.mods.lib.client.gui.widget.BaseContainerWidget;
+import com.ultreon.mods.lib.client.theme.ThemeRootComponent;
 import com.ultreon.mods.lib.common.Scale;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -32,11 +33,11 @@ import java.util.Objects;
  * The border is outside the content area.
  * The content area is defined by the x, y, width and height properties.
  *
- * @author Qboi123
+ * @author XyperCode
  * @version 1.0
  * @since 0.0.1.6
  */
-public class Window extends BaseContainerWidget implements Themed {
+public class Window extends BaseContainerWidget implements Stylized {
     private static final String CLOSE_ICON = "×";
     private static final String CLOSE_ICON_HOVER = ChatFormatting.RED + CLOSE_ICON;
 
@@ -44,7 +45,7 @@ public class Window extends BaseContainerWidget implements Themed {
     private boolean valid = true;
     private boolean visible;
     private final Minecraft minecraft = Minecraft.getInstance();
-    private Theme theme = UltreonLib.getTheme();
+    private GlobalTheme globalTheme = UltreonLib.getTheme();
     private boolean customThemeEnabled;
     private boolean resizing;
     private double dragX;
@@ -54,10 +55,6 @@ public class Window extends BaseContainerWidget implements Themed {
     private boolean resizable;
     private Anchor currentResizingBorder;
     private final Font font = Minecraft.getInstance().font;
-
-    private final int titleHeight = 21;
-    private final int borderSize = 5;
-    private final Scale titleTextScale = Scale.of(1f);
 
     private final WindowManager wm = WindowManager.INSTANCE;
 
@@ -240,8 +237,8 @@ public class Window extends BaseContainerWidget implements Themed {
      * @param mouseY The y position of the mouse.
      */
     private void renderTitle(@NotNull GuiGraphics gfx, int mouseX, int mouseY) {
-        BaseScreen.renderTitleFrame(gfx, getX(), getY() - 20, width, 12, theme);
-        gfx.drawCenteredString(minecraft.font, getTitle(), getX() + width / 2, getY() - 12, theme.getTitleColor());
+        BaseScreen.renderTitleFrame(gfx, getX(), getY() - 20, width, 12, globalTheme);
+        gfx.drawCenteredString(minecraft.font, getTitle(), getX() + width / 2, getY() - 12, globalTheme.getTitleColor(ThemeRootComponent.WINDOW).getRgb());
 
         renderCloseButton(gfx, mouseX, mouseY, getX() + width - 12, getY() - 12);
     }
@@ -257,9 +254,9 @@ public class Window extends BaseContainerWidget implements Themed {
      */
     private void renderCloseButton(@NotNull GuiGraphics gfx, int mouseX, int mouseY, int x, int y) {
         if (isMouseOver(mouseX, mouseY, x, y, 12, 12)) {
-            gfx.drawCenteredString(minecraft.font, CLOSE_ICON_HOVER, x + 6, y + 6, theme.getTitleColor());
+            gfx.drawCenteredString(minecraft.font, CLOSE_ICON_HOVER, x + 6, y + 6, getStyle().getTitleColor().getRgb());
         } else {
-            gfx.drawCenteredString(minecraft.font, CLOSE_ICON, x + 6, y + 6, theme.getTitleColor());
+            gfx.drawCenteredString(minecraft.font, CLOSE_ICON, x + 6, y + 6, getStyle().getTitleColor().getRgb());
         }
     }
 
@@ -286,13 +283,13 @@ public class Window extends BaseContainerWidget implements Themed {
     }
 
     private void renderFrame(@NotNull GuiGraphics gfx) {
-        BaseScreen.renderFrame(gfx, getX(), getY(), getWidth(), getHeight(), UltreonLib.getTheme());
+        BaseScreen.renderFrame(gfx, getX(), getY(), getWidth(), getHeight(), UltreonLib.getTheme().getWindowTheme());
     }
 
     @Override
     public void reloadTheme() {
         if (!customThemeEnabled) {
-            theme = UltreonLib.getTheme();
+            globalTheme = UltreonLib.getTheme();
         }
     }
 
@@ -304,13 +301,13 @@ public class Window extends BaseContainerWidget implements Themed {
         synchronized (this) {
             this.customThemeEnabled = customThemeEnabled;
             if (!customThemeEnabled) {
-                theme = UltreonLib.getTheme();
+                globalTheme = UltreonLib.getTheme();
             }
         }
     }
 
-    public void setCustomTheme(Theme theme) {
-        this.theme = theme;
+    public void setCustomTheme(GlobalTheme globalTheme) {
+        this.globalTheme = globalTheme;
         this.customThemeEnabled = true;
     }
 

@@ -10,7 +10,7 @@ public class UltreonLibForgeClient {
 
     public UltreonLibForgeClient() {
         this.ultreonLib = UltreonLibClient.create();
-        ModLoadingContext.get().registerExtensionPoint(ConfigScreenHandler.ConfigScreenFactory.class, () -> new ConfigScreenHandler.ConfigScreenFactory((minecraft, screen) -> new InternalConfigScreen(screen)));
+        ModLoadingContext.get().registerExtensionPoint(ConfigScreenHandler.ConfigScreenFactory.class, () -> new ConfigScreenHandler.ConfigScreenFactory((minecraft, screen) -> new InternalConfigScreen()));
     }
 
     public UltreonLibClient getUltreonLib() {

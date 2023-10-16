@@ -229,10 +229,12 @@ public abstract class AbstractTable<R, C, V> implements Table<R, C, V> {
             return "(" + row + ", " + column + ")";
         }
 
+        @Override
         public R getRow() {
             return row;
         }
 
+        @Override
         public C getColumn() {
             return column;
         }
@@ -274,14 +276,17 @@ public abstract class AbstractTable<R, C, V> implements Table<R, C, V> {
             return "(" + row + ", " + column + ")=" + value;
         }
 
+        @Override
         public R getRow() {
             return row;
         }
 
+        @Override
         public C getColumn() {
             return column;
         }
 
+        @Override
         public V getValue() {
             return value;
         }

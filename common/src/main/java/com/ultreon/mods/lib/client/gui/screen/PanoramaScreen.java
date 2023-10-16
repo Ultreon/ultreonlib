@@ -1,14 +1,3 @@
-/*
- * Copyright (c) 2022. - Qboi SMP Development Team
- * Do NOT redistribute, or copy in any way, and do NOT modify in any way.
- * It is not allowed to hack into the code, use cheats against the code and/or compiled form.
- * And it is not allowed to decompile, modify or/and patch parts of code or classes or in full form.
- * Sharing this file isn't allowed either, and is hereby strictly forbidden.
- * Sharing decompiled code on social media or an online platform will cause in a report on that account.
- *
- * ONLY the owner can bypass these rules.
- */
-
 package com.ultreon.mods.lib.client.gui.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -23,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * Panorama screen, for rendering a panorama in the background of your screen / menu.
  *
- * @author Qboi123
+ * @author XyperCode
  */
 public abstract class PanoramaScreen extends BaseScreen {
     public static final PanoramaRenderer PANORAMA = new PanoramaRenderer(TitleScreen.CUBE_MAP);
@@ -52,7 +41,6 @@ public abstract class PanoramaScreen extends BaseScreen {
         gfx.setColor(1.0f, 1.0f, 1.0f, 1.0f);
     }
 
-    @SuppressWarnings("SuspiciousNameCombination")
     public void renderBackground(GuiGraphics gfx, float partialTicks) {
         assert this.minecraft != null;
         if (this.minecraft.level == null) {
@@ -63,7 +51,7 @@ public abstract class PanoramaScreen extends BaseScreen {
     }
 
     @Override
-    public void renderBackground(@NotNull GuiGraphics gfx) {
+    public void renderBackground(@NotNull GuiGraphics gfx, int i, int j, float f) {
 
     }
 }

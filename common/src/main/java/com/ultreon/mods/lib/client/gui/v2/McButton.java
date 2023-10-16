@@ -10,9 +10,31 @@ import java.util.List;
 
 public class McButton extends McComponent {
     private final List<ClickCallback> onClick = new ArrayList<>();
+    private Icon icon;
+
+    public McButton(int x, int y, int width, int height, String text) {
+        this(x, y, width, height, Component.literal(text));
+    }
 
     public McButton(int x, int y, int width, int height, Component message) {
+        this(x, y, width, height, message, null);
+    }
+
+    public McButton(int i, int i1, int i2, int i3, String text, Icon icon) {
+        this(i, i1, i2, i3, Component.literal(text), icon);
+    }
+
+    public McButton(int x, int y, int width, int height, Component message, Icon icon) {
         super(x, y, width, height, message);
+        this.icon = icon;
+    }
+
+    public Icon getIcon() {
+        return icon;
+    }
+
+    public void setIcon(Icon icon) {
+        this.icon = icon;
     }
 
     @Override
@@ -23,7 +45,12 @@ public class McButton extends McComponent {
         gfx.fill(getX(), getY(), getX() + width, getY() + height, background);
         ScissorStack.pushScissorTranslated(gfx, getX() + 1, getY() + 1, width - 2, height - 2);
         {
-            drawCenteredStringWithoutShadow(gfx, font, getMessage(), getX() + width / 2, getY() + height / 2 - 4, 0xffffffff);
+            if (this.icon != null) {
+                this.icon.render(gfx, getX() + 2, getY() + 2, 11, 11);
+                this.renderScrollingString(gfx, font, getX() + 14, getY() + 1, this.getWidth() - 15, this.getHeight() - 2, 0xffffffff);
+            } else {
+                this.renderScrollingString(gfx, font, 1, 0xffffffff);
+            }
         }
         ScissorStack.popScissor();
     }

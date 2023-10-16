@@ -14,11 +14,6 @@ public class McContextMenu extends McComponent {
         super(x, y, width, height, message);
     }
 
-    @Override
-    public void render(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
-
-    }
-
     public McMenuItem add(Component name, McMenuItem.Callback callback) {
         return add(new McMenuItem(name, callback));
     }

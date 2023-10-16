@@ -11,10 +11,12 @@ public class LongSize extends AbstractSize {
         this.height = height;
     }
 
+    @Override
     public Long getWidth() {
         return width;
     }
 
+    @Override
     public Long getHeight() {
         return height;
     }

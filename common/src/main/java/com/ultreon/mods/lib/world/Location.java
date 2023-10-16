@@ -29,7 +29,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
-public final class Location {
+public sealed class Location permits MutableLocation {
     public static final Location ZERO = new Location(0, 0, 0, Level.OVERWORLD);
 
     private final int posX;
@@ -45,7 +45,7 @@ public final class Location {
         this(x, y, z, DimensionId.fromId(dimension));
     }
 
-    private Location(int x, int y, int z, DimensionId dimension) {
+    protected Location(int x, int y, int z, DimensionId dimension) {
         this.posX = x;
         this.posY = y;
         this.posZ = z;
@@ -86,19 +86,27 @@ public final class Location {
         return this.posZ;
     }
 
-    public DimensionId getDimensionId() {
+    public DimensionId getDimension() {
         return dimension;
     }
 
-    public ResourceKey<Level> getDimension() {
-        return this.dimension.getId();
+    public ResourceKey<Level> getDimensionKey() {
+        return this.dimension.getKey();
+    }
+
+    public ResourceLocation getDimensionLocation() {
+        return this.dimension.getLocation();
+    }
+
+    public Level getLevel() {
+        return this.dimension.getLevel();
     }
 
     public void write(CompoundTag tags) {
         tags.putInt(NbtKeys.X, this.posX);
         tags.putInt(NbtKeys.Y, this.posY);
         tags.putInt(NbtKeys.Z, this.posZ);
-        tags.putString(NbtKeys.DIMENSION, dimension.getRegistryName().toString());
+        tags.putString(NbtKeys.DIMENSION, dimension.getLocation().toString());
     }
 
     /**
@@ -135,7 +143,7 @@ public final class Location {
 
     @Override
     public String toString() {
-        return String.format("(%d, %d, %s) in %s", this.posX, this.posY, this.posZ, dimension.getRegistryName());
+        return String.format("(%d, %d, %s) in %s", this.posX, this.posY, this.posZ, dimension.getLocation());
     }
 
     @Override
@@ -151,6 +159,6 @@ public final class Location {
 
     @Override
     public int hashCode() {
-        return 31 * (31 * (31 * posX + posY) + posZ) + dimension.getRegistryName().hashCode();
+        return 31 * (31 * (31 * posX + posY) + posZ) + dimension.getLocation().hashCode();
     }
 }

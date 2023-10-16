@@ -17,9 +17,9 @@ public class EntityAttrUtils extends UtilityClass {
         if (attributeInstance == null) return;
         AttributeModifier currentMod = attributeInstance.getModifier(modifier.getId());
 
-        if (currentMod != null && (!Meth.doublesEqual(currentMod.getAmount(), modifier.getAmount()) || currentMod.getOperation() != modifier.getOperation())) {
+        if (currentMod != null && (!MathUtils.doublesEqual(currentMod.getAmount(), modifier.getAmount()) || currentMod.getOperation() != modifier.getOperation())) {
             // Modifier changed, so it needs to be reapplied
-            attributeInstance.removeModifier(currentMod);
+            attributeInstance.removeModifier(currentMod.getId());
         } else {
             attributeInstance.addPermanentModifier(modifier);
         }

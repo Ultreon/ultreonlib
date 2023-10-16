@@ -1,6 +1,7 @@
 package com.ultreon.mods.lib.client.gui.screen;
 
-import com.ultreon.mods.lib.UltreonLibConfig;
+import com.google.errorprone.annotations.CanIgnoreReturnValue;
+import com.ultreon.mods.lib.UltreonLib;
 import com.ultreon.mods.lib.client.gui.widget.toolbar.IToolbarItem;
 import com.ultreon.mods.lib.client.gui.widget.toolbar.ToolbarItem;
 import net.minecraft.client.gui.GuiGraphics;
@@ -21,11 +22,13 @@ public abstract class FullscreenRenderScreen extends BaseScreen {
     }
 
     @Override
-    public abstract void renderBackground(@NotNull GuiGraphics gfx);
+    public void renderBackground(@NotNull GuiGraphics gfx, int i, int j, float f) {
+        super.renderBackground(gfx, i, j, f);
+    }
 
     @Override
     public void render(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
-        renderBackground(gfx);
+        renderBackground(gfx, mouseX, mouseY, partialTicks);
 
         renderToolbar(gfx, mouseX, mouseY, partialTicks);
 
@@ -42,7 +45,7 @@ public abstract class FullscreenRenderScreen extends BaseScreen {
         final int frameHeight = height - 4;
         final int frameX = this.width / 2 - frameWidth / 2 - 5;
         final int frameY = this.height - frameHeight - BOTTOM_MARGIN - 14;
-        renderFrame(gfx, frameX, frameY, frameWidth, frameHeight, UltreonLibConfig.THEME.get());
+        renderFrame(gfx, frameX, frameY, frameWidth + 14, frameHeight + 14, UltreonLib.getTheme().getContentTheme());
         int x = frameX + 5;
         final int y = frameY + 2 + 7 - 4;
         for (IToolbarItem item : items) {
@@ -57,6 +60,7 @@ public abstract class FullscreenRenderScreen extends BaseScreen {
         }
     }
 
+    @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
         for (IToolbarItem baseItem : items) {
             if (baseItem instanceof ToolbarItem item && item.isActive() && item.mouseClicked(mouseX, mouseY, button)) {
@@ -67,6 +71,7 @@ public abstract class FullscreenRenderScreen extends BaseScreen {
         return super.mouseClicked(mouseX, mouseY, button)/* || this.filterList.mouseClicked(mouseX, mouseY, button)*/;
     }
 
+    @CanIgnoreReturnValue
     public <T extends IToolbarItem> T addToolbarItem(T t) {
         items.add(t);
         if (t instanceof ToolbarItem toolbarItem) {

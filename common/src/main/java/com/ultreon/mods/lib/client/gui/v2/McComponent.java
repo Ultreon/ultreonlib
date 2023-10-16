@@ -4,14 +4,17 @@ import com.ultreon.mods.lib.client.gui.widget.BaseWidget;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class McComponent extends BaseWidget {
-    @Nullable
-    McContainer parent = null;
+import java.awt.*;
+
+public abstract class McComponent extends BaseWidget {
     private McContextMenu contextMenu;
     private boolean holding;
+    @Nullable
+    McContainer parent = null;
 
     public McComponent(int x, int y, int width, int height, Component message) {
         super(x, y, width, height, message);
@@ -22,11 +25,27 @@ public class McComponent extends BaseWidget {
 
     }
 
+    public final int getScreenWidth() {
+        return McOperatingSystem.get().getWidth();
+    }
+
+    public final int getScreenHeight() {
+        return McOperatingSystem.get().getHeight();
+    }
+
+    public final Insets getWmBorder() {
+        return McOperatingSystem.get().getBorder();
+    }
+
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
         if (button == 0) this.holding = true;
 
         return super.mouseClicked(mouseX, mouseY, button);
+    }
+
+    public boolean preMouseClicked(double mouseX, double mouseY, int button) {
+        return false;
     }
 
     @Override
@@ -41,19 +60,7 @@ public class McComponent extends BaseWidget {
     }
 
     @Override
-    public void onRightClick() {
-        super.onRightClick();
-//        if (contextMenu != null) {
-//
-//        }
-    }
-
-    @Override
     protected void updateWidgetNarration(NarrationElementOutput narrationElementOutput) {
         defaultButtonNarrationText(narrationElementOutput);
-    }
-
-    public void setHeight(int height) {
-        this.height = height;
     }
 }

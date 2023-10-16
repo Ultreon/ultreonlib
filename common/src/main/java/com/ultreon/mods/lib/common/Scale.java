@@ -12,7 +12,7 @@ import java.util.function.Supplier;
 /**
  * Scale interface, used to scale GUI elements.
  *
- * @author Qboi123
+ * @author XyperCode
  * @since 0.0.1.7
  */
 @FunctionalInterface
@@ -22,7 +22,7 @@ public interface Scale {
      *
      * @param v the modifier.
      * @return the scale.
-     * @author Qboi123
+     * @author XyperCode
      * @since 0.0.1.7
      */
     @NotNull
@@ -36,7 +36,7 @@ public interface Scale {
      *
      * @param v the static scale.
      * @return a scale that makes gui elements have an independent scale.
-     * @author Qboi123
+     * @author XyperCode
      * @since 0.0.1.7
      */
     @NotNull
@@ -51,7 +51,7 @@ public interface Scale {
      *
      * @param supplier the supplier to use to get the scale.
      * @return a scale that uses the supplier to get the scale.
-     * @author Qboi123
+     * @author XyperCode
      * @since 0.0.1.7
      */
     @NotNull
@@ -65,7 +65,7 @@ public interface Scale {
      *
      * @param supplier the supplier to use to get the scale.
      * @return a scale that uses the supplier to get the scale.
-     * @author Qboi123
+     * @author XyperCode
      * @since 0.0.1.7
      */
     @NotNull
@@ -78,7 +78,7 @@ public interface Scale {
      * Get the scale.
      *
      * @return the scale.
-     * @author Qboi123
+     * @author XyperCode
      * @since 0.0.1.7
      */
     double getScale();

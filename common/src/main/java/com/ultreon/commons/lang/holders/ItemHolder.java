@@ -6,6 +6,7 @@ import net.minecraft.world.item.ItemStack;
 
 @FunctionalInterface
 public interface ItemHolder extends BaseHolder, net.minecraft.world.level.ItemLike {
+    @Override
     Item asItem();
 
     default ItemStack asItemStack() {
