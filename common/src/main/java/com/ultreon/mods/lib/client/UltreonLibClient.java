@@ -1,7 +1,7 @@
 package com.ultreon.mods.lib.client;
 
 import com.ultreon.mods.lib.client.gui.screen.window.ScreenHooks;
-import com.ultreon.mods.lib.client.gui.v2.DeviceScreen;
+import com.ultreon.mods.lib.client.devicetest.DeviceScreen;
 import com.ultreon.mods.lib.event.WindowCloseEvent;
 import com.ultreon.mods.lib.mixin.common.ButtonAccessor;
 import dev.architectury.event.CompoundEventResult;
