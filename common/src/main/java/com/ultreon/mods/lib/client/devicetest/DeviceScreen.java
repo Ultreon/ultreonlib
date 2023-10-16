@@ -42,8 +42,6 @@ public class DeviceScreen extends BaseScreen {
         this.desktopX = (this.width - this.desktopWidth) / 2;
         this.desktopY = (this.height - this.desktopHeight) / 2;
         this.desktopFullscreen = options.fullscreen;
-        System.out.println("this.desktopWidth = " + this.desktopWidth);
-        System.out.println("this.desktopHeight = " + this.desktopHeight);
 
         this.system = new OperatingSystemImpl(this, this.desktopX, this.desktopY, this.desktopWidth, this.desktopHeight, Lists.newArrayList(options.windows), new DesktopApplication());
         this.system.border = new Insets(0, 0, 20, 0);
@@ -112,12 +110,14 @@ public class DeviceScreen extends BaseScreen {
     @Override
     public void renderBackground(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
         if (!this.desktopFullscreen) {
-            gfx.pose().pushPose();
-            gfx.pose().translate(0, 0, -2000);
+            if (this.back != null) {
+                gfx.pose().pushPose();
+                gfx.pose().translate(0, 0, -2000);
 
-            this.back.render(gfx, mouseX, mouseY, partialTicks);
+                this.back.render(gfx, mouseX, mouseY, partialTicks);
 
-            gfx.pose().popPose();
+                gfx.pose().popPose();
+            }
             this.renderTransparentBackground(gfx);
         } else {
             super.renderBackground(gfx, mouseX, mouseY, partialTicks);
