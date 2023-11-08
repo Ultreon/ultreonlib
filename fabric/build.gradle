@@ -36,18 +36,18 @@ dependencies {
     modImplementation 'com.electronwill.night-config:core:3.6.5'
     modImplementation 'com.electronwill.night-config:toml:3.6.5'
 
-    include implementation("io.github.ultreon:ubo:${ultreon_data_version}")
+    include api("io.github.ultreon:ubo:${ultreon_data_version}")
 
-    include implementation("io.github.ultreon.corelibs:collections-v0:$corelibs_version")
-    include implementation("io.github.ultreon.corelibs:commons-v0:$corelibs_version")
-    include implementation("io.github.ultreon.corelibs:crash-v0:$corelibs_version")
-    include implementation("io.github.ultreon.corelibs:datetime-v0:$corelibs_version")
-    include implementation("io.github.ultreon.corelibs:events-v1:$corelibs_version")
-    include implementation("io.github.ultreon.corelibs:functions-v0:$corelibs_version")
-    include implementation("io.github.ultreon.corelibs:registries-v0:$corelibs_version")
-    include implementation("io.github.ultreon.corelibs:resources-v0:$corelibs_version")
-    include implementation("io.github.ultreon.corelibs:text-v0:$corelibs_version")
-    include implementation("io.github.ultreon.corelibs:translations-v0:$corelibs_version")
+    include api("io.github.ultreon.corelibs:collections-v0:$corelibs_version")
+    include api("io.github.ultreon.corelibs:commons-v0:$corelibs_version")
+    include api("io.github.ultreon.corelibs:crash-v0:$corelibs_version")
+    include api("io.github.ultreon.corelibs:datetime-v0:$corelibs_version")
+    include api("io.github.ultreon.corelibs:events-v1:$corelibs_version")
+    include api("io.github.ultreon.corelibs:functions-v0:$corelibs_version")
+    include api("io.github.ultreon.corelibs:registries-v0:$corelibs_version")
+    include api("io.github.ultreon.corelibs:resources-v0:$corelibs_version")
+    include api("io.github.ultreon.corelibs:text-v0:$corelibs_version")
+    include api("io.github.ultreon.corelibs:translations-v0:$corelibs_version")
 
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionFabric")) { transitive false }
@@ -72,7 +72,7 @@ processResources {
 
 shadowJar {
     configurations = [project.configurations.shadowCommon]
-    classifier "dev-shadow"
+    archiveClassifier = "dev-shadow"
 }
 
 remapJar {
@@ -80,11 +80,11 @@ remapJar {
     //noinspection GrDeprecatedAPIUsage
     input.set shadowJar.archiveFile
     dependsOn shadowJar
-    classifier null
+    archiveClassifier = null
 }
 
 jar {
-    classifier "dev"
+    archiveClassifier = "dev"
 }
 
 sourcesJar {

@@ -19,21 +19,21 @@ dependencies {
     modApi "dev.architectury:architectury:${architectury_version}"
 
     modCompileOnly "fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${forge_config_api_port_version}"
-    modCompileOnly 'com.electronwill.night-config:core:3.6.5'
-    modCompileOnly 'com.electronwill.night-config:toml:3.6.5'
+    modCompileOnly "com.electronwill.night-config:core:3.6.5"
+    modCompileOnly "com.electronwill.night-config:toml:3.6.5"
 
-    implementation("io.github.ultreon:ubo:$ultreon_data_version")
+    api "io.github.ultreon:ubo:$ultreon_data_version"
 
-    implementation "io.github.ultreon.corelibs:collections-v0:$corelibs_version"
-    implementation "io.github.ultreon.corelibs:commons-v0:$corelibs_version"
-    implementation "io.github.ultreon.corelibs:crash-v0:$corelibs_version"
-    implementation "io.github.ultreon.corelibs:datetime-v0:$corelibs_version"
-    implementation "io.github.ultreon.corelibs:events-v1:$corelibs_version"
-    implementation "io.github.ultreon.corelibs:functions-v0:$corelibs_version"
-    implementation "io.github.ultreon.corelibs:registries-v0:$corelibs_version"
-    implementation "io.github.ultreon.corelibs:resources-v0:$corelibs_version"
-    implementation "io.github.ultreon.corelibs:text-v0:$corelibs_version"
-    implementation "io.github.ultreon.corelibs:translations-v0:$corelibs_version"
+    api "io.github.ultreon.corelibs:collections-v0:$corelibs_version"
+    api "io.github.ultreon.corelibs:commons-v0:$corelibs_version"
+    api "io.github.ultreon.corelibs:crash-v0:$corelibs_version"
+    api "io.github.ultreon.corelibs:datetime-v0:$corelibs_version"
+    api "io.github.ultreon.corelibs:events-v1:$corelibs_version"
+    api "io.github.ultreon.corelibs:functions-v0:$corelibs_version"
+    api "io.github.ultreon.corelibs:registries-v0:$corelibs_version"
+    api "io.github.ultreon.corelibs:resources-v0:$corelibs_version"
+    api "io.github.ultreon.corelibs:text-v0:$corelibs_version"
+    api "io.github.ultreon.corelibs:translations-v0:$corelibs_version"
 }
 
 sourceSets {
