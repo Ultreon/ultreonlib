@@ -1,4 +1,4 @@
-package com.ultreon.mods.lib.lang;
+package com.ultreon.mods.lib.util;
 
 import net.minecraft.FieldsAreNonnullByDefault;
 import net.minecraft.MethodsReturnNonnullByDefault;

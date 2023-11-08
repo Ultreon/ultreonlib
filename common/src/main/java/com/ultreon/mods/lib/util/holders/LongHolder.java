@@ -1,4 +1,4 @@
-package com.ultreon.mods.lib.lang.holders;
+package com.ultreon.mods.lib.util.holders;
 
 @FunctionalInterface
 public interface LongHolder {

@@ -32,6 +32,11 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/**
+ * This is the main class for the UltreonLib mod.
+ *
+ * @author <a href="https://github.com/XyperCode">XyperCode</a>"
+ */
 @SuppressWarnings("unused")
 public class UltreonLib {
     public static final String MOD_ID = "ultreonlib";
@@ -62,10 +67,6 @@ public class UltreonLib {
 
     private static CompletableFuture<ServiceLoader<TestScreen>> testsInit;
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
-
-    public static void joinTestsInit() {
-
-    }
 
     private UltreonLib() {
         LootEvent.MODIFY_LOOT_TABLE.register(LootTableInjection::runModifications);
@@ -141,6 +142,7 @@ public class UltreonLib {
         return Platform.isFabric();
     }
 
+    @Deprecated(forRemoval = true)
     public static boolean isDevTest() {
         return Platform.getMod(MOD_ID).getVersion().endsWith("+local");
     }
@@ -149,14 +151,17 @@ public class UltreonLib {
         return new ResourceLocation(MOD_ID, path);
     }
 
+    @ApiStatus.Internal
     public void loadComplete() {
 
     }
 
+    @ApiStatus.Internal
     public void serverSetup() {
 
     }
 
+    @ApiStatus.Internal
     public void initNetworkInstances() {
         NetworkManager.init();
     }

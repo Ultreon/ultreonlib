@@ -1,4 +1,4 @@
-package com.ultreon.mods.lib.lang.holders;
+package com.ultreon.mods.lib.util.holders;
 
 import dev.architectury.fluid.FluidStack;
 import net.minecraft.resources.ResourceLocation;

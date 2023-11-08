@@ -1,4 +1,4 @@
-package com.ultreon.mods.lib.lang.holders;
+package com.ultreon.mods.lib.util.holders;
 
 import com.google.common.base.Suppliers;
 import com.ultreon.mods.lib.util.ServerLifecycle;

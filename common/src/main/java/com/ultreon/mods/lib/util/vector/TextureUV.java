@@ -1,4 +1,4 @@
-package com.ultreon.mods.lib.lang.vector;
+package com.ultreon.mods.lib.util.vector;
 
 public record TextureUV(double u, double v) {
     public int ui() {

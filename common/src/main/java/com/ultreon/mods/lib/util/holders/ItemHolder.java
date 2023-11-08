@@ -1,4 +1,4 @@
-package com.ultreon.mods.lib.lang.holders;
+package com.ultreon.mods.lib.util.holders;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;

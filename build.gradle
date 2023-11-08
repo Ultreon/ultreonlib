@@ -165,19 +165,25 @@ afterEvaluate {
         source(subprojects.collect { subproject ->
             subproject.sourceSets.main.allJava.sourceDirectories
         })
-        title = "CoreLibs"
-        description = "CoreLibs is the core library collection for Ultreon Team projects."
+        title = "UltreonLib"
+        description = "UltreonLib is the main library for Minecraft mods made by Ultreon."
         setDestinationDir(file("$rootProject.projectDir/build/docs/javadoc"))
         // Configure the classpath
         classpath = files(subprojects.collect { subproject ->
             subproject.sourceSets.main.compileClasspath
         })
-        (options as StandardJavadocDocletOptions).links(
-                "https://maven.fabricmc.net/docs/fabric-api-$fabric_api_version",
-                "https://maven.fabricmc.net/docs/fabric-loader-$fabric_loader_version",
-                "https://ultreon.github.io/corelibs/docs/$corelibs_version",
-                "https://ultreon.github.io/ultreon-data/docs/$ultreon_data_version",
-                "https://jenkins.liteloader.com/view/Other/job/Mixin/javadoc",
-        )
+        (options as StandardJavadocDocletOptions).with {
+            links(
+                    "https://maven.fabricmc.net/docs/fabric-api-$fabric_api_version",
+                    "https://maven.fabricmc.net/docs/fabric-loader-$fabric_loader_version",
+                    "https://javadoc.io/doc/org.jetbrains/annotations/$ultreon_data_version",
+                    "https://javadoc.io/doc/com.electronwill.night-config/core/3.6.5",
+                    "https://javadoc.io/doc/com.electronwill.night-config/toml/3.6.5",
+                    "https://ultreon.github.io/corelibs/docs/$corelibs_version",
+                    "https://ultreon.github.io/ultreon-data/docs/$ultreon_data_version",
+                    "https://jenkins.liteloader.com/view/Other/job/Mixin/javadoc",
+            )
+            footer "UltreonLib is not associated with Mojang Studios."
+        }
     }
 }

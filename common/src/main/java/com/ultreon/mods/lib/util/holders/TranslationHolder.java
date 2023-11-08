@@ -1,4 +1,4 @@
-package com.ultreon.mods.lib.lang.holders;
+package com.ultreon.mods.lib.util.holders;
 
 public interface TranslationHolder {
     String getTranslationId();
