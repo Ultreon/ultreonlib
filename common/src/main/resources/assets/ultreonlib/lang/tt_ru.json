@@ -1,0 +1,20 @@
+{
+  "command.ultreonlib.nbt.notBlockEntity": "%1$s асыл блогы түгел.",
+  "command.ultreonlib.nbt.noItemInHand": "You don't have any item in your main hand.",
+  "command.ultreonlib.nbt.noItemTag": "%1$s предметның NBT-тәгләр юк.",
+  "item.ultreonlib.lootContainer.itemReceived": "§aYou received %1$sx %2$s!",
+  "item.ultreonlib.lootContainer.table": "Loot table: %1$s",
+  "gui.ultreonlib.config.title": "User Configuration",
+  "gui.ultreonlib.config.theme": "Тема: ",
+  "gui.ultreonlib.config.title_style": "Title style: ",
+  "ultreonlib.theme.light": "Ак",
+  "ultreonlib.theme.normal": "Ваниль",
+  "ultreonlib.theme.mix": "Mixed",
+  "ultreonlib.theme.dark": "Караңгы",
+  "ultreonlib.title_style.normal": "Normal",
+  "ultreonlib.title_style.detached": "Detached",
+  "ultreonlib.title_style.hidden": "Яшерен",
+  "gui.ultreonlib.action_menu.access_denied": "§c§lРөхсәт тыелды",
+  "screen.ultreonlib.dev_preview.title": "Development Preview",
+  "screen.ultreonlib.dev_preview.description": "There are mods that are in a development preview, see mods below:"
+}
