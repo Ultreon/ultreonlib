@@ -155,7 +155,7 @@ public class UltreonLib {
      */
     @Deprecated
     public static boolean isForge() {
-        return Platform.isMinecraftForge() || Platform.isNeoForge();
+        return Platform.isMinecraftForge();
     }
 
     public static boolean isMinecraftForge() {

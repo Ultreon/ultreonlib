@@ -6,7 +6,6 @@ import com.ultreon.mods.lib.network.api.service.NetworkService;
 import dev.architectury.utils.EnvExecutor;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
-import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModLoadingContext;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -14,7 +13,6 @@ import net.neoforged.fml.event.lifecycle.FMLDedicatedServerSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.data.loading.DatagenModLoader;
-import net.neoforged.neoforge.event.server.ServerStartingEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,7 +22,7 @@ import java.util.ServiceLoader;
 @Mod(UltreonLib.MOD_ID)
 public class UltreonLibNeoForge {
     public static final Logger LOGGER = LoggerFactory.getLogger("UltreonLib:Forge");
-    private IEventBus eventBus;
+    private final IEventBus eventBus;
 
     private final UltreonLib ultreonLib;
     private static UltreonLibNeoForge instance;
@@ -70,16 +68,6 @@ public class UltreonLibNeoForge {
 
     public static IEventBus getEventBus() {
         return instance.eventBus;
-    }
-
-    private void setup(final FMLCommonSetupEvent event) {
-    }
-
-    // You can use SubscribeEvent and let the Event Bus discover methods to call
-    @SubscribeEvent
-    public void onServerStarting(ServerStartingEvent event) {
-        // Do something when the server starts
-        LOGGER.info("HELLO from server starting");
     }
 
     private void commonSetup(FMLCommonSetupEvent t) {
