@@ -2,6 +2,7 @@
   "themes": [
     "ultreonlib:light",
     "ultreonlib:dark",
-    "ultreonlib:mix"
+    "ultreonlib:mix",
+    "ultreonlib:vanilla_mix"
   ]
 }

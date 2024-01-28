@@ -272,7 +272,7 @@ public class GlobalTheme {
      * @return the next theme.
      */
     public GlobalTheme next() {
-        return THEMES.get((this.ordinal() + 1) % THEMES.size());
+        return THEMES.get((this.ordinal()) % THEMES.size());
     }
 
     private int ordinal() {
@@ -285,7 +285,7 @@ public class GlobalTheme {
      * @return the previous theme.
      */
     public GlobalTheme previous() {
-        return THEMES.get(((ordinal() - 1 + GlobalTheme.total) % GlobalTheme.total));
+        return THEMES.get(((ordinal() + THEMES.size()) % THEMES.size()));
     }
 
     public ResourceLocation getId() {

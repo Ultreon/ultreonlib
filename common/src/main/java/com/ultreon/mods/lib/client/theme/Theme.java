@@ -127,11 +127,8 @@ public class Theme extends Style {
             Optional<Resource> themeResource = resourceManager.getResource(location);
             if (themeResource.isPresent()) {
                 try (InputStream inputStream = themeResource.get().open()) {
-                    Optional<Theme> theme = CODEC.parse(JsonOps.INSTANCE, UltreonLib.GSON.fromJson(new InputStreamReader(inputStream), JsonElement.class))
-                            .resultOrPartial(s -> UltreonLib.LOGGER.warn("Failed to load themeResource: {}", s));
-                    theme.ifPresent(THEMES::add);
-                    theme.ifPresent(theme1 -> THEME_REGISTRY.put(resourceLocation, theme1));
-                    return theme;
+                    return CODEC.parse(JsonOps.INSTANCE, UltreonLib.GSON.fromJson(new InputStreamReader(inputStream), JsonElement.class))
+                            .resultOrPartial(s -> UltreonLib.LOGGER.warn("Failed to load theme: {}", s));
                 } catch (IOException e) {
                     UltreonLib.LOGGER.error("Failed to load themes from {}", themeResource.get().source().packId(), e);
                 }
@@ -286,8 +283,8 @@ public class Theme extends Style {
             for (ResourceLocation resourceLocation : themeReferences) {
                 UltreonLib.LOGGER.info("Registering theme: {}", resourceLocation);
                 Optional<Theme> optionalTheme = Theme.registerTheme(resourceLocation, resourceManager);
-                optionalTheme.ifPresent(theme -> {
-                    themes.put(resourceLocation, theme);
+                optionalTheme.ifPresentOrElse(theme -> themes.put(resourceLocation, theme), () -> {
+                    UltreonLib.LOGGER.error("Failed to load theme: {}", resourceLocation);
                 });
             }
 

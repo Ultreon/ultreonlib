@@ -12,8 +12,8 @@ import java.util.function.Consumer;
 
 public class DefaultTheme extends Theme {
     public static final Theme VANILLA = new DefaultTheme(0xffffff, 0xa0a0a0, 0xffffff, 0x808080, () -> createWidgetSprites(new ResourceLocation("widget/button"))).withBorderColor(0xffffff).withTitleColor(0x111111).withHeaderColor(0x333333).withTextureLocation(UltreonLib.res("vanilla"));
-    public static final Theme LIGHT = new DefaultTheme(0x808080, 0x949494, 0x19b2ff, 0xb7b7b7, buttonStyle -> buttonStyle.textColor = Color.white, () -> createWidgetSprites(new ResourceLocation("widget/button/light"))).withBorderColor(0xffffff).withInactiveBorderColor(0x868686).withSubTitleColor(0xb0b0b0).withHeaderColor(0x333333).withTextureLocation(UltreonLib.res("light"));
-    public static final Theme DARK = new DefaultTheme(0xffffff, 0xA0A0A0, 0xffa54c, 0x313131, true, () -> createWidgetSprites(new ResourceLocation("widget/button/dark"))).withSubTitleColor(0x808080).withTextureLocation(UltreonLib.res("dark"));
+    public static final Theme LIGHT = new DefaultTheme(0x808080, 0x949494, 0x19b2ff, 0xb7b7b7, buttonStyle -> buttonStyle.textColor = Color.white, () -> createWidgetSprites(UltreonLib.res("widget/button/light"))).withBorderColor(0xffffff).withInactiveBorderColor(0x868686).withSubTitleColor(0xb0b0b0).withHeaderColor(0x333333).withTextureLocation(UltreonLib.res("light"));
+    public static final Theme DARK = new DefaultTheme(0xffffff, 0xA0A0A0, 0xffa54c, 0x313131, true, () -> createWidgetSprites(UltreonLib.res("widget/button/dark"))).withSubTitleColor(0x808080).withTextureLocation(UltreonLib.res("dark"));
 
     private final Supplier<WidgetSprites> buttonSpritesFactory;
 
@@ -48,10 +48,5 @@ public class DefaultTheme extends Theme {
     @Override
     public void init() {
         this.buttonSprites = Suppliers.memoize(buttonSpritesFactory);
-    }
-
-    @Override
-    public ResourceLocation getId() {
-        return Objects.requireNonNullElse(this.getTexture(), UltreonLib.res("default"));
     }
 }

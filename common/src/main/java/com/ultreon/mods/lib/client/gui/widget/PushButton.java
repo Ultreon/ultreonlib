@@ -27,6 +27,12 @@ public class PushButton extends TexturedButton<PushButton> implements Stylized {
         }
     }
 
+    @Override
+    public void setWidth(int width) {
+        if (width < 20) width = 20;
+        super.setWidth(width);
+    }
+
     private boolean useTheme() {
         return this.usesTheme;
     }

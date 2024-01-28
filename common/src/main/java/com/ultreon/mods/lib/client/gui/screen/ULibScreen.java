@@ -40,6 +40,7 @@ public abstract class ULibScreen extends Screen implements Stylized, WidgetsCont
     protected GlobalTheme globalTheme;
     private Screen back;
     private TitleBar titleBar;
+    private boolean initialized = false;
 
     protected ULibScreen(Component title) {
         this(title, Minecraft.getInstance().screen);
@@ -57,7 +58,10 @@ public abstract class ULibScreen extends Screen implements Stylized, WidgetsCont
     protected final void init() {
         super.init();
 
-        this.initWidgets();
+        if (!this.initialized) {
+            this.initialized = true;
+            this.initWidgets();
+        }
 
         children().stream()
                 .filter(listener -> listener instanceof ULibWidget)
@@ -95,14 +99,18 @@ public abstract class ULibScreen extends Screen implements Stylized, WidgetsCont
 
     @Override
     public void render(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
+        renderBackground(gfx, mouseX, mouseY, partialTicks);
+
         renderCloseButton(gfx, mouseX, mouseY);
 
         boolean flag = contextMenu != null && contextMenu.isMouseOver(mouseX, mouseY);
 
         int mx = flag ? Integer.MIN_VALUE : mouseX;
         int my = flag ? Integer.MIN_VALUE : mouseY;
-        for (Renderable widget : ((ScreenAccess) this).getRenderables()) {
-            widget.render(gfx, mx, my, partialTicks);
+        for (GuiEventListener widget : children()) {
+            if (widget instanceof Renderable renderable) {
+                renderable.render(gfx, mx, my, partialTicks);
+            }
         }
 
         renderContextMenu(gfx, mouseX, mouseY, partialTicks);
@@ -113,6 +121,7 @@ public abstract class ULibScreen extends Screen implements Stylized, WidgetsCont
         if (menu != null) {
             RenderSystem.disableDepthTest();
             menu.renderWidget(gfx, mouseX, mouseY, partialTicks);
+            RenderSystem.enableDepthTest();
         }
     }
 

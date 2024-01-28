@@ -16,10 +16,9 @@ import org.jetbrains.annotations.Nullable;
 import static com.ultreon.mods.lib.client.gui.widget.PushButton.Type.DARK;
 import static com.ultreon.mods.lib.client.gui.widget.PushButton.Type.LIGHT;
 
-@TestScreenInfo("Fullscreen Render Screen")
+@TestScreenInfo("Dirt Background Hello World")
 @ApiStatus.Internal
 public class TestDirtBGHelloScreen extends ULibScreen implements TestScreen {
-    public static final ResourceLocation BACKGROUND_LOCATION = UltreonLib.res("tests/fullscreen_render/background");
     private PushButton.Type currentType = DARK;
 
     public TestDirtBGHelloScreen() {
@@ -30,21 +29,22 @@ public class TestDirtBGHelloScreen extends ULibScreen implements TestScreen {
     protected void initWidgets() {
         super.initWidgets();
 
-        clearWidgets();
-
         add(PushButton.of("Hello World", (btn) -> {
             this.currentType = this.currentType == DARK ? LIGHT : DARK;
             btn.type(this.currentType);
-        })).type(this.currentType);
+        })).type(this.currentType)
+                .position(vec -> vec.set(width / 2 - 50, height / 2 - 10))
+                .size(vec -> vec.set(100, 20));
 
-        add(PushButton.of("Close", (btn) -> this.back()));
+        add(PushButton.of("Close", (btn) -> this.back()))
+                .position(vec -> vec.set(width / 2 - 50, height / 2 + 10))
+                .size(vec -> vec.set(100, 20));
     }
 
     @Override
-    public void renderBackground(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTick) {
-        gfx.blitSprite(BACKGROUND_LOCATION, 0, 0, width, height);
-
-        gfx.drawString(this.font, "Hello World", 13, 13, 0xdddddd, true);
+    public void render(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
+        renderDirtBackground(gfx);
+        super.render(gfx, mouseX, mouseY, partialTicks);
     }
 
     @Override
