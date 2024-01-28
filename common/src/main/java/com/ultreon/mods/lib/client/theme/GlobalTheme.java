@@ -13,8 +13,8 @@ import com.ultreon.mods.lib.UltreonLib;
 import com.ultreon.mods.lib.client.gui.FrameType;
 import com.ultreon.mods.lib.commons.Color;
 import com.ultreon.mods.lib.util.IdRegistry;
+import com.ultreon.mods.lib.util.ModCodecs;
 import net.minecraft.client.Minecraft;
-import net.minecraft.core.IdMapper;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.PreparableReloadListener;
@@ -30,8 +30,6 @@ import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.function.Supplier;
-
-import static java.util.function.Function.identity;
 
 /**
  * The theme enum class.
@@ -65,9 +63,6 @@ public class GlobalTheme {
     private static final List<GlobalTheme> DEFAULT_THEMES = Collections.singletonList(VANILLA);
     //endregion
 
-    public static final Codec<List<ResourceLocation>> LIST_CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            Codec.list(ResourceLocation.CODEC).fieldOf("themes").forGetter(identity())
-    ).apply(instance, identity()));
     static {
         THEME_REGISTRY.put(new ResourceLocation(ResourceLocation.DEFAULT_NAMESPACE, "vanilla"), GlobalTheme.VANILLA);
     }
@@ -166,7 +161,7 @@ public class GlobalTheme {
     }
 
     private static void loadThemes(JsonElement themes) {
-        LIST_CODEC.parse(JsonOps.INSTANCE, themes).resultOrPartial(s -> UltreonLib.LOGGER.warn("Failed to load themes: {}", s));
+        ModCodecs.RESOURCE_LIST.parse(JsonOps.INSTANCE, themes).resultOrPartial(s -> UltreonLib.LOGGER.warn("Failed to load themes: {}", s));
     }
 
     public static List<GlobalTheme> getThemes() {
@@ -373,7 +368,7 @@ public class GlobalTheme {
 
             for (Resource resource : resourceStack) {
                 try (InputStream inputStream = resource.open()) {
-                    DataResult<Pair<List<ResourceLocation>, JsonElement>> decode = GlobalTheme.LIST_CODEC.decode(JsonOps.INSTANCE, UltreonLib.GSON.fromJson(new InputStreamReader(inputStream), JsonElement.class));
+                    DataResult<Pair<List<ResourceLocation>, JsonElement>> decode = ModCodecs.RESOURCE_LIST.decode(JsonOps.INSTANCE, UltreonLib.GSON.fromJson(new InputStreamReader(inputStream), JsonElement.class));
                     if (decode.result().isPresent()) {
                         themeReferences.addAll(decode.result().get().getFirst());
                     } else {

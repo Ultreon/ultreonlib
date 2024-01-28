@@ -30,7 +30,6 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import static com.ultreon.mods.lib.client.theme.DefaultTheme.*;
-import static java.util.function.Function.identity;
 
 @SuppressWarnings("SameParameterValue")
 public class Theme extends Style {
@@ -63,10 +62,6 @@ public class Theme extends Style {
         theme.texture = texture;
         return theme;
     }));
-
-    public static final Codec<List<ResourceLocation>> LIST_CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            Codec.list(ResourceLocation.CODEC).fieldOf("themes").forGetter(identity())
-    ).apply(instance, identity()));
 
     private final Style buttonStyle;
     private final boolean dark;
@@ -268,7 +263,7 @@ public class Theme extends Style {
 
             for (Resource resource : resourceStack) {
                 try (InputStream inputStream = resource.open()) {
-                    DataResult<Pair<List<ResourceLocation>, JsonElement>> decode = GlobalTheme.LIST_CODEC.decode(JsonOps.INSTANCE, UltreonLib.GSON.fromJson(new InputStreamReader(inputStream), JsonElement.class));
+                    DataResult<Pair<List<ResourceLocation>, JsonElement>> decode = ModCodecs.RESOURCE_LIST.decode(JsonOps.INSTANCE, UltreonLib.GSON.fromJson(new InputStreamReader(inputStream), JsonElement.class));
                     if (decode.result().isPresent()) {
                         themeReferences.addAll(decode.result().get().getFirst());
                     } else {
@@ -283,9 +278,10 @@ public class Theme extends Style {
             for (ResourceLocation resourceLocation : themeReferences) {
                 UltreonLib.LOGGER.info("Registering theme: {}", resourceLocation);
                 Optional<Theme> optionalTheme = Theme.registerTheme(resourceLocation, resourceManager);
-                optionalTheme.ifPresentOrElse(theme -> themes.put(resourceLocation, theme), () -> {
-                    UltreonLib.LOGGER.error("Failed to load theme: {}", resourceLocation);
-                });
+                optionalTheme.ifPresentOrElse(
+                        theme -> themes.put(resourceLocation, theme),
+                        () -> UltreonLib.LOGGER.error("Failed to load theme: {}", resourceLocation)
+                );
             }
 
             return themes;

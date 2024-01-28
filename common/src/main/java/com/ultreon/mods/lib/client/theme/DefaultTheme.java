@@ -7,7 +7,6 @@ import com.ultreon.mods.lib.commons.Color;
 import net.minecraft.client.gui.components.WidgetSprites;
 import net.minecraft.resources.ResourceLocation;
 
-import java.util.Objects;
 import java.util.function.Consumer;
 
 public class DefaultTheme extends Theme {
