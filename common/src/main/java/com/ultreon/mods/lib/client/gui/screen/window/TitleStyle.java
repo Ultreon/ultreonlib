@@ -1,8 +1,11 @@
 package com.ultreon.mods.lib.client.gui.screen.window;
 
+import com.ultreon.mods.lib.UltreonLib;
 import com.ultreon.mods.lib.client.TitleStyles;
 import com.ultreon.mods.lib.client.gui.GuiRenderer;
 import com.ultreon.mods.lib.client.theme.GlobalTheme;
+import com.ultreon.mods.lib.client.theme.WidgetPlacement;
+import com.ultreon.mods.lib.commons.Color;
 import net.minecraft.network.chat.Component;
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -22,12 +25,12 @@ public abstract class TitleStyle {
     /**
      * The title bar height for the texture.
      */
-    public final int renderHeight;
+    public final int visibleHeight;
 
     /**
      * The title bar widget height, for boundaries of the widgets in the title bar.
      */
-    public final int height;
+    public final int titleBarHeight;
 
     /**
      * The style's id name.
@@ -36,9 +39,9 @@ public abstract class TitleStyle {
     private static int nextOrdinal = 0;
     private final int ordinal;
 
-    public TitleStyle(int renderHeight, int height, String id) {
-        this.renderHeight = renderHeight;
-        this.height = height;
+    public TitleStyle(int visibleHeight, int titleBarHeight, String id) {
+        this.visibleHeight = visibleHeight;
+        this.titleBarHeight = titleBarHeight;
         this.id = id;
 
         VALUES = ArrayUtils.add(VALUES, this);
@@ -48,6 +51,10 @@ public abstract class TitleStyle {
 
     public static TitleStyle fromId(String id) {
         return REGISTRY_MAP.getOrDefault(id, TitleStyles.DETACHED);
+    }
+
+    public static TitleStyle get() {
+        return UltreonLib.getTitleStyle();
     }
 
     /**
@@ -104,4 +111,12 @@ public abstract class TitleStyle {
     }
 
     public abstract void renderFrame(GuiRenderer renderer, int x, int y, int width, int height, GlobalTheme theme, Component title);
+
+    public Color getTitleColor(GlobalTheme theme) {
+        return theme.get(WidgetPlacement.WINDOW).getTitleColor();
+    }
+
+    public Color getTitleColor() {
+        return getTitleColor(GlobalTheme.get());
+    }
 }

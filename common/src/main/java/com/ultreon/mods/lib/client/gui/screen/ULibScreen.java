@@ -4,6 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.ultreon.mods.lib.UltreonLib;
 import com.ultreon.mods.lib.client.HasContextMenu;
 import com.ultreon.mods.lib.client.gui.FrameType;
+import com.ultreon.mods.lib.client.gui.screen.window.TitleStyle;
 import com.ultreon.mods.lib.client.gui.widget.ContainerWidget;
 import com.ultreon.mods.lib.client.gui.widget.ULibWidget;
 import com.ultreon.mods.lib.client.gui.widget.WidgetsContainer;
@@ -145,9 +146,9 @@ public abstract class ULibScreen extends Screen implements Stylized, WidgetsCont
             int iconX = (int) iconPos.x;
             int iconY = (int) iconPos.y;
             if (isPointBetween(mouseX, mouseY, iconX, iconY, 6, 6)) {
-                gfx.drawString(this.font, CLOSE_ICON_HOVER, iconX, iconY, this.getStyle().getTitleColor().getRgb(), false);
+                gfx.drawString(this.font, CLOSE_ICON_HOVER, iconX, iconY, TitleStyle.get().getTitleColor().getRgb(), false);
             } else {
-                gfx.drawString(this.font, CLOSE_ICON, iconX, iconY, this.getStyle().getTitleColor().getRgb(), false);
+                gfx.drawString(this.font, CLOSE_ICON, iconX, iconY, TitleStyle.get().getTitleColor().getRgb(), false);
             }
         }
     }

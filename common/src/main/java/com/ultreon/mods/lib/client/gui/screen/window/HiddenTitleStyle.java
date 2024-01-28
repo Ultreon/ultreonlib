@@ -15,6 +15,6 @@ public class HiddenTitleStyle extends TitleStyle {
     public void renderFrame(GuiRenderer renderer, int x, int y, int width, int height, GlobalTheme theme, Component title) {
         GuiGraphics gfx = renderer.gfx();
         gfx.blitSprite(theme.getContentTheme().getFrameSprite(), x, y, width, height);
-        renderer.renderContentFrame(x - 7, y - 7, width + 14, height + 14, FrameType.NORMAL);
+        renderer.renderContentFrame(x, y, width, height, FrameType.NORMAL);
     }
 }

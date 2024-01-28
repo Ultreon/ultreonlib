@@ -5,6 +5,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.datafixers.util.Pair;
 import com.ultreon.mods.lib.UltreonLib;
 import com.ultreon.mods.lib.client.TitleStyles;
+import com.ultreon.mods.lib.client.gui.GuiRenderer;
 import com.ultreon.mods.lib.client.gui.screen.window.TitleStyle;
 import com.ultreon.mods.lib.client.gui.widget.*;
 import com.ultreon.mods.lib.client.theme.GlobalTheme;
@@ -484,7 +485,7 @@ public abstract class GenericMenuScreen extends ULibScreen implements Stylized {
         if (titleStyle == null) {
             return 0;
         } else {
-            return titleStyle.renderHeight;
+            return titleStyle.visibleHeight;
         }
     }
 
@@ -492,7 +493,7 @@ public abstract class GenericMenuScreen extends ULibScreen implements Stylized {
         if (titleStyle == null) {
             return 0;
         } else {
-            return titleStyle.height;
+            return titleStyle.titleBarHeight;
         }
     }
 
@@ -541,6 +542,8 @@ public abstract class GenericMenuScreen extends ULibScreen implements Stylized {
         // Pre rendering.
         onPreRender();
 
+        GuiRenderer renderer = new GuiRenderer(gfx, GlobalTheme.get(), TitleStyle.get());
+
         ResourceLocation contentFrame = UltreonLib.getTheme().getContentTheme().getFrameSprite();
         ResourceLocation windowFrame = UltreonLib.getTheme().getWindowTheme().getFrameSprite();
 
@@ -550,16 +553,18 @@ public abstract class GenericMenuScreen extends ULibScreen implements Stylized {
 
         int rowsHeight = rowsHeight();
 
-        if (this.titleStyle.equals(TitleStyles.HIDDEN)) {
-            gfx.blitSprite(this.contentSprite, left(), top(), width(), height());
-        } else if (this.titleStyle.equals(TitleStyles.NORMAL)) {
-            gfx.blitSprite(this.contentSprite, left(), top(), width(), height());
-            gfx.drawString(this.font, this.title, (int) (left() + width() / 2f - this.font.width(this.title.getString()) / 2), top() + 6, this.titleColor, false);
-        } else if (this.titleStyle.equals(TitleStyles.DETACHED)) {// Draw title bar frame.
-            gfx.blitSprite(this.titleSprite, left(), top(), width(), getTitleBarHeight());
-            gfx.blitSprite(this.contentSprite, left(), top() + getTitleBarHeight() + 1, width(), height() - getTitleBarHeight() - 1);
-            gfx.drawString(this.font, this.title, (int) (left() + width() / 2f - this.font.width(this.title.getString()) / 2), top() + 6, this.titleColor, false);
-        }
+//        if (this.titleStyle.equals(TitleStyles.HIDDEN)) {
+//            gfx.blitSprite(this.contentSprite, left(), top(), width(), height());
+//        } else if (this.titleStyle.equals(TitleStyles.NORMAL)) {
+//            gfx.blitSprite(this.contentSprite, left(), top(), width(), height());
+//            gfx.drawString(this.font, this.title, (int) (left() + width() / 2f - this.font.width(this.title.getString()) / 2), top() + 6, this.titleColor, false);
+//        } else if (this.titleStyle.equals(TitleStyles.DETACHED)) {// Draw title bar frame.
+//            gfx.blitSprite(this.titleSprite, left(), top(), width(), getTitleBarHeight());
+//            gfx.blitSprite(this.contentSprite, left(), top() + getTitleBarHeight() + 1, width(), height() - getTitleBarHeight() - 1);
+//            gfx.drawString(this.font, this.title, (int) (left() + width() / 2f - this.font.width(this.title.getString()) / 2), top() + 6, this.titleColor, false);
+//        }
+
+        renderer.renderWindow(left(), top(), width(), height(), this.title);
 
         int rowStartY = top() + this.getRenderTitleBarHeight();
         int index = 1;

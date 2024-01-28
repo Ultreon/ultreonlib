@@ -2,7 +2,7 @@ package com.ultreon.mods.lib.client;
 
 import com.ultreon.mods.lib.client.gui.screen.window.DetachedTitleStyle;
 import com.ultreon.mods.lib.client.gui.screen.window.HiddenTitleStyle;
-import com.ultreon.mods.lib.client.gui.screen.window.NormaTitleStyle;
+import com.ultreon.mods.lib.client.gui.screen.window.NormalTitleStyle;
 import com.ultreon.mods.lib.client.gui.screen.window.TitleStyle;
 
 public class TitleStyles {
@@ -14,7 +14,7 @@ public class TitleStyles {
      * This is similar to the vanilla's style for container screens.
      * The title bar is merged with the frame.
      */
-    public static final TitleStyle NORMAL = new NormaTitleStyle();
+    public static final TitleStyle NORMAL = new NormalTitleStyle();
     /**
      * Title bar is shown, and the title is shown.
      * It's also looks detached from the frame.
