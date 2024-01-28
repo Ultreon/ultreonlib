@@ -22,7 +22,7 @@ public class TestProgressScreen extends ULibScreen implements TestScreen {
     private int progress = 0;
 
     public TestProgressScreen() {
-        super(TestLaunchContext.get().title, null);
+        super(TestLaunchContext.get().title);
     }
 
     @Override
