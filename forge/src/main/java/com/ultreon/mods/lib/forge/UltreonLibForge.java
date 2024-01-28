@@ -6,6 +6,7 @@ import com.ultreon.mods.lib.network.api.service.NetworkService;
 import dev.architectury.platform.forge.EventBuses;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -57,19 +58,19 @@ public class UltreonLibForge {
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> UltreonLibForgeClient::new);
     }
 
-    private void commonSetup(FMLCommonSetupEvent t) {
+    private void serverSetup(FMLDedicatedServerSetupEvent event) {
+        ultreonLib.serverSetup();
+    }
+
+    private void commonSetup(FMLCommonSetupEvent event) {
+        ultreonLib.setup();
+    }
+
+    private void loadComplete(FMLLoadCompleteEvent t) {
         ServiceLoader<NetworkService> service = ServiceLoader.load(NetworkService.class);
         service.stream().map(ServiceLoader.Provider::get).forEach(NetworkService::setup);
 
         ultreonLib.initNetworkInstances();
-    }
-
-    private void loadComplete(FMLLoadCompleteEvent t) {
-        ultreonLib.loadComplete();
-    }
-
-    private void serverSetup(FMLDedicatedServerSetupEvent t) {
-        ultreonLib.serverSetup();
     }
 
     public UltreonLib getUltreonLib() {

@@ -66,23 +66,23 @@ public class UltreonLibNeoForge {
         EnvExecutor.runInEnv(Dist.CLIENT, () -> UltreonLibNeoForgeClient::new);
     }
 
+    private void serverSetup(FMLDedicatedServerSetupEvent event) {
+        ultreonLib.serverSetup();
+    }
+
+    private void commonSetup(FMLCommonSetupEvent event) {
+        ultreonLib.setup();
+    }
+
     public static IEventBus getEventBus() {
         return instance.eventBus;
     }
 
-    private void commonSetup(FMLCommonSetupEvent t) {
+    private void loadComplete(FMLLoadCompleteEvent t) {
         ServiceLoader<NetworkService> service = ServiceLoader.load(NetworkService.class);
         service.stream().map(ServiceLoader.Provider::get).forEach(NetworkService::setup);
 
         ultreonLib.initNetworkInstances();
-    }
-
-    private void loadComplete(FMLLoadCompleteEvent t) {
-        ultreonLib.loadComplete();
-    }
-
-    private void serverSetup(FMLDedicatedServerSetupEvent t) {
-        ultreonLib.serverSetup();
     }
 
     public UltreonLib getUltreonLib() {

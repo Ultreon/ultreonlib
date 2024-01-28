@@ -181,16 +181,6 @@ public class UltreonLib {
     }
 
     @ApiStatus.Internal
-    public void loadComplete() {
-
-    }
-
-    @ApiStatus.Internal
-    public void serverSetup() {
-
-    }
-
-    @ApiStatus.Internal
     public void initNetworkInstances() {
         NetworkManager.init();
     }
@@ -233,5 +223,13 @@ public class UltreonLib {
         if (Minecraft.getInstance().screen instanceof Stylized) {
             ((Stylized) Minecraft.getInstance().screen).reloadTheme();
         }
+    }
+
+    public void serverSetup() {
+        // Nothing to do yet
+    }
+
+    public void setup() {
+        // Nothing to do yet
     }
 }
