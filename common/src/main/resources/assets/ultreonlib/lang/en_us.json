@@ -7,7 +7,7 @@
   "gui.ultreonlib.config.title": "User Configuration",
   "gui.ultreonlib.config.theme": "Theme: ",
   "gui.ultreonlib.config.title_style": "Title style: ",
-  "minecraft.ultreonlib.theme.vanilla": "Vanilla",
+  "ultreonlib.theme.vanilla": "Vanilla",
   "ultreonlib.theme.light": "Light",
   "ultreonlib.theme.mix": "Mixed",
   "ultreonlib.theme.dark": "Dark",

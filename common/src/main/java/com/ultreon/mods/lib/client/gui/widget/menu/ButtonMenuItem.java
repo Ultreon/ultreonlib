@@ -1,10 +1,10 @@
 package com.ultreon.mods.lib.client.gui.widget.menu;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.ultreon.libs.commons.v0.Color;
+import com.ultreon.mods.lib.client.gui.GuiRenderer;
+import com.ultreon.mods.lib.commons.Color;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
@@ -24,7 +24,7 @@ public class ButtonMenuItem extends BaseButtonMenuItem {
     }
 
     @Override
-    public void renderWidget(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
+    public void renderWidget(@NotNull GuiRenderer renderer, int mouseX, int mouseY, float partialTicks) {
         Minecraft minecraft = Minecraft.getInstance();
         Font font = minecraft.font;
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
@@ -37,14 +37,14 @@ public class ButtonMenuItem extends BaseButtonMenuItem {
         Color accentColor = getStyle().getAccentColor();
         Color bgColor = getStyle().getSecondaryColor();
         int textColor = isUsingCustomTextColor() ? getTextColor() : getStyle().getTextColor().getRgb();
-        gfx.fill(getX(), getY(), getX() + getWidth(), getY() + getHeight(), (this.isHovered() ? bgColor.brighter() : bgColor).getRgb());
-        gfx.renderOutline(getX(), getY(), getWidth(), getHeight(), accentColor.getRgb());
-        drawCenteredStringWithoutShadow(gfx, font, this.getMessage(), this.getX() + this.width / 2, this.getY() + (this.height - 8) / 2, textColor | Mth.ceil(this.alpha * 255.0F) << 24);
+        renderer.fill(getX(), getY(), getX() + getWidth(), getY() + getHeight(), (this.isHovered() ? bgColor.brighter() : bgColor));
+        renderer.box(getX(), getY(), getWidth(), getHeight(), accentColor.getRgb());
+        renderer.textCenter(this.getMessage(), this.getX() + this.width / 2, this.getY() + (this.height - 8) / 2, textColor | Mth.ceil(this.alpha * 255.0F) << 24, false);
     }
 
     @Override
-    public void updateWidgetNarration(@NotNull NarrationElementOutput narration) {
-        this.defaultButtonNarrationText(narration);
+    public void updateWidgetNarration(@NotNull NarrationElementOutput output) {
+        this.defaultButtonNarrationText(output);
     }
 
     @Override

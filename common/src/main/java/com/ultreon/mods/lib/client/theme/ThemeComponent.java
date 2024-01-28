@@ -7,7 +7,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Collection;
 import java.util.function.Function;
 
-public sealed interface ThemeComponent permits ThemeGuiComponent, ThemeRootComponent {
+public sealed interface ThemeComponent permits ThemeGuiComponent, WidgetPlacement {
     <T extends ThemeGuiComponent> @NotNull T register(@NotNull ResourceLocation res, @NotNull T component);
     @Nullable ThemeComponent get(@NotNull ResourceLocation res);
     @Nullable ResourceLocation get(@NotNull ThemeGuiComponent component);

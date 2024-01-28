@@ -1,18 +1,19 @@
 package com.ultreon.mods.lib.client.gui.widget.menu;
 
-import com.ultreon.mods.lib.client.theme.ThemeComponent;
-import com.ultreon.mods.lib.client.theme.ThemeRootComponent;
+import com.ultreon.mods.lib.client.gui.widget.UIWidget;
 import com.ultreon.mods.lib.client.theme.Stylized;
-import com.ultreon.mods.lib.client.gui.widget.BaseWidget;
+import com.ultreon.mods.lib.client.theme.WidgetPlacement;
 import net.minecraft.network.chat.Component;
+import org.joml.Vector2i;
 
-public abstract class MenuItem extends BaseWidget implements Stylized {
+public abstract class MenuItem extends UIWidget implements Stylized {
     private final ContextMenu menu;
     private int minWidth = 0;
     private int maxWidth = Integer.MAX_VALUE;
 
     public MenuItem(int height, ContextMenu menu, Component message) {
-        super(menu.getX(), menu.getY(), menu.getWidth(), height, message);
+        super(message);
+        this.height = height;
         this.menu = menu;
     }
 
@@ -22,6 +23,12 @@ public abstract class MenuItem extends BaseWidget implements Stylized {
             return this.getTextColor();
         }
         return this.getStyle().getTextColor().getRgb();
+    }
+
+    @Override
+    public void revalidate() {
+        this.setPosition((Vector2i) this.positionGetter.get());
+        this.setWidth(((Vector2i) this.sizeGetter.get()).x);
     }
 
     public int getMinWidth() {
@@ -46,7 +53,7 @@ public abstract class MenuItem extends BaseWidget implements Stylized {
     }
 
     @Override
-    public ThemeComponent getThemeComponent() {
-        return ThemeRootComponent.MENU;
+    public WidgetPlacement getPlacement() {
+        return WidgetPlacement.MENU;
     }
 }

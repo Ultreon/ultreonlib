@@ -1,5 +1,6 @@
 package com.ultreon.mods.lib.util;
 
+import com.google.errorprone.annotations.CheckReturnValue;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -33,7 +34,8 @@ public class ScissorStack {
         scissorStack.push(new Scissor(x, y, width, height));
     }
 
-    public static void pushScissorTranslated(PoseStack poseStack, int x, int y, int width, int height) {
+    @CheckReturnValue
+    public static boolean pushScissorTranslated(PoseStack poseStack, int x, int y, int width, int height) {
         var translation = poseStack.last().pose().getTranslation(new Vector3f());
         x += (int) translation.x;
         y += (int) translation.y;
@@ -48,18 +50,24 @@ public class ScissorStack {
             GlStateManager._enableScissorTest();
         }
 
+        if (width <= 0 || height <= 0) {
+            return false;
+        }
+
         var mc = Minecraft.getInstance();
         var resolution = new ScaledResolution(mc);
         var scale = resolution.getScaleFactor();
         GlStateManager._scissorBox((int) (x * scale), (int) (mc.getWindow().getHeight() - y * scale - height * scale), (int) Math.max(0, width * scale), (int) Math.max(0, height * scale));
         scissorStack.push(new Scissor(x, y, width, height));
+        return true;
     }
 
-    public static void popScissor() {
+    public static Scissor popScissor() {
         if (!scissorStack.isEmpty()) {
-            scissorStack.pop();
+            return scissorStack.pop();
         }
         restoreScissor();
+        return null;
     }
 
     private static void restoreScissor() {
@@ -94,8 +102,9 @@ public class ScissorStack {
         return new Color(Math.min(255, buffer.get(0) % 256*2), Math.min(255, buffer.get(1) % 256*2), Math.min(255, buffer.get(2) % 256*2));
     }
 
-    public static void pushScissorTranslated(GuiGraphics gfx, int x, int y, int width, int height) {
-        pushScissorTranslated(gfx.pose(), x, y, width, height);
+    @CheckReturnValue
+    public static boolean pushScissorTranslated(GuiGraphics gfx, int x, int y, int width, int height) {
+        return pushScissorTranslated(gfx.pose(), x, y, width, height);
     }
 
     public static class Scissor {

@@ -1,33 +1,31 @@
 package com.ultreon.mods.lib.advancements;
 
-import com.google.gson.JsonObject;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.ultreon.mods.lib.UltreonLib;
-import net.minecraft.advancements.critereon.*;
+import net.minecraft.advancements.critereon.ContextAwarePredicate;
+import net.minecraft.advancements.critereon.ItemPredicate;
+import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.util.GsonHelper;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Locale;
 import java.util.Optional;
 
 public class UseItemTrigger extends SimpleCriterionTrigger<UseItemTrigger.Instance> {
-    private static final ResourceLocation ID = new ResourceLocation(UltreonLib.MOD_ID, "use_item");
-
-    @NotNull
-    public ResourceLocation getId() {
-        return ID;
+    public void trigger(ServerPlayer player, ItemStack item) {
+        this.trigger(player, triggerInstance -> triggerInstance.matches(item));
     }
 
     @Override
-    protected @NotNull Instance createInstance(JsonObject json, @NotNull Optional<ContextAwarePredicate> optional, @NotNull DeserializationContext deserializationContext) {
-        Optional<ItemPredicate> predicate = ItemPredicate.fromJson(json.get("item"));
-        Target target = Target.fromString(GsonHelper.getAsString(json, "target", "any"));
-        return new Instance(optional, predicate, target);
-    }
-
-    public void trigger(ServerPlayer player, ItemStack item) {
-        this.trigger(player, triggerInstance -> triggerInstance.matches(item));
+    public @NotNull Codec<Instance> codec() {
+        return RecordCodecBuilder.create((instanceCodec) -> instanceCodec
+                .group(ContextAwarePredicate.CODEC.optionalFieldOf("context").forGetter((instance) -> instance.context),
+                        ItemPredicate.CODEC.optionalFieldOf("item").forGetter((instance) -> instance.item),
+                        Codec.STRING.fieldOf("target").forGetter((instance) -> instance.target.name().toLowerCase(Locale.ROOT)))
+                .apply(instanceCodec, (context, item, target) -> new Instance(context, item, Target.fromString(target))));
     }
 
     public enum Target {
@@ -41,12 +39,14 @@ public class UseItemTrigger extends SimpleCriterionTrigger<UseItemTrigger.Instan
         }
     }
 
-    public static class Instance extends AbstractCriterionTriggerInstance {
+    public static class Instance implements SimpleInstance {
+        Optional<ContextAwarePredicate> context;
         Optional<ItemPredicate> item;
         Target target;
 
-        Instance(Optional<ContextAwarePredicate> optional, Optional<ItemPredicate> item, Target target) {
-            super(optional);
+        Instance(Optional<ContextAwarePredicate> context, Optional<ItemPredicate> item, Target target) {
+            super();
+            this.context = context;
             this.item = item;
             this.target = target;
         }
@@ -59,15 +59,9 @@ public class UseItemTrigger extends SimpleCriterionTrigger<UseItemTrigger.Instan
             return this.item.isEmpty() || this.item.get().matches(item);
         }
 
-        @NotNull
         @Override
-        public JsonObject serializeToJson() {
-            JsonObject json = new JsonObject();
-            if (item.isPresent()) {
-                json.add("item", this.item.get().serializeToJson());
-            }
-            json.addProperty("target", this.target.name());
-            return json;
+        public @NotNull Optional<ContextAwarePredicate> player() {
+            return context;
         }
     }
 }

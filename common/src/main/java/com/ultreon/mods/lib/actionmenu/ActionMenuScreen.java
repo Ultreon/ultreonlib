@@ -49,7 +49,7 @@ public class ActionMenuScreen extends PanoramaScreen {
     }
 
     @Override
-    protected void init() {
+    protected void initWidgets() {
         if (parent != null && initialized) {
             assert minecraft != null;
             parent.init(minecraft, width, height);

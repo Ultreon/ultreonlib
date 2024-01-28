@@ -3,19 +3,17 @@ package com.ultreon.mods.lib.client.gui.screen.window;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import com.ultreon.mods.lib.UltreonLib;
 import com.ultreon.mods.lib.client.gui.Anchor;
+import com.ultreon.mods.lib.client.gui.FrameType;
+import com.ultreon.mods.lib.client.gui.GuiRenderer;
+import com.ultreon.mods.lib.client.gui.widget.ContainerWidget;
+import com.ultreon.mods.lib.client.gui.widget.UIWidget;
+import com.ultreon.mods.lib.client.gui.widget.ULibWidget;
 import com.ultreon.mods.lib.client.theme.GlobalTheme;
 import com.ultreon.mods.lib.client.theme.Stylized;
-import com.ultreon.mods.lib.client.gui.screen.BaseScreen;
-import com.ultreon.mods.lib.client.gui.widget.BaseContainerWidget;
-import com.ultreon.mods.lib.client.theme.ThemeRootComponent;
-import com.ultreon.mods.lib.common.Scale;
+import com.ultreon.mods.lib.client.theme.WidgetPlacement;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.AbstractWidget;
-import net.minecraft.client.gui.components.Renderable;
-import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarratedElementType;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.network.chat.Component;
@@ -37,7 +35,7 @@ import java.util.Objects;
  * @version 1.0
  * @since 0.0.1.6
  */
-public class Window extends BaseContainerWidget implements Stylized {
+public class Window extends ContainerWidget implements Stylized {
     private static final String CLOSE_ICON = "×";
     private static final String CLOSE_ICON_HOVER = ChatFormatting.RED + CLOSE_ICON;
 
@@ -67,12 +65,12 @@ public class Window extends BaseContainerWidget implements Stylized {
      * @param height The height of the window
      */
     public Window(int x, int y, int width, int height) {
-        super(x, y, width, height, Component.empty());
+        super(Component.empty());
     }
 
     @Override
-    public void updateWidgetNarration(@NotNull NarrationElementOutput narrationElementOutput) {
-        narrationElementOutput.add(NarratedElementType.TITLE, getTitle());
+    public void updateWidgetNarration(@NotNull NarrationElementOutput output) {
+        output.add(NarratedElementType.TITLE, getTitle());
     }
 
     /**
@@ -194,37 +192,37 @@ public class Window extends BaseContainerWidget implements Stylized {
     /**
      * Renders the window including the border and title.
      *
-     * @param gfx          The pose-stack of the window.
+     * @param renderer          The pose-stack of the window.
      * @param mouseX       The x position of the mouse
      * @param mouseY       The y position of the mouse
      * @param partialTicks The partial ticks
      * @throws IllegalStateException If the window is not valid.
      */
     @Override
-    public void render(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
+    public void renderWidget(@NotNull GuiRenderer renderer, int mouseX, int mouseY, float partialTicks) {
         // Check for valid window.
         checkValid();
 
         if (isVisible()) {
             // Window is shown, so render it.
-            renderTitle(gfx, mouseX, mouseY);
-            renderFrame(gfx);
-            renderContents(gfx, mouseX, mouseY, partialTicks);
+            renderTitle(renderer, mouseX, mouseY);
+            renderFrame(renderer);
+            renderContents(renderer, mouseX, mouseY, partialTicks);
         }
     }
 
     /**
      * Render the content area.
      *
-     * @param gfx          The pose-stack to render with.
+     * @param renderer          The pose-stack to render with.
      * @param mouseX       The x position of the mouse.
      * @param mouseY       The y position of the mouse.
      * @param partialTicks The partial ticks.
      */
-    private void renderContents(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
-        for (GuiEventListener widget : children()) {
-            if (widget instanceof Renderable) {
-                ((AbstractWidget) widget).render(gfx, mouseX, mouseY, partialTicks);
+    private void renderContents(@NotNull GuiRenderer renderer, int mouseX, int mouseY, float partialTicks) {
+        for (ULibWidget widget : children) {
+            if (widget != null) {
+                widget.render(renderer, mouseX, mouseY, partialTicks);
             }
         }
     }
@@ -232,31 +230,31 @@ public class Window extends BaseContainerWidget implements Stylized {
     /**
      * Renders the title bar.
      *
-     * @param gfx    The pose-stack to render with.
+     * @param renderer    The pose-stack to render with.
      * @param mouseX The x position of the mouse.
      * @param mouseY The y position of the mouse.
      */
-    private void renderTitle(@NotNull GuiGraphics gfx, int mouseX, int mouseY) {
-        BaseScreen.renderTitleFrame(gfx, getX(), getY() - 20, width, 12, globalTheme);
-        gfx.drawCenteredString(minecraft.font, getTitle(), getX() + width / 2, getY() - 12, globalTheme.getTitleColor(ThemeRootComponent.WINDOW).getRgb());
+    private void renderTitle(@NotNull GuiRenderer renderer, int mouseX, int mouseY) {
+        renderer.renderTitleFrame(getX(), getY() - 20, width, 12, FrameType.NORMAL);
+        renderer.textCenter(getTitle(), getX() + width / 2, getY() - 12, globalTheme.getTitleColor(WidgetPlacement.WINDOW).getRgb());
 
-        renderCloseButton(gfx, mouseX, mouseY, getX() + width - 12, getY() - 12);
+        renderCloseButton(renderer, mouseX, mouseY, getX() + width - 12, getY() - 12);
     }
 
     /**
      * Renders the close button.
      *
-     * @param gfx    The pose-stack to render with.
+     * @param renderer    The pose-stack to render with.
      * @param mouseX The x position of the mouse.
      * @param mouseY The y position of the mouse.
      * @param x      The x position of the close button.
      * @param y      The y position of the close button.
      */
-    private void renderCloseButton(@NotNull GuiGraphics gfx, int mouseX, int mouseY, int x, int y) {
+    private void renderCloseButton(@NotNull GuiRenderer renderer, int mouseX, int mouseY, int x, int y) {
         if (isMouseOver(mouseX, mouseY, x, y, 12, 12)) {
-            gfx.drawCenteredString(minecraft.font, CLOSE_ICON_HOVER, x + 6, y + 6, getStyle().getTitleColor().getRgb());
+            renderer.textCenter(CLOSE_ICON_HOVER, x + 6, y + 6, getStyle().getTitleColor().getRgb());
         } else {
-            gfx.drawCenteredString(minecraft.font, CLOSE_ICON, x + 6, y + 6, getStyle().getTitleColor().getRgb());
+            renderer.textCenter(CLOSE_ICON, x + 6, y + 6, getStyle().getTitleColor().getRgb());
         }
     }
 
@@ -282,8 +280,8 @@ public class Window extends BaseContainerWidget implements Stylized {
         return new Vec2(iconX, iconY);
     }
 
-    private void renderFrame(@NotNull GuiGraphics gfx) {
-        BaseScreen.renderFrame(gfx, getX(), getY(), getWidth(), getHeight(), UltreonLib.getTheme().getWindowTheme());
+    private void renderFrame(@NotNull GuiRenderer gfx) {
+        gfx.renderContentFrame(getX(), getY(), width, height, FrameType.NORMAL);
     }
 
     @Override

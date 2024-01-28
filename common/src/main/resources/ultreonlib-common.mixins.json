@@ -6,8 +6,6 @@
   "mixins": [
   ],
   "client": [
-    "AbstractSelectionListAccessor",
-    "AbstractWidgetAccessor",
     "ButtonAccessor",
     "MouseHandlerMixin",
     "ScreenAccess",

@@ -9,6 +9,7 @@ import net.minecraft.network.chat.Component;
 
 import java.util.Optional;
 
+@Deprecated(forRemoval = true)
 @Environment(EnvType.CLIENT)
 public abstract class AbstractContainerWidget extends AbstractWidget implements ContainerEventHandler {
     private GuiEventListener focused;

@@ -12,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class FullscreenRenderScreen extends BaseScreen {
+public abstract class FullscreenRenderScreen extends ULibScreen {
     private static final int ITEM_PADDING = 2;
     private static final int BOTTOM_MARGIN = 12;
     private final List<IToolbarItem> items = new ArrayList<>();
@@ -75,7 +75,7 @@ public abstract class FullscreenRenderScreen extends BaseScreen {
     public <T extends IToolbarItem> T addToolbarItem(T t) {
         items.add(t);
         if (t instanceof ToolbarItem toolbarItem) {
-            addWidget(toolbarItem);
+            this.add(toolbarItem);
         }
         return t;
     }

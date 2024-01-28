@@ -1,86 +1,115 @@
 package com.ultreon.mods.lib.client.theme;
 
-import com.ultreon.libs.commons.v0.Color;
+import com.google.common.base.Suppliers;
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
+import com.google.gson.JsonElement;
+import com.mojang.datafixers.util.Pair;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.DataResult;
+import com.mojang.serialization.JsonOps;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.ultreon.mods.lib.UltreonLib;
-import com.ultreon.mods.lib.registries.ModRegistries;
-import dev.architectury.registry.registries.RegistrySupplier;
+import com.ultreon.mods.lib.client.gui.FrameType;
+import com.ultreon.mods.lib.commons.Color;
+import com.ultreon.mods.lib.util.IdRegistry;
+import net.minecraft.client.Minecraft;
+import net.minecraft.core.IdMapper;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import org.jetbrains.annotations.ApiStatus;
+import net.minecraft.server.packs.resources.PreparableReloadListener;
+import net.minecraft.server.packs.resources.Resource;
+import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.util.profiling.ProfilerFiller;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Objects;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
 import java.util.function.Supplier;
+
+import static java.util.function.Function.identity;
 
 /**
  * The theme enum class.
- * For Vanilla theme use {@link #VANILLA}.
  */
 public class GlobalTheme {
-    private static final List<GlobalTheme> THEMES = new ArrayList<>();
+
+    public static final Codec<GlobalTheme> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+            ResourceLocation.CODEC.fieldOf("window").forGetter(o -> o.getWindowTheme().getId()),
+            ResourceLocation.CODEC.fieldOf("menu").forGetter(o -> o.getMenuTheme().getId()),
+            ResourceLocation.CODEC.fieldOf("content").forGetter(o -> o.getContentTheme().getId()),
+            ResourceLocation.CODEC.optionalFieldOf("font").forGetter(theme -> Optional.ofNullable(theme.font)),
+            Codec.STRING.fieldOf("frame_type").forGetter(theme -> theme.frameType.name().toLowerCase(Locale.ROOT))
+    ).apply(instance, (windowTheme, menuTheme, contentTheme, o, s) -> {
+        GlobalTheme globalTheme = new GlobalTheme(
+                Suppliers.memoize(() -> Theme.getTheme(windowTheme)),
+                Suppliers.memoize(() -> Theme.getTheme(menuTheme)),
+                Suppliers.memoize(() -> Theme.getTheme(contentTheme))
+        );
+        globalTheme.font = o.orElse(Minecraft.DEFAULT_FONT);
+        globalTheme.frameType = FrameType.valueOf(s.toUpperCase(Locale.ROOT));
+        return globalTheme;
+    }));
+
+    //region <Registration>
+    private static final IdRegistry<GlobalTheme> THEMES = new IdRegistry<>();
+    private static final BiMap<ResourceLocation, GlobalTheme> THEME_REGISTRY = HashBiMap.create();
+    //endregion
+
+    //region <Default Themes>
+    public static final GlobalTheme VANILLA = GlobalTheme.defaultTheme("vanilla");
+    private static final List<GlobalTheme> DEFAULT_THEMES = Collections.singletonList(VANILLA);
+    //endregion
+
+    public static final Codec<List<ResourceLocation>> LIST_CODEC = RecordCodecBuilder.create(instance -> instance.group(
+            Codec.list(ResourceLocation.CODEC).fieldOf("themes").forGetter(identity())
+    ).apply(instance, identity()));
+    static {
+        THEME_REGISTRY.put(new ResourceLocation(ResourceLocation.DEFAULT_NAMESPACE, "vanilla"), GlobalTheme.VANILLA);
+    }
+
     private static int total = 0;
 
-    public static final RegistrySupplier<GlobalTheme> VANILLA = registerVanilla("vanilla", GlobalTheme::new);
+    private final Supplier<Theme> windowTheme;
 
-    public static final RegistrySupplier<GlobalTheme> LIGHT = register("light", () -> new GlobalTheme(Theme.LIGHT.get(), Theme.LIGHT.get()));
-    public static final RegistrySupplier<GlobalTheme> MIX = register("mix", () -> new GlobalTheme(Theme.DARK.get(), Theme.LIGHT.get()));
-    public static final RegistrySupplier<GlobalTheme> DARK = register("dark", () -> new GlobalTheme(Theme.DARK.get(), Theme.DARK.get()));
-    private final Theme windowTheme;
-    private final Theme menuTheme;
-
-    private final Theme contentTheme;
-    private final int ordinal;
-
+    private final Supplier<Theme> menuTheme;
+    private final Supplier<Theme> contentTheme;
+    private ResourceLocation font;
+    private FrameType frameType = FrameType.NORMAL;
     /**
      * Vanilla theme.
-     *
      */
     private GlobalTheme() {
-        this.windowTheme = Theme.VANILLA.get();
-        this.menuTheme = Theme.VANILLA.get();
-        this.contentTheme = Theme.VANILLA.get();
-        this.ordinal = total++;
+        this.windowTheme = () -> DefaultTheme.VANILLA;
+        this.menuTheme = () -> DefaultTheme.VANILLA;
+        this.contentTheme = () -> DefaultTheme.VANILLA;
         THEMES.add(this);
     }
 
-    public GlobalTheme(Theme frame, Theme content) {
-        this.windowTheme = frame;
-        this.menuTheme = frame;
+    public GlobalTheme(Supplier<Theme> window, Supplier<Theme> content) {
+        this.windowTheme = window;
+        this.menuTheme = window;
         this.contentTheme = content;
-        this.ordinal = total++;
-        THEMES.add(this);
     }
 
-    public GlobalTheme(Theme frame, Theme menu, Theme content) {
-        this.windowTheme = frame;
+    public GlobalTheme(@NotNull Supplier<Theme> window, @NotNull Supplier<Theme> menu, @NotNull Supplier<Theme> content) {
+        this.windowTheme = window;
         this.menuTheme = menu;
         this.contentTheme = content;
-        this.ordinal = total++;
-        THEMES.add(this);
     }
 
-    @ApiStatus.Internal
-    private static <T extends GlobalTheme> RegistrySupplier<T> registerVanilla(String name, Supplier<T> supplier) {
-        return ModRegistries.GLOBAL_THEME.register(new ResourceLocation(ResourceLocation.DEFAULT_NAMESPACE, name), supplier);
-    }
-
-    @ApiStatus.Internal
-    private static <T extends GlobalTheme> RegistrySupplier<T> register(String name, Supplier<T> supplier) {
-        return ModRegistries.GLOBAL_THEME.register(UltreonLib.res(name), supplier);
-    }
-
-    /**
-     * Gets the theme from the id.
-     *
-     * @param id the id of the theme.
-     * @return the theme or null if not found.
-     */
-    @Deprecated
-    public static GlobalTheme fromId(String id) {
-        return ModRegistries.GLOBAL_THEME.get(new ResourceLocation(id));
+    private static GlobalTheme defaultTheme(String id) {
+        final ResourceLocation location = UltreonLib.res(id);
+        return new GlobalTheme() {
+            @Override
+            public ResourceLocation getId() {
+                return location;
+            }
+        };
     }
 
     /**
@@ -90,47 +119,21 @@ public class GlobalTheme {
      * @return the theme or null if not found.
      */
     public static GlobalTheme fromLocation(ResourceLocation location) {
-        return ModRegistries.GLOBAL_THEME.get(location);
-    }
-
-    /**
-     * Gets the theme from the id.
-     *
-     * @param id           the id of the theme.
-     * @param defaultGlobalTheme the default theme to return if not found.
-     * @return the theme or defaultTheme if not found.
-     */
-    @Deprecated(forRemoval = true)
-    public static GlobalTheme fromIdOr(String id, GlobalTheme defaultGlobalTheme) {
-        return defaultGlobalTheme;
+        return THEME_REGISTRY.get(location);
     }
 
     /**
      * Gets the theme from the location.
      *
-     * @param location the location of the theme.
+     * @param location     the location of the theme.
      * @param defaultTheme the default theme to return if not found.
      * @return the theme or defaultTheme if not found.
      */
-    public static GlobalTheme fromLocationOr(ResourceLocation location, RegistrySupplier<GlobalTheme> defaultTheme) {
-        if (location != null) {
-            GlobalTheme globalTheme = ModRegistries.GLOBAL_THEME.get(location);
-            if (globalTheme != null) return globalTheme;
-        }
-        if (defaultTheme != null && defaultTheme.isPresent()) return defaultTheme.get();
-        else if (defaultTheme == null) return null;
-        throw new NoSuchElementException("Theme not present: " + defaultTheme.getId());
-    }
-
-    /**
-     * Gets the theme from the id.
-     *
-     * @param id the id of the theme.
-     * @return the theme or the default theme if not found.
-     */
-    @Deprecated(forRemoval = true)
-    public static @NotNull GlobalTheme fromIdOrDefault(String id) {
-        return fromIdOr(id, VANILLA.get());
+    public static GlobalTheme fromLocationOr(ResourceLocation location, GlobalTheme defaultTheme) {
+        GlobalTheme globalTheme = THEME_REGISTRY.get(location);
+        if (defaultTheme != null && globalTheme == null) return defaultTheme;
+        else if (defaultTheme == null && globalTheme == null) return VANILLA;
+        else return globalTheme;
     }
 
     /**
@@ -143,14 +146,64 @@ public class GlobalTheme {
         return fromLocationOr(location, VANILLA);
     }
 
-    /**
-     * Get the theme's id.
-     *
-     * @return the theme's id.
-     */
-    @Deprecated
-    public String id() {
-        return Objects.requireNonNull(ModRegistries.GLOBAL_THEME.getId(this), "Theme missing for " + this).getPath();
+    public static GlobalTheme get() {
+        return UltreonLib.getTheme();
+    }
+
+    public static void reload(ResourceManager resourceManager) {
+        THEMES.clear();
+        THEMES.add(VANILLA);
+
+        for (Resource themes : resourceManager.getResourceStack(new ResourceLocation(UltreonLib.MOD_ID, "global_themes.json"))) {
+            try (InputStream inputStream = themes.open()) {
+                loadThemes(UltreonLib.GSON.fromJson(new InputStreamReader(inputStream), JsonElement.class));
+            } catch (IOException e) {
+                UltreonLib.LOGGER.error("Failed to load themes from {}", themes.source().packId(), e);
+            }
+        }
+
+        total = THEMES.size();
+    }
+
+    private static void loadThemes(JsonElement themes) {
+        LIST_CODEC.parse(JsonOps.INSTANCE, themes).resultOrPartial(s -> UltreonLib.LOGGER.warn("Failed to load themes: {}", s));
+    }
+
+    public static List<GlobalTheme> getThemes() {
+        return Collections.unmodifiableList(THEMES);
+    }
+
+    public static List<GlobalTheme> getDefaultThemes() {
+        return DEFAULT_THEMES;
+    }
+
+    public static Optional<GlobalTheme> registerTheme(ResourceLocation resourceLocation, ResourceManager resourceManager) {
+        UltreonLib.LOGGER.debug("Registering theme {}", resourceLocation);
+        if (resourceManager != null) {
+            String path = "global_themes/" + resourceLocation.getNamespace() + "/" + resourceLocation.getPath() + ".json";
+            ResourceLocation location = new ResourceLocation(UltreonLib.MOD_ID, path);
+            Optional<Resource> theme = resourceManager.getResource(location);
+            if (theme.isPresent()) {
+                try (InputStream inputStream = theme.get().open()) {
+                    Optional<GlobalTheme> globalTheme = CODEC.parse(JsonOps.INSTANCE, UltreonLib.GSON.fromJson(new InputStreamReader(inputStream), JsonElement.class))
+                            .resultOrPartial(s -> UltreonLib.LOGGER.warn("Failed to load theme: {}", s));
+                    globalTheme.ifPresent(THEMES::add);
+                    globalTheme.ifPresent(theme1 -> THEME_REGISTRY.put(resourceLocation, theme1));
+                    return globalTheme;
+                } catch (IOException e) {
+                    UltreonLib.LOGGER.error("Failed to load global themes from {}", theme.get().source().packId(), e);
+                }
+            } else {
+                UltreonLib.LOGGER.error("Global theme {} not found", path);
+            }
+        }
+        return Optional.empty();
+    }
+
+    public static void clear() {
+        THEMES.clear();
+        THEMES.add(VANILLA);
+        total = 1;
     }
 
     /**
@@ -208,9 +261,9 @@ public class GlobalTheme {
      */
     public String getDescriptionId() {
         if (getId().getNamespace().equals(UltreonLib.MOD_ID)) {
-            return UltreonLib.MOD_ID +  ".theme." + getId().getPath();
+            return UltreonLib.MOD_ID + ".theme." + getId().getPath();
         }
-        return getId().getNamespace() + "." + UltreonLib.MOD_ID + ".theme." + getId().getPath();
+        return UltreonLib.MOD_ID + "." + UltreonLib.MOD_ID + ".theme." + getId().getNamespace() + "." + getId().getPath();
     }
 
     /**
@@ -219,7 +272,11 @@ public class GlobalTheme {
      * @return the next theme.
      */
     public GlobalTheme next() {
-        return THEMES.get((this.ordinal + 1) % GlobalTheme.total);
+        return THEMES.get((this.ordinal() + 1) % THEMES.size());
+    }
+
+    private int ordinal() {
+        return THEMES.getId(this);
     }
 
     /**
@@ -228,34 +285,113 @@ public class GlobalTheme {
      * @return the previous theme.
      */
     public GlobalTheme previous() {
-        return THEMES.get(((ordinal - 1 + GlobalTheme.total) % GlobalTheme.total));
+        return THEMES.get(((ordinal() - 1 + GlobalTheme.total) % GlobalTheme.total));
     }
 
     public ResourceLocation getId() {
-        return ModRegistries.GLOBAL_THEME.getId(this);
+        return Objects.requireNonNull(THEME_REGISTRY.inverse().get(this), () -> "Theme not present: " + this);
     }
 
     public Theme getWindowTheme() {
-        return windowTheme;
+        return windowTheme.get();
     }
 
     public Theme getContentTheme() {
-        return contentTheme;
+        return contentTheme.get();
     }
 
     public Theme getMenuTheme() {
-        return menuTheme;
+        return menuTheme.get();
     }
 
     public Style getContentButtonStyle() {
-        return this.contentTheme.getButtonStyle();
+        return this.contentTheme.get().getButtonStyle();
     }
 
     public Style getWindowButtonStyle() {
-        return this.windowTheme.getButtonStyle();
+        return this.windowTheme.get().getButtonStyle();
     }
 
     public Style getMenuButtonStyle() {
-        return this.menuTheme.getButtonStyle();
+        return this.menuTheme.get().getButtonStyle();
+    }
+
+    public ResourceLocation font() {
+        return this.font == null ? Minecraft.DEFAULT_FONT : this.font;
+    }
+
+    public Theme get(WidgetPlacement widgetPlacement) {
+        return switch (widgetPlacement) {
+            case WINDOW -> this.windowTheme.get();
+            case CONTENT -> this.contentTheme.get();
+            case MENU -> this.menuTheme.get();
+        };
+    }
+
+    public FrameType getFrameType() {
+        return this.frameType;
+    }
+
+    public void init() {
+        this.windowTheme.get().init();
+        this.contentTheme.get().init();
+        this.menuTheme.get().init();
+    }
+
+    public static CompletableFuture<Void> reload(PreparableReloadListener.PreparationBarrier preparationBarrier, ResourceManager resourceManager, ProfilerFiller preparationsProfiler, ProfilerFiller reloadProfiler, Executor backgroundExecutor, Executor gameExecutor) {
+        return prepare(resourceManager, backgroundExecutor)
+                .thenCompose(preparationBarrier::wait)
+                .thenAcceptAsync(arg2 -> registerThemes(arg2, reloadProfiler), gameExecutor);
+    }
+
+    private static void registerThemes(Map<ResourceLocation, GlobalTheme> globalThemes, ProfilerFiller reloadProfiler) {
+        if (reloadProfiler != null) {
+            reloadProfiler.push("Register Themes");
+
+            THEMES.clear();
+            THEMES.add(VANILLA);
+
+            THEME_REGISTRY.clear();
+            for (GlobalTheme defaultTheme : DEFAULT_THEMES) {
+                THEMES.add(defaultTheme);
+                THEME_REGISTRY.put(defaultTheme.getId(), defaultTheme);
+            }
+            globalThemes.forEach((resourceLocation, theme) -> {
+                THEMES.add(theme);
+                THEME_REGISTRY.put(resourceLocation, theme);
+            });
+
+            reloadProfiler.pop();
+        }
+    }
+
+    private static CompletableFuture<Map<ResourceLocation, GlobalTheme>> prepare(ResourceManager resourceManager, Executor backgroundExecutor) {
+        return CompletableFuture.supplyAsync(() -> {
+            List<Resource> resourceStack = resourceManager.getResourceStack(new ResourceLocation(UltreonLib.MOD_ID, "global_themes.json"));
+            List<ResourceLocation> themeReferences = new ArrayList<>();
+            GlobalTheme.clear();
+
+            for (Resource resource : resourceStack) {
+                try (InputStream inputStream = resource.open()) {
+                    DataResult<Pair<List<ResourceLocation>, JsonElement>> decode = GlobalTheme.LIST_CODEC.decode(JsonOps.INSTANCE, UltreonLib.GSON.fromJson(new InputStreamReader(inputStream), JsonElement.class));
+                    if (decode.result().isPresent()) {
+                        themeReferences.addAll(decode.result().get().getFirst());
+                    } else {
+                        UltreonLib.LOGGER.error("Failed to load themes from {}: Invalid json", resource.source().packId());
+                    }
+                } catch (IOException e) {
+                    UltreonLib.LOGGER.error("Failed to load themes from {}", resource.source().packId(), e);
+                }
+            }
+
+            Map<ResourceLocation, GlobalTheme> themes = new HashMap<>();
+            for (ResourceLocation themeRef : themeReferences) {
+                UltreonLib.LOGGER.info("Registering global theme: {}", themeRef);
+                Optional<GlobalTheme> optionalTheme = GlobalTheme.registerTheme(themeRef, resourceManager);
+                optionalTheme.ifPresent(globalTheme -> themes.put(themeRef, globalTheme));
+            }
+
+            return themes;
+        }, backgroundExecutor);
     }
 }

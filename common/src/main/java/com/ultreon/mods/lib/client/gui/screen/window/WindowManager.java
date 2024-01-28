@@ -89,7 +89,7 @@ public final class WindowManager {
 
                 if (window.isVisible() && window.isValid()) {
                     gfx.pose().pushPose();
-                    window.render(gfx, mouseX, mouseY, partialTicks);
+                    window.renderWidget(gfx, mouseX, mouseY, partialTicks);
                     gfx.pose().popPose();
                 }
             }

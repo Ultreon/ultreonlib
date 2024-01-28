@@ -59,9 +59,10 @@ public class RenderUtils {
      * @param entity the entity to render.
      */
     public static void renderEntityInGui(GuiGraphics gfx, int posX, int posY, float xRot, float yRot, float scale, int cutX, int cutY, int cutWidth, int cutHeight, Entity entity) {
-        ScissorStack.pushScissorTranslated(gfx, cutX, cutY, cutWidth, cutHeight);
-        renderEntityInGui(gfx, posX, posY, xRot, yRot, scale, entity);
-        ScissorStack.popScissor();
+        if (ScissorStack.pushScissorTranslated(gfx, cutX, cutY, cutWidth, cutHeight)) {
+            renderEntityInGui(gfx, posX, posY, xRot, yRot, scale, entity);
+            ScissorStack.popScissor();
+        }
     }
 
     /**

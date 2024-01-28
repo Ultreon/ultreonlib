@@ -1,62 +1,47 @@
 package com.ultreon.mods.lib.client.gui.widget;
 
-import com.ultreon.mods.lib.client.theme.*;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.Renderable;
+import com.ultreon.mods.lib.UltreonLib;
+import com.ultreon.mods.lib.client.gui.GuiRenderer;
+import com.ultreon.mods.lib.commons.Color;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 
-public class Label implements Renderable, Stylized {
-    protected final Minecraft minecraft;
-    protected final Font font;
+public class Label extends UIWidget<Label> {
     public int y;
     public int x;
-    private Component message;
     private boolean shadow;
     private int color;
-    private GlobalTheme globalTheme;
-    private ThemeComponent component;
-
-    public Label(int x, int y, Component message, GlobalTheme globalTheme, ThemeComponent component) {
-        this(x, y, message, false, globalTheme, component);
+    public Label(int x, int y, Component message) {
+        this(x, y, message, false);
     }
 
-    public Label(int x, int y, Component message, boolean shadow, GlobalTheme globalTheme, ThemeComponent component) {
+    public Label(int x, int y, Component message, boolean shadow) {
+        super(message);
         this.x = x;
         this.y = y;
-        this.component = component;
         this.color = getStyle().getTextColor().getRgb();
-        this.message = message;
-        this.minecraft = Minecraft.getInstance();
-        this.font = minecraft.font;
         this.shadow = shadow;
     }
 
     @Override
-    public void render(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
-        if (this.shadow) {
-            gfx.drawString(this.font, this.message, this.x, this.y, getColor());
-        } else {
-            gfx.drawString(this.font, this.message, this.x, this.y, getColor(), false);
-        }
+    public void render(@NotNull GuiRenderer renderer, int mouseX, int mouseY, float partialTicks) {
+        renderer.textLeft(this.getMessage(), this.x, this.y, this.getColorRgb(), this.shadow);
     }
 
-    public Component getMessage() {
-        return message;
-    }
-
-    public void setMessage(Component message) {
-        this.message = message;
-    }
-
-    public int getColor() {
+    public int getColorRgb() {
         return color;
     }
 
-    public void setColor(int color) {
+    public Color getColor() {
+        return Color.rgb(color);
+    }
+
+    public void setColorRgb(int color) {
         this.color = color;
+    }
+
+    public void setColor(Color color) {
+        this.color = color.getRgb();
     }
 
     public boolean hasShadow() {
@@ -71,13 +56,28 @@ public class Label implements Renderable, Stylized {
         setMessage(Component.literal(s));
     }
 
-    @Override
-    public ThemeComponent getThemeComponent() {
-        return component;
+    public Label message(Component message) {
+        this.setMessage(message);
+        return this;
+    }
+
+    public Label color(int color) {
+        this.color = color;
+        return this;
+    }
+
+    public Label color(Color color) {
+        this.color = color.getRgb();
+        return this;
+    }
+
+    public Label shadow(boolean shadow) {
+        this.shadow = shadow;
+        return this;
     }
 
     @Override
     public void reloadTheme() {
-        this.color = getStyle().getTextColor().getRgb();
+        this.theme = UltreonLib.getTheme().get(getPlacement());
     }
 }

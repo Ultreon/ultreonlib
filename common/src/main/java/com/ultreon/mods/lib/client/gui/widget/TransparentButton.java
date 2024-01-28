@@ -1,30 +1,25 @@
 package com.ultreon.mods.lib.client.gui.widget;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
+import com.ultreon.mods.lib.client.gui.GuiRenderer;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 
-public class TransparentButton extends BaseButton {
-    public TransparentButton(int x, int y, int width, int height, Component title, CommandCallback action) {
-        super(x, y, width, height, title, action);
+public abstract class TransparentButton<T extends TransparentButton<T>> extends Button<T> {
+    public TransparentButton(Component title, Callback<T> action) {
+        super(title, action);
     }
 
-    public TransparentButton(int x, int y, int width, int height, Component title, CommandCallback action, TooltipFactory factory) {
-        super(x, y, width, height, title, action, factory);
+    public TransparentButton(Component title, Callback<T> action, TooltipFactory<T> factory) {
+        super(title, action, factory);
     }
 
     @Override
-    public void renderWidget(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
-        Minecraft mc = Minecraft.getInstance();
-        Font font = mc.font;
-
+    public void renderWidget(@NotNull GuiRenderer renderer, int mouseX, int mouseY, float partialTicks) {
         int col = new Color(0, 0, 0, 127).getRGB();
 
-        gfx.fill(getX(), getY(), getX() + width, getY() + height, col);
+        renderer.fill(getX(), getY(), getX() + width, getY() + height, col);
 
         int hov = new Color(255, 255, 0, 255).getRGB();
         int nrm = new Color(255, 255, 255, 255).getRGB();
@@ -42,9 +37,9 @@ public class TransparentButton extends BaseButton {
         }
 
         if (isHovered && active) {
-            gfx.drawCenteredString(font, this.getMessage(), (this.getX() + this.width / 2) + 1, (this.getY() + (this.height - 8) / 2) + 1, j);
+            renderer.textCenter(this.getMessage(), (this.getX() + this.width / 2) + 1, (this.getY() + (this.height - 8) / 2) + 1, j);
         } else {
-            gfx.drawCenteredString(font, this.getMessage(), this.getX() + this.width / 2, this.getY() + (this.height - 8) / 2, j);
+            renderer.textCenter(this.getMessage(), this.getX() + this.width / 2, this.getY() + (this.height - 8) / 2, j);
         }
     }
 }

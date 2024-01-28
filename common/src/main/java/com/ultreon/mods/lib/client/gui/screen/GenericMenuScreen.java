@@ -4,23 +4,16 @@ import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.datafixers.util.Pair;
 import com.ultreon.mods.lib.UltreonLib;
-import com.ultreon.mods.lib.UltreonLibConfig;
+import com.ultreon.mods.lib.client.TitleStyles;
+import com.ultreon.mods.lib.client.gui.screen.window.TitleStyle;
+import com.ultreon.mods.lib.client.gui.widget.*;
 import com.ultreon.mods.lib.client.theme.GlobalTheme;
 import com.ultreon.mods.lib.client.theme.Stylized;
-import com.ultreon.mods.lib.client.gui.widget.BaseButton;
-import com.ultreon.mods.lib.client.gui.widget.Button;
-import com.ultreon.mods.lib.client.gui.widget.Label;
-import com.ultreon.mods.lib.client.gui.widget.ListWidget;
-import com.ultreon.mods.lib.client.theme.ThemeRootComponent;
-import com.ultreon.mods.lib.mixin.common.AbstractSelectionListAccessor;
-import com.ultreon.mods.lib.mixin.common.AbstractWidgetAccessor;
+import com.ultreon.mods.lib.client.theme.WidgetPlacement;
 import dev.architectury.injectables.annotations.ExpectPlatform;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.*;
-import net.minecraft.client.gui.components.events.GuiEventListener;
-import net.minecraft.client.gui.narration.NarratableEntry;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -30,14 +23,15 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @SuppressWarnings({"UnusedReturnValue", "unused", "SameParameterValue"})
-public abstract class GenericMenuScreen extends BaseScreen implements Stylized {
+public abstract class GenericMenuScreen extends ULibScreen implements Stylized {
     protected final Minecraft mc = Minecraft.getInstance();
 
     @Nullable
-    private final Screen back;
-    private final java.util.List<Row> rows = new ArrayList<>();
+    private final net.minecraft.client.gui.screens.Screen back;
+    private final List<Row> rows = new ArrayList<>();
     private boolean frozen = false;
 
     private TitleStyle titleStyle;
@@ -55,7 +49,7 @@ public abstract class GenericMenuScreen extends BaseScreen implements Stylized {
         this.globalTheme = properties.globalTheme;
         this.panorama = properties.panorama;
 
-        this.titleColor = this.globalTheme.getTitleColor(ThemeRootComponent.WINDOW).getRgb();
+        this.titleColor = this.globalTheme.getTitleColor(WidgetPlacement.WINDOW).getRgb();
         this.titleStyle = properties.titleStyle;
 
         this.font = Minecraft.getInstance().font;
@@ -66,15 +60,15 @@ public abstract class GenericMenuScreen extends BaseScreen implements Stylized {
         reloadTheme();
     }
 
-    private static void emptyAction(BaseButton btn) {
+    private static void emptyAction(PushButton btn) {
     }
 
-    private static Tooltip nullTooltip(BaseButton btn) {
+    private static Tooltip nullTooltip(PushButton btn) {
         return null;
     }
 
     @NotNull
-    private static BaseButton.CommandCallback createCallbackWrapper(Runnable callback) {
+    private static Callback<PushButton> createCallbackWrapper(Runnable callback) {
         return (btn) -> callback.run();
     }
 
@@ -83,148 +77,148 @@ public abstract class GenericMenuScreen extends BaseScreen implements Stylized {
     }
 
     @SuppressWarnings("unused")
-    public Pair<BaseButton, BaseButton> addButtonRow(Component componentL, Component componentR) {
+    public Pair<PushButton, PushButton> addButtonRow(Component componentL, Component componentR) {
         return addButtonRow(componentL, GenericMenuScreen::emptyAction, componentR, GenericMenuScreen::emptyAction);
     }
 
     @SuppressWarnings("unused")
-    public Pair<BaseButton, BaseButton> addButtonRow(Component componentL, BaseButton.CommandCallback onPressL, Component componentR, BaseButton.CommandCallback onPressR) {
+    public Pair<PushButton, PushButton> addButtonRow(Component componentL, Callback<PushButton> onPressL, Component componentR, Callback<PushButton> onPressR) {
         return addButtonRow(componentL, onPressL, GenericMenuScreen::nullTooltip, componentR, onPressR, GenericMenuScreen::nullTooltip);
     }
 
     @SuppressWarnings("unused")
-    public Pair<BaseButton, BaseButton> addButtonRow(Component componentL, Runnable onPressL, Component componentR, Runnable onPressR) {
+    public Pair<PushButton, PushButton> addButtonRow(Component componentL, Runnable onPressL, Component componentR, Runnable onPressR) {
         return addButtonRow(componentL, createCallbackWrapper(onPressL), GenericMenuScreen::nullTooltip, componentR, createCallbackWrapper(onPressR), GenericMenuScreen::nullTooltip);
     }
 
     @SuppressWarnings("unused")
-    public Pair<BaseButton, BaseButton> addButtonRow(Component componentL, BaseButton.CommandCallback onPressL, BaseButton.TooltipFactory onTooltipL, Component componentR, BaseButton.CommandCallback onPressR, BaseButton.TooltipFactory onTooltipR) {
-        return addButtonRow(componentL, Button.Type.of(globalTheme.getContentTheme()), onPressL, onTooltipL, componentR, Button.Type.of(globalTheme.getContentTheme()), onPressR, onTooltipR);
+    public Pair<PushButton, PushButton> addButtonRow(Component componentL, Callback<PushButton> onPressL, TooltipFactory<PushButton> onTooltipL, Component componentR, Callback<PushButton> onPressR, TooltipFactory<PushButton> onTooltipR) {
+        return addButtonRow(componentL, PushButton.Type.of(globalTheme.getContentTheme()), onPressL, onTooltipL, componentR, PushButton.Type.of(globalTheme.getContentTheme()), onPressR, onTooltipR);
     }
 
     @SuppressWarnings("unused")
-    public Pair<BaseButton, BaseButton> addButtonRow(Component componentL, Runnable onPressL, BaseButton.TooltipFactory onTooltipL, Component componentR, Runnable onPressR, BaseButton.TooltipFactory onTooltipR) {
-        return addButtonRow(componentL, Button.Type.of(globalTheme.getContentTheme()), createCallbackWrapper(onPressL), onTooltipL, componentR, Button.Type.of(globalTheme.getContentTheme()), createCallbackWrapper(onPressR), onTooltipR);
+    public Pair<PushButton, PushButton> addButtonRow(Component componentL, Runnable onPressL, TooltipFactory<PushButton> onTooltipL, Component componentR, Runnable onPressR, TooltipFactory<PushButton> onTooltipR) {
+        return addButtonRow(componentL, PushButton.Type.of(globalTheme.getContentTheme()), createCallbackWrapper(onPressL), onTooltipL, componentR, PushButton.Type.of(globalTheme.getContentTheme()), createCallbackWrapper(onPressR), onTooltipR);
     }
 
     @SuppressWarnings("unused")
-    public Pair<BaseButton, BaseButton> addButtonRow(Component componentL, Button.Type typeL, Component componentR, Button.Type typeR) {
+    public Pair<PushButton, PushButton> addButtonRow(Component componentL, PushButton.Type typeL, Component componentR, PushButton.Type typeR) {
         return addButtonRow(componentL, typeL, GenericMenuScreen::emptyAction, componentR, typeR, GenericMenuScreen::emptyAction);
     }
 
     @SuppressWarnings("unused")
-    public Pair<BaseButton, BaseButton> addButtonRow(Component componentL, Button.Type typeL, BaseButton.CommandCallback onPressL, Component componentR, BaseButton.CommandCallback onPressR) {
-        return addButtonRow(componentL, typeL, onPressL, componentR, Button.Type.of(globalTheme.getContentTheme()), onPressR);
+    public Pair<PushButton, PushButton> addButtonRow(Component componentL, PushButton.Type typeL, Callback<PushButton> onPressL, Component componentR, Callback<PushButton> onPressR) {
+        return addButtonRow(componentL, typeL, onPressL, componentR, PushButton.Type.of(globalTheme.getContentTheme()), onPressR);
     }
 
     @SuppressWarnings("unused")
-    public Pair<BaseButton, BaseButton> addButtonRow(Component componentL, Button.Type typeL, Runnable onPressL, Component componentR, Runnable onPressR) {
-        return addButtonRow(componentL, typeL, createCallbackWrapper(onPressL), componentR, Button.Type.of(globalTheme.getContentTheme()), createCallbackWrapper(onPressR));
+    public Pair<PushButton, PushButton> addButtonRow(Component componentL, PushButton.Type typeL, Runnable onPressL, Component componentR, Runnable onPressR) {
+        return addButtonRow(componentL, typeL, createCallbackWrapper(onPressL), componentR, PushButton.Type.of(globalTheme.getContentTheme()), createCallbackWrapper(onPressR));
     }
 
     @SuppressWarnings("unused")
-    public Pair<BaseButton, BaseButton> addButtonRow(Component componentL, BaseButton.CommandCallback onPressL, Component componentR, Button.Type typeR, BaseButton.CommandCallback onPressR) {
-        return addButtonRow(componentL, Button.Type.of(globalTheme.getContentTheme()), onPressL, componentR, typeR, onPressR);
+    public Pair<PushButton, PushButton> addButtonRow(Component componentL, Callback<PushButton> onPressL, Component componentR, PushButton.Type typeR, Callback<PushButton> onPressR) {
+        return addButtonRow(componentL, PushButton.Type.of(globalTheme.getContentTheme()), onPressL, componentR, typeR, onPressR);
     }
 
     @SuppressWarnings("unused")
-    public Pair<BaseButton, BaseButton> addButtonRow(Component componentL, Runnable onPressL, Component componentR, Button.Type typeR, Runnable onPressR) {
-        return addButtonRow(componentL, Button.Type.of(globalTheme.getContentTheme()), createCallbackWrapper(onPressL), componentR, typeR, createCallbackWrapper(onPressR));
+    public Pair<PushButton, PushButton> addButtonRow(Component componentL, Runnable onPressL, Component componentR, PushButton.Type typeR, Runnable onPressR) {
+        return addButtonRow(componentL, PushButton.Type.of(globalTheme.getContentTheme()), createCallbackWrapper(onPressL), componentR, typeR, createCallbackWrapper(onPressR));
     }
 
     @SuppressWarnings("unused")
-    public Pair<BaseButton, BaseButton> addButtonRow(Component componentL, Button.Type typeL, BaseButton.CommandCallback onPressL, Component componentR, Button.Type typeR, BaseButton.CommandCallback onPressR) {
+    public Pair<PushButton, PushButton> addButtonRow(Component componentL, PushButton.Type typeL, Callback<PushButton> onPressL, Component componentR, PushButton.Type typeR, Callback<PushButton> onPressR) {
         return addButtonRow(componentL, typeL, onPressL, GenericMenuScreen::nullTooltip, componentR, typeR, onPressR, GenericMenuScreen::nullTooltip);
     }
 
     @SuppressWarnings("unused")
-    public Pair<BaseButton, BaseButton> addButtonRow(Component componentL, Button.Type typeL, Runnable onPressL, Component componentR, Button.Type typeR, Runnable onPressR) {
+    public Pair<PushButton, PushButton> addButtonRow(Component componentL, PushButton.Type typeL, Runnable onPressL, Component componentR, PushButton.Type typeR, Runnable onPressR) {
         return addButtonRow(componentL, typeL, createCallbackWrapper(onPressL), GenericMenuScreen::nullTooltip, componentR, typeR, createCallbackWrapper(onPressR), GenericMenuScreen::nullTooltip);
     }
 
     @SuppressWarnings("unused")
-    public Pair<BaseButton, BaseButton> addButtonRow(Component componentL, Button.Type typeL, Runnable onPressL, BaseButton.TooltipFactory onTooltipL, Component componentR, Button.Type typeR, Runnable onPressR, BaseButton.TooltipFactory onTooltipR) {
+    public Pair<PushButton, PushButton> addButtonRow(Component componentL, PushButton.Type typeL, Runnable onPressL, TooltipFactory<PushButton> onTooltipL, Component componentR, PushButton.Type typeR, Runnable onPressR, TooltipFactory<PushButton> onTooltipR) {
         return addButtonRow(componentL, typeL, createCallbackWrapper(onPressL), onTooltipL, componentR, typeR, createCallbackWrapper(onPressR), onTooltipR);
     }
 
     @SuppressWarnings("unused")
-    public Pair<BaseButton, BaseButton> addButtonRow(Component componentL, Button.Type typeL, BaseButton.CommandCallback onPressL, BaseButton.TooltipFactory onTooltipL, Component componentR, Button.Type typeR, BaseButton.CommandCallback onPressR, BaseButton.TooltipFactory onTooltipR) {
+    public Pair<PushButton, PushButton> addButtonRow(Component componentL, PushButton.Type typeL, Callback<PushButton> onPressL, TooltipFactory<PushButton> onTooltipL, Component componentR, PushButton.Type typeR, Callback<PushButton> onPressR, TooltipFactory<PushButton> onTooltipR) {
         if (this.frozen) {
             return null;
         }
 
-        BaseButton left = new Button(0, 0, 0, 0, componentL, onPressL, onTooltipL, typeL);
-        BaseButton right = new Button(0, 0, 0, 0, componentR, onPressR, onTooltipR, typeR);
+        PushButton left = PushButton.of(componentL, onPressL, onTooltipL).type(typeL);
+        PushButton right = PushButton.of(componentR, onPressR, onTooltipR).type(typeR);
 
         left.setWidth((width() - 5 - 5) / 2 - 1);
         right.setWidth((width() - 5 - 5) / 2 - 1);
         this.rows.add(new Row(ImmutableList.of(left, right), 24, (width() - 5 - 5) / 2 - 3, 20, 6, 2, 4, 0, 77));
-        addRenderableWidget(left);
-        addRenderableWidget(right);
+        add(left);
+        add(right);
         return new Pair<>(left, right);
     }
 
     @SuppressWarnings("unused")
-    public BaseButton addButtonRow(Component component) {
+    public PushButton addButtonRow(Component component) {
         return addButtonRow(component, GenericMenuScreen::emptyAction);
     }
 
     @SuppressWarnings("unused")
-    public BaseButton addButtonRow(Component component, Runnable onPress) {
+    public PushButton addButtonRow(Component component, Runnable onPress) {
         return addButtonRow(component, btn -> onPress.run(), GenericMenuScreen::nullTooltip);
     }
 
     @SuppressWarnings("unused")
-    public BaseButton addButtonRow(Component component, BaseButton.CommandCallback onPress) {
+    public PushButton addButtonRow(Component component, Callback<PushButton> onPress) {
         return addButtonRow(component, onPress, GenericMenuScreen::nullTooltip);
     }
 
     @SuppressWarnings("unused")
-    public BaseButton addButtonRow(Component component, Runnable onPress, BaseButton.TooltipFactory onTooltip) {
-        return addButtonRow(component, Button.Type.of(globalTheme.getContentTheme()), btn -> onPress.run(), onTooltip);
+    public PushButton addButtonRow(Component component, Runnable onPress, TooltipFactory<PushButton> onTooltip) {
+        return addButtonRow(component, PushButton.Type.of(globalTheme.getContentTheme()), btn -> onPress.run(), onTooltip);
     }
 
     @SuppressWarnings("unused")
-    public BaseButton addButtonRow(Component component, BaseButton.CommandCallback onPress, BaseButton.TooltipFactory onTooltip) {
-        return addButtonRow(component, Button.Type.of(globalTheme.getContentTheme()), onPress, onTooltip);
+    public PushButton addButtonRow(Component component, Callback<PushButton> onPress, TooltipFactory<PushButton> onTooltip) {
+        return addButtonRow(component, PushButton.Type.of(globalTheme.getContentTheme()), onPress, onTooltip);
     }
 
     @SuppressWarnings("unused")
-    public BaseButton addButtonRow(Component component, Button.Type type) {
+    public PushButton addButtonRow(Component component, PushButton.Type type) {
         return addButtonRow(component, type, GenericMenuScreen::emptyAction);
     }
 
     @SuppressWarnings("unused")
-    public BaseButton addButtonRow(Component component, Button.Type type, BaseButton.CommandCallback onPress) {
+    public PushButton addButtonRow(Component component, PushButton.Type type, Callback<PushButton> onPress) {
         return addButtonRow(component, type, onPress, GenericMenuScreen::nullTooltip);
     }
 
     @SuppressWarnings("unused")
-    public BaseButton addButtonRow(Component component, Button.Type type, Runnable onPress) {
+    public PushButton addButtonRow(Component component, PushButton.Type type, Runnable onPress) {
         return addButtonRow(component, type, btn -> onPress.run(), GenericMenuScreen::nullTooltip);
     }
 
     @SuppressWarnings("unused")
-    public BaseButton addButtonRow(Component component, Button.Type type, Runnable onPress, BaseButton.TooltipFactory onTooltip) {
+    public PushButton addButtonRow(Component component, PushButton.Type type, Runnable onPress, TooltipFactory<PushButton> onTooltip) {
         return addButtonRow(component, type, btn -> onPress.run(), onTooltip);
     }
 
     @SuppressWarnings("unused")
-    public BaseButton addButtonRow(Component component, Button.Type type, BaseButton.CommandCallback onPress, BaseButton.TooltipFactory onTooltip) {
+    public PushButton addButtonRow(Component component, PushButton.Type type, Callback<PushButton> onPress, TooltipFactory<PushButton> onTooltip) {
         if (this.frozen) {
             return null;
         }
 
-        BaseButton button = new Button(0, 0, 0, 0, component, onPress, onTooltip, type);
+        PushButton button = PushButton.of(component, onPress, onTooltip).type(type);
 
         button.setWidth(width() - 5 - 5);
         this.rows.add(new Row(ImmutableList.of(button), 24, width() - 6 - 6, 20, 6, 2, 4, 0, 53));
-        addRenderableWidget(button);
+        add(button);
         return button;
     }
 
     @SuppressWarnings("unused")
-    public GenericMenuScreen addInputRow(EditBox editBox) {
+    public GenericMenuScreen addInputRow(TextBox editBox) {
         if (this.frozen) {
             return this;
         }
@@ -233,7 +227,7 @@ public abstract class GenericMenuScreen extends BaseScreen implements Stylized {
 
         editBox.setWidth(width() - 5 - 5);
         this.rows.add(new Row(ImmutableList.of(editBox), 16, width() - 5 - 5, 12, 7, 3, 4, 0, 37));
-        addRenderableWidget(editBox);
+        add(editBox);
         return this;
     }
 
@@ -253,13 +247,14 @@ public abstract class GenericMenuScreen extends BaseScreen implements Stylized {
             return null;
         }
 
-        Label userWidget = new Label(0, 0, component, globalTheme, ThemeRootComponent.CONTENT);
-        this.rows.add(new Row(ImmutableList.of(userWidget), font.lineHeight + 4, width() - 5 - 5, font.lineHeight, 8, 2, 4, 0, 226));
-        addRenderableOnly(userWidget);
-        return userWidget;
+        Label label = new Label(0, 0, component);
+        this.rows.add(new Row(ImmutableList.of(label), font.lineHeight + 4, width() - 5 - 5, font.lineHeight, 8, 2, 4, 0, 226));
+        add(label);
+        return label;
     }
 
-    @SuppressWarnings("unused")
+    @Deprecated(forRemoval = true)
+    @SuppressWarnings({"unused", "removal"})
     public <T extends Renderable> T addStatic(T widget, int height, int widgetWidth, int deltaX, int deltaY, int widgetOffset) {
         if (this.frozen) {
             return null;
@@ -270,7 +265,8 @@ public abstract class GenericMenuScreen extends BaseScreen implements Stylized {
         return widget;
     }
 
-    @SuppressWarnings("unused")
+    @Deprecated(forRemoval = true)
+    @SuppressWarnings({"unused", "removal"})
     public <T extends Renderable> T addStatic(T widget, int height, int widgetWidth, int deltaX, int deltaY, int widgetOffset, int u, int v) {
         if (this.frozen) {
             return null;
@@ -281,7 +277,8 @@ public abstract class GenericMenuScreen extends BaseScreen implements Stylized {
         return widget;
     }
 
-    @SuppressWarnings("unused")
+    @Deprecated(forRemoval = true)
+    @SuppressWarnings({"unused", "removal"})
     public <T extends Renderable> T addStatic(T widget, int height, int widgetWidth, int widgetHeight, int deltaX, int deltaY, int widgetOffset, int u, int v) {
         if (this.frozen) {
             return null;
@@ -292,7 +289,8 @@ public abstract class GenericMenuScreen extends BaseScreen implements Stylized {
         return widget;
     }
 
-    @SuppressWarnings("unused")
+    @Deprecated(forRemoval = true)
+    @SuppressWarnings({"unused", "removal"})
     public <T extends Renderable> T addStatic(T widget, int height, int widgetWidth, int widgetHeight, int deltaX, int deltaY, int widgetOffset, int u, int v, int uh) {
         if (this.frozen) {
             return null;
@@ -304,68 +302,68 @@ public abstract class GenericMenuScreen extends BaseScreen implements Stylized {
     }
 
     @SuppressWarnings("unused")
-    public <T extends Renderable> T addStatic(T widget, int height, int widgetWidth, int widgetHeight, int deltaX, int deltaY, int widgetOffset, int u, int v, int uh, int uw) {
+    public <T extends UIWidget<?>> T addStatic(T widget, int height, int widgetWidth, int widgetHeight, int deltaX, int deltaY, int widgetOffset, int u, int v, int uh, int uw) {
         if (this.frozen) {
             return null;
         }
 
         this.rows.add(new Row(ImmutableList.of(widget), height, widgetWidth, widgetHeight, deltaX, deltaY, widgetOffset, u, v, uh, uw));
-        addRenderableOnly(widget);
+        add(widget);
         return widget;
     }
 
     @SuppressWarnings("unused")
-    public <T extends GuiEventListener & Renderable & NarratableEntry> T addRenderableWidget(T widget, int height, int widgetWidth, int deltaX, int deltaY, int widgetOffset) {
+    public <T extends UIWidget<?>> T add(T widget, int height, int widgetWidth, int deltaX, int deltaY, int widgetOffset) {
         if (this.frozen) {
             return null;
         }
 
         this.rows.add(new Row(ImmutableList.of(widget), height, widgetWidth, deltaX, deltaY, widgetOffset));
-        addRenderableWidget(widget);
+        add(widget);
         return widget;
     }
 
     @SuppressWarnings("unused")
-    public <T extends GuiEventListener & Renderable & NarratableEntry> T addRenderableWidget(T widget, int height, int widgetWidth, int deltaX, int deltaY, int widgetOffset, int u, int v) {
+    public <T extends UIWidget<?>> T add(T widget, int height, int widgetWidth, int deltaX, int deltaY, int widgetOffset, int u, int v) {
         if (this.frozen) {
             return null;
         }
 
         this.rows.add(new Row(ImmutableList.of(widget), height, widgetWidth, deltaX, deltaY, widgetOffset, u, v));
-        addRenderableWidget(widget);
+        add(widget);
         return widget;
     }
 
     @SuppressWarnings("unused")
-    public <T extends GuiEventListener & Renderable & NarratableEntry> T addRenderableWidget(T widget, int height, int widgetWidth, int widgetHeight, int deltaX, int deltaY, int widgetOffset, int u, int v) {
+    public <T extends UIWidget<?>> T add(T widget, int height, int widgetWidth, int widgetHeight, int deltaX, int deltaY, int widgetOffset, int u, int v) {
         if (this.frozen) {
             return null;
         }
 
         this.rows.add(new Row(ImmutableList.of(widget), height, widgetWidth, widgetHeight, deltaX, deltaY, widgetOffset, u, v));
-        addRenderableWidget(widget);
+        add(widget);
         return widget;
     }
 
     @SuppressWarnings("unused")
-    public <T extends GuiEventListener & Renderable & NarratableEntry> T addRenderableWidget(T widget, int height, int widgetWidth, int widgetHeight, int deltaX, int deltaY, int widgetOffset, int u, int v, int uh) {
+    public <T extends UIWidget<?>> T add(T widget, int height, int widgetWidth, int widgetHeight, int deltaX, int deltaY, int widgetOffset, int u, int v, int uh) {
         if (this.frozen) {
             return null;
         }
 
         this.rows.add(new Row(ImmutableList.of(widget), height, widgetWidth, widgetHeight, deltaX, deltaY, widgetOffset, u, v, uh));
-        addRenderableWidget(widget);
+        add(widget);
         return widget;
     }
 
     @SuppressWarnings("unused")
-    public <T extends GuiEventListener & Renderable & NarratableEntry> T addRenderableWidget(T widget, int height, int widgetWidth, int widgetHeight, int deltaX, int deltaY, int widgetOffset, int u, int v, int uh, int uw) {
+    public <T extends UIWidget<?>> T add(T widget, int height, int widgetWidth, int widgetHeight, int deltaX, int deltaY, int widgetOffset, int u, int v, int uh, int uw) {
         if (this.frozen) {
             return null;
         }
 
         this.rows.add(new Row(ImmutableList.of(widget), height, widgetWidth, widgetHeight, deltaX, deltaY, widgetOffset, u, v, uh, uw));
-        addRenderableWidget(widget);
+        add(widget);
         return widget;
     }
 
@@ -390,10 +388,10 @@ public abstract class GenericMenuScreen extends BaseScreen implements Stylized {
             return null;
         }
 
-        ListWidget widget = new ListWidget(this, 0, 0, width() - 6 - 7, count, hasSearch, title);
+        ListWidget widget = new ListWidget(this, count, hasSearch, title);
         widget.setWidth(width() - 6 - 6);
         this.rows.add(new Row(ImmutableList.of(widget), widget.getHeight() + 2, width() - 6 - 6, widget.getHeight(), 6, 0, 4, 0, 226, width(), 1));
-        addRenderableWidget(widget);
+        add(widget);
         return widget;
     }
 
@@ -423,7 +421,7 @@ public abstract class GenericMenuScreen extends BaseScreen implements Stylized {
 
     @Nullable
     @ApiStatus.Internal
-    public final Screen getBack() {
+    public final net.minecraft.client.gui.screens.Screen getBack() {
         return back;
     }
 
@@ -515,14 +513,14 @@ public abstract class GenericMenuScreen extends BaseScreen implements Stylized {
     }
 
     @Override
-    protected void init() {
+    protected void initWidgets() {
         frozen = true;
         initialized = true;
     }
 
     @Override
-    protected void clearWidgets() {
-
+    protected final void clearWidgets() {
+        // Do nothing
     }
 
     @Override
@@ -552,18 +550,15 @@ public abstract class GenericMenuScreen extends BaseScreen implements Stylized {
 
         int rowsHeight = rowsHeight();
 
-        switch (this.titleStyle) {
-            case HIDDEN -> gfx.blitSprite(this.contentSprite, left(), top(), width(), height());
-            case NORMAL -> {
-                gfx.blitSprite(this.contentSprite, left(), top(), width(), height());
-                gfx.drawString(this.font, this.title, (int) (left() + width() / 2f - this.font.width(this.title.getString()) / 2), top() + 6, this.titleColor, false);
-            }
-            case DETACHED -> {
-                // Draw title bar frame.
-                gfx.blitSprite(this.titleSprite, left(), top(), width(), getTitleBarHeight());
-                gfx.blitSprite(this.contentSprite, left(), top() + getTitleBarHeight() + 1, width(), height() - getTitleBarHeight() - 1);
-                gfx.drawString(this.font, this.title, (int) (left() + width() / 2f - this.font.width(this.title.getString()) / 2), top() + 6, this.titleColor, false);
-            }
+        if (this.titleStyle.equals(TitleStyles.HIDDEN)) {
+            gfx.blitSprite(this.contentSprite, left(), top(), width(), height());
+        } else if (this.titleStyle.equals(TitleStyles.NORMAL)) {
+            gfx.blitSprite(this.contentSprite, left(), top(), width(), height());
+            gfx.drawString(this.font, this.title, (int) (left() + width() / 2f - this.font.width(this.title.getString()) / 2), top() + 6, this.titleColor, false);
+        } else if (this.titleStyle.equals(TitleStyles.DETACHED)) {// Draw title bar frame.
+            gfx.blitSprite(this.titleSprite, left(), top(), width(), getTitleBarHeight());
+            gfx.blitSprite(this.contentSprite, left(), top() + getTitleBarHeight() + 1, width(), height() - getTitleBarHeight() - 1);
+            gfx.drawString(this.font, this.title, (int) (left() + width() / 2f - this.font.width(this.title.getString()) / 2), top() + 6, this.titleColor, false);
         }
 
         int rowStartY = top() + this.getRenderTitleBarHeight();
@@ -660,18 +655,16 @@ public abstract class GenericMenuScreen extends BaseScreen implements Stylized {
     }
 
     private void repositionAndRender(Renderable widget, int x, int y, int width, int height, @NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
-        if (widget instanceof AbstractWidget absWidget && absWidget instanceof AbstractWidgetAccessor accessor) {
+        if (widget instanceof AbstractWidget absWidget) {
             absWidget.setX(x);
             absWidget.setY(y);
             absWidget.setWidth(width);
-            accessor.setHeight(height);
-        } else if (widget instanceof AbstractSelectionList<?> absWidget && absWidget instanceof AbstractSelectionListAccessor accessor) {
-            accessor.setX0(x);
-            accessor.setY0(y);
-            accessor.setX1(x + width);
-            accessor.setY1(y + height);
-            accessor.setWidth(width);
-            accessor.setHeight(height);
+            absWidget.setHeight(height);
+        } else if (widget instanceof AbstractSelectionList<?> absWidget) {
+            absWidget.setX(x);
+            absWidget.setY(y);
+            absWidget.setWidth(width);
+            absWidget.setHeight(height);
         } else if (widget instanceof Label label) {
             label.x = x;
             label.y = y;
@@ -687,17 +680,14 @@ public abstract class GenericMenuScreen extends BaseScreen implements Stylized {
 
     @Override
     public final Vec2 getCloseButtonPos() {
-        switch (titleStyle) {
-            case NORMAL -> {
-                int iconX = right() - 9 - 5;
-                int iconY = top() + (int) (5 + (21 / 2f - font.lineHeight / 2f) - 4);
-                return new Vec2(iconX, iconY);
-            }
-            case DETACHED -> {
-                int iconX = right() - 9 - 5;
-                int iconY = top() + 1 + (int) ((25 - 6) / 2f - font.lineHeight / 2f);
-                return new Vec2(iconX, iconY);
-            }
+        if (titleStyle.equals(TitleStyles.NORMAL)) {
+            int iconX = right() - 9 - 5;
+            int iconY = top() + (int) (5 + (21 / 2f - font.lineHeight / 2f) - 4);
+            return new Vec2(iconX, iconY);
+        } else if (titleStyle.equals(TitleStyles.DETACHED)) {
+            int iconX = right() - 9 - 5;
+            int iconY = top() + 1 + (int) ((25 - 6) / 2f - font.lineHeight / 2f);
+            return new Vec2(iconX, iconY);
         }
         return null;
     }
@@ -726,20 +716,10 @@ public abstract class GenericMenuScreen extends BaseScreen implements Stylized {
     public void reloadTheme() {
         super.reloadTheme();
         this.globalTheme = UltreonLib.getTheme();
-        this.titleColor = globalTheme.getTitleColor(ThemeRootComponent.WINDOW).getRgb();
+        this.titleColor = globalTheme.getTitleColor(WidgetPlacement.WINDOW).getRgb();
         this.titleStyle = UltreonLib.getTitleStyle();
         this.contentSprite = UltreonLib.getTheme().getContentTheme().getFrameSprite();
         this.titleSprite = UltreonLib.getTheme().getWindowTheme().getFrameSprite();
-//        this.background = UltreonLib.res(switch (globalTheme) {
-//            case DARK -> "textures/gui/menu/generic/generic_menu_dark.png";
-//            case LIGHT, MIX -> "textures/gui/menu/generic/generic_menu_light.png";
-//            default -> "textures/gui/menu/generic/generic_menu.png";
-//        });
-//        this.titleBackground = UltreonLib.res(switch (globalTheme) {
-//            case DARK, MIX -> "textures/gui/menu/generic/generic_menu_dark.png";
-//            case LIGHT -> "textures/gui/menu/generic/generic_menu_light.png";
-//            default -> "textures/gui/menu/generic/generic_menu.png";
-//        });
 
         for (Row row : rows) {
             row.reloadTheme();
@@ -776,11 +756,11 @@ public abstract class GenericMenuScreen extends BaseScreen implements Stylized {
 
     public static class Properties {
         private Component title;
-        private TitleStyle titleStyle = UltreonLibConfig.TITLE_STYLE.get();
+        private TitleStyle titleStyle = UltreonLib.getTitleStyle();
         private final GlobalTheme globalTheme = UltreonLib.getTheme();
         private boolean panorama = Minecraft.getInstance().level == null;
         @Nullable
-        private Screen back = Minecraft.getInstance().screen;
+        private net.minecraft.client.gui.screens.Screen back = Minecraft.getInstance().screen;
 
         public Properties title(Component title) {
             this.title = title;
@@ -807,7 +787,7 @@ public abstract class GenericMenuScreen extends BaseScreen implements Stylized {
             return this;
         }
 
-        public Properties back(@Nullable Screen back) {
+        public Properties back(@Nullable net.minecraft.client.gui.screens.Screen back) {
             this.back = back;
             return this;
         }

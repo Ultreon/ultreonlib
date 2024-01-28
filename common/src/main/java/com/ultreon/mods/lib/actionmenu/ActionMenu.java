@@ -1,6 +1,6 @@
 package com.ultreon.mods.lib.actionmenu;
 
-import com.ultreon.mods.lib.common.IllegalEnvironmentException;
+import com.ultreon.mods.lib.commons.IllegalEnvironmentException;
 import dev.architectury.utils.Env;
 import dev.architectury.utils.EnvExecutor;
 import net.fabricmc.api.EnvType;

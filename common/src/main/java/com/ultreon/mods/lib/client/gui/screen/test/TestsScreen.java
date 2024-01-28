@@ -1,23 +1,19 @@
 package com.ultreon.mods.lib.client.gui.screen.test;
 
 import com.ultreon.mods.lib.UltreonLib;
-import com.ultreon.mods.lib.client.gui.screen.BaseScreen;
+import com.ultreon.mods.lib.client.gui.screen.ULibScreen;
 import com.ultreon.mods.lib.client.gui.screen.ListScreen;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
-import org.jetbrains.annotations.ApiStatus;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
-import java.util.ServiceLoader;
 import java.util.function.Supplier;
 
 public class TestsScreen  {
     public static void open() {
-        var screenTests = new ListScreen(Component.literal("Screen Tests"));
-        var map = new HashMap<String, Supplier<Screen>>();
+        var screenTests = new ListScreen(Component.literal("GUI Tests"));
+        var map = new HashMap<String, Supplier<net.minecraft.client.gui.screens.Screen>>();
 
         for (var provider : UltreonLib.getScreens()) {
             try {
@@ -27,7 +23,7 @@ public class TestsScreen  {
                         screenInfo.value(),
                         type.getSimpleName(),
                         type.getName());
-                map.put(type.getName(), () -> (Screen) provider.get());
+                map.put(type.getName(), () -> (net.minecraft.client.gui.screens.Screen) provider.get());
             } catch (Exception e) {
                 UltreonLib.LOGGER.warn("Failed to read test provider info for: " + provider.type().getName(), e);
             }
@@ -39,8 +35,8 @@ public class TestsScreen  {
                 try {
                     TestLaunchContext.withinContext(Component.nullToEmpty(entry.getTitle()), () -> {
                         var screen = supplier.get();
-                        if (screen instanceof BaseScreen baseScreen) {
-                            baseScreen.open();
+                        if (screen instanceof ULibScreen stylizedScreenUI) {
+                            stylizedScreenUI.open();
                         } else {
                             Minecraft.getInstance().setScreen(screen);
                         }

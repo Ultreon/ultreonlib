@@ -2,17 +2,16 @@ package com.ultreon.mods.lib.client.gui.widget.menu;
 
 import com.ultreon.mods.lib.UltreonLib;
 import com.ultreon.mods.lib.client.gui.FrameType;
+import com.ultreon.mods.lib.client.gui.GuiRenderer;
+import com.ultreon.mods.lib.client.gui.screen.ULibScreen;
+import com.ultreon.mods.lib.client.gui.widget.ContainerWidget;
 import com.ultreon.mods.lib.client.theme.GlobalTheme;
-import com.ultreon.mods.lib.client.gui.screen.BaseScreen;
-import com.ultreon.mods.lib.client.gui.widget.BaseContainerWidget;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarratedElementType;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -27,12 +26,9 @@ import java.util.stream.Stream;
 /**
  * @author XyperCode
  */
-public class ContextMenu extends BaseContainerWidget {
+public class ContextMenu extends ContainerWidget {
     // Constants
     private static final int BORDER_WIDTH = 5;
-    private static final ResourceLocation MENU_DARK = UltreonLib.res("textures/gui/widgets/context_menu/dark");
-    private static final ResourceLocation MENU_LIGHT = UltreonLib.res("textures/gui/widgets/context_menu/light");
-    private static final ResourceLocation MENU_NORMAL = UltreonLib.res("textures/gui/widgets/context_menu/normal");
 
     // Entries
     private final List<MenuItem> entries = new ArrayList<>();
@@ -43,58 +39,32 @@ public class ContextMenu extends BaseContainerWidget {
     private GlobalTheme globalTheme;
 
     /**
-     * @param x     position x to place.
-     * @param y     position y to place.
-    public Button(int x, int y, int width, int height, Component title, CommandCallback onClick) {
-        this(x, y, width, height, title, onClick, Type.of(UltreonLib.getTheme().getContentTheme()));
-    }
-
      * @param title context menu title.
      */
-    public ContextMenu(int x, int y, @Nullable Component title) {
-        this(x, y, title, UltreonLib.getTheme());
+    public ContextMenu(@Nullable Component title) {
+        this(title, UltreonLib.getTheme());
     }
 
-    /**
-     * @param x     position x to place.
-     * @param y     position y to place.
-     * @param title context menu title.
-     * @deprecated  Use {@link #ContextMenu(int, int, Component, GlobalTheme)} instead. As it uses specific themes.
-     */
-    @Deprecated
-    public ContextMenu(int x, int y, @Nullable Component title, boolean darkMode) {
-        this(x, y, title, darkMode ? GlobalTheme.DARK.get() : GlobalTheme.VANILLA.get());
-    }
+    public ContextMenu(@Nullable Component title, GlobalTheme globalTheme) {
+        super(title);
 
-    public ContextMenu(int x, int y, @Nullable Component title, GlobalTheme globalTheme) {
-        super(x, y, BORDER_WIDTH * 2, BORDER_WIDTH * 2, title);
         this.globalTheme = globalTheme;
-    }
-
-    @Deprecated
-    public boolean isDarkMode() {
-        return Objects.equals(globalTheme, GlobalTheme.DARK.get());
-    }
-
-    @Deprecated
-    public void setDarkMode(boolean darkMode) {
-        this.globalTheme = darkMode ? GlobalTheme.DARK.get() : GlobalTheme.VANILLA.get();
     }
 
     /**
      * Updates narration.
      *
-     * @param narration output for narration elements.
+     * @param output output for narration elements.
      */
     @Override
-    public void updateWidgetNarration(@NotNull NarrationElementOutput narration) {
-        narration.add(NarratedElementType.TITLE, this.createNarrationMessage());
+    public void updateWidgetNarration(@NotNull NarrationElementOutput output) {
+        output.add(NarratedElementType.TITLE, this.createNarrationMessage());
     }
 
     @Override
-    public void renderWidget(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
-        gfx.pose().pushPose();
-        gfx.pose().translate(0, 0, 100);
+    public void renderWidget(@NotNull GuiRenderer renderer, int mouseX, int mouseY, float partialTicks) {
+        renderer.pushPose();
+        renderer.translate(0, 0, 100);
 
         Component message = getMessage();
         boolean hasTitle;
@@ -106,16 +76,16 @@ public class ContextMenu extends BaseContainerWidget {
         }
 
         Font font = Minecraft.getInstance().font;
-        BaseScreen.renderFrame(gfx, getX(), getY(), width - 14, height - 4 - (hasTitle ? 0 : font.lineHeight + 1), this.globalTheme.getMenuTheme(), FrameType.MENU);
+        renderer.renderMenuFrame(getX(), getY(), width - 14, height - 4 - (hasTitle ? 0 : font.lineHeight + 1), FrameType.MENU);
 
         //noinspection ConstantConditions
         if (message != null) {
-            gfx.drawString(font, message, getX() + 7, getY() + 5, globalTheme.getMenuTheme().getHeaderColor().getRgb(), false);
+            renderer.textLeft(message, getX() + 7, getY() + 5, globalTheme.getMenuTheme().getHeaderColor().getRgb(), false);
         }
 
         this.isHovered = mouseX >= this.getX() && mouseY >= this.getY() && mouseX < this.getX() + this.width && mouseY < this.getY() + this.height;
 
-        gfx.pose().pushPose();
+        renderer.pushPose();
         int y = this.getY() + 5 + (hasTitle ? font.lineHeight + 1 : 0);
         int x = this.getX() + 5;
         Stream<MenuItem> entryStream = entries.stream();
@@ -130,13 +100,13 @@ public class ContextMenu extends BaseContainerWidget {
             menuItem.setX(x);
             menuItem.setY(y);
             menuItem.setWidth(Mth.clamp(maxMinWidth, menuItem.getMinWidth(), menuItem.getMaxWidth()));
-            menuItem.render(gfx, mouseX, mouseY, partialTicks);
+            menuItem.renderWidget(renderer, mouseX, mouseY, partialTicks);
 
             y += menuItem.getHeight() + 2;
         }
 
-        gfx.pose().popPose();
-        gfx.pose().popPose();
+        renderer.popPose();
+        renderer.popPose();
     }
 
     /**
@@ -146,7 +116,7 @@ public class ContextMenu extends BaseContainerWidget {
      * @param <T>      item type.
      * @return the same as menu item parameter.
      */
-    public <T extends MenuItem> T add(T menuItem) {
+    public <T extends MenuItem> T addItem(T menuItem) {
         entries.add(menuItem);
         menuItem.setX(getX() + 5);
         menuItem.setY(getY() + 5);
@@ -181,7 +151,7 @@ public class ContextMenu extends BaseContainerWidget {
     /**
      * DON'T CALL IF YOU DON'T KNOW WHAT YOU ARE DOING.
      * This method is called for internal usage, and should not be called to close the context menu.
-     * Use the {@link BaseScreen#closeContextMenu()} method to close the menu instead.
+     * Use the {@link ULibScreen#closeContextMenu()} method to close the menu instead.
      */
     public final void onClose() {
         onClose.call(this);

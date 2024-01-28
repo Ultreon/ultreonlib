@@ -1,17 +1,17 @@
 package com.ultreon.mods.lib.client.theme;
 
-import com.ultreon.libs.commons.v0.Color;
+import com.ultreon.mods.lib.commons.Color;
 
 public class Style {
-    protected Color textColor;
-    protected Color inactiveTextColor;
-    protected Color titleColor;
-    protected Color headerColor;
-    protected Color subTitleColor;
-    protected Color borderColor;
-    protected Color inactiveBorderColor;
-    protected Color accentColor;
-    protected Color secondaryColor;
+    protected Color textColor = Color.transparent;
+    protected Color inactiveTextColor = Color.transparent;
+    protected Color titleColor = Color.transparent;
+    protected Color headerColor = Color.transparent;
+    protected Color subTitleColor = Color.transparent;
+    protected Color borderColor = Color.transparent;
+    protected Color inactiveBorderColor = Color.transparent;
+    protected Color accentColor = Color.transparent;
+    protected Color secondaryColor = Color.transparent;
 
     public Style() {
     }

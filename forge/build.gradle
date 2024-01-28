@@ -30,6 +30,7 @@ dependencies {
     forge "net.minecraftforge:forge:${rootProject.architectury.minecraft}-${forge_version}"
     // Remove the next line if you don't want to depend on the API
     modApi "dev.architectury:architectury-forge:${architectury_version}"
+    modApi "fuzs.forgeconfigapiport:forgeconfigapiport-forge:$forge_config_api_port_version"
 
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionForge")) { transitive = false }

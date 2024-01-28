@@ -1,0 +1,19 @@
+{
+  "texture": "ultreonlib:dark",
+  "border_color": "#313131ff",
+  "inactive_border_color": "#000000ff",
+  "button_sprites": {
+    "enabled": "ultreonlib:widget/button/dark",
+    "disabled": "ultreonlib:widget/button/dark_disabled",
+    "enabled_focused": "ultreonlib:widget/button/dark_highlighted",
+    "disabled_focused": "ultreonlib:widget/button/dark_disabled"
+  },
+  "title_color": "#ffffffff",
+  "header_color": "#ffffffff",
+  "subtitle_color": "#808080ff",
+  "accent_color": "#ffa54cff",
+  "secondary_color": "#313131ff",
+  "text_color": "#ffffffff",
+  "inactive_text_color": "#a0a0a0ff",
+  "dark": true
+}

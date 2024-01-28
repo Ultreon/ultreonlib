@@ -1,6 +1,6 @@
 package com.ultreon.mods.lib.client.gui;
 
-import com.ultreon.libs.commons.v0.Color;
+import com.ultreon.mods.lib.commons.Color;
 import com.ultreon.mods.lib.util.ScissorStack;
 import net.minecraft.client.gui.GuiGraphics;
 
@@ -17,13 +17,14 @@ public class MoreGuiGraphics {
     }
 
     public static void subInstance(GuiGraphics gfx, int x, int y, int width, int height, Runnable func) {
-        ScissorStack.pushScissorTranslated(gfx, x, y, width, height);
-        gfx.pose().pushPose();
-        gfx.pose().translate(x, y, 0);
+        if (ScissorStack.pushScissorTranslated(gfx, x, y, width, height)) {
+            gfx.pose().pushPose();
+            gfx.pose().translate(x, y, 0);
 
-        func.run();
+            func.run();
 
-        gfx.pose().popPose();
-        ScissorStack.popScissor();
+            gfx.pose().popPose();
+            ScissorStack.popScissor();
+        }
     }
 }

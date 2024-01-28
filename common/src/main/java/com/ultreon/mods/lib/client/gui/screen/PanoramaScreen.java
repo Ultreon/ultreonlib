@@ -14,7 +14,7 @@ import org.jetbrains.annotations.NotNull;
  *
  * @author XyperCode
  */
-public abstract class PanoramaScreen extends BaseScreen {
+public abstract class PanoramaScreen extends ULibScreen {
     public static final PanoramaRenderer PANORAMA = new PanoramaRenderer(TitleScreen.CUBE_MAP);
     public static final ResourceLocation PANORAMA_OVERLAY = new ResourceLocation("textures/gui/title/background/panorama_overlay.png");
 

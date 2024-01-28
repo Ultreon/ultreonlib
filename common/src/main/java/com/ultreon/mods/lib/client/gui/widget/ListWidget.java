@@ -4,9 +4,13 @@ import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.ultreon.mods.lib.UltreonLib;
 import com.ultreon.mods.lib.client.gui.FrameType;
-import com.ultreon.mods.lib.client.gui.screen.BaseScreen;
+import com.ultreon.mods.lib.client.gui.GuiRenderer;
+import com.ultreon.mods.lib.client.gui.screen.ULibScreen;
+import com.ultreon.mods.lib.client.gui.widget.menu.ContextMenu;
 import com.ultreon.mods.lib.client.theme.GlobalTheme;
 import com.ultreon.mods.lib.client.theme.Stylized;
+import com.ultreon.mods.lib.client.theme.Theme;
+import com.ultreon.mods.lib.client.theme.WidgetPlacement;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
@@ -14,7 +18,6 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.ContainerObjectSelectionList;
-import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.events.ContainerEventHandler;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarratableEntry;
@@ -25,14 +28,16 @@ import net.minecraft.util.FastColor;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Vector2i;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 @SuppressWarnings({"FieldCanBeLocal", "UnnecessaryLocalVariable"})
-public class ListWidget extends BaseWidget implements ContainerEventHandler, Stylized {
+public class ListWidget extends UIWidget implements ContainerEventHandler, Stylized {
     public static final ResourceLocation TEXTURE_DARK = UltreonLib.res("textures/gui/widgets/list/dark.png");
     public static final ResourceLocation TEXTURE_NORMAL = UltreonLib.res("textures/gui/widgets/list/vanilla.png");
     public static final ResourceLocation TEXTURE_LIGHT = UltreonLib.res("textures/gui/widgets/list/light.png");
@@ -48,30 +53,30 @@ public class ListWidget extends BaseWidget implements ContainerEventHandler, Sty
     private static final Component SEARCH_HINT = Component.literal("Search...");
     private final int headerHeight;
 
-    private final java.util.List<GuiEventListener> children;
-    private EditBox searchBox;
+    private final List<GuiEventListener> children;
+    private TextBox searchBox;
     private final WrappedList list;
     private final Font font;
     private GuiEventListener focused;
     private Consumer<WrappedList.Entry> onClick;
     private BiConsumer<WrappedList.Entry, Button> onClickButton;
-    private final BaseScreen screen;
+    private final ULibScreen screen;
     private final Minecraft mc;
     private final int count;
     private final boolean hasSearch;
     private boolean isDragging;
     private GlobalTheme globalTheme;
 
-    public ListWidget(BaseScreen screen, int x, int y, int width, int count, Component title) {
-        this(screen, x, y, width, count, true, title);
+    public ListWidget(ULibScreen screen, int count, Component title) {
+        this(screen, count, true, title);
     }
 
-    public ListWidget(BaseScreen screen, int x, int y, int width, int count, boolean hasSearch, Component title) {
-        this(screen, x, y, width, count, hasSearch, title, UltreonLib.getTheme());
+    public ListWidget(ULibScreen screen, int count, boolean hasSearch, Component title) {
+        this(screen, count, hasSearch, title, UltreonLib.getTheme());
     }
 
-    public ListWidget(BaseScreen screen, int x, int y, int width, int count, boolean hasSearch, Component title, GlobalTheme globalTheme) {
-        super(x, y, width, 0, title);
+    public ListWidget(ULibScreen screen, int count, boolean hasSearch, Component title, GlobalTheme globalTheme) {
+        super(title);
         this.screen = screen;
         this.count = count;
         this.hasSearch = hasSearch;
@@ -82,7 +87,7 @@ public class ListWidget extends BaseWidget implements ContainerEventHandler, Sty
         this.headerHeight = hasSearch ? 18 : 0;
 
         if (hasSearch) {
-            this.searchBox = new EditBox(this.font, x + LIST_BORDER_WIDTH + 28, y + LIST_BORDER_WIDTH + 78, width - 28 - LIST_BORDER_WIDTH * 2, 16, SEARCH_HINT) {
+            this.searchBox = new TextBox(SEARCH_HINT, this::search) {
                 @Override
                 public void renderWidget(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
                     this.setX(ListWidget.this.getX() + LIST_BORDER_WIDTH + 4 + 12 + 4);
@@ -90,18 +95,18 @@ public class ListWidget extends BaseWidget implements ContainerEventHandler, Sty
 
                     super.render(gfx, mouseX, mouseY, partialTicks);
                 }
-            };
+            }.position(() -> new Vector2i(getX() + LIST_BORDER_WIDTH + 28, getY() + LIST_BORDER_WIDTH + 78))
+                    .size(() -> new Vector2i(width - 28 - LIST_BORDER_WIDTH * 2, 16));
             this.searchBox.setMaxLength(32);
             this.searchBox.setBordered(false);
             this.searchBox.setVisible(true);
             this.searchBox.setTextColor(0xffffff);
             this.searchBox.setValue("");
-            this.searchBox.setResponder(this::search);
         }
 
         this.height = count * ENTRY_HEIGHT + headerHeight + LIST_BORDER_WIDTH * 2;
 
-        this.list = new WrappedList(this, mc, screen.width, screen.height, y + LIST_BORDER_WIDTH, y + height - LIST_BORDER_WIDTH * 2 + headerHeight, ENTRY_HEIGHT) {
+        this.list = new WrappedList(this, mc, ENTRY_HEIGHT) {
             @Override
             public int getRowLeft() {
                 return ListWidget.this.getX() + LIST_BORDER_WIDTH;
@@ -113,13 +118,15 @@ public class ListWidget extends BaseWidget implements ContainerEventHandler, Sty
             }
 
             @Override
-            public void render(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
-                this.y0 = ListWidget.this.getY() + LIST_BORDER_WIDTH + ListWidget.this.headerHeight;
-                this.y1 = ListWidget.this.getY() + LIST_BORDER_WIDTH + ListWidget.this.height - LIST_BORDER_WIDTH * 2;
+            public void renderWidget(GuiRenderer renderer, int mouseX, int mouseY, float partialTicks) {
+                int y = ListWidget.this.getY() + LIST_BORDER_WIDTH;
+                this.setY(y + ListWidget.this.headerHeight);
+                this.setHeight(ListWidget.this.height - LIST_BORDER_WIDTH * 2 - ListWidget.this.headerHeight);
 
-                super.render(gfx, mouseX, mouseY, partialTicks);
+                super.renderWidget(renderer, mouseX, mouseY, partialTicks);
             }
-        };
+        }.position(() -> new Vector2i(getX() + LIST_BORDER_WIDTH, getY() + LIST_BORDER_WIDTH))
+                .size(() -> new Vector2i(getWidth() - LIST_BORDER_WIDTH * 2, getHeight() - LIST_BORDER_WIDTH * 2));
 
         if (hasSearch) {
             this.children = ImmutableList.of(searchBox, list);
@@ -137,14 +144,19 @@ public class ListWidget extends BaseWidget implements ContainerEventHandler, Sty
     }
 
     @Override
-    public void renderWidget(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
-        BaseScreen.renderFrame(gfx, getX(), getY(), getWidth(), getHeight(), this.globalTheme.getContentTheme(), FrameType.BORDER);
+    public Theme getTheme() {
+        return globalTheme.getContentTheme();
+    }
 
-        gfx.blitSprite(SEARCH_SPRITE, getX() + LIST_BORDER_WIDTH + 3, getY() + LIST_BORDER_WIDTH + 3, 12, 12);
+    @Override
+    public void renderWidget(@NotNull GuiRenderer renderer, int mouseX, int mouseY, float partialTicks) {
+        renderer.renderContentFrame(getX(), getY(), getWidth(), getHeight(), FrameType.EXTEND);
 
-        this.list.render(gfx, mouseX, mouseY, partialTicks);
+        renderer.blitSprite(SEARCH_SPRITE, getX() + LIST_BORDER_WIDTH + 3, getY() + LIST_BORDER_WIDTH + 3, 12, 12);
+
+        this.list.render(renderer, mouseX, mouseY, partialTicks);
         if (searchBox != null) {
-            this.searchBox.render(gfx, mouseX, mouseY, partialTicks);
+            this.searchBox.render(renderer.gfx(), mouseX, mouseY, partialTicks);
         }
     }
 
@@ -243,7 +255,7 @@ public class ListWidget extends BaseWidget implements ContainerEventHandler, Sty
 
     @NotNull
     @Override
-    public java.util.List<? extends @NotNull GuiEventListener> children() {
+    public List<? extends @NotNull GuiEventListener> children() {
         return children;
     }
 
@@ -269,7 +281,7 @@ public class ListWidget extends BaseWidget implements ContainerEventHandler, Sty
     }
 
     @Override
-    public void updateWidgetNarration(@NotNull NarrationElementOutput p_169152_) {
+    public void updateWidgetNarration(@NotNull NarrationElementOutput output) {
 
     }
 
@@ -277,7 +289,7 @@ public class ListWidget extends BaseWidget implements ContainerEventHandler, Sty
         return count;
     }
 
-    public BaseScreen getScreen() {
+    public ULibScreen getScreen() {
         return screen;
     }
 
@@ -314,16 +326,20 @@ public class ListWidget extends BaseWidget implements ContainerEventHandler, Sty
         this.list.setAddEntries(consumer);
     }
 
-    public static class WrappedList extends ContainerObjectSelectionList<WrappedList.Entry> {
+    public static class WrappedList extends ContainerObjectSelectionList<WrappedList.Entry> implements ULibWidget {
         private final Minecraft mc;
         private final ListWidget widget;
         private final Object entriesLock = new Object();
         private ResourceLocation guiTexture;
         private String query;
         private Consumer<WrappedList> addEntries;
+        private Supplier<Vector2i> positionGetter;
+        private Supplier<Vector2i> sizeGetter;
+        private WidgetPlacement placement;
+        private WidgetsContainer parent;
 
-        public WrappedList(ListWidget widget, Minecraft mc, int width, int height, int top, int bottom, int itemHeight) {
-            super(mc, width, height, top, bottom, itemHeight);
+        public WrappedList(ListWidget widget, Minecraft mc, int itemHeight) {
+            super(mc, 0, 0, 0, itemHeight);
             this.mc = mc;
 
             this.widget = widget;
@@ -343,17 +359,17 @@ public class ListWidget extends BaseWidget implements ContainerEventHandler, Sty
 
         @Override
         protected int getRowTop(int index) {
-            return this.y0 - (int) this.getScrollAmount() + index * this.itemHeight + this.headerHeight;
+            return this.getY() - (int) this.getScrollAmount() + index * this.itemHeight + this.headerHeight;
         }
 
         @Override
         @Nullable
         public Entry getEntryAtPosition(double x, double y) {
             int i = this.getRowWidth() / 2;
-            int j = this.x0 + this.width / 2;
+            int j = this.getX() + this.width / 2;
             int k = j - i;
             int l = j + i;
-            int i1 = Mth.floor(y - (double) this.y0) - this.headerHeight + (int) this.getScrollAmount();
+            int i1 = Mth.floor(y - (double) this.getY()) - this.headerHeight + (int) this.getScrollAmount();
             int j1 = i1 / this.itemHeight;
             return x < (double) this.getScrollbarPosition() && x >= (double) k && x <= (double) l && j1 >= 0 && i1 >= 0 && j1 < this.getItemCount() ? this.children().get(j1) : null;
         }
@@ -365,23 +381,22 @@ public class ListWidget extends BaseWidget implements ContainerEventHandler, Sty
 
         @Override
         public int getMaxScroll() {
-            return Math.max(0, this.getMaxPosition() - (this.y1 - this.y0));
+            return Math.max(0, this.getMaxPosition() - (this.getHeight()));
         }
 
-        @Override
-        public void render(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
+        public void renderWidget(GuiRenderer renderer, int mouseX, int mouseY, float partialTicks) {
             double scaleFactor = this.mc.getWindow().getGuiScale();
 
-            int yi = y0 + (60 - 18); // Idk anymore
-            int yj = y1 - y0;
+            int y = getY() + (60 - 18); // Idk anymore
+            int h = getHeight();
             RenderSystem.enableScissor(
                     (int) ((double) (this.getRowLeft()) * scaleFactor),
-                    (int) ((double) ((widget.screen.height - yi)) * scaleFactor),
+                    (int) ((double) ((widget.screen.height - y)) * scaleFactor),
                     (int) ((double) (this.getRowWidth() + 6) * scaleFactor),
-                    (int) ((double) (yj) * scaleFactor)
+                    (int) ((double) (h) * scaleFactor)
             );
             synchronized (entriesLock) {
-                super.render(gfx, mouseX, mouseY, partialTicks);
+                super.render(renderer.gfx(), mouseX, mouseY, partialTicks);
             }
             RenderSystem.disableScissor();
         }
@@ -419,6 +434,62 @@ public class ListWidget extends BaseWidget implements ContainerEventHandler, Sty
             this.reloadEntries();
         }
 
+        @Override
+        public void render(GuiRenderer renderer, int mouseX, int mouseY, float partialTicks) {
+            this.renderWidget(renderer, mouseX, mouseY, partialTicks);
+        }
+
+        @Override
+        public boolean isUsingCustomTextColor() {
+            return false;
+        }
+
+        @Override
+        public void revalidate() {
+            this.setPosition(positionGetter.get());
+            this.setSize(sizeGetter.get());
+        }
+
+        @Override
+        public Theme getTheme() {
+            return null;
+        }
+
+        @Override
+        public void setPlacement(WidgetPlacement placement) {
+            this.placement = placement;
+        }
+
+        @Override
+        public void setParent(WidgetsContainer parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ContextMenu createContextMenu(int x, int y) {
+            return null;
+        }
+
+        @Override
+        public WidgetPlacement getPlacement() {
+            return placement;
+        }
+
+        @Override
+        public WidgetsContainer getParent() {
+            return parent;
+        }
+
+        public WrappedList position(Supplier<Vector2i> positionGetter) {
+            this.positionGetter = positionGetter;
+            return this;
+        }
+
+        public WrappedList size(Supplier<Vector2i> sizeGetter) {
+            this.sizeGetter = sizeGetter;
+            return this;
+        }
+
         @SuppressWarnings("unused")
         @Environment(EnvType.CLIENT)
         public static class Entry extends ContainerObjectSelectionList.Entry<Entry> {
@@ -438,7 +509,7 @@ public class ListWidget extends BaseWidget implements ContainerEventHandler, Sty
             private final int texW;
             private final int texH;
             private final Component description;
-            private final java.util.List<Button> buttons;
+            private final List<Button> buttons;
             private float ticksTooltip;
             private final ResourceLocation guiTexture;
 
@@ -523,7 +594,7 @@ public class ListWidget extends BaseWidget implements ContainerEventHandler, Sty
             }
 
             @Override
-            public @NotNull java.util.List<? extends GuiEventListener> children() {
+            public @NotNull List<? extends GuiEventListener> children() {
                 //      return screen.getEntryButtons();
                 return this.buttons;
             }
@@ -543,7 +614,7 @@ public class ListWidget extends BaseWidget implements ContainerEventHandler, Sty
             }
 
             @Override
-            public @NotNull java.util.List<? extends NarratableEntry> narratables() {
+            public @NotNull List<? extends NarratableEntry> narratables() {
                 return new ArrayList<>();
             }
 

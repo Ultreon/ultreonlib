@@ -12,7 +12,7 @@ import java.util.Collection;
 public abstract non-sealed class ThemeGuiComponent implements ThemeComponent {
     private final BiMap<ResourceLocation, ThemeGuiComponent> registry = HashBiMap.create();
     private ThemeComponent parent;
-    private ThemeRootComponent root;
+    private WidgetPlacement root;
 
     @Override
     public <T extends ThemeGuiComponent> @NotNull T register(@NotNull ResourceLocation res, @NotNull T component) {
@@ -41,7 +41,7 @@ public abstract non-sealed class ThemeGuiComponent implements ThemeComponent {
     @Override
     public abstract Style getStyle(GlobalTheme currentTheme);
 
-    void setRootComponent(ThemeRootComponent root) {
+    void setRootComponent(WidgetPlacement root) {
         this.parent = root;
         this.root = root;
     }
@@ -55,7 +55,7 @@ public abstract non-sealed class ThemeGuiComponent implements ThemeComponent {
         return this.parent;
     }
 
-    public ThemeRootComponent getRoot() {
+    public WidgetPlacement getRoot() {
         return this.root;
     }
 }

@@ -31,6 +31,7 @@ dependencies {
     modApi "net.fabricmc.fabric-api:fabric-api:${fabric_api_version}"
     // Remove the next line if you don't want to depend on the API
     modApi "dev.architectury:architectury-fabric:${architectury_version}"
+    modApi "fuzs.forgeconfigapiport:forgeconfigapiport-fabric:$forge_config_api_port_version"
 
     modImplementation "fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${forge_config_api_port_version}"
     modImplementation 'com.electronwill.night-config:core:3.6.5'
@@ -52,7 +53,7 @@ dependencies {
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionFabric")) { transitive false }
 
-    modImplementation "com.terraformersmc:modmenu:8.0.0", {
+    modImplementation "com.terraformersmc:modmenu:$modmenu_version", {
         exclude module: "fabric-api"
     }
 }

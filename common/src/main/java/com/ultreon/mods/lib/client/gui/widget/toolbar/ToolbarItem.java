@@ -1,18 +1,17 @@
 package com.ultreon.mods.lib.client.gui.widget.toolbar;
 
 import com.ultreon.mods.lib.client.HasContextMenu;
-import com.ultreon.mods.lib.client.gui.widget.BaseWidget;
+import com.ultreon.mods.lib.client.gui.widget.UIWidget;
 import com.ultreon.mods.lib.client.gui.widget.menu.ContextMenu;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Vector2i;
 
-public abstract class ToolbarItem extends BaseWidget implements IToolbarItem, HasContextMenu {
-    public ToolbarItem(int x, int y, int width, Component message) {
-        super(x, y, width, 16, message);
-    }
+public abstract class ToolbarItem extends UIWidget implements IToolbarItem, HasContextMenu {
+    public ToolbarItem(Component message) {
+        super(message);
 
-    public ToolbarItem(int x, int y, int width, int height, Component message) {
-        super(x, y, width, height, message);
+        this.sizeGetter = () -> new Vector2i(16, 16);
     }
 
     @Override
@@ -23,6 +22,12 @@ public abstract class ToolbarItem extends BaseWidget implements IToolbarItem, Ha
     @Override
     public int height() {
         return getHeight();
+    }
+
+    @Override
+    public void revalidate() {
+        this.setPosition((Vector2i) this.positionGetter.get());
+        this.setWidth(((Vector2i) this.sizeGetter.get()).x);
     }
 
     @Override

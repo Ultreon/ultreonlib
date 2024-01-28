@@ -3,9 +3,10 @@ package com.ultreon.mods.lib.util.holders;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ItemLike;
 
 @FunctionalInterface
-public interface ItemHolder extends BaseHolder, net.minecraft.world.level.ItemLike {
+public interface ItemHolder extends BaseHolder, ItemLike {
     @Override
     Item asItem();
 

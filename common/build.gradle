@@ -18,7 +18,7 @@ dependencies {
     // Remove the next line if you don't want to depend on the API
     modApi "dev.architectury:architectury:${architectury_version}"
 
-    modCompileOnly "fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${forge_config_api_port_version}"
+    modApi "fuzs.forgeconfigapiport:forgeconfigapiport-common-neoforgeapi:$forge_config_api_port_version"
     modCompileOnly "com.electronwill.night-config:core:3.6.5"
     modCompileOnly "com.electronwill.night-config:toml:3.6.5"
 

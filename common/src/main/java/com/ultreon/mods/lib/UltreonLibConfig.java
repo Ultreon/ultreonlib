@@ -1,20 +1,20 @@
 package com.ultreon.mods.lib;
 
+import com.ultreon.mods.lib.client.TitleStyles;
 import com.ultreon.mods.lib.client.theme.GlobalTheme;
-import com.ultreon.mods.lib.client.gui.screen.TitleStyle;
 import dev.architectury.injectables.annotations.ExpectPlatform;
-import net.minecraftforge.common.ForgeConfigSpec;
+import net.neoforged.neoforge.common.ModConfigSpec;
 
 public class UltreonLibConfig {
     // Config specifications.
-    public static final ForgeConfigSpec CLIENT;
-    public static final ForgeConfigSpec COMMON;
-    public static final ForgeConfigSpec SERVER;
+    public static final ModConfigSpec CLIENT;
+    public static final ModConfigSpec COMMON;
+    public static final ModConfigSpec SERVER;
 
     // Values
-    public static final ForgeConfigSpec.ConfigValue<String> THEME;
-    public static final ForgeConfigSpec.EnumValue<TitleStyle> TITLE_STYLE;
-    public static final ForgeConfigSpec.BooleanValue WINDOW_MANAGER;
+    public static final ModConfigSpec.ConfigValue<String> THEME;
+    public static final ModConfigSpec.ConfigValue<String> TITLE_STYLE;
+    public static final ModConfigSpec.BooleanValue WINDOW_MANAGER;
 
 
     // Initialization
@@ -22,7 +22,7 @@ public class UltreonLibConfig {
         //****************//
         //     CLIENT     //
         //****************//
-        var client = new ForgeConfigSpec.Builder();
+        var client = new ModConfigSpec.Builder();
 
         client.push("gui");
         {
@@ -31,7 +31,7 @@ public class UltreonLibConfig {
                     .define("theme", GlobalTheme.VANILLA.getId().toString());
             TITLE_STYLE = client
                     .comment("The style of the title")
-                    .defineEnum("title_style", TitleStyle.DETACHED);
+                    .define("title_style", TitleStyles.DETACHED.id());
         }
         client.pop();
 
@@ -49,14 +49,14 @@ public class UltreonLibConfig {
         //****************//
         //     COMMON     //
         //****************//
-        var common = new ForgeConfigSpec.Builder();
+        var common = new ModConfigSpec.Builder();
 
         COMMON = common.build();
 
         //****************//
         //     SERVER     //
         //****************//
-        var server = new ForgeConfigSpec.Builder();
+        var server = new ModConfigSpec.Builder();
 
         SERVER = server.build();
 

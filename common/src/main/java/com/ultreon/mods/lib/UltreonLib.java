@@ -1,8 +1,14 @@
 package com.ultreon.mods.lib;
 
-import com.ultreon.libs.commons.v0.Identifier;
-import com.ultreon.mods.lib.advancements.UseItemTrigger;
-import com.ultreon.mods.lib.client.gui.screen.TitleStyle;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.mojang.datafixers.util.Pair;
+import com.mojang.serialization.DataResult;
+import com.mojang.serialization.JsonOps;
+import com.ultreon.mods.lib.client.theme.Theme;
+import com.ultreon.mods.lib.commons.Identifier;
+import com.ultreon.mods.lib.client.gui.screen.window.TitleStyle;
 import com.ultreon.mods.lib.client.gui.screen.test.TestScreen;
 import com.ultreon.mods.lib.client.theme.GlobalTheme;
 import com.ultreon.mods.lib.client.theme.Stylized;
@@ -13,24 +19,27 @@ import dev.architectury.event.events.common.LootEvent;
 import dev.architectury.event.events.common.PlayerEvent;
 import dev.architectury.platform.Mod;
 import dev.architectury.platform.Platform;
+import dev.architectury.registry.ReloadListenerRegistry;
 import dev.architectury.registry.registries.RegistrarManager;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.PackType;
+import net.minecraft.server.packs.resources.PreparableReloadListener;
+import net.minecraft.server.packs.resources.Resource;
+import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.util.profiling.ProfilerFiller;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.ServiceLoader;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.*;
+import java.util.concurrent.*;
 
 /**
  * This is the main class for the UltreonLib mod.
@@ -42,6 +51,7 @@ public class UltreonLib {
     public static final String MOD_ID = "ultreonlib";
 
     public static final RegistrarManager REGISTRAR_MANAGER = RegistrarManager.get(MOD_ID);
+    public static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
     private static UltreonLib instance;
     public static final String VERSION;
@@ -74,8 +84,8 @@ public class UltreonLib {
         PlayerEvent.PLAYER_JOIN.register(ModMessages::sendOnLogin);
         Identifier.setDefaultNamespace("minecraft");
 
-        UseItemTrigger useItemTrigger = new UseItemTrigger();
-        CriteriaTriggers.CRITERIA.putIfAbsent(useItemTrigger.getId(), useItemTrigger);
+        ReloadListenerRegistry.register(PackType.CLIENT_RESOURCES, Theme::reload, UltreonLib.res("themes"));
+        ReloadListenerRegistry.register(PackType.CLIENT_RESOURCES, GlobalTheme::reload, UltreonLib.res("global_themes"), List.of(UltreonLib.res("themes")));
     }
 
     public static List<ServiceLoader.Provider<TestScreen>> getScreens() {
@@ -91,6 +101,12 @@ public class UltreonLib {
             UltreonLib.LOGGER.warn("Failed to load services:", e);
         }
         return Collections.emptyList();
+    }
+
+    private static void registerThemes(List<GlobalTheme> arg2, ProfilerFiller reloadProfiler) {
+        for (GlobalTheme theme : arg2) {
+            theme.init();
+        }
     }
 
     public ExecutorService getExecutor() {
@@ -134,9 +150,22 @@ public class UltreonLib {
         return Platform.isDevelopmentEnvironment();
     }
 
+    /**
+     * @deprecated Use {@link #isMinecraftForge()} or {@link #isNeoForge()} instead.
+     */
+    @Deprecated
     public static boolean isForge() {
-        return Platform.isForge();
+        return Platform.isMinecraftForge() || Platform.isNeoForge();
     }
+
+    public static boolean isMinecraftForge() {
+        return Platform.isMinecraftForge();
+    }
+
+    public static boolean isNeoForge() {
+        return Platform.isNeoForge();
+    }
+
 
     public static boolean isFabric() {
         return Platform.isFabric();
@@ -170,9 +199,9 @@ public class UltreonLib {
     @Environment(EnvType.CLIENT)
     public static GlobalTheme getTheme() {
         ResourceLocation res = ResourceLocation.tryParse(UltreonLibConfig.THEME.get());
-        GlobalTheme theme = GlobalTheme.fromLocationOr(res, null);
+        GlobalTheme theme = GlobalTheme.fromLocationOr(res, GlobalTheme.VANILLA);
         if (theme == null) {
-            theme = GlobalTheme.VANILLA.get();
+            theme = GlobalTheme.VANILLA;
             UltreonLibConfig.THEME.set(theme.getId().toString());
         }
         return theme;
@@ -188,12 +217,12 @@ public class UltreonLib {
 
     @Environment(EnvType.CLIENT)
     public static TitleStyle getTitleStyle() {
-        return UltreonLibConfig.TITLE_STYLE.get();
+        return TitleStyle.fromId(UltreonLibConfig.TITLE_STYLE.get());
     }
 
     @Environment(EnvType.CLIENT)
     public static void setTitleStyle(TitleStyle style) {
-        UltreonLibConfig.TITLE_STYLE.set(style);
+        UltreonLibConfig.TITLE_STYLE.set(style.id());
         UltreonLibConfig.TITLE_STYLE.save();
 
         instance.reloadTheme();

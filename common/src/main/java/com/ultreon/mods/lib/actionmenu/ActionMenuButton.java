@@ -2,16 +2,18 @@ package com.ultreon.mods.lib.actionmenu;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.ultreon.mods.lib.UltreonLib;
+import com.ultreon.mods.lib.client.gui.GuiRenderer;
+import com.ultreon.mods.lib.client.gui.widget.TooltipFactory;
 import com.ultreon.mods.lib.client.gui.widget.TransparentButton;
+import com.ultreon.mods.lib.commons.Color;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 
 @SuppressWarnings("unused")
-public class ActionMenuButton extends TransparentButton implements IActionMenuIndexable {
+public class ActionMenuButton extends TransparentButton<ActionMenuButton> implements IActionMenuIndexable {
     @NotNull
     private static final ResourceLocation ICONS = UltreonLib.res("textures/gui/action_menu.png");
     @NotNull
@@ -21,91 +23,54 @@ public class ActionMenuButton extends TransparentButton implements IActionMenuIn
     private int menuIndex;
 
     public ActionMenuButton(@NotNull ActionMenuScreen screen, @NotNull ActionMenuItem item, int x, int y, int width, int height) {
-        super(x, y, width, height, item.getText(), (btn) -> item.activate());
+        super(item.getText(), (btn) -> item.activate());
         this.screen = screen;
         this.item = item;
     }
 
-    public ActionMenuButton(@NotNull ActionMenuScreen screen, @NotNull ActionMenuItem item, int x, int y, int width, int height, TooltipFactory onTooltip) {
-        super(x, y, width, height, item.getText(), (btn) -> item.activate(), onTooltip);
+    public ActionMenuButton(@NotNull ActionMenuScreen screen, @NotNull ActionMenuItem item, int x, int y, int width, int height, TooltipFactory<ActionMenuButton> onTooltip) {
+        super(item.getText(), (btn) -> item.activate(), onTooltip);
         this.screen = screen;
         this.item = item;
     }
 
     @Override
-    public void renderWidget(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
+    public void renderWidget(@NotNull GuiRenderer renderer, int mouseX, int mouseY, float partialTicks) {
         var client = Minecraft.getInstance();
         var font = client.font;
 
-        int background;
-        if (screen.getActiveItem() == this) {
-            background = new Color(0, 0, 0, (int) Math.min(Math.max(127 - (51.2 * (menuIndex - 1)), 0), 127)).getRGB();
-        } else {
-            background = new Color(0, 0, 0, (int) Math.min(Math.max(127 - (51.2 * (menuIndex)), 0), 127)).getRGB();
-        }
+        Color background;
+        background = selectOptionColor(Color.rgba(0, 0, 0, (int) Math.min(Math.max(127 - (51.2 * (menuIndex - 1)), 0), 127)), Color.rgba(0, 0, 0, (int) Math.min(Math.max(127 - (51.2 * (menuIndex)), 0), 127)));
 
-        gfx.fill(getX(), getY(), getX() + width, getY() + height, background);
+        renderer.fill(getX(), getY(), getX() + width, getY() + height, background);
 
-        int hoverColor;
-        int normalColor;
-        int disabledColor;
-        if (screen.getActiveItem() == this) {
-            hoverColor = new Color(255, 255, 0, Math.max((int) Math.min(255 - (51.2 * (menuIndex - 1)), 255), 1)).getRGB();
-            normalColor = new Color(255, 255, 255, Math.max((int) Math.min(255 - (51.2 * (menuIndex - 1)), 255), 1)).getRGB();
-            disabledColor = new Color(160, 160, 160, Math.max((int) Math.min(255 - (51.2 * (menuIndex - 1)), 255), 1)).getRGB();
-        } else {
-            hoverColor = new Color(255, 255, 0, (int) Math.max(Math.min(255 - (51.2 * (menuIndex)), 255), 1)).getRGB();
-            normalColor = new Color(255, 255, 255, (int) Math.max(Math.min(255 - (51.2 * (menuIndex)), 255), 1)).getRGB();
-            disabledColor = new Color(160, 160, 160, (int) Math.max(Math.min(255 - (51.2 * (menuIndex)), 255), 1)).getRGB();
-        }
-
-        int textColor;
-        if (this.active) {
-            if (menuIndex != 0) {
-                if (screen.getActiveItem() == this) {
-                    if (isHovered) {
-                        textColor = hoverColor;
-                    } else {
-                        textColor = normalColor;
-                    }
-                } else {
-                    textColor = normalColor;
-                }
-            } else {
-                if (isHovered) {
-                    textColor = hoverColor;
-                } else {
-                    textColor = normalColor;
-                }
-            }
-        } else {
-            textColor = disabledColor;
-        }
+        Color textColor = this.findTextColor();
 
         if (isHovered && menuIndex == 0 && active) {
-            gfx.drawCenteredString(font, this.getMessage(), (this.getX() + this.width / 2) + 1, (this.getY() + (this.height - 8) / 2) + 1, textColor);
+            renderer.textCenter(this.getMessage(), (this.getX() + this.width / 2) + 1, (this.getY() + (this.height - 8) / 2) + 1, textColor);
         } else {
-            gfx.drawCenteredString(font, this.getMessage(), this.getX() + this.width / 2, this.getY() + (this.height - 8) / 2, textColor);
+            renderer.textCenter(this.getMessage(), this.getX() + this.width / 2, this.getY() + (this.height - 8) / 2, textColor);
         }
 
         if (item instanceof SubmenuItem) {
             RenderSystem.setShaderTexture(0, ICONS);
 
-            gfx.pose().pushPose();
+            renderer.pushPose();
             RenderSystem.setShaderColor(1f, 1f, 1f, 1f / (menuIndex + 1));
             RenderSystem.enableBlend();
             RenderSystem.defaultBlendFunc();
             RenderSystem.enableDepthTest();
             if (active) {
                 if (isHovered && menuIndex == 0) {
-                    gfx.blit(ICONS, getX() + width - 6, getY() + height / 2 - 4, 6, 9, 12, 0, 6, 9, 64, 64);
+                    renderer.blit(ICONS, getX() + width - 6, getY() + height / 2 - 4, 6, 9, 12, 0, 6, 9, 64, 64);
                 } else {
-                    gfx.blit(ICONS, getX() + width - 6, getY() + height / 2 - 4, 6, 9, 6, 0, 6, 9, 64, 64);
+                    renderer.blit(ICONS, getX() + width - 6, getY() + height / 2 - 4, 6, 9, 6, 0, 6, 9, 64, 64);
                 }
             } else {
-                gfx.blit(ICONS, getX() + width - 6, getY() + height / 2 - 4, 6, 9, 0, 0, 6, 9, 64, 64);
+                renderer.blit(ICONS, getX() + width - 6, getY() + height / 2 - 4, 6, 9, 0, 0, 6, 9, 64, 64);
             }
-            gfx.pose().popPose();
+
+            renderer.popPose();
 
             if (client.screen instanceof ActionMenuScreen currentScreen) {
                 if (isHovered && active) {
@@ -127,6 +92,37 @@ public class ActionMenuButton extends TransparentButton implements IActionMenuIn
                 }
             }
         }
+    }
+
+    @NotNull
+    private Color findTextColor() {
+        Color hoverColor;
+        Color normalColor;
+        Color disabledColor;
+        if (screen.getActiveItem() == this) {
+            hoverColor = Color.rgba(255, 255, 0, Math.max((int) Math.min(255 - (51.2 * (menuIndex - 1)), 255), 1));
+            normalColor = Color.rgba(255, 255, 255, Math.max((int) Math.min(255 - (51.2 * (menuIndex - 1)), 255), 1));
+            disabledColor = Color.rgba(160, 160, 160, Math.max((int) Math.min(255 - (51.2 * (menuIndex - 1)), 255), 1));
+        } else {
+            hoverColor = Color.rgba(255, 255, 0, (int) Math.max(Math.min(255 - (51.2 * (menuIndex)), 255), 1));
+            normalColor = Color.rgba(255, 255, 255, (int) Math.max(Math.min(255 - (51.2 * (menuIndex)), 255), 1));
+            disabledColor = Color.rgba(160, 160, 160, (int) Math.max(Math.min(255 - (51.2 * (menuIndex)), 255), 1));
+        }
+
+        return selectColor(hoverColor, normalColor, disabledColor);
+    }
+
+    private Color selectColor(Color hovered, Color normal, Color disabled) {
+        return this.active ? selectActiveColor(hovered, normal) : disabled;
+    }
+
+    private Color selectActiveColor(Color hovered, Color normal) {
+        if (menuIndex != 0) return selectOptionColor(isHovered ? hovered : normal, normal);
+        else return isHovered ? hovered : normal;
+    }
+
+    private Color selectOptionColor(Color hovered, Color normal) {
+        return screen.getActiveItem() == this ? hovered : normal;
     }
 
     @Override
