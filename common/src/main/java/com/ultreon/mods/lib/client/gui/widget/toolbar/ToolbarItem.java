@@ -7,7 +7,7 @@ import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector2i;
 
-public abstract class ToolbarItem extends UIWidget implements IToolbarItem, HasContextMenu {
+public abstract class ToolbarItem<T extends ToolbarItem<T>> extends UIWidget<T> implements ToolbarWidget, HasContextMenu {
     public ToolbarItem(Component message) {
         super(message);
 
@@ -26,8 +26,8 @@ public abstract class ToolbarItem extends UIWidget implements IToolbarItem, HasC
 
     @Override
     public void revalidate() {
-        this.setPosition((Vector2i) this.positionGetter.get());
-        this.setWidth(((Vector2i) this.sizeGetter.get()).x);
+        this.setPosition(this.positionGetter.get());
+        this.setWidth(this.sizeGetter.get().x);
     }
 
     @Override

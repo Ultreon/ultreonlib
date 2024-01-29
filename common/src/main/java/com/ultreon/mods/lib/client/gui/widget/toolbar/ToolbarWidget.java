@@ -1,10 +1,10 @@
 package com.ultreon.mods.lib.client.gui.widget.toolbar;
 
+import com.ultreon.mods.lib.client.gui.widget.ULibWidget;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.Renderable;
 import org.jetbrains.annotations.NotNull;
 
-public interface IToolbarItem extends Renderable {
+public interface ToolbarWidget extends ULibWidget {
     @Override
     void render(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTicks);
 

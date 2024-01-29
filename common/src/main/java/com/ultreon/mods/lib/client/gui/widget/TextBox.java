@@ -30,11 +30,11 @@ public class TextBox extends EditBox implements Clickable, ULibWidget {
     private WidgetPlacement placement;
     private WidgetsContainer parent;
 
-    protected TextBox(Component message, Callback<String> callback) {
+    public TextBox(Component message, Callback<String> callback) {
         this(message, callback, (button) -> null);
     }
 
-    protected TextBox(Component message, Callback<String> callback, TooltipFactory<TextBox> tooltipFactory) {
+    public TextBox(Component message, Callback<String> callback, TooltipFactory<TextBox> tooltipFactory) {
         super(Minecraft.getInstance().font, 0, 0, 0, 0, message);
         this.callback = callback;
         this.tooltipFactory = tooltipFactory;
@@ -46,7 +46,7 @@ public class TextBox extends EditBox implements Clickable, ULibWidget {
 
     @Override
     public void render(GuiRenderer renderer, int mouseX, int mouseY, float partialTicks) {
-        renderer.renderContentFrame(this.getX(), this.getY(), this.getWidth(), this.getHeight(), FrameType.INVERTED);
+        renderer.renderContentFrame(this.getX() - 3, this.getY() - 5, this.getWidth(), this.getHeight(), FrameType.INVERTED);
     }
 
     @Override

@@ -44,7 +44,7 @@ public class InternalConfigScreen extends GenericMenuScreen {
     }
 
     @Override
-    protected void initWidgets() {
+    public void initWidgets() {
         super.initWidgets();
     }
 }

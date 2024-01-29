@@ -16,7 +16,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector2i;
 
-public class ToolbarButton extends ToolbarItem implements Stylized, Clickable {
+public class ToolbarButton extends ToolbarItem<ToolbarButton> implements Stylized, Clickable {
     @Nullable
     private CommandCallback command;
 

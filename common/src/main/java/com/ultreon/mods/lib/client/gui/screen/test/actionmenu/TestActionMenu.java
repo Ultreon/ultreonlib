@@ -26,7 +26,7 @@ public class TestActionMenu extends ActionMenu {
         }));
         add(new ActionMenuItem(this, UltreonLib.MOD_ID, "test_go_back", Component.literal("Go Back"), () -> {
             if (Minecraft.getInstance().screen instanceof ActionMenuScreen screen) {
-                screen.back();
+                screen.close();
             }
         }));
     }

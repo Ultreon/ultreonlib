@@ -1,6 +1,5 @@
 package com.ultreon.mods.lib.client.gui.widget;
 
-import net.minecraft.client.gui.components.events.ContainerEventHandler;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.network.chat.Component;
@@ -12,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 public abstract class ContainerWidget extends UIWidget<ContainerWidget> implements WidgetsContainer {
-    protected final List<ULibWidget> children = new ArrayList<>();
+    protected final List<ULibWidget> widgets = new ArrayList<>();
     private @Nullable ULibWidget focused;
     private boolean isDragging;
 
@@ -86,10 +85,9 @@ public abstract class ContainerWidget extends UIWidget<ContainerWidget> implemen
         return Optional.ofNullable(this.getExactWidgetAt((int) x, (int) y));
     }
 
-    @NotNull
     @Override
-    public List<? extends GuiEventListener> children() {
-        return List.copyOf(children);
+    public @NotNull List<? extends ULibWidget> children() {
+        return List.copyOf(widgets);
     }
 
     @Override
@@ -104,7 +102,7 @@ public abstract class ContainerWidget extends UIWidget<ContainerWidget> implemen
     }
 
     public ULibWidget getExactWidgetAt(int x, int y) {
-        for (ULibWidget element : children) {
+        for (ULibWidget element : widgets) {
             if (element.isMouseOver(x, y)) {
                 if (element instanceof ContainerWidget container) {
                     ULibWidget subWidget = container.getExactWidgetAt(x, y);
@@ -116,8 +114,22 @@ public abstract class ContainerWidget extends UIWidget<ContainerWidget> implemen
         return null;
     }
 
-    public <T extends ULibWidget> void add(T widget) {
-        children.add(widget);
+    public <T extends ULibWidget> T add(T widget) {
+        widgets.add(widget);
         widget.setParent(this);
+        return widget;
+    }
+
+    @Override
+    public void revalidate() {
+        super.revalidate();
+
+        this.revalidateWidgets();
+    }
+
+    protected void revalidateWidgets() {
+        for (ULibWidget widget : widgets) {
+            widget.revalidate();
+        }
     }
 }

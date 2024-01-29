@@ -4,15 +4,17 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.ultreon.mods.lib.UltreonLib;
 import com.ultreon.mods.lib.client.HasContextMenu;
 import com.ultreon.mods.lib.client.gui.FrameType;
+import com.ultreon.mods.lib.client.gui.GuiRenderer;
+import com.ultreon.mods.lib.client.gui.screen.window.TitleBarAccess;
 import com.ultreon.mods.lib.client.gui.screen.window.TitleStyle;
 import com.ultreon.mods.lib.client.gui.widget.ContainerWidget;
+import com.ultreon.mods.lib.client.gui.widget.UIWidget;
 import com.ultreon.mods.lib.client.gui.widget.ULibWidget;
 import com.ultreon.mods.lib.client.gui.widget.WidgetsContainer;
 import com.ultreon.mods.lib.client.gui.widget.menu.ButtonMenuItem;
 import com.ultreon.mods.lib.client.gui.widget.menu.ContextMenu;
 import com.ultreon.mods.lib.client.input.MouseButton;
 import com.ultreon.mods.lib.client.theme.*;
-import com.ultreon.mods.lib.mixin.common.ScreenAccess;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -28,10 +30,13 @@ import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.phys.Vec2;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Vector2i;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
-public abstract class ULibScreen extends Screen implements Stylized, WidgetsContainer {
+public abstract class ULibScreen extends Screen implements Stylized, WidgetsContainer, TabPage {
     private static final String CLOSE_ICON = "×";
     private static final String CLOSE_ICON_HOVER = ChatFormatting.RED + CLOSE_ICON;
 
@@ -42,11 +47,12 @@ public abstract class ULibScreen extends Screen implements Stylized, WidgetsCont
     private Screen back;
     private TitleBar titleBar;
     private boolean initialized = false;
+    private final List<? extends ULibWidget> widgets = new ArrayList<>();
 
     protected ULibScreen(Component title) {
         this(title, Minecraft.getInstance().screen);
         this.minecraft = Minecraft.getInstance();
-        this.titleBar = new TitleBar(title);
+        this.titleBar = new TitleBar(this, title);
     }
 
     protected ULibScreen(Component title, Screen back) {
@@ -70,8 +76,23 @@ public abstract class ULibScreen extends Screen implements Stylized, WidgetsCont
                 .forEach(ULibWidget::revalidate);
     }
 
-    protected void initWidgets() {
+    @Override
+    public @NotNull List<? extends ULibWidget> children() {
+        return super.children().stream().map(guiEventListener -> (ULibWidget) guiEventListener).toList();
+    }
 
+    public void initWidgets() {
+
+    }
+
+    @Override
+    public Component getMessage() {
+        return this.titleBar.getMessage();
+    }
+
+    @Override
+    public void setMessage(Component message) {
+        this.titleBar.setMessage(message);
     }
 
     @Override
@@ -98,36 +119,130 @@ public abstract class ULibScreen extends Screen implements Stylized, WidgetsCont
         this.globalTheme = UltreonLib.getTheme();
     }
 
+    /**
+     * @deprecated Use {@link #render(GuiRenderer, int, int, float)} instead, this method will be set to final in the future
+     */
     @Override
-    public void render(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
-        renderBackground(gfx, mouseX, mouseY, partialTicks);
+    @Deprecated
+    public /*final*/ void render(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+        GuiRenderer renderer = new GuiRenderer(guiGraphics, GlobalTheme.get(), TitleStyle.get());
+        this.renderBackground(renderer, mouseX, mouseY, partialTicks);
+        this.render(renderer, mouseX, mouseY, partialTicks);
 
-        renderCloseButton(gfx, mouseX, mouseY);
+//        GuiRenderer renderer = new GuiRenderer(guiGraphics, GlobalTheme.get(), TitleStyle.get());
+//
+//        this.renderBackground(renderer, mouseX, mouseY, partialTicks);
+//
+//        if (this.titleBar.getCurrentTab() == this) this.render(renderer, mouseX, mouseY, partialTicks);
+//        else this.titleBar.getCurrentTab().render(renderer, mouseX, mouseY, partialTicks);
+//
+//        titleBar.renderWidget(renderer, mouseX, mouseY, partialTicks);
+    }
+
+    public void setWidth(int width) {
+        this.titleBar.setWindowWidth(width);
+        for (ULibWidget widget : children()) {
+            widget.revalidate();
+        }
+    }
+
+    public void setHeight(int height) {
+        this.titleBar.setWindowHeight(height);
+        for (ULibWidget widget : children()) {
+            widget.revalidate();
+        }
+    }
+
+    public void resize(int width, int height) {
+        this.titleBar.setWindowWidth(width);
+        this.titleBar.setWindowHeight(height);
+
+        for (ULibWidget widget : children()) {
+            widget.revalidate();
+        }
+    }
+
+    public Vector2i getSize(Vector2i tmp) {
+        return tmp.set(this.titleBar.getWindowWidth(), this.titleBar.getWindowHeight());
+    }
+
+    public void render(@NotNull GuiRenderer renderer, int mouseX, int mouseY, float partialTicks) {
+        this.renderWidget(renderer, mouseX, mouseY, partialTicks);
 
         boolean flag = contextMenu != null && contextMenu.isMouseOver(mouseX, mouseY);
 
         int mx = flag ? Integer.MIN_VALUE : mouseX;
         int my = flag ? Integer.MIN_VALUE : mouseY;
         for (GuiEventListener widget : children()) {
-            if (widget instanceof Renderable renderable) {
-                renderable.render(gfx, mx, my, partialTicks);
-            }
+            if (widget instanceof UIWidget<?> uiWidget)
+                uiWidget.render(renderer, mx, my, partialTicks);
+            else if (widget instanceof Renderable renderable)
+                renderable.render(renderer.gfx(), mx, my, partialTicks);
         }
 
-        renderContextMenu(gfx, mouseX, mouseY, partialTicks);
+        renderContextMenu(renderer, mouseX, mouseY, partialTicks);
     }
 
-    private void renderContextMenu(GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
+    public void renderWidget(GuiRenderer renderer, int mouseX, int mouseY, float partialTicks) {
+
+    }
+
+    /**
+     * @deprecated Use {@link #renderDirtBackground(GuiRenderer)} instead, this method will be set to final in the future
+     */
+    @Override
+    @Deprecated
+    public /*final*/ void renderDirtBackground(@NotNull GuiGraphics gfx) {
+        super.renderDirtBackground(gfx);
+    }
+
+    public void renderDirtBackground(@NotNull GuiRenderer renderer) {
+        super.renderDirtBackground(renderer.gfx());
+    }
+
+    /**
+     * @deprecated Use {@link #renderTransparentBackground(GuiRenderer)} instead, this method will be set to final in the future
+     */
+    @Deprecated
+    @Override
+    public /*final*/ void renderTransparentBackground(@NotNull GuiGraphics gfx) {
+        super.renderTransparentBackground(gfx);
+    }
+
+    public void renderTransparentBackground(@NotNull GuiRenderer renderer) {
+        super.renderTransparentBackground(renderer.gfx());
+    }
+
+    /**
+     * @deprecated Use {@link #renderBackground(GuiRenderer, int, int, float)} instead, this method will be set to final in the future
+     */
+    @Override
+    @Deprecated
+    public /*final*/ void renderBackground(@NotNull GuiGraphics gfx, int i, int j, float f) {
+        super.renderBackground(gfx, i, j, f);
+    }
+
+    public void renderBackground(GuiRenderer renderer, int mouseX, int mouseY, float partialTicks) {
+        super.renderBackground(renderer.gfx(), mouseX, mouseY, partialTicks);
+    }
+
+    private void renderContextMenu(@NotNull GuiRenderer renderer, int mouseX, int mouseY, float partialTicks) {
         ContextMenu menu = contextMenu;
         if (menu != null) {
             RenderSystem.disableDepthTest();
-            menu.renderWidget(gfx, mouseX, mouseY, partialTicks);
+            menu.render(renderer, mouseX, mouseY, partialTicks);
             RenderSystem.enableDepthTest();
         }
     }
 
+    /**
+     * @deprecated removed feature
+     */
     @Nullable
-    public abstract Vec2 getCloseButtonPos();
+    @Deprecated(forRemoval = true)
+    public Vec2 getCloseButtonPos() {
+        return this.titleBar.getCloseButtonPos();
+    }
 
     protected final boolean isPointBetween(int mouseX, int mouseY, int x, int y, int w, int h) {
         final int x1 = x + w;
@@ -136,21 +251,23 @@ public abstract class ULibScreen extends Screen implements Stylized, WidgetsCont
         return mouseX >= x && mouseY >= y && mouseX <= x1 && mouseY <= y1;
     }
 
-    protected final void renderCloseButton(GuiGraphics gfx, int mouseX, int mouseY) {
+    protected final void renderCloseButton(@NotNull GuiRenderer renderer, int mouseX, int mouseY) {
         if (!this.shouldCloseOnEsc()) {
             return;
         }
 
         Vec2 iconPos = getCloseButtonPos();
         if (iconPos != null) {
-            int iconX = (int) iconPos.x;
-            int iconY = (int) iconPos.y;
-            if (isPointBetween(mouseX, mouseY, iconX, iconY, 6, 6)) {
-                gfx.drawString(this.font, CLOSE_ICON_HOVER, iconX, iconY, TitleStyle.get().getTitleColor().getRgb(), false);
-            } else {
-                gfx.drawString(this.font, CLOSE_ICON, iconX, iconY, TitleStyle.get().getTitleColor().getRgb(), false);
-            }
+            this.renderCloseButton(renderer, mouseX, mouseY, (int) iconPos.x, (int) iconPos.y);
         }
+    }
+
+
+    public void renderCloseButton(GuiRenderer renderer, int mouseX, int mouseY, int x, int y) {
+        if (isPointBetween(mouseX, mouseY, x, y, 6, 6))
+            renderer.textCenter(CLOSE_ICON_HOVER, x + 3, y, TitleStyle.get().getTitleColor().getRgb(), false);
+        else
+            renderer.textCenter(CLOSE_ICON, x + 3, y, TitleStyle.get().getTitleColor().getRgb(), false);
     }
 
     private boolean isHoveringContextMenu(int mouseX, int mouseY) {
@@ -161,7 +278,7 @@ public abstract class ULibScreen extends Screen implements Stylized, WidgetsCont
 
     /**
      * Event handler for mouse motion.
-     * 
+     *
      * @param mouseX the X-position of the mouse it moved to.
      * @param mouseY the Y-position of the mouse it moved to.
      */
@@ -178,8 +295,8 @@ public abstract class ULibScreen extends Screen implements Stylized, WidgetsCont
     /**
      * Event handler for mouse scrolling.
      *
-     * @param mouseX the X-position of the mouse it scrolled at.
-     * @param mouseY the Y-position of the mouse it scrolled at.
+     * @param mouseX  the X-position of the mouse it scrolled at.
+     * @param mouseY  the Y-position of the mouse it scrolled at.
      * @param amountX the amount of partial clicks it scrolled in the X-axis.
      * @param amountY the amount of partial clicks it scrolled in the Y-axis.
      */
@@ -219,7 +336,7 @@ public abstract class ULibScreen extends Screen implements Stylized, WidgetsCont
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
         if (isAtCloseButton(mouseX, mouseY)) {
             Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
-            back();
+            close();
             return true;
         }
 
@@ -302,13 +419,21 @@ public abstract class ULibScreen extends Screen implements Stylized, WidgetsCont
         this.contextMenu = null;
     }
 
+    /**
+     * @deprecated Use {@link #close()} instead
+     */
+    @Deprecated(forRemoval = true)
     protected void back() {
+        this.close();
+    }
+
+    protected void close() {
         Minecraft.getInstance().setScreen(back);
     }
 
     @Override
     public void onClose() {
-        this.back();
+        this.close();
         super.clearWidgets();
     }
 
@@ -378,7 +503,7 @@ public abstract class ULibScreen extends Screen implements Stylized, WidgetsCont
         return super.addWidget(listener);
     }
 
-    public <T extends ULibWidget> @NotNull T add(@NotNull T widget) {
+    public <T extends ULibWidget> T add(@NotNull T widget) {
         widget.setPlacement(WidgetPlacement.CONTENT);
         return super.addRenderableWidget(widget);
     }
@@ -387,5 +512,21 @@ public abstract class ULibScreen extends Screen implements Stylized, WidgetsCont
         widget.setPlacement(WidgetPlacement.WINDOW);
         this.titleBar.add(widget);
         return super.addRenderableWidget(widget);
+    }
+
+    protected TitleBarAccess titleBarAccess() {
+        return this.titleBar;
+    }
+
+    public void setFullScreen(boolean fullScreen) {
+        this.titleBar.setFullScreen(fullScreen);
+    }
+
+    public boolean isFullScreen() {
+        return this.titleBar.isFullScreen();
+    }
+
+    public Vector2i getContentOffset(Vector2i tmp) {
+        return tmp.set(this.titleBar.getContentOffset());
     }
 }

@@ -6,7 +6,6 @@ import com.ultreon.mods.lib.client.gui.Anchor;
 import com.ultreon.mods.lib.client.gui.FrameType;
 import com.ultreon.mods.lib.client.gui.GuiRenderer;
 import com.ultreon.mods.lib.client.gui.widget.ContainerWidget;
-import com.ultreon.mods.lib.client.gui.widget.UIWidget;
 import com.ultreon.mods.lib.client.gui.widget.ULibWidget;
 import com.ultreon.mods.lib.client.theme.GlobalTheme;
 import com.ultreon.mods.lib.client.theme.Stylized;
@@ -220,7 +219,7 @@ public class Window extends ContainerWidget implements Stylized {
      * @param partialTicks The partial ticks.
      */
     private void renderContents(@NotNull GuiRenderer renderer, int mouseX, int mouseY, float partialTicks) {
-        for (ULibWidget widget : children) {
+        for (ULibWidget widget : widgets) {
             if (widget != null) {
                 widget.render(renderer, mouseX, mouseY, partialTicks);
             }

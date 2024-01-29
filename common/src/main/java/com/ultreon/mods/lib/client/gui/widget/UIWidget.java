@@ -77,7 +77,10 @@ public abstract class UIWidget<T extends UIWidget<T>> extends AbstractWidget imp
         ULibWidget.super.render(gfx, mouseX, mouseY, partialTicks);
     }
 
-    public void render(@NotNull GuiRenderer renderer, int mouseX, int mouseY, float partialTicks) {
+    public final void render(@NotNull GuiRenderer renderer, int mouseX, int mouseY, float partialTicks) {
+        if (!visible) return;
+
+        this.isHovered = this.isMouseOver(mouseX, mouseY);
         this.renderWidget(renderer, mouseX, mouseY, partialTicks);
         this.renderForeground(renderer, mouseX, mouseY, partialTicks);
     }

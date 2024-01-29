@@ -1,12 +1,16 @@
 package com.ultreon.mods.lib.client.tests;
 
 import com.ultreon.mods.lib.client.gui.GuiRenderer;
+import com.ultreon.mods.lib.client.gui.screen.TabPage;
 import com.ultreon.mods.lib.client.gui.screen.ULibScreen;
 import com.ultreon.mods.lib.client.gui.screen.test.TestLaunchContext;
 import com.ultreon.mods.lib.client.gui.screen.test.TestScreen;
 import com.ultreon.mods.lib.client.gui.screen.test.TestScreenInfo;
+import com.ultreon.mods.lib.client.gui.screen.window.TitleBarAccess;
 import com.ultreon.mods.lib.client.gui.widget.Progressbar;
 import com.ultreon.mods.lib.client.gui.widget.PushButton;
+import com.ultreon.mods.lib.client.gui.widget.SimpleTabPage;
+import net.minecraft.client.gui.components.tabs.Tab;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.world.phys.Vec2;
 import org.jetbrains.annotations.ApiStatus;
@@ -14,25 +18,22 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector2i;
 
-@TestScreenInfo("Progress Screen")
+@TestScreenInfo("Full of Widgets")
 @ApiStatus.Internal
-public class TestProgressScreen extends ULibScreen implements TestScreen {
-    private PushButton proceedBtn;
-    private Progressbar progressbar;
+public class TestFullOfWidgetsScreen extends ULibScreen implements TestScreen {
     private int progress = 0;
 
-    public TestProgressScreen() {
+    public TestFullOfWidgetsScreen() {
         super(TestLaunchContext.get().title);
     }
 
     @Override
     public void initWidgets() {
-        progressbar = this.add(new Progressbar(500)
-                .position(() -> new Vector2i(width / 2, height / 2)));
-        proceedBtn = this.add(PushButton.of(CommonComponents.GUI_PROCEED, (btn) -> close())
-                .position(() -> new Vector2i(width / 2 + 91 - 50, height / 2 + 3 + 5))
-                .size(() -> new Vector2i(50, 20)));
-        proceedBtn.active = false;
+        TitleBarAccess titleBarAccess = this.titleBarAccess();
+        titleBarAccess.addTab(new ButtonsTab());
+        titleBarAccess.add(PushButton.of(CommonComponents.GUI_PROCEED, (btn) -> {
+
+        }));
     }
 
     @Override
@@ -42,22 +43,9 @@ public class TestProgressScreen extends ULibScreen implements TestScreen {
 
     @Override
     public void tick() {
-        progress++;
-        if (progress >= progressbar.getMaximum()) {
-            progress = progressbar.getMaximum();
-            proceedBtn.active = true;
-        }
-        progressbar.setValue(progress);
+
     }
 
-    @Override
-    public @Nullable Vec2 getCloseButtonPos() {
-        if (!proceedBtn.active) return null;
-        return new Vec2(width - 10, 6);
-    }
-
-    @Override
-    public boolean shouldCloseOnEsc() {
-        return proceedBtn.active;
+    private class ButtonsTab extends SimpleTabPage {
     }
 }

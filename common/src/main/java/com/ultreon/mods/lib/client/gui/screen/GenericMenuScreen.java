@@ -13,7 +13,6 @@ import com.ultreon.mods.lib.client.theme.Stylized;
 import com.ultreon.mods.lib.client.theme.WidgetPlacement;
 import dev.architectury.injectables.annotations.ExpectPlatform;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.*;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -256,7 +255,7 @@ public abstract class GenericMenuScreen extends ULibScreen implements Stylized {
 
     @Deprecated(forRemoval = true)
     @SuppressWarnings({"unused", "removal"})
-    public <T extends Renderable> T addStatic(T widget, int height, int widgetWidth, int deltaX, int deltaY, int widgetOffset) {
+    public <T extends ULibWidget> T addStatic(T widget, int height, int widgetWidth, int deltaX, int deltaY, int widgetOffset) {
         if (this.frozen) {
             return null;
         }
@@ -268,7 +267,7 @@ public abstract class GenericMenuScreen extends ULibScreen implements Stylized {
 
     @Deprecated(forRemoval = true)
     @SuppressWarnings({"unused", "removal"})
-    public <T extends Renderable> T addStatic(T widget, int height, int widgetWidth, int deltaX, int deltaY, int widgetOffset, int u, int v) {
+    public <T extends ULibWidget> T addStatic(T widget, int height, int widgetWidth, int deltaX, int deltaY, int widgetOffset, int u, int v) {
         if (this.frozen) {
             return null;
         }
@@ -280,7 +279,7 @@ public abstract class GenericMenuScreen extends ULibScreen implements Stylized {
 
     @Deprecated(forRemoval = true)
     @SuppressWarnings({"unused", "removal"})
-    public <T extends Renderable> T addStatic(T widget, int height, int widgetWidth, int widgetHeight, int deltaX, int deltaY, int widgetOffset, int u, int v) {
+    public <T extends ULibWidget> T addStatic(T widget, int height, int widgetWidth, int widgetHeight, int deltaX, int deltaY, int widgetOffset, int u, int v) {
         if (this.frozen) {
             return null;
         }
@@ -292,7 +291,7 @@ public abstract class GenericMenuScreen extends ULibScreen implements Stylized {
 
     @Deprecated(forRemoval = true)
     @SuppressWarnings({"unused", "removal"})
-    public <T extends Renderable> T addStatic(T widget, int height, int widgetWidth, int widgetHeight, int deltaX, int deltaY, int widgetOffset, int u, int v, int uh) {
+    public <T extends ULibWidget> T addStatic(T widget, int height, int widgetWidth, int widgetHeight, int deltaX, int deltaY, int widgetOffset, int u, int v, int uh) {
         if (this.frozen) {
             return null;
         }
@@ -398,7 +397,7 @@ public abstract class GenericMenuScreen extends ULibScreen implements Stylized {
 
     @SuppressWarnings("unused")
     private void back(@Nullable net.minecraft.client.gui.components.Button button) {
-        back();
+        close();
     }
 
     /**
@@ -408,7 +407,7 @@ public abstract class GenericMenuScreen extends ULibScreen implements Stylized {
      * @see #onPostBack()
      */
     @Override
-    public final void back() {
+    public final void close() {
         if (onPreBack()) return;
 
         if (back != null) {
@@ -514,7 +513,7 @@ public abstract class GenericMenuScreen extends ULibScreen implements Stylized {
     }
 
     @Override
-    protected void initWidgets() {
+    public void initWidgets() {
         frozen = true;
         initialized = true;
     }
@@ -525,8 +524,25 @@ public abstract class GenericMenuScreen extends ULibScreen implements Stylized {
     }
 
     @Override
-    public void renderBackground(@NotNull GuiGraphics gfx, int i, int j, float f) {
-        if (!this.panorama) super.renderBackground(gfx, i, j, f);
+    public void renderBackground(@NotNull GuiRenderer renderer, int mouseX, int mouseY, float partialTicks) {
+        // Pre rendering.
+        onPreRender();
+
+        ResourceLocation contentFrame = UltreonLib.getTheme().getContentTheme().getFrameSprite();
+        ResourceLocation windowFrame = UltreonLib.getTheme().getWindowTheme().getFrameSprite();
+
+        if (this.panorama) renderPanorama(renderer, partialTicks);
+        else super.renderBackground(renderer, mouseX, mouseY, partialTicks);
+
+        int rowsHeight = rowsHeight();
+
+        renderer.renderWindow(left(), top(), width(), height(), this.title);
+
+        int rowStartY = top() + this.getRenderTitleBarHeight();
+        int index = 1;
+
+        // Render the widget rows.
+        this.renderRows(renderer, mouseX, mouseY, partialTicks, rowStartY, index);
     }
 
     public void onPreRender() {
@@ -538,42 +554,9 @@ public abstract class GenericMenuScreen extends ULibScreen implements Stylized {
     }
 
     @Override
-    public final void render(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
-        // Pre rendering.
-        onPreRender();
-
-        GuiRenderer renderer = new GuiRenderer(gfx, GlobalTheme.get(), TitleStyle.get());
-
-        ResourceLocation contentFrame = UltreonLib.getTheme().getContentTheme().getFrameSprite();
-        ResourceLocation windowFrame = UltreonLib.getTheme().getWindowTheme().getFrameSprite();
-
-        // Renders the background.
-        if (this.panorama) renderPanorama(gfx, partialTicks);
-        else renderBackground(gfx, mouseX, mouseY, partialTicks);
-
-        int rowsHeight = rowsHeight();
-
-//        if (this.titleStyle.equals(TitleStyles.HIDDEN)) {
-//            gfx.blitSprite(this.contentSprite, left(), top(), width(), height());
-//        } else if (this.titleStyle.equals(TitleStyles.NORMAL)) {
-//            gfx.blitSprite(this.contentSprite, left(), top(), width(), height());
-//            gfx.drawString(this.font, this.title, (int) (left() + width() / 2f - this.font.width(this.title.getString()) / 2), top() + 6, this.titleColor, false);
-//        } else if (this.titleStyle.equals(TitleStyles.DETACHED)) {// Draw title bar frame.
-//            gfx.blitSprite(this.titleSprite, left(), top(), width(), getTitleBarHeight());
-//            gfx.blitSprite(this.contentSprite, left(), top() + getTitleBarHeight() + 1, width(), height() - getTitleBarHeight() - 1);
-//            gfx.drawString(this.font, this.title, (int) (left() + width() / 2f - this.font.width(this.title.getString()) / 2), top() + 6, this.titleColor, false);
-//        }
-
-        renderer.renderWindow(left(), top(), width(), height(), this.title);
-
-        int rowStartY = top() + this.getRenderTitleBarHeight();
-        int index = 1;
-
-        // Render the widget rows.
-        this.renderRows(gfx, mouseX, mouseY, partialTicks, rowStartY, index);
-
+    public final void render(@NotNull GuiRenderer renderer, int mouseX, int mouseY, float partialTicks) {
         // Post rendering.
-        super.render(gfx, mouseX, mouseY, partialTicks);
+        super.render(renderer, mouseX, mouseY, partialTicks);
         this.onPostRender();
     }
 
@@ -593,22 +576,22 @@ public abstract class GenericMenuScreen extends ULibScreen implements Stylized {
     /**
      * Render the panorama background/
      *
-     * @param gfx         pose stack.
+     * @param renderer     pose stack.
      * @param partialTicks render frame time.
      */
-    public void renderPanorama(GuiGraphics gfx, float partialTicks) {
+    public void renderPanorama(@NotNull GuiRenderer renderer, float partialTicks) {
         PanoramaScreen.PANORAMA.render(partialTicks, Mth.clamp(1.0f, 0.0f, 1.0f));
         RenderSystem.enableBlend();
-        gfx.setColor(1.0f, 1.0f, 1.0f, 1.0f);
-        gfx.blit(PanoramaScreen.PANORAMA_OVERLAY, 0, 0, this.width, this.height, 0.0f, 0.0f, 16, 128, 16, 128);
-        gfx.setColor(1.0f, 1.0f, 1.0f, 1.0f);
+        renderer.setColor(1.0f, 1.0f, 1.0f, 1.0f);
+        renderer.blit(PanoramaScreen.PANORAMA_OVERLAY, 0, 0, this.width, this.height, 0, 0, 16, 128, 16, 128);
+        renderer.setColor(1.0f, 1.0f, 1.0f, 1.0f);
     }
 
-    private void renderRows(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTicks, int y, int index) {
+    private void renderRows(@NotNull GuiRenderer renderer, int mouseX, int mouseY, float partialTicks, int y, int index) {
         if (!rows.isEmpty()) {
             for (Row row : rows.subList(0, rows.size() - 1)) {
                 // Render the row widgets.
-                renderSubWidgets(gfx, mouseX, mouseY, partialTicks, y, row);
+                this.renderSubWidgets(renderer, mouseX, mouseY, partialTicks, y, row);
 
                 // Advance in index, and add the current row height to the current y coordinate.
                 y += row.height();
@@ -621,35 +604,35 @@ public abstract class GenericMenuScreen extends ULibScreen implements Stylized {
             Row row = rows.get(rows.size() - 1);
 
             // Render the row widgets.
-            renderSubWidgets(gfx, mouseX, mouseY, partialTicks, y, row);
+            this.renderSubWidgets(renderer, mouseX, mouseY, partialTicks, y, row);
         }
     }
 
-    private void renderSubWidgets(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTicks, int curY, Row row) {
+    private void renderSubWidgets(@NotNull GuiRenderer renderer, int mouseX, int mouseY, float partialTicks, int curY, Row row) {
         // Render row.
         if (row.widgets.size() == 1) {
             // Render row with single widget.
-            Renderable widget = row.widgets.get(0);
+            ULibWidget widget = row.widgets.get(0);
             repositionAndRender(
                     widget,
                     left() + row.deltaX(),
                     curY + row.deltaY(),
                     row.widgetWidth(),
                     row.widgetHeight(),
-                    gfx,
+                    renderer,
                     mouseX, mouseY,
                     partialTicks
             );
         } else {
             // Render row with multiple widgets.
             int x = left() + row.deltaX();
-            for (Renderable widget : row.widgets()) {
+            for (ULibWidget widget : row.widgets()) {
                 repositionAndRender(widget,
                         x,
                         curY + row.deltaY(),
                         row.widgetWidth(),
                         row.widgetHeight(),
-                        gfx,
+                        renderer,
                         mouseX, mouseY,
                         partialTicks);
 
@@ -659,27 +642,24 @@ public abstract class GenericMenuScreen extends ULibScreen implements Stylized {
         }
     }
 
-    private void repositionAndRender(Renderable widget, int x, int y, int width, int height, @NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
+    private void repositionAndRender(ULibWidget widget, int x, int y, int width, int height, @NotNull GuiRenderer renderer, int mouseX, int mouseY, float partialTicks) {
         if (widget instanceof AbstractWidget absWidget) {
             absWidget.setX(x);
             absWidget.setY(y);
             absWidget.setWidth(width);
             absWidget.setHeight(height);
-        } else if (widget instanceof AbstractSelectionList<?> absWidget) {
-            absWidget.setX(x);
-            absWidget.setY(y);
-            absWidget.setWidth(width);
-            absWidget.setHeight(height);
-        } else if (widget instanceof Label label) {
-            label.x = x;
-            label.y = y;
         } else {
-            onReposition(widget, x, y, width, height, gfx, mouseX, mouseY, partialTicks);
+            if (widget instanceof Label label) {
+                label.x = x;
+                label.y = y;
+            } else {
+                onReposition(widget, x, y, width, height, renderer, mouseX, mouseY, partialTicks);
+            }
         }
-        widget.render(gfx, mouseX, mouseY, partialTicks);
+        widget.render(renderer, mouseX, mouseY, partialTicks);
     }
 
-    public void onReposition(Renderable widget, int x, int y, int width, int height, GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
+    public void onReposition(ULibWidget widget, int x, int y, int width, int height, GuiRenderer gfx, int mouseX, int mouseY, float partialTicks) {
 
     }
 
@@ -731,22 +711,22 @@ public abstract class GenericMenuScreen extends ULibScreen implements Stylized {
         }
     }
 
-    private record Row(ImmutableList<Renderable> widgets, int height, int widgetWidth, int widgetHeight,
+    private record Row(ImmutableList<ULibWidget> widgets, int height, int widgetWidth, int widgetHeight,
                        int deltaX, int deltaY, int widgetOffset, int u, int v, int uw, int vh) {
 
-        public Row(ImmutableList<Renderable> widgets, int height, int widgetWidth, int deltaX, int deltaY, int widgetOffset) {
+        public Row(ImmutableList<ULibWidget> widgets, int height, int widgetWidth, int deltaX, int deltaY, int widgetOffset) {
             this(widgets, height, widgetWidth, deltaX, deltaY, widgetOffset, 0, 216);
         }
 
-        public Row(ImmutableList<Renderable> widgets, int height, int widgetWidth, int deltaX, int deltaY, int widgetOffset, int u, int v) {
+        public Row(ImmutableList<ULibWidget> widgets, int height, int widgetWidth, int deltaX, int deltaY, int widgetOffset, int u, int v) {
             this(widgets, height, widgetWidth, height, deltaX, deltaY, widgetOffset, u, v);
         }
 
-        public Row(ImmutableList<Renderable> widgets, int height, int widgetWidth, int widgetHeight, int deltaX, int deltaY, int widgetOffset, int u, int v) {
+        public Row(ImmutableList<ULibWidget> widgets, int height, int widgetWidth, int widgetHeight, int deltaX, int deltaY, int widgetOffset, int u, int v) {
             this(widgets, height, widgetWidth, widgetHeight, deltaX, deltaY, widgetOffset, u, v, height);
         }
 
-        public Row(ImmutableList<Renderable> widgets, int height, int widgetWidth, int widgetHeight, int deltaX, int deltaY, int widgetOffset, int u, int v, int uh) {
+        public Row(ImmutableList<ULibWidget> widgets, int height, int widgetWidth, int widgetHeight, int deltaX, int deltaY, int widgetOffset, int u, int v, int uh) {
             this(widgets, height, widgetWidth, widgetHeight, deltaX, deltaY, widgetOffset, u, v, 176, uh);
         }
 

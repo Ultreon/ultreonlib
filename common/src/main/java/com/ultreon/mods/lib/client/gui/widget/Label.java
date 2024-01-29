@@ -24,7 +24,7 @@ public class Label extends UIWidget<Label> {
     }
 
     @Override
-    public void render(@NotNull GuiRenderer renderer, int mouseX, int mouseY, float partialTicks) {
+    public void renderWidget(@NotNull GuiRenderer renderer, int mouseX, int mouseY, float partialTicks) {
         renderer.textLeft(this.getMessage(), this.x, this.y, this.getColorRgb(), this.shadow);
     }
 

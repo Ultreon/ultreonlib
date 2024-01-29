@@ -5,10 +5,10 @@ import com.ultreon.mods.lib.client.gui.FrameType;
 import com.ultreon.mods.lib.client.gui.GuiRenderer;
 import com.ultreon.mods.lib.client.gui.screen.ULibScreen;
 import com.ultreon.mods.lib.client.gui.widget.ContainerWidget;
+import com.ultreon.mods.lib.client.gui.widget.ULibWidget;
 import com.ultreon.mods.lib.client.theme.GlobalTheme;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarratedElementType;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.network.chat.Component;
@@ -19,7 +19,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -135,7 +134,7 @@ public class ContextMenu extends ContainerWidget {
      * @return all menu entries (unmodifiable).
      */
     @Override
-    public @NotNull List<? extends GuiEventListener> children() {
+    public @NotNull List<? extends ULibWidget> children() {
         return Collections.unmodifiableList(entries);
     }
 

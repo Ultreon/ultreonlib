@@ -86,6 +86,10 @@ public class GuiRenderer {
         gfx.drawString(font(), formattedCharSequence, x, y, color, false);
     }
 
+    public void textLeft(FormattedCharSequence text, int x, int y, int color) {
+        gfx.drawString(font(), text, x, y, color, false);
+    }
+
     public void textLeft(String text, int x, int y, int color, boolean shadow) {
         gfx.drawString(font(), text, x, y, color, shadow);
     }
@@ -93,6 +97,10 @@ public class GuiRenderer {
     public void textLeft(Component text, int x, int y, int color, boolean shadow) {
         FormattedCharSequence formattedCharSequence = text.getVisualOrderText();
         gfx.drawString(font(), formattedCharSequence, x, y, color, shadow);
+    }
+
+    public void textLeft(FormattedCharSequence text, int x, int y, int color, boolean shadow) {
+        gfx.drawString(font(), text, x, y, color, shadow);
     }
 
     public void textLeft(String text, int x, int y, Color color) {
@@ -104,6 +112,10 @@ public class GuiRenderer {
         gfx.drawString(font(), formattedCharSequence, x, y, color.getRgb(), false);
     }
 
+    public void textLeft(FormattedCharSequence text, int x, int y, Color color) {
+        gfx.drawString(font(), text, x, y, color.getRgb(), false);
+    }
+
     public void textLeft(String text, int x, int y, Color color, boolean shadow) {
         gfx.drawString(font(), text, x, y, color.getRgb(), shadow);
     }
@@ -111,6 +123,10 @@ public class GuiRenderer {
     public void textLeft(Component text, int x, int y, Color color, boolean shadow) {
         FormattedCharSequence formattedCharSequence = text.getVisualOrderText();
         gfx.drawString(font(), formattedCharSequence, x, y, color.getRgb(), shadow);
+    }
+
+    public void textLeft(FormattedCharSequence text, int x, int y, Color color, boolean shadow) {
+        gfx.drawString(font(), text, x - font().width(text) / 2, y, color.getRgb(), shadow);
     }
 
     public void textCenter(String text, int x, int y, int color) {
@@ -122,6 +138,10 @@ public class GuiRenderer {
         gfx.drawString(font(), formattedCharSequence, x - font().width(formattedCharSequence) / 2, y, color, true);
     }
 
+    public void textCenter(FormattedCharSequence text, int x, int y, int color) {
+        gfx.drawString(font(), text, x - font().width(text) / 2, y, color, true);
+    }
+
     public void textCenter(String text, int x, int y, int color, boolean shadow) {
         gfx.drawString(font(), text, x - font().width(text) / 2, y, color, shadow);
     }
@@ -129,6 +149,10 @@ public class GuiRenderer {
     public void textCenter(Component text, int x, int y, int color, boolean shadow) {
         FormattedCharSequence formattedCharSequence = text.getVisualOrderText();
         gfx.drawString(font(), formattedCharSequence, x - font().width(formattedCharSequence) / 2, y, color, shadow);
+    }
+
+    public void textCenter(FormattedCharSequence text, int x, int y, int color, boolean shadow) {
+        gfx.drawString(font(), text, x - font().width(text) / 2, y, color, shadow);
     }
 
     public void textCenter(String text, int x, int y, Color color) {
@@ -140,6 +164,10 @@ public class GuiRenderer {
         gfx.drawString(font(), formattedCharSequence, x - font().width(formattedCharSequence) / 2, y, color.getRgb(), true);
     }
 
+    public void textCenter(FormattedCharSequence text, int x, int y, Color color) {
+        gfx.drawString(font(), text, x - font().width(text) / 2, y, color.getRgb(), true);
+    }
+
     public void textCenter(String text, int x, int y, Color color, boolean shadow) {
         gfx.drawString(font(), text, x - font().width(text) / 2, y, color.getRgb(), shadow);
     }
@@ -147,6 +175,10 @@ public class GuiRenderer {
     public void textCenter(Component text, int x, int y, Color color, boolean shadow) {
         FormattedCharSequence formattedCharSequence = text.getVisualOrderText();
         gfx.drawString(font(), formattedCharSequence, x - font().width(formattedCharSequence) / 2, y, color.getRgb(), shadow);
+    }
+
+    public void textCenter(FormattedCharSequence text, int x, int y, Color color, boolean shadow) {
+        gfx.drawString(font(), text, x - font().width(text) / 2, y, color.getRgb(), shadow);
     }
 
     public void textRight(String text, int x, int y, int color) {
@@ -158,6 +190,10 @@ public class GuiRenderer {
         gfx.drawString(font(), formattedCharSequence, x - font().width(formattedCharSequence), y, color, false);
     }
 
+    public void textRight(FormattedCharSequence text, int x, int y, int color) {
+        gfx.drawString(font(), text, x - font().width(text), y, color, false);
+    }
+
     public void textRight(String text, int x, int y, int color, boolean shadow) {
         gfx.drawString(font(), text, x - font().width(text), y, color, shadow);
     }
@@ -165,6 +201,10 @@ public class GuiRenderer {
     public void textRight(Component text, int x, int y, int color, boolean shadow) {
         FormattedCharSequence formattedCharSequence = text.getVisualOrderText();
         gfx.drawString(font(), formattedCharSequence, x - font().width(formattedCharSequence), y, color, shadow);
+    }
+
+    public void textRight(FormattedCharSequence text, int x, int y, int color, boolean shadow) {
+        gfx.drawString(font(), text, x - font().width(text), y, color, shadow);
     }
 
     public void textRight(String text, int x, int y, Color color) {
@@ -176,6 +216,10 @@ public class GuiRenderer {
         gfx.drawString(font(), formattedCharSequence, x - font().width(formattedCharSequence), y, color.getRgb(), false);
     }
 
+    public void textRight(FormattedCharSequence text, int x, int y, Color color) {
+        gfx.drawString(font(), text, x - font().width(text), y, color.getRgb(), false);
+    }
+
     public void textRight(String text, int x, int y, Color color, boolean shadow) {
         gfx.drawString(font(), text, x - font().width(text), y, color.getRgb(), shadow);
     }
@@ -183,6 +227,10 @@ public class GuiRenderer {
     public void textRight(Component text, int x, int y, Color color, boolean shadow) {
         FormattedCharSequence formattedCharSequence = text.getVisualOrderText();
         gfx.drawString(font(), formattedCharSequence, x - font().width(formattedCharSequence), y, color.getRgb(), shadow);
+    }
+
+    public void textRight(FormattedCharSequence text, int x, int y, Color color, boolean shadow) {
+        gfx.drawString(font(), text, x - font().width(text), y, color.getRgb(), shadow);
     }
 
     public void fill(int x, int y, int x1, int y1, Color color) {
@@ -463,5 +511,26 @@ public class GuiRenderer {
 
     public void setColor(Color color) {
         gfx.setColor(color.getRed(), color.getRed(), color.getBlue(), color.getAlpha());
+    }
+
+    public void fillGradient(int x, int y, int width, int height, int color1, int color2) {
+        gfx.fillGradient(x, y, width, height, color1, color2);
+    }
+
+    public void fillGradient(int x, int y, int width, int height, Color color1, Color color2) {
+        gfx.fillGradient(x, y, width, height, color1.getRgb(), color2.getRgb());
+    }
+
+    public void renderHLine(int x, int y, int width, int color) {
+        gfx.hLine(x, y, width, color);
+    }
+
+    public void renderHLine(int x, int y, int width, Color color) {
+        gfx.hLine(x, y, width, color.getRgb());
+    }
+
+    public void renderBumpLine(int x, int y) {
+        gfx.hLine(x, y, Minecraft.getInstance().getWindow().getGuiScaledWidth(), 0x80000000);
+        gfx.hLine(x, y + 1, Minecraft.getInstance().getWindow().getGuiScaledWidth(), 0x80ffffff);
     }
 }

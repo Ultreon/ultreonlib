@@ -2,22 +2,30 @@ package com.ultreon.mods.lib.client.gui.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.ultreon.mods.lib.client.gui.FrameType;
+import com.ultreon.mods.lib.client.gui.GuiRenderer;
 import com.ultreon.mods.lib.client.gui.widget.Button;
+import com.ultreon.mods.lib.client.gui.widget.TextBox;
+import com.ultreon.mods.lib.client.gui.widget.ULibWidget;
+import com.ultreon.mods.lib.client.gui.widget.WidgetsContainer;
+import com.ultreon.mods.lib.client.gui.widget.menu.ContextMenu;
+import com.ultreon.mods.lib.client.theme.Theme;
+import com.ultreon.mods.lib.client.theme.WidgetPlacement;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.ContainerObjectSelectionList;
-import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarratableEntry;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.FastColor;
 import net.minecraft.world.phys.Vec2;
 import org.jetbrains.annotations.NotNull;
+import org.joml.Vector2i;
 
 import java.util.*;
+import java.util.function.Supplier;
 
 /**
  * List screen. A screen that's made for only a list with entries.
@@ -31,7 +39,7 @@ public class ListScreen extends PanoramaScreen {
         return found;
     };
     private ListWidget list;
-    private EditBox searchBox;
+    private TextBox searchBox;
     private String searchTerms = "";
     private boolean initialized;
 
@@ -69,11 +77,11 @@ public class ListScreen extends PanoramaScreen {
         this.listFilter = handler;
     }
 
-    public void addEntry(String title, String description, String id, Button... buttons) {
+    public void addEntry(String title, String description, String id, Button<?>... buttons) {
         this.addEntry(new ListWidget.Entry(this, title, description, id, buttons));
     }
 
-    public void addEntry(String title, String id, Button... buttons) {
+    public void addEntry(String title, String id, Button<?>... buttons) {
         this.addEntry(title, "", id, buttons);
     }
 
@@ -105,66 +113,64 @@ public class ListScreen extends PanoramaScreen {
     }
 
     @Override
-    protected void initWidgets() {
+    public void initWidgets() {
         onInit.init();
 
         if (this.initialized && this.list != null) {
             this.list.setSize(238, this.listHeight() - 16);
             this.list.setPosition(this.left(), this.listTop());
         } else {
-            this.list = new ListWidget(this, this.minecraft, this.left(), this.listTop(), 238, listHeight() - 16, 36);
+            this.list = new ListWidget(this, this.minecraft, 36)
+                    .position(() -> new Vector2i(this.left(), this.listTop()))
+                    .size(() -> new Vector2i(238, listHeight() - 16));
         }
 
         String s = this.searchBox != null ? this.searchBox.getValue() : "";
-        this.searchBox = new EditBox(this.font, this.left() + 28, 78, 196, 16, SEARCH_HINT);
+        this.searchBox = new TextBox(SEARCH_HINT, this::search)
+                .position(() -> new Vector2i(this.left() + 13, 76))
+                .size(() -> new Vector2i(222, 17));
         this.searchBox.setMaxLength(30);
         this.searchBox.setBordered(false);
         this.searchBox.setVisible(true);
         this.searchBox.setTextColor(16777215);
         this.searchBox.setValue(s);
-        this.searchBox.setResponder(this::search);
-        this.addRenderableWidget(this.searchBox);
-        this.addRenderableWidget(this.list);
+        this.add(this.searchBox);
+        this.add(this.list);
         this.initialized = true;
     }
 
     @Override
-    public void renderBackground(@NotNull GuiGraphics gfx, float partialTicks) {
+    public void renderBackground(@NotNull GuiRenderer renderer, int mouseX, int mouseY, float partialTicks) {
         int i = this.left() + 3;
-        super.renderBackground(gfx, partialTicks);
+        super.renderBackground(renderer, mouseX, mouseY, partialTicks);
 
-        renderFrame(gfx, i, 64, 236, this.listHeight() + 16, this.globalTheme.getContentTheme(), FrameType.EXTEND);
+        assert this.minecraft != null;
+        renderer.renderContentFrame(i, 64, 236, this.listHeight() + 16, FrameType.EXTEND);
+        renderer.renderTitleFrame(this.left() + 3, 42, 238 - 24, 21, FrameType.NORMAL);
+        renderer.renderTitleFrame(this.right() - 8 - 12, 42, 21, 21, FrameType.NORMAL);
+
+        renderer.textLeft(this.title, this.left() + 9, 49, this.getStyle().getTitleColor().getRgb(), false);
     }
 
     @Override
-    public void render(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
-        Objects.requireNonNull(this.minecraft);
-        this.renderBackground(gfx, partialTicks);
+    public void renderWidget(GuiRenderer renderer, int mouseX, int mouseY, float partialTicks) {
+        super.renderWidget(renderer, mouseX, mouseY, partialTicks);
 
-        renderTitleFrame(gfx, this.left() + 3, 28, this.minecraft.font.width(this.title) + 12, 21, this.globalTheme);
-        renderTitleFrame(gfx, this.right() - 8 - 12, 28, 21, 21, this.globalTheme);
+        if (!this.list.isEmpty())
+            this.list.render(renderer, mouseX, mouseY, partialTicks);
+        else if (!this.searchBox.getValue().isEmpty())
+            renderer.textCenter(SEARCH_EMPTY, this.width / 2, (78 + this.listBottomY()) / 2, this.globalTheme.getContentTheme().getInactiveTextColor().getRgb(), false);
 
-        gfx.drawString(this.font, this.title, this.left() + 9, 35, this.getStyle().getTitleColor().getRgb(), false);
-
-        if (!this.list.isEmpty()) {
-            this.list.renderWidget(gfx, mouseX, mouseY, partialTicks);
-        } else if (!this.searchBox.getValue().isEmpty()) {
-            drawCenteredStringWithoutShadow(gfx, this.minecraft.font, SEARCH_EMPTY, this.width / 2, (78 + this.listBottomY()) / 2, this.globalTheme.getContentTheme().getInactiveTextColor().getRgb());
-        }
-
-        if (!this.searchBox.isFocused() && this.searchBox.getValue().isEmpty()) {
-            gfx.drawString(this.font, SEARCH_HINT, this.searchBox.getX(), this.searchBox.getY(), this.globalTheme.getContentTheme().getInactiveTextColor().getRgb(), false);
-        } else {
-            this.searchBox.render(gfx, mouseX, mouseY, partialTicks);
-        }
-
-        super.render(gfx, mouseX, mouseY, partialTicks);
+        if (!this.searchBox.isFocused() && this.searchBox.getValue().isEmpty())
+            renderer.textLeft(SEARCH_HINT, this.searchBox.getX(), this.searchBox.getY(), this.globalTheme.getContentTheme().getInactiveTextColor().getRgb(), false);
+        else
+            this.searchBox.render(renderer, mouseX, mouseY, partialTicks);
     }
 
     @NotNull
     @Override
     public Vec2 getCloseButtonPos() {
-        return new Vec2(this.right() - 12, 35);
+        return new Vec2(this.right() - 12, 49);
     }
 
     @Override
@@ -211,16 +217,17 @@ public class ListScreen extends PanoramaScreen {
     }
 
     @SuppressWarnings("DuplicatedCode")
-    public static class ListWidget extends ContainerObjectSelectionList<ListWidget.Entry> {
+    public static class ListWidget extends ContainerObjectSelectionList<ListWidget.Entry> implements ULibWidget {
         private final Minecraft mc;
         private final ListScreen screen;
         private final List<Entry> defaultEntries = new ArrayList<>();
         private String search;
+        private Supplier<Vector2i> positionGetter = () -> new Vector2i(0, 0);
+        private Supplier<Vector2i> sizeGetter = () -> new Vector2i(20, 20);
 
-        public ListWidget(ListScreen screen, Minecraft minecraft, int x, int y, int width, int height, int itemHeight) {
-            super(minecraft, width, height, y, itemHeight);
+        public ListWidget(ListScreen screen, Minecraft minecraft, int itemHeight) {
+            super(minecraft, 0, 0, 0, itemHeight);
             this.mc = minecraft;
-            this.setX(x);
 
             this.screen = screen;
 
@@ -245,8 +252,7 @@ public class ListScreen extends PanoramaScreen {
             return this.getX() + this.width - 13; // 124 default
         }
 
-        @Override
-        public void renderWidget(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
+        public void render(@NotNull GuiRenderer renderer, int mouseX, int mouseY, float partialTicks) {
             double scaleFactor = this.mc.getWindow().getGuiScale();
 
             double x0 = this.getX();
@@ -258,9 +264,60 @@ public class ListScreen extends PanoramaScreen {
                     (int) (x0 * scaleFactor), (int) (y0 * scaleFactor),
                     (int) (x1 * scaleFactor), (int) (y1 * scaleFactor));
 
-            super.renderWidget(gfx, mouseX, mouseY, partialTicks);
+            super.renderWidget(renderer.gfx(), mouseX, mouseY, partialTicks);
 
             RenderSystem.disableScissor();
+        }
+
+        @Override
+        public boolean isUsingCustomTextColor() {
+            return false;
+        }
+
+        @Override
+        public void revalidate() {
+            this.setPosition(this.positionGetter.get());
+            this.setSize(this.sizeGetter.get());
+        }
+
+        @Override
+        public Theme getTheme() {
+            return null;
+        }
+
+        @Override
+        public void setPlacement(WidgetPlacement placement) {
+
+        }
+
+        @Override
+        public void setParent(WidgetsContainer parent) {
+
+        }
+
+        public ListWidget position(Supplier<Vector2i> positionGetter) {
+            this.positionGetter = positionGetter;
+            return this;
+        }
+
+        public ListWidget size(Supplier<Vector2i> sizeGetter) {
+            this.sizeGetter = sizeGetter;
+            return this;
+        }
+
+        @Override
+        public ContextMenu createContextMenu(int x, int y) {
+            return null;
+        }
+
+        @Override
+        public WidgetPlacement getPlacement() {
+            return null;
+        }
+
+        @Override
+        public WidgetsContainer getParent() {
+            return null;
         }
 
         public void search(String text) {
@@ -308,11 +365,11 @@ public class ListScreen extends PanoramaScreen {
             private final Component description;
             private final String id;
 
-            public Entry(ListScreen screen, String title, String description, String id, Button... buttons) {
+            public Entry(ListScreen screen, String title, String description, String id, Button<?>... buttons) {
                 this(Minecraft.getInstance(), screen, title, description, id, buttons);
             }
 
-            public Entry(Minecraft minecraft, ListScreen screen, String title, String description, String id, Button... buttons) {
+            public Entry(Minecraft minecraft, ListScreen screen, String title, String description, String id, Button<?>... buttons) {
                 this.mc = minecraft;
                 this.entryTitle = title;
                 this.description = Component.literal(description);

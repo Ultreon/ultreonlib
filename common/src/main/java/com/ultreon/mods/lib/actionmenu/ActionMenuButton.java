@@ -13,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
 import java.awt.*;
 
 @SuppressWarnings("unused")
-public class ActionMenuButton extends TransparentButton<ActionMenuButton> implements IActionMenuIndexable {
+public class ActionMenuButton extends TransparentButton<ActionMenuButton> implements ActionMenuIndexable {
     @NotNull
     private static final ResourceLocation ICONS = UltreonLib.res("textures/gui/action_menu.png");
     @NotNull
