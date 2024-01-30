@@ -22,13 +22,13 @@ public class ActionMenuButton extends TransparentButton<ActionMenuButton> implem
     private final ActionMenuScreen screen;
     private int menuIndex;
 
-    public ActionMenuButton(@NotNull ActionMenuScreen screen, @NotNull ActionMenuItem item, int x, int y, int width, int height) {
+    public ActionMenuButton(@NotNull ActionMenuScreen screen, @NotNull ActionMenuItem item) {
         super(item.getText(), (btn) -> item.activate());
         this.screen = screen;
         this.item = item;
     }
 
-    public ActionMenuButton(@NotNull ActionMenuScreen screen, @NotNull ActionMenuItem item, int x, int y, int width, int height, TooltipFactory<ActionMenuButton> onTooltip) {
+    public ActionMenuButton(@NotNull ActionMenuScreen screen, @NotNull ActionMenuItem item, TooltipFactory<ActionMenuButton> onTooltip) {
         super(item.getText(), (btn) -> item.activate(), onTooltip);
         this.screen = screen;
         this.item = item;

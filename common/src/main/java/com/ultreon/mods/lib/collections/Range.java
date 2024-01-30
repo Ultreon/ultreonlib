@@ -6,7 +6,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
-public final class Range {
+public final class Range implements Iterable<Double> {
     private final double start;
     private final double end;
     private final double step;

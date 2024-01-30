@@ -22,10 +22,10 @@ public class UseItemTrigger extends SimpleCriterionTrigger<UseItemTrigger.Instan
     @Override
     public @NotNull Codec<Instance> codec() {
         return RecordCodecBuilder.create((instanceCodec) -> instanceCodec
-                .group(ContextAwarePredicate.CODEC.optionalFieldOf("context").forGetter((instance) -> instance.context),
-                        ItemPredicate.CODEC.optionalFieldOf("item").forGetter((instance) -> instance.item),
+                .group(ContextAwarePredicate.CODEC.optionalFieldOf("context").forGetter((instance) -> Optional.ofNullable(instance.context)),
+                        ItemPredicate.CODEC.optionalFieldOf("item").forGetter((instance) -> Optional.ofNullable(instance.item)),
                         Codec.STRING.fieldOf("target").forGetter((instance) -> instance.target.name().toLowerCase(Locale.ROOT)))
-                .apply(instanceCodec, (context, item, target) -> new Instance(context, item, Target.fromString(target))));
+                .apply(instanceCodec, (context, item, target) -> new Instance(context.orElse(null), item.orElse(null), Target.fromString(target))));
     }
 
     public enum Target {
@@ -40,28 +40,28 @@ public class UseItemTrigger extends SimpleCriterionTrigger<UseItemTrigger.Instan
     }
 
     public static class Instance implements SimpleInstance {
-        Optional<ContextAwarePredicate> context;
-        Optional<ItemPredicate> item;
+        ContextAwarePredicate context;
+        ItemPredicate item;
         Target target;
 
-        Instance(Optional<ContextAwarePredicate> context, Optional<ItemPredicate> item, Target target) {
+        Instance(ContextAwarePredicate context, ItemPredicate item, Target target) {
             super();
             this.context = context;
             this.item = item;
             this.target = target;
         }
 
-        public static Instance instance(Optional<ContextAwarePredicate> ctxPredicate, Optional<ItemPredicate> predicate, Target target) {
+        public static Instance instance(ContextAwarePredicate ctxPredicate, ItemPredicate predicate, Target target) {
             return new Instance(ctxPredicate, predicate, target);
         }
 
         public boolean matches(ItemStack item) {
-            return this.item.isEmpty() || this.item.get().matches(item);
+            return this.item == null || this.item.matches(item);
         }
 
         @Override
         public @NotNull Optional<ContextAwarePredicate> player() {
-            return context;
+            return Optional.ofNullable(context);
         }
     }
 }

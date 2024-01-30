@@ -21,7 +21,6 @@ import org.joml.Vector2i;
 @TestScreenInfo("Full of Widgets")
 @ApiStatus.Internal
 public class TestFullOfWidgetsScreen extends ULibScreen implements TestScreen {
-    private int progress = 0;
 
     public TestFullOfWidgetsScreen() {
         super(TestLaunchContext.get().title);
@@ -31,9 +30,7 @@ public class TestFullOfWidgetsScreen extends ULibScreen implements TestScreen {
     public void initWidgets() {
         TitleBarAccess titleBarAccess = this.titleBarAccess();
         titleBarAccess.addTab(new ButtonsTab());
-        titleBarAccess.add(PushButton.of(CommonComponents.GUI_PROCEED, (btn) -> {
-
-        }));
+        titleBarAccess.add(PushButton.of(CommonComponents.GUI_ACKNOWLEDGE));
     }
 
     @Override

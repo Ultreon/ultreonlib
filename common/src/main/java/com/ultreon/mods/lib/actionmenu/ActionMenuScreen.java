@@ -60,9 +60,33 @@ public class ActionMenuScreen extends PanoramaScreen {
         this.serverButtons.clear();
 
         try {
+            int x = calcX();
             this.add(new ActionMenuTitle(this))
-                    .position(this::revalidateTitlePos)
+                    .position(() -> getTitlePos(x))
                     .size(() -> new Vector2i(150, 15));
+
+            List<? extends ActionMenuItem> items = menu.getClient();
+            for (int i = items.size() - 1; i >= 0; i--) {
+                ActionMenuItem item = items.get(i);
+                try {
+                    int index = i;
+                    ActionMenuButton actionMenuButton = add(new ActionMenuButton(this, item)
+                            .position(vec -> vec.set(x, height - 16 - (index * 16)))
+                            .size(vec -> vec.set(150, 15)));
+                    if (item.isServerVariant()) {
+                        actionMenuButton.active = false;
+                        serverButtons.add(actionMenuButton);
+                    } else {
+                        actionMenuButton.active = item.isEnabled();
+                    }
+                } catch (Throwable t) {
+                    CrashReport report = CrashReport.forThrowable(t, "Failed to load action menu item into screen.");
+
+                    CrashReportUtils.addActionMenuItem(report, item, i);
+                    throw new ReportedException(report);
+                }
+            }
+
         } catch (Throwable t) {
             CrashReport report = CrashReport.forThrowable(t, "Failed to initialize action menu screen.");
 
@@ -84,11 +108,6 @@ public class ActionMenuScreen extends PanoramaScreen {
 
     @Override
     public void render(@NotNull GuiRenderer renderer, int mouseX, int mouseY, float partialTicks) {
-        assert this.minecraft != null;
-        if (this.minecraft.level == null) {
-            renderPanorama(renderer, partialTicks);
-        }
-
         if (parent instanceof ActionMenuScreen actionMenuScreen) {
             actionMenuScreen.render(renderer, mouseX, mouseY, partialTicks, this.menuIndex);
         }
@@ -131,8 +150,6 @@ public class ActionMenuScreen extends PanoramaScreen {
     public void render(@NotNull GuiRenderer renderer, int mouseX, int mouseY, float partialTicks, int childIndex) {
         if (parent instanceof ActionMenuScreen) {
             ((ActionMenuScreen) parent).render(renderer, mouseX, mouseY, partialTicks, childIndex);
-        } else if (parent != null) {
-            parent.render(renderer.gfx(), mouseX, mouseY, partialTicks);
         }
 
         for (Renderable renderable : ((ScreenAccess) this).getRenderables()) {
@@ -191,35 +208,18 @@ public class ActionMenuScreen extends PanoramaScreen {
         this.activeItem = activeItem;
     }
 
-    private Vector2i revalidateTitlePos() {
-        int x = 1;
+    private Vector2i getTitlePos(int x) {
+        List<? extends ActionMenuItem> items = menu.getClient();
+        return new Vector2i(x, height - (items.size() + 1) * 16);
+    }
+
+    private int calcX() {
+        int x;
         if (menuIndex > 0) {
             x = (151 * menuIndex) + 1;
+        } else {
+            x = 1;
         }
-
-        int y = height - 16;
-        List<? extends ActionMenuItem> items = menu.getClient();
-        for (int i = items.size() - 1; i >= 0; i--) {
-            ActionMenuItem item = items.get(i);
-            try {
-                ActionMenuButton actionMenuButton = add(new ActionMenuButton(this, item, x, y, 150, 15));
-                if (item.isServerVariant()) {
-                    actionMenuButton.active = false;
-                    serverButtons.add(actionMenuButton);
-                } else {
-                    actionMenuButton.active = item.isEnabled();
-                }
-            } catch (Throwable t) {
-                CrashReport report = CrashReport.forThrowable(t, "Failed to load action menu item into screen.");
-
-                CrashReportUtils.addActionMenuItem(report, item, i, x, y);
-                throw new ReportedException(report);
-            }
-
-            y -= 16;
-        }
-
-        y -= 16;
-        return new Vector2i(x, y);
+        return x;
     }
 }

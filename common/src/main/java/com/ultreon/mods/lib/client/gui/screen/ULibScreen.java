@@ -129,6 +129,8 @@ public abstract class ULibScreen extends Screen implements Stylized, WidgetsCont
         this.renderBackground(renderer, mouseX, mouseY, partialTicks);
         this.render(renderer, mouseX, mouseY, partialTicks);
 
+        this.renderCloseButton(renderer, mouseX, mouseY);
+
 //        GuiRenderer renderer = new GuiRenderer(guiGraphics, GlobalTheme.get(), TitleStyle.get());
 //
 //        this.renderBackground(renderer, mouseX, mouseY, partialTicks);
@@ -235,11 +237,7 @@ public abstract class ULibScreen extends Screen implements Stylized, WidgetsCont
         }
     }
 
-    /**
-     * @deprecated removed feature
-     */
     @Nullable
-    @Deprecated(forRemoval = true)
     public Vec2 getCloseButtonPos() {
         return this.titleBar.getCloseButtonPos();
     }
