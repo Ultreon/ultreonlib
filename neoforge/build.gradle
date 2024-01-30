@@ -37,18 +37,18 @@ dependencies {
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionNeoForge")) { transitive = false }
 
-    include implementation("io.github.ultreon:ubo:$ultreon_data_version")
+    include api("io.github.ultreon:ubo:$ultreon_data_version")
 
-    include implementation("io.github.ultreon.corelibs:collections-v0:$corelibs_version")
-    include implementation("io.github.ultreon.corelibs:commons-v0:$corelibs_version")
-    include implementation("io.github.ultreon.corelibs:crash-v0:$corelibs_version")
-    include implementation("io.github.ultreon.corelibs:datetime-v0:$corelibs_version")
-    include implementation("io.github.ultreon.corelibs:events-v1:$corelibs_version")
-    include implementation("io.github.ultreon.corelibs:functions-v0:$corelibs_version")
-    include implementation("io.github.ultreon.corelibs:registries-v0:$corelibs_version")
-    include implementation("io.github.ultreon.corelibs:resources-v0:$corelibs_version")
-    include implementation("io.github.ultreon.corelibs:text-v0:$corelibs_version")
-    include implementation("io.github.ultreon.corelibs:translations-v0:$corelibs_version")
+    include api("io.github.ultreon.corelibs:collections-v0:$corelibs_version")
+    include api("io.github.ultreon.corelibs:commons-v0:$corelibs_version")
+    include api("io.github.ultreon.corelibs:crash-v0:$corelibs_version")
+    include api("io.github.ultreon.corelibs:datetime-v0:$corelibs_version")
+    include api("io.github.ultreon.corelibs:events-v1:$corelibs_version")
+    include api("io.github.ultreon.corelibs:functions-v0:$corelibs_version")
+    include api("io.github.ultreon.corelibs:registries-v0:$corelibs_version")
+    include api("io.github.ultreon.corelibs:resources-v0:$corelibs_version")
+    include api("io.github.ultreon.corelibs:text-v0:$corelibs_version")
+    include api("io.github.ultreon.corelibs:translations-v0:$corelibs_version")
 
 }
 
