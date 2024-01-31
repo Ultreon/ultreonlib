@@ -1,6 +1,6 @@
 modLoader = "javafml"
 loaderVersion = "[2,)"
-license = "Ultreon API License v1.1"
+license = "Ultreon API License v1.2"
 issueTrackerURL = "https://gitlab.com/ultreon/ultreon-mod-lib/-/issues"
 
 # The main mod, and all sub-mods.
@@ -12,7 +12,7 @@ displayName = "Ultreon Modding Library"
 displayURL = "https://gitlab.com/ultreon/ultreon-mod-lib"
 logoFile="ultreonlib.png"
 credits = ""
-authors = "Qboi123"
+authors = "XyperCode"
 description = """
 ${description}
 """
@@ -35,6 +35,6 @@ side = "BOTH"
 [[dependencies.ultreonlib]]
 modId = "architectury"
 mandatory = true
-versionRange = "[9.1,10)"
+versionRange = "[11,12)"
 ordering = "NONE"
 side = "BOTH"

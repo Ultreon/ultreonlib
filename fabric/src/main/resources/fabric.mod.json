@@ -23,7 +23,7 @@
     "sources": "https://github.com/Ultreon/ultreonlib",
     "issues": "https://github.com/Ultreon/ultreonlib/issues"
   },
-  "license": "Ultreon API License v1.1",
+  "license": "Ultreon API License v1.2",
   "icon": "assets/ultreonlib/icon.png",
   "environment": "*",
   "entrypoints": {
