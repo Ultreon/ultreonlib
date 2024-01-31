@@ -1,5 +1,5 @@
 modLoader = "javafml"
-loaderVersion = "[${loaderVersion},)"
+loaderVersion = "[2,)"
 license = "Ultreon API License v1.1"
 issueTrackerURL = "https://gitlab.com/ultreon/ultreon-mod-lib/-/issues"
 
