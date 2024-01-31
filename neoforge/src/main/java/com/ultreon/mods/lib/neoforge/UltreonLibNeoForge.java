@@ -21,7 +21,7 @@ import java.util.ServiceLoader;
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod(UltreonLib.MOD_ID)
 public class UltreonLibNeoForge {
-    public static final Logger LOGGER = LoggerFactory.getLogger("UltreonLib:Forge");
+    public static final Logger LOGGER = LoggerFactory.getLogger("UltreonLib:NeoForge");
     private final IEventBus eventBus;
 
     private final UltreonLib ultreonLib;
@@ -37,7 +37,6 @@ public class UltreonLibNeoForge {
         IEventBus neoForgeEventBus = NeoForge.EVENT_BUS;
 
         // Common side stuff
-        neoForgeEventBus.register(this);
         LOGGER.info("Registering common setup handler, and load complete handler.");
 
         modEventBus.addListener(this::commonSetup);
@@ -55,13 +54,6 @@ public class UltreonLibNeoForge {
         // Server side stuff
         LOGGER.info("Registering server setup handler.");
         modEventBus.addListener(this::serverSetup);
-
-        // IMC stuff
-        LOGGER.info("Registering IMC handlers.");
-
-        // Register ourselves for server and other game events we are interested in
-        LOGGER.info("Registering mod class to forge events.");
-        neoForgeEventBus.register(this);
 
         EnvExecutor.runInEnv(Dist.CLIENT, () -> UltreonLibNeoForgeClient::new);
     }
