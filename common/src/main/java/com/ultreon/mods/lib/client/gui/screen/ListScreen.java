@@ -3,6 +3,7 @@ package com.ultreon.mods.lib.client.gui.screen;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.ultreon.mods.lib.client.gui.FrameType;
 import com.ultreon.mods.lib.client.gui.widget.BaseButton;
+import com.ultreon.mods.lib.util.ScissorStack;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.ChatFormatting;
@@ -14,7 +15,6 @@ import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarratableEntry;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FastColor;
 import net.minecraft.world.phys.Vec2;
 import org.jetbrains.annotations.NotNull;
@@ -87,7 +87,7 @@ public class ListScreen extends PanoramaScreen {
     }
 
     protected int listHeight() {
-        return Math.max(52, this.height - 128 - 16);
+        return Math.max(52, this.height - 128 - 32);
     }
 
     protected int listBottomY() {
@@ -107,9 +107,9 @@ public class ListScreen extends PanoramaScreen {
         onInit.init();
 
         if (this.initialized && this.list != null) {
-            this.list.updateSize(this.width, this.height, 88, this.listBottomY());
+            this.list.setSize(this.width, this.height);
         } else {
-            this.list = new ListWidget(this, this.minecraft, this.width, this.height, 88, this.listBottomY(), 36);
+            this.list = new ListWidget(this, this.minecraft, this.width, this.height, 88, 36);
         }
 
         String s = this.searchBox != null ? this.searchBox.getValue() : "";
@@ -214,8 +214,16 @@ public class ListScreen extends PanoramaScreen {
         private final List<Entry> defaultEntries = new ArrayList<>();
         private String search;
 
+        /**
+         * @deprecated use {@link #ListWidget(ListScreen, Minecraft, int, int, int, int)} instead
+         */
+        @Deprecated
         public ListWidget(ListScreen screen, Minecraft minecraft, int width, int height, int top, int bottom, int itemHeight) {
-            super(minecraft, width, height, top, bottom, itemHeight);
+            this(screen, minecraft, width, height, top, itemHeight);
+        }
+
+        public ListWidget(ListScreen screen, Minecraft minecraft, int width, int height, int top, int itemHeight) {
+            super(minecraft, width, height, top, itemHeight);
             this.mc = minecraft;
 
             this.screen = screen;
@@ -242,11 +250,12 @@ public class ListScreen extends PanoramaScreen {
         }
 
         @Override
-        public void render(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
+        public void renderWidget(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
             double scaleFactor = this.mc.getWindow().getGuiScale();
-            RenderSystem.enableScissor((int) ((double) this.getRowLeft() * scaleFactor), (int) ((double) (this.height - this.y1) * scaleFactor), (int) ((double) (this.getScrollbarPosition() + 6) * scaleFactor), (int) ((double) (this.height - (this.height - this.y1) - this.y0 - 4) * scaleFactor));
-            super.render(gfx, mouseX, mouseY, partialTicks);
-            RenderSystem.disableScissor();
+            this.height = this.screen.listHeight() - 16;
+            ScissorStack.pushScissor((int) ((double) this.getRowLeft() * scaleFactor), (int) ((double) (this.getY()) * scaleFactor), (int) ((double) (this.getScrollbarPosition() + 6 - getX()) * scaleFactor), (int) ((double) (this.height) * scaleFactor));
+            super.renderWidget(gfx, mouseX, mouseY, partialTicks);
+            ScissorStack.popScissor();
         }
 
         public void search(String text) {

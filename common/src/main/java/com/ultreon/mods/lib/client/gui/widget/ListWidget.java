@@ -101,7 +101,11 @@ public class ListWidget extends BaseWidget implements ContainerEventHandler, Sty
 
         this.height = count * ENTRY_HEIGHT + headerHeight + LIST_BORDER_WIDTH * 2;
 
-        this.list = new WrappedList(this, mc, screen.width, screen.height, y + LIST_BORDER_WIDTH, y + height - LIST_BORDER_WIDTH * 2 + headerHeight, ENTRY_HEIGHT) {
+        this.list = new WrappedList(this, mc, screen.width, screen.height, y + LIST_BORDER_WIDTH, ENTRY_HEIGHT) {
+            {
+                height = ListWidget.this.height - LIST_BORDER_WIDTH * 2 + headerHeight;
+            }
+            
             @Override
             public int getRowLeft() {
                 return ListWidget.this.getX() + LIST_BORDER_WIDTH;
@@ -113,11 +117,11 @@ public class ListWidget extends BaseWidget implements ContainerEventHandler, Sty
             }
 
             @Override
-            public void render(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
-                this.y0 = ListWidget.this.getY() + LIST_BORDER_WIDTH + ListWidget.this.headerHeight;
-                this.y1 = ListWidget.this.getY() + LIST_BORDER_WIDTH + ListWidget.this.height - LIST_BORDER_WIDTH * 2;
+            public void renderWidget(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
+                this.setY(ListWidget.this.getY() + LIST_BORDER_WIDTH + ListWidget.this.headerHeight);
+                this.height = LIST_BORDER_WIDTH + ListWidget.this.height - LIST_BORDER_WIDTH * 2;
 
-                super.render(gfx, mouseX, mouseY, partialTicks);
+                super.renderWidget(gfx, mouseX, mouseY, partialTicks);
             }
         };
 
@@ -322,8 +326,16 @@ public class ListWidget extends BaseWidget implements ContainerEventHandler, Sty
         private String query;
         private Consumer<WrappedList> addEntries;
 
-        public WrappedList(ListWidget widget, Minecraft mc, int width, int height, int top, int bottom, int itemHeight) {
-            super(mc, width, height, top, bottom, itemHeight);
+        /**
+         * @deprecated use {@link #WrappedList(ListWidget, Minecraft, int, int, int, int)} instead
+         */
+        @Deprecated
+        public WrappedList(ListWidget widget, Minecraft mc, int width, int height, int y, int bottom, int itemHeight) {
+            this(widget, mc, width, height, y, itemHeight);
+        }
+
+        public WrappedList(ListWidget widget, Minecraft mc, int width, int height, int y, int itemHeight) {
+            super(mc, width, height, y, itemHeight);
             this.mc = mc;
 
             this.widget = widget;
@@ -343,17 +355,17 @@ public class ListWidget extends BaseWidget implements ContainerEventHandler, Sty
 
         @Override
         protected int getRowTop(int index) {
-            return this.y0 - (int) this.getScrollAmount() + index * this.itemHeight + this.headerHeight;
+            return this.getY() - (int) this.getScrollAmount() + index * this.itemHeight + this.headerHeight;
         }
 
         @Override
         @Nullable
         public Entry getEntryAtPosition(double x, double y) {
             int i = this.getRowWidth() / 2;
-            int j = this.x0 + this.width / 2;
+            int j = this.getX() + this.width / 2;
             int k = j - i;
             int l = j + i;
-            int i1 = Mth.floor(y - (double) this.y0) - this.headerHeight + (int) this.getScrollAmount();
+            int i1 = Mth.floor(y - (double) this.getY()) - this.headerHeight + (int) this.getScrollAmount();
             int j1 = i1 / this.itemHeight;
             return x < (double) this.getScrollbarPosition() && x >= (double) k && x <= (double) l && j1 >= 0 && i1 >= 0 && j1 < this.getItemCount() ? this.children().get(j1) : null;
         }
@@ -365,15 +377,15 @@ public class ListWidget extends BaseWidget implements ContainerEventHandler, Sty
 
         @Override
         public int getMaxScroll() {
-            return Math.max(0, this.getMaxPosition() - (this.y1 - this.y0));
+            return Math.max(0, this.getMaxPosition() - (this.height));
         }
 
         @Override
-        public void render(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
+        public void renderWidget(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
             double scaleFactor = this.mc.getWindow().getGuiScale();
 
-            int yi = y0 + (60 - 18); // Idk anymore
-            int yj = y1 - y0;
+            int yi = getY() + (60 - 18); // Idk anymore
+            int yj = height;
             RenderSystem.enableScissor(
                     (int) ((double) (this.getRowLeft()) * scaleFactor),
                     (int) ((double) ((widget.screen.height - yi)) * scaleFactor),
@@ -381,7 +393,7 @@ public class ListWidget extends BaseWidget implements ContainerEventHandler, Sty
                     (int) ((double) (yj) * scaleFactor)
             );
             synchronized (entriesLock) {
-                super.render(gfx, mouseX, mouseY, partialTicks);
+                super.renderWidget(gfx, mouseX, mouseY, partialTicks);
             }
             RenderSystem.disableScissor();
         }

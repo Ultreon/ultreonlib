@@ -10,6 +10,8 @@ import net.minecraft.client.gui.components.WidgetSprites;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 
+import java.util.function.Supplier;
+
 public non-sealed class Button extends TexturedButton implements Stylized {
     private Type type;
 
@@ -82,9 +84,9 @@ public non-sealed class Button extends TexturedButton implements Stylized {
     }
 
     public enum Type {
-        VANILLA(Theme.VANILLA),
-        LIGHT(Theme.LIGHT),
-        DARK(Theme.DARK),
+        VANILLA(() -> Theme.VANILLA),
+        LIGHT(() -> Theme.LIGHT),
+        DARK(() -> Theme.DARK),
         PRIMARY(UltreonLib.res("primary")),
         SUCCESS(UltreonLib.res("success")),
         WARNING(UltreonLib.res("warning")),
@@ -93,15 +95,15 @@ public non-sealed class Button extends TexturedButton implements Stylized {
 
         private final Color textColor;
         private final WidgetSprites sprites;
-        private final RegistrySupplier<Theme> theme;
+        private final Supplier<Theme> theme;
 
         Type(ResourceLocation spriteRes) {
             this.textColor = Color.white;
             this.sprites = Theme.createButtonSprites(new ResourceLocation(spriteRes.getNamespace(), "widget/button/" + spriteRes.getPath()));
-            this.theme = Theme.DARK;
+            this.theme = () -> Theme.DARK;
         }
 
-        Type(RegistrySupplier<Theme> theme) {
+        Type(Supplier<Theme> theme) {
             this.textColor = theme.get().getButtonStyle().getTextColor();
             this.sprites = theme.get().getButtonSprites();
             this.theme = theme;
@@ -113,12 +115,12 @@ public non-sealed class Button extends TexturedButton implements Stylized {
 
         public static Type of(Theme theme) {
             for (Type type : values()) {
-                if (type.theme.getOrNull() == theme) {
+                if (type.theme.get() == theme) {
                     return type;
                 }
             }
             if (!theme.isDark()) return Type.LIGHT;
-            if (theme == Theme.VANILLA.get()) return Type.VANILLA;
+            if (theme == Theme.VANILLA) return Type.VANILLA;
             return Type.DARK;
         }
     }

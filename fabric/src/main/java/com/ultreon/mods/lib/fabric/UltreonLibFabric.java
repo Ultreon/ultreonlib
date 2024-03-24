@@ -26,8 +26,6 @@ public class UltreonLibFabric implements ModInitializer {
 
     @Override
     public void onInitialize() {
-        UltreonLibConfig.register(null);
-
         ultreonLib = UltreonLib.create();
 
         LifecycleEvent.SETUP.register(() -> {

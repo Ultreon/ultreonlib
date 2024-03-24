@@ -48,7 +48,6 @@ public class UltreonLibForge {
         modEventBus.addListener(this::loadComplete);
 
         LOGGER.info("Initializing mod config.");
-        UltreonLibConfig.register(loadingCtx);
 
         // Client side stuff
         if (!DatagenModLoader.isRunningDataGen()) {

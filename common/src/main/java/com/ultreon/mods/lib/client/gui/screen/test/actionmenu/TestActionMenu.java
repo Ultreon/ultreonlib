@@ -15,12 +15,12 @@ public class TestActionMenu extends ActionMenu {
     @Override
     public void client() {
         add(new ActionMenuItem(this, UltreonLib.MOD_ID, "test_hello_world", Component.literal("Hello World Test"), () -> {
-            if (Platform.isDevelopmentEnvironment()) {
+            if (UltreonLib.isDevEnv()) {
                 UltreonLib.LOGGER.info("Hello World!");
             }
         }));
         add(new ActionMenuItem(this, UltreonLib.MOD_ID, "test_count", Component.literal("Count"), () -> {
-            if (Platform.isDevelopmentEnvironment()) {
+            if (UltreonLib.isDevEnv()) {
                 UltreonLib.LOGGER.info("Current count: " + ++count);
             }
         }));

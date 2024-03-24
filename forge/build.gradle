@@ -34,18 +34,19 @@ dependencies {
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionForge")) { transitive = false }
 
-    include forgeRuntimeLibrary("io.github.ultreon:ubo:${ultreon_data_version}")
+    include forgeRuntimeLibrary("io.github.ultreon:ubo:${ultreon_data_version}", { exclude group: "com.google.code.gson"; exclude group: "com.google.guava" })
 
-    include forgeRuntimeLibrary("io.github.ultreon.corelibs:collections-v0:$corelibs_version")
-    include forgeRuntimeLibrary("io.github.ultreon.corelibs:commons-v0:$corelibs_version")
-    include forgeRuntimeLibrary("io.github.ultreon.corelibs:crash-v0:$corelibs_version")
-    include forgeRuntimeLibrary("io.github.ultreon.corelibs:datetime-v0:$corelibs_version")
-    include forgeRuntimeLibrary("io.github.ultreon.corelibs:events-v1:$corelibs_version")
-    include forgeRuntimeLibrary("io.github.ultreon.corelibs:functions-v0:$corelibs_version")
-    include forgeRuntimeLibrary("io.github.ultreon.corelibs:registries-v0:$corelibs_version")
-    include forgeRuntimeLibrary("io.github.ultreon.corelibs:resources-v0:$corelibs_version")
-    include forgeRuntimeLibrary("io.github.ultreon.corelibs:text-v0:$corelibs_version")
-    include forgeRuntimeLibrary("io.github.ultreon.corelibs:translations-v0:$corelibs_version")
+    include forgeRuntimeLibrary("io.github.ultreon.corelibs:collections-v0:$corelibs_version", { exclude group: "com.google.code.gson"; exclude group: "com.google.guava" })
+    include forgeRuntimeLibrary("io.github.ultreon.corelibs:commons-v0:$corelibs_version", { exclude group: "com.google.code.gson"; exclude group: "com.google.guava" })
+    include forgeRuntimeLibrary("io.github.ultreon.corelibs:crash-v0:$corelibs_version", { exclude group: "com.google.code.gson"; exclude group: "com.google.guava" })
+    include forgeRuntimeLibrary("io.github.ultreon.corelibs:datetime-v0:$corelibs_version", { exclude group: "com.google.code.gson"; exclude group: "com.google.guava" })
+    include forgeRuntimeLibrary("io.github.ultreon.corelibs:events-v1:$corelibs_version", { exclude group: "com.google.code.gson"; exclude group: "com.google.guava" })
+    include forgeRuntimeLibrary("io.github.ultreon.corelibs:functions-v0:$corelibs_version", { exclude group: "com.google.code.gson"; exclude group: "com.google.guava" })
+    include forgeRuntimeLibrary("io.github.ultreon.corelibs:registries-v0:$corelibs_version", { exclude group: "com.google.code.gson"; exclude group: "com.google.guava" })
+    include forgeRuntimeLibrary("io.github.ultreon.corelibs:resources-v0:$corelibs_version", { exclude group: "com.google.code.gson"; exclude group: "com.google.guava" })
+    include forgeRuntimeLibrary("io.github.ultreon.corelibs:text-v0:$corelibs_version", { exclude group: "com.google.code.gson"; exclude group: "com.google.guava" })
+    include forgeRuntimeLibrary("io.github.ultreon.corelibs:translations-v0:$corelibs_version", { exclude group: "com.google.code.gson"; exclude group: "com.google.guava" })
+    include forgeRuntimeLibrary("com.github.Ultreon:json5-api:$json5_api_version", { exclude group: "com.google.code.gson"; exclude group: "com.google.guava" })
 
 }
 

@@ -1,69 +1,25 @@
 package com.ultreon.mods.lib;
 
-import com.ultreon.mods.lib.client.theme.GlobalTheme;
 import com.ultreon.mods.lib.client.gui.screen.TitleStyle;
-import dev.architectury.injectables.annotations.ExpectPlatform;
-import net.minecraftforge.common.ForgeConfigSpec;
+import com.ultreon.mods.lib.client.theme.GlobalTheme;
+import com.ultreon.mods.lib.client.theme.Theme;
+import dev.architectury.platform.Platform;
+import io.github.xypercode.craftyconfig.ConfigEntry;
+import io.github.xypercode.craftyconfig.ConfigInfo;
+import io.github.xypercode.craftyconfig.CraftyConfig;
+import net.minecraft.resources.ResourceLocation;
 
-public class UltreonLibConfig {
-    // Config specifications.
-    public static final ForgeConfigSpec CLIENT;
-    public static final ForgeConfigSpec COMMON;
-    public static final ForgeConfigSpec SERVER;
+@ConfigInfo(fileName = "ultreonlib")
+public class UltreonLibConfig extends CraftyConfig {
+    @ConfigEntry(path = "gui.theme", comment = "The theme to use for the GUI")
+    public static ResourceLocation theme = GlobalTheme.VANILLA.getId();
 
-    // Values
-    public static final ForgeConfigSpec.ConfigValue<String> THEME;
-    public static final ForgeConfigSpec.EnumValue<TitleStyle> TITLE_STYLE;
-    public static final ForgeConfigSpec.BooleanValue WINDOW_MANAGER;
+    @ConfigEntry(path = "gui.titleStyle", comment = "The style of the title")
+    public static TitleStyle titleStyle = TitleStyle.DETACHED;
 
+    @ConfigEntry(path = "tests.windowManager", comment = "If the Window Manager test should be enabled.")
+    public static boolean windowManager = UltreonLib.isDevEnv();
 
-    // Initialization
-    static {
-        //****************//
-        //     CLIENT     //
-        //****************//
-        var client = new ForgeConfigSpec.Builder();
-
-        client.push("gui");
-        {
-            THEME = client
-                    .comment("The theme to use for the GUI")
-                    .define("theme", GlobalTheme.VANILLA.getId().toString());
-            TITLE_STYLE = client
-                    .comment("The style of the title")
-                    .defineEnum("title_style", TitleStyle.DETACHED);
-        }
-        client.pop();
-
-        client.push("tests");
-        {
-            WINDOW_MANAGER = client
-                    .comment("Test for Window Manager.\nThis makes it possible to spawn movable windows on your screen (inside Minecraft ofc)")
-                    .define("window_manager", false);
-        }
-        client.pop();
-
-
-        CLIENT = client.build();
-
-        //****************//
-        //     COMMON     //
-        //****************//
-        var common = new ForgeConfigSpec.Builder();
-
-        COMMON = common.build();
-
-        //****************//
-        //     SERVER     //
-        //****************//
-        var server = new ForgeConfigSpec.Builder();
-
-        SERVER = server.build();
-
-    }
-
-    @ExpectPlatform
-    public static void register(Object context) {
-        throw new AssertionError();
-    }
+    @ConfigEntry(path = "advanced.enforceDevMode", comment = "Whether or not to enforce development mode.")
+    public static boolean enforceDevMode = false;
 }

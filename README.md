@@ -8,6 +8,10 @@ From [CurseForge](https://curseforge.com/minecraft/mc-mods/ultreonlib) or [Modri
  * ~~Random Thingz: [CurseForge](https://curseforge.com/minecraft/mc-mods/random-thingz)~~ `Abandoned`
  * Advanced Debug: [CurseForge](https://curseforge.com/minecraft/mc-mods/advanced-debug), [Modrinth](https://modrinth.com/mod/advanced-debug)
 
+## License Notes
+* The package `io.github.xypercode.craftyconfig` and all it's subpackages are licensed under AGPL v3.
+  Originates from [Ultracraft](https://github.com/Ultreon/ultracraft).
+
 ## Using as API
 1) Add the repository (`https://jitpack.io/`)
    ```gradle

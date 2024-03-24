@@ -1,0 +1,46 @@
+modLoader = "javafml"
+loaderVersion = "[2,)"
+license = "Ultreon API License v1.1"
+issueTrackerURL = "https://gitlab.com/ultreon/ultreon-mod-lib/-/issues"
+
+# The main mod, and all sub-mods.
+[[mods]]
+modId = "ultreonlib"
+version = "${version}"
+displayName = "Ultreon Modding Library"
+#updateJSONURL="http://myurl.me/"
+displayURL = "https://gitlab.com/ultreon/ultreon-mod-lib"
+logoFile="ultreonlib.png"
+credits = ""
+authors = "XyperCode"
+description = """
+${description}
+"""
+
+[[mixins]]
+config = "ultreonlib.mixins.json"
+
+[[mixins]]
+config = "ultreonlib-common.mixins.json"
+
+# Dependencies for the main mod.
+[[dependencies.ultreonlib]]
+modId = "neoforge"
+versionRange = "[${neoforgeVersion},)"
+type = "required"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.ultreonlib]]
+modId = "minecraft"
+type = "required"
+versionRange = "1.20.4"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.ultreonlib]]
+modId = "architectury"
+type = "required"
+versionRange = "[11,12)"
+ordering = "BEFORE"
+side = "BOTH"

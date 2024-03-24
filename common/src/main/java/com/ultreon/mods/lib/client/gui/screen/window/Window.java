@@ -201,7 +201,7 @@ public class Window extends BaseContainerWidget implements Stylized {
      * @throws IllegalStateException If the window is not valid.
      */
     @Override
-    public void render(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
+    public void renderWidget(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
         // Check for valid window.
         checkValid();
 

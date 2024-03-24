@@ -1,22 +1,22 @@
 package com.ultreon.mods.lib;
 
 import com.ultreon.libs.commons.v0.Identifier;
-import com.ultreon.mods.lib.advancements.UseItemTrigger;
 import com.ultreon.mods.lib.client.gui.screen.TitleStyle;
 import com.ultreon.mods.lib.client.gui.screen.test.TestScreen;
 import com.ultreon.mods.lib.client.theme.GlobalTheme;
 import com.ultreon.mods.lib.client.theme.Stylized;
+import com.ultreon.mods.lib.dev.UltreonLibDev;
+import com.ultreon.mods.lib.init.ModTriggerTypes;
 import com.ultreon.mods.lib.loot.LootTableInjection;
 import com.ultreon.mods.lib.network.api.NetworkManager;
+import com.ultreon.mods.lib.registries.ModRegistries;
 import com.ultreon.mods.lib.util.ModMessages;
+import dev.architectury.event.events.common.LifecycleEvent;
 import dev.architectury.event.events.common.LootEvent;
-import dev.architectury.event.events.common.PlayerEvent;
 import dev.architectury.platform.Mod;
 import dev.architectury.platform.Platform;
-import dev.architectury.registry.registries.RegistrarManager;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.ApiStatus;
@@ -28,7 +28,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.ServiceLoader;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -40,8 +39,6 @@ import java.util.concurrent.Executors;
 @SuppressWarnings("unused")
 public class UltreonLib {
     public static final String MOD_ID = "ultreonlib";
-
-    public static final RegistrarManager REGISTRAR_MANAGER = RegistrarManager.get(MOD_ID);
 
     private static UltreonLib instance;
     public static final String VERSION;
@@ -67,21 +64,36 @@ public class UltreonLib {
 
     private static CompletableFuture<ServiceLoader<TestScreen>> testsInit;
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
+    private final UltreonLibConfig config;
 
     private UltreonLib() {
-        LootEvent.MODIFY_LOOT_TABLE.register(LootTableInjection::runModifications);
+        UltreonLib.instance = this;
 
-        PlayerEvent.PLAYER_JOIN.register(ModMessages::sendOnLogin);
+        this.config = new UltreonLibConfig();
+
+        LootEvent.MODIFY_LOOT_TABLE.register(LootTableInjection::runModifications);
+        ModMessages.init();
+
         Identifier.setDefaultNamespace("minecraft");
 
-        UseItemTrigger useItemTrigger = new UseItemTrigger();
-        CriteriaTriggers.CRITERIA.putIfAbsent(useItemTrigger.getId(), useItemTrigger);
+        ModTriggerTypes.init();
+
+        LifecycleEvent.SETUP.register(UltreonLib::setup);
+
+        if (UltreonLib.isDevEnv()) {
+            UltreonLibDev.init();
+        }
+    }
+
+    private static void setup() {
+        ModRegistries.init();
     }
 
     public static List<ServiceLoader.Provider<TestScreen>> getScreens() {
         if (testScreens != null) {
             return testScreens;
         }
+
         UltreonLib.LOGGER.info("Screens initializing!");
         var load = ServiceLoader.load(TestScreen.class);
         try {
@@ -89,6 +101,7 @@ public class UltreonLib {
             return testScreens = load.stream().toList();
         } catch (Exception e) {
             UltreonLib.LOGGER.warn("Failed to load services:", e);
+            testScreens = Collections.emptyList();
         }
         return Collections.emptyList();
     }
@@ -102,8 +115,8 @@ public class UltreonLib {
         if (instance != null) {
             throw new IllegalStateException("The mod is already instantiated.");
         }
-        instance = new UltreonLib();
-        return instance;
+
+        return new UltreonLib();
     }
 
     public static UltreonLib get() {
@@ -131,11 +144,23 @@ public class UltreonLib {
     }
 
     public static boolean isDevEnv() {
-        return Platform.isDevelopmentEnvironment();
+        return Platform.isDevelopmentEnvironment() || UltreonLibConfig.enforceDevMode;
     }
 
+    /**
+     * @deprecated use {@link Platform#isMinecraftForge()} instead, this will be removed in the future
+     */
+    @Deprecated(forRemoval = true)
     public static boolean isForge() {
-        return Platform.isForge();
+        return Platform.isMinecraftForge();
+    }
+
+    public static boolean isMinecraftForge() {
+        return Platform.isMinecraftForge();
+    }
+
+    public static boolean isNeoForge() {
+        return Platform.isNeoForge();
     }
 
     public static boolean isFabric() {
@@ -169,32 +194,32 @@ public class UltreonLib {
 
     @Environment(EnvType.CLIENT)
     public static GlobalTheme getTheme() {
-        ResourceLocation res = ResourceLocation.tryParse(UltreonLibConfig.THEME.get());
+        ResourceLocation res = UltreonLibConfig.theme;
         GlobalTheme theme = GlobalTheme.fromLocationOr(res, null);
         if (theme == null) {
-            theme = GlobalTheme.VANILLA.get();
-            UltreonLibConfig.THEME.set(theme.getId().toString());
+            theme = GlobalTheme.VANILLA;
+            UltreonLibConfig.theme = theme.getId();
         }
         return theme;
     }
 
     @Environment(EnvType.CLIENT)
     public static void setTheme(GlobalTheme globalTheme) {
-        UltreonLibConfig.THEME.set(globalTheme.getId().toString());
-        UltreonLibConfig.THEME.save();
+        UltreonLibConfig.theme = globalTheme.getId();
+        instance.config.save();
 
         instance.reloadTheme();
     }
 
     @Environment(EnvType.CLIENT)
     public static TitleStyle getTitleStyle() {
-        return UltreonLibConfig.TITLE_STYLE.get();
+        return UltreonLibConfig.titleStyle;
     }
 
     @Environment(EnvType.CLIENT)
     public static void setTitleStyle(TitleStyle style) {
-        UltreonLibConfig.TITLE_STYLE.set(style);
-        UltreonLibConfig.TITLE_STYLE.save();
+        UltreonLibConfig.titleStyle = style;
+        instance.config.save();
 
         instance.reloadTheme();
     }

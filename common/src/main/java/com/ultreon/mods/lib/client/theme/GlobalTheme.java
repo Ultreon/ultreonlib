@@ -3,7 +3,6 @@ package com.ultreon.mods.lib.client.theme;
 import com.ultreon.libs.commons.v0.Color;
 import com.ultreon.mods.lib.UltreonLib;
 import com.ultreon.mods.lib.registries.ModRegistries;
-import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.ApiStatus;
@@ -11,7 +10,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.function.Supplier;
 
@@ -23,15 +21,15 @@ public class GlobalTheme {
     private static final List<GlobalTheme> THEMES = new ArrayList<>();
     private static int total = 0;
 
-    public static final RegistrySupplier<GlobalTheme> VANILLA = registerVanilla("vanilla", GlobalTheme::new);
+    public static final GlobalTheme VANILLA = registerVanilla("vanilla", GlobalTheme::new);
 
-    public static final RegistrySupplier<GlobalTheme> LIGHT = register("light", () -> new GlobalTheme(Theme.LIGHT.get(), Theme.LIGHT.get()));
-    public static final RegistrySupplier<GlobalTheme> MIX = register("mix", () -> new GlobalTheme(Theme.DARK.get(), Theme.LIGHT.get()));
-    public static final RegistrySupplier<GlobalTheme> DARK = register("dark", () -> new GlobalTheme(Theme.DARK.get(), Theme.DARK.get()));
-    private final Theme windowTheme;
-    private final Theme menuTheme;
+    public static final GlobalTheme LIGHT = register("light", () -> new GlobalTheme(Theme.LIGHT, Theme.LIGHT));
+    public static final GlobalTheme MIX = register("mix", () -> new GlobalTheme(Theme.DARK, Theme.LIGHT));
+    public static final GlobalTheme DARK = register("dark", () -> new GlobalTheme(Theme.DARK, Theme.DARK));
+    private final Supplier<Theme> windowTheme;
+    private final Supplier<Theme> menuTheme;
 
-    private final Theme contentTheme;
+    private final Supplier<Theme> contentTheme;
     private final int ordinal;
 
     /**
@@ -39,14 +37,30 @@ public class GlobalTheme {
      *
      */
     private GlobalTheme() {
-        this.windowTheme = Theme.VANILLA.get();
-        this.menuTheme = Theme.VANILLA.get();
-        this.contentTheme = Theme.VANILLA.get();
+        this.windowTheme = () -> Theme.VANILLA;
+        this.menuTheme = () -> Theme.VANILLA;
+        this.contentTheme = () -> Theme.VANILLA;
         this.ordinal = total++;
         THEMES.add(this);
     }
 
     public GlobalTheme(Theme frame, Theme content) {
+        this.windowTheme = () -> frame;
+        this.menuTheme = () -> frame;
+        this.contentTheme = () -> content;
+        this.ordinal = total++;
+        THEMES.add(this);
+    }
+
+    public GlobalTheme(Theme frame, Theme menu, Theme content) {
+        this.windowTheme = () -> frame;
+        this.menuTheme = () -> menu;
+        this.contentTheme = () -> content;
+        this.ordinal = total++;
+        THEMES.add(this);
+    }
+
+    public GlobalTheme(Supplier<Theme> frame, Supplier<Theme> content) {
         this.windowTheme = frame;
         this.menuTheme = frame;
         this.contentTheme = content;
@@ -54,7 +68,7 @@ public class GlobalTheme {
         THEMES.add(this);
     }
 
-    public GlobalTheme(Theme frame, Theme menu, Theme content) {
+    public GlobalTheme(Supplier<Theme> frame, Supplier<Theme> menu, Supplier<Theme> content) {
         this.windowTheme = frame;
         this.menuTheme = menu;
         this.contentTheme = content;
@@ -63,13 +77,13 @@ public class GlobalTheme {
     }
 
     @ApiStatus.Internal
-    private static <T extends GlobalTheme> RegistrySupplier<T> registerVanilla(String name, Supplier<T> supplier) {
-        return ModRegistries.GLOBAL_THEME.register(new ResourceLocation(ResourceLocation.DEFAULT_NAMESPACE, name), supplier);
+    private static <T extends GlobalTheme> GlobalTheme registerVanilla(String name, Supplier<T> supplier) {
+        return ModRegistries.GLOBAL_THEME.register(new ResourceLocation(ResourceLocation.DEFAULT_NAMESPACE, name), supplier.get());
     }
 
     @ApiStatus.Internal
-    private static <T extends GlobalTheme> RegistrySupplier<T> register(String name, Supplier<T> supplier) {
-        return ModRegistries.GLOBAL_THEME.register(UltreonLib.res(name), supplier);
+    private static <T extends GlobalTheme> GlobalTheme register(String name, Supplier<T> supplier) {
+        return ModRegistries.GLOBAL_THEME.register(UltreonLib.res(name), supplier.get());
     }
 
     /**
@@ -112,14 +126,13 @@ public class GlobalTheme {
      * @param defaultTheme the default theme to return if not found.
      * @return the theme or defaultTheme if not found.
      */
-    public static GlobalTheme fromLocationOr(ResourceLocation location, RegistrySupplier<GlobalTheme> defaultTheme) {
+    public static GlobalTheme fromLocationOr(ResourceLocation location, GlobalTheme defaultTheme) {
         if (location != null) {
             GlobalTheme globalTheme = ModRegistries.GLOBAL_THEME.get(location);
             if (globalTheme != null) return globalTheme;
         }
-        if (defaultTheme != null && defaultTheme.isPresent()) return defaultTheme.get();
-        else if (defaultTheme == null) return null;
-        throw new NoSuchElementException("Theme not present: " + defaultTheme.getId());
+        if (defaultTheme != null) return defaultTheme;
+        else return null;
     }
 
     /**
@@ -130,7 +143,7 @@ public class GlobalTheme {
      */
     @Deprecated(forRemoval = true)
     public static @NotNull GlobalTheme fromIdOrDefault(String id) {
-        return fromIdOr(id, VANILLA.get());
+        return fromIdOr(id, VANILLA);
     }
 
     /**
@@ -236,26 +249,26 @@ public class GlobalTheme {
     }
 
     public Theme getWindowTheme() {
-        return windowTheme;
+        return windowTheme.get();
     }
 
     public Theme getContentTheme() {
-        return contentTheme;
+        return contentTheme.get();
     }
 
     public Theme getMenuTheme() {
-        return menuTheme;
+        return menuTheme.get();
     }
 
     public Style getContentButtonStyle() {
-        return this.contentTheme.getButtonStyle();
+        return this.contentTheme.get().getButtonStyle();
     }
 
     public Style getWindowButtonStyle() {
-        return this.windowTheme.getButtonStyle();
+        return this.windowTheme.get().getButtonStyle();
     }
 
     public Style getMenuButtonStyle() {
-        return this.menuTheme.getButtonStyle();
+        return this.menuTheme.get().getButtonStyle();
     }
 }

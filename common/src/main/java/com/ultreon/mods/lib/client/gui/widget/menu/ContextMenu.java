@@ -2,9 +2,9 @@ package com.ultreon.mods.lib.client.gui.widget.menu;
 
 import com.ultreon.mods.lib.UltreonLib;
 import com.ultreon.mods.lib.client.gui.FrameType;
-import com.ultreon.mods.lib.client.theme.GlobalTheme;
 import com.ultreon.mods.lib.client.gui.screen.BaseScreen;
 import com.ultreon.mods.lib.client.gui.widget.BaseContainerWidget;
+import com.ultreon.mods.lib.client.theme.GlobalTheme;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
@@ -12,7 +12,6 @@ import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarratedElementType;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -30,9 +29,6 @@ import java.util.stream.Stream;
 public class ContextMenu extends BaseContainerWidget {
     // Constants
     private static final int BORDER_WIDTH = 5;
-    private static final ResourceLocation MENU_DARK = UltreonLib.res("textures/gui/widgets/context_menu/dark");
-    private static final ResourceLocation MENU_LIGHT = UltreonLib.res("textures/gui/widgets/context_menu/light");
-    private static final ResourceLocation MENU_NORMAL = UltreonLib.res("textures/gui/widgets/context_menu/normal");
 
     // Entries
     private final List<MenuItem> entries = new ArrayList<>();
@@ -63,7 +59,7 @@ public class ContextMenu extends BaseContainerWidget {
      */
     @Deprecated
     public ContextMenu(int x, int y, @Nullable Component title, boolean darkMode) {
-        this(x, y, title, darkMode ? GlobalTheme.DARK.get() : GlobalTheme.VANILLA.get());
+        this(x, y, title, darkMode ? GlobalTheme.DARK : GlobalTheme.VANILLA);
     }
 
     public ContextMenu(int x, int y, @Nullable Component title, GlobalTheme globalTheme) {
@@ -73,12 +69,12 @@ public class ContextMenu extends BaseContainerWidget {
 
     @Deprecated
     public boolean isDarkMode() {
-        return Objects.equals(globalTheme, GlobalTheme.DARK.get());
+        return Objects.equals(globalTheme, GlobalTheme.DARK);
     }
 
     @Deprecated
     public void setDarkMode(boolean darkMode) {
-        this.globalTheme = darkMode ? GlobalTheme.DARK.get() : GlobalTheme.VANILLA.get();
+        this.globalTheme = darkMode ? GlobalTheme.DARK : GlobalTheme.VANILLA;
     }
 
     /**

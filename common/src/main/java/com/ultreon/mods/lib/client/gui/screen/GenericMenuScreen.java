@@ -12,7 +12,6 @@ import com.ultreon.mods.lib.client.gui.widget.Button;
 import com.ultreon.mods.lib.client.gui.widget.Label;
 import com.ultreon.mods.lib.client.gui.widget.ListWidget;
 import com.ultreon.mods.lib.client.theme.ThemeRootComponent;
-import com.ultreon.mods.lib.mixin.common.AbstractSelectionListAccessor;
 import com.ultreon.mods.lib.mixin.common.AbstractWidgetAccessor;
 import dev.architectury.injectables.annotations.ExpectPlatform;
 import net.minecraft.client.Minecraft;
@@ -665,13 +664,6 @@ public abstract class GenericMenuScreen extends BaseScreen implements Stylized {
             absWidget.setY(y);
             absWidget.setWidth(width);
             accessor.setHeight(height);
-        } else if (widget instanceof AbstractSelectionList<?> absWidget && absWidget instanceof AbstractSelectionListAccessor accessor) {
-            accessor.setX0(x);
-            accessor.setY0(y);
-            accessor.setX1(x + width);
-            accessor.setY1(y + height);
-            accessor.setWidth(width);
-            accessor.setHeight(height);
         } else if (widget instanceof Label label) {
             label.x = x;
             label.y = y;
@@ -776,7 +768,7 @@ public abstract class GenericMenuScreen extends BaseScreen implements Stylized {
 
     public static class Properties {
         private Component title;
-        private TitleStyle titleStyle = UltreonLibConfig.TITLE_STYLE.get();
+        private TitleStyle titleStyle = UltreonLibConfig.titleStyle;
         private final GlobalTheme globalTheme = UltreonLib.getTheme();
         private boolean panorama = Minecraft.getInstance().level == null;
         @Nullable

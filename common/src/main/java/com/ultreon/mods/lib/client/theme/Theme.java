@@ -14,9 +14,9 @@ import java.util.function.Supplier;
 
 @SuppressWarnings("SameParameterValue")
 public class Theme extends Style {
-    public static final RegistrySupplier<Theme> VANILLA = register("vanilla", () -> new Theme(0xffffff, 0xa0a0a0, 0xffffff, 0x808080).withBorderColor(0xffffff).withTitleColor(0x111111).withHeaderColor(0x333333));
-    public static final RegistrySupplier<Theme> LIGHT = register("light", () -> new Theme(0x808080, 0x949494, 0x19b2ff, 0xb7b7b7, buttonStyle -> buttonStyle.textColor = Color.white).withBorderColor(0xffffff).withInactiveBorderColor(0x868686).withSubTitleColor(0xb0b0b0).withHeaderColor(0x333333));
-    public static final RegistrySupplier<Theme> DARK = register("dark", () -> new Theme(0xffffff, 0xA0A0A0, 0xffa54c, 0x313131, true).withSubTitleColor(0x808080));
+    public static final Theme VANILLA = register("vanilla", () -> new Theme(0xffffff, 0xa0a0a0, 0xffffff, 0x808080).withBorderColor(0xffffff).withTitleColor(0x111111).withHeaderColor(0x333333));
+    public static final Theme LIGHT = register("light", () -> new Theme(0x808080, 0x949494, 0x19b2ff, 0xb7b7b7, buttonStyle -> buttonStyle.textColor = Color.white).withBorderColor(0xffffff).withInactiveBorderColor(0x868686).withSubTitleColor(0xb0b0b0).withHeaderColor(0x333333));
+    public static final Theme DARK = register("dark", () -> new Theme(0xffffff, 0xA0A0A0, 0xffa54c, 0x313131, true).withSubTitleColor(0x808080));
     private final Style buttonStyle;
     private final boolean dark;
 
@@ -57,13 +57,13 @@ public class Theme extends Style {
         this.dark = dark;
     }
 
-    private static <T extends Theme> RegistrySupplier<T> register(String path, Supplier<T> supplier) {
-        return ModRegistries.THEME.register(UltreonLib.res(path), supplier);
+    private static <T extends Theme> Theme register(String path, Supplier<T> supplier) {
+        return ModRegistries.THEME.register(UltreonLib.res(path), supplier.get());
     }
 
     private final Supplier<WidgetSprites> buttonSprites = Suppliers.memoize(() -> {
         ResourceLocation id = this.getId();
-        return createButtonSprites(this == VANILLA.get() ? new ResourceLocation("widget/button") : new ResourceLocation(id.getNamespace(), "widget/button/" + id.getPath()));
+        return createButtonSprites(this == VANILLA ? new ResourceLocation("widget/button") : new ResourceLocation(id.getNamespace(), "widget/button/" + id.getPath()));
     });
 
     public static @NotNull WidgetSprites createButtonSprites(ResourceLocation id) {

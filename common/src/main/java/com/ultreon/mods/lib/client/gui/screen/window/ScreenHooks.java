@@ -112,7 +112,7 @@ public class ScreenHooks {
             WindowManager.INSTANCE.getForegroundWindow().ifPresent(Window::close);
         }
 
-        if (UltreonLibConfig.WINDOW_MANAGER.get() && keyCode == GLFW.GLFW_KEY_RIGHT_CONTROL) {
+        if (UltreonLibConfig.windowManager && keyCode == GLFW.GLFW_KEY_RIGHT_CONTROL) {
             Random random = new Random();
             new Window(random.nextInt(5, screen.width - 105), random.nextInt(5, screen.height - 105), 100, 100).show();
         }
