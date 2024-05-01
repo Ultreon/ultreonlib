@@ -10,4 +10,4 @@ From [CurseForge](https://curseforge.com/minecraft/mc-mods/ultreonlib) or [Modri
 
 ## License Notes
 * The package `io.github.xypercode.craftyconfig` and all it's subpackages are licensed under AGPL v3.
-  Originates from [Ultracraft](https://github.com/Ultreon/ultracraft).
+  Originates from [Quantum Voxel](https://github.com/Ultreon/quantum-voxel).

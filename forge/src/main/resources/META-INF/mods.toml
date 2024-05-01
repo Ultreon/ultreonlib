@@ -38,3 +38,10 @@ mandatory = true
 versionRange = "[11,12)"
 ordering = "NONE"
 side = "BOTH"
+
+[[dependencies.ultreonlib]]
+modId = "forgeconfigapiport"
+mandatory = true
+versionRange = "[20.4,20.5)"
+ordering = "BEFORE"
+side = "BOTH"

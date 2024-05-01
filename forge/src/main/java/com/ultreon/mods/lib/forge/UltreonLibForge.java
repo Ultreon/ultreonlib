@@ -31,10 +31,10 @@ public class UltreonLibForge {
     private final UltreonLib ultreonLib;
 
     public UltreonLibForge() {
-        ultreonLib = UltreonLib.create();
-
         EventBuses.registerModEventBus(UltreonLib.MOD_ID, FMLJavaModLoadingContext.get().getModEventBus());
         MOD_EVENTBUS = FMLJavaModLoadingContext.get().getModEventBus();
+
+        ultreonLib = UltreonLib.create();
         FMLJavaModLoadingContext javaFmlLoadingCtx = FMLJavaModLoadingContext.get();
         ModLoadingContext loadingCtx = ModLoadingContext.get();
         IEventBus forgeEventBus = MinecraftForge.EVENT_BUS;
