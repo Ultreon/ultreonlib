@@ -6,12 +6,12 @@
   "mixins": [
   ],
   "client": [
-    "dev.ultreon.mods.lib.mixin.common.AbstractSelectionListAccessor",
-    "dev.ultreon.mods.lib.mixin.common.AbstractWidgetAccessor",
-    "dev.ultreon.mods.lib.mixin.common.ButtonAccessor",
-    "dev.ultreon.mods.lib.mixin.common.MouseHandlerMixin",
-    "dev.ultreon.mods.lib.mixin.common.ScreenAccess",
-    "dev.ultreon.mods.lib.mixin.common.TitleScreenAccessor"
+    "AbstractSelectionListAccessor",
+    "AbstractWidgetAccessor",
+    "ButtonAccessor",
+    "MouseHandlerMixin",
+    "ScreenAccess",
+    "TitleScreenAccessor"
   ],
   "injectors": {
     "defaultRequire": 1
