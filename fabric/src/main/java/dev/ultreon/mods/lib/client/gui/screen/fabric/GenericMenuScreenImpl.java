@@ -1,0 +1,10 @@
+package dev.ultreon.mods.lib.client.gui.screen.fabric;
+
+import dev.ultreon.mods.lib.client.gui.screen.GenericMenuScreen;
+import net.minecraft.client.Minecraft;
+
+public class GenericMenuScreenImpl {
+    public static void popGuiLayer(GenericMenuScreen screen) {
+        Minecraft.getInstance().setScreen(screen.getBack());
+    }
+}

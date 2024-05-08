@@ -1,6 +1,6 @@
 package io.github.xypercode.craftyconfig;
 
-import com.ultreon.mods.lib.Reference;
+import dev.ultreon.mods.lib.Reference;
 import de.marhali.json5.*;
 import de.marhali.json5.exception.Json5Exception;
 import dev.architectury.event.Event;
@@ -23,7 +23,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import static com.ultreon.mods.lib.UltreonLib.MOD_ID;
+import static dev.ultreon.mods.lib.UltreonLib.MOD_ID;
 
 /**
  * The base class for all configuration files.

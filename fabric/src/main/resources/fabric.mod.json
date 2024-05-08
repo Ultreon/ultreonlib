@@ -28,13 +28,13 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "com.ultreon.mods.lib.fabric.UltreonLibFabric"
+      "dev.ultreon.mods.lib.fabric.UltreonLibFabric"
     ],
     "client": [
-      "com.ultreon.mods.lib.fabric.UltreonLibFabricClient"
+      "dev.ultreon.mods.lib.fabric.UltreonLibFabricClient"
     ],
     "modmenu": [
-      "com.ultreon.mods.lib.fabric.UltreonLibModMenuIntegration"
+      "dev.ultreon.mods.lib.fabric.UltreonLibModMenuIntegration"
     ]
   },
   "mixins": [

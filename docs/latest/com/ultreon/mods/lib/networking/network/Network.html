@@ -5,7 +5,7 @@
 <title>Network (ultreonlib mc1.18.2-1.2.0-dev.11 API)</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<meta name="description" content="declaration: package: com.ultreon.mods.lib.networking.network, class: Network">
+<meta name="description" content="declaration: package: dev.ultreon.mods.lib.networking.network, class: Network">
 <meta name="generator" content="javadoc/ClassWriterImpl">
 <link rel="stylesheet" type="text/css" href="../../../../../../stylesheet.css" title="Style">
 <link rel="stylesheet" type="text/css" href="../../../../../../script-dir/jquery-ui.min.css" title="Style">
@@ -68,16 +68,16 @@ loadScripts(document, 'script');</script>
 <main role="main">
 <!-- ======== START OF CLASS DATA ======== -->
 <div class="header">
-<div class="sub-title"><span class="package-label-in-type">Package</span>&nbsp;<a href="package-summary.html">com.ultreon.mods.lib.networking.network</a></div>
+<div class="sub-title"><span class="package-label-in-type">Package</span>&nbsp;<a href="package-summary.html">dev.ultreon.mods.lib.networking.network</a></div>
 <h1 title="Class Network" class="title">Class Network</h1>
 </div>
 <div class="inheritance" title="Inheritance Tree"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">java.lang.Object</a>
-<div class="inheritance">com.ultreon.mods.lib.networking.network.Network</div>
+<div class="inheritance">dev.ultreon.mods.lib.networking.network.Network</div>
 </div>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>Direct Known Subclasses:</dt>
-<dd><code><a href="../../core/network/ModdingLibraryNet.html" title="class in com.ultreon.mods.lib.core.network">ModdingLibraryNet</a></code></dd>
+<dd><code><a href="../../core/network/ModdingLibraryNet.html" title="class in dev.ultreon.mods.lib.core.network">ModdingLibraryNet</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public abstract class </span><span class="element-name type-name-label">Network</span>
@@ -130,33 +130,33 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>protected abstract void</code></div>
     <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
-        <code><a href="#registerPackets(com.ultreon.mods.lib.networking.network.PacketRegisterContext)"
+        <code><a href="#registerPackets(dev.ultreon.mods.lib.networking.network.PacketRegisterContext)"
                  class="member-name-link">registerPackets</a>
             <wbr>
-            (<a href="PacketRegisterContext.html" title="class in com.ultreon.mods.lib.networking.network">PacketRegisterContext</a>&nbsp;ctx)</code>
+            (<a href="PacketRegisterContext.html" title="class in dev.ultreon.mods.lib.networking.network">PacketRegisterContext</a>&nbsp;ctx)</code>
     </div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#sendAll(com.ultreon.mods.lib.networking.network.BasePacket)" class="member-name-link">sendAll</a><wbr>(<a href="BasePacket.html" title="class in com.ultreon.mods.lib.networking.network">BasePacket</a>&lt;?&gt;&nbsp;packet)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#sendAll(dev.ultreon.mods.lib.networking.network.BasePacket)" class="member-name-link">sendAll</a><wbr>(<a href="BasePacket.html" title="class in dev.ultreon.mods.lib.networking.network">BasePacket</a>&lt;?&gt;&nbsp;packet)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#sendToChunk(com.ultreon.mods.lib.networking.network.BasePacket,net.minecraft.world.level.chunk.LevelChunk)" class="member-name-link">sendToChunk</a><wbr>(<a href="BasePacket.html" title="class in com.ultreon.mods.lib.networking.network">BasePacket</a>&lt;?&gt;&nbsp;packet,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#sendToChunk(dev.ultreon.mods.lib.networking.network.BasePacket,net.minecraft.world.level.chunk.LevelChunk)" class="member-name-link">sendToChunk</a><wbr>(<a href="BasePacket.html" title="class in dev.ultreon.mods.lib.networking.network">BasePacket</a>&lt;?&gt;&nbsp;packet,
  net.minecraft.world.level.chunk.LevelChunk&nbsp;chunk)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#sendToClient(com.ultreon.mods.lib.networking.network.BasePacket,net.minecraft.server.level.ServerPlayer)" class="member-name-link">sendToClient</a><wbr>(<a href="BasePacket.html" title="class in com.ultreon.mods.lib.networking.network">BasePacket</a>&lt;?&gt;&nbsp;packet,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#sendToClient(dev.ultreon.mods.lib.networking.network.BasePacket,net.minecraft.server.level.ServerPlayer)" class="member-name-link">sendToClient</a><wbr>(<a href="BasePacket.html" title="class in dev.ultreon.mods.lib.networking.network">BasePacket</a>&lt;?&gt;&nbsp;packet,
  net.minecraft.server.level.ServerPlayer&nbsp;player)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#sendToLevel(com.ultreon.mods.lib.networking.network.BasePacket,net.minecraft.resources.ResourceKey)" class="member-name-link">sendToLevel</a><wbr>(<a href="BasePacket.html" title="class in com.ultreon.mods.lib.networking.network">BasePacket</a>&lt;?&gt;&nbsp;packet,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#sendToLevel(dev.ultreon.mods.lib.networking.network.BasePacket,net.minecraft.resources.ResourceKey)" class="member-name-link">sendToLevel</a><wbr>(<a href="BasePacket.html" title="class in dev.ultreon.mods.lib.networking.network">BasePacket</a>&lt;?&gt;&nbsp;packet,
  net.minecraft.resources.ResourceKey&lt;net.minecraft.world.level.Level&gt;&nbsp;levelKey)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#sendToLevel(com.ultreon.mods.lib.networking.network.BasePacket,net.minecraft.world.level.Level)" class="member-name-link">sendToLevel</a><wbr>(<a href="BasePacket.html" title="class in com.ultreon.mods.lib.networking.network">BasePacket</a>&lt;?&gt;&nbsp;packet,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#sendToLevel(dev.ultreon.mods.lib.networking.network.BasePacket,net.minecraft.world.level.Level)" class="member-name-link">sendToLevel</a><wbr>(<a href="BasePacket.html" title="class in dev.ultreon.mods.lib.networking.network">BasePacket</a>&lt;?&gt;&nbsp;packet,
  net.minecraft.world.level.Level&nbsp;level)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#sendToServer(com.ultreon.mods.lib.networking.network.BasePacket)" class="member-name-link">sendToServer</a><wbr>(<a href="BasePacket.html" title="class in com.ultreon.mods.lib.networking.network">BasePacket</a>&lt;?&gt;&nbsp;packet)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#sendToServer(dev.ultreon.mods.lib.networking.network.BasePacket)" class="member-name-link">sendToServer</a><wbr>(<a href="BasePacket.html" title="class in dev.ultreon.mods.lib.networking.network">BasePacket</a>&lt;?&gt;&nbsp;packet)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
@@ -204,13 +204,13 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="registerPackets(com.ultreon.mods.lib.networking.network.PacketRegisterContext)">
+<section class="detail" id="registerPackets(dev.ultreon.mods.lib.networking.network.PacketRegisterContext)">
 <h3>registerPackets</h3>
     <div class="member-signature"><span class="modifiers">protected abstract</span>&nbsp;<span
             class="return-type">void</span>&nbsp;<span class="element-name">registerPackets</span>
         <wbr>
         <span class="parameters">(<a href="PacketRegisterContext.html"
-                                     title="class in com.ultreon.mods.lib.networking.network">PacketRegisterContext</a>&nbsp;ctx)</span>
+                                     title="class in dev.ultreon.mods.lib.networking.network">PacketRegisterContext</a>&nbsp;ctx)</span>
     </div>
 </section>
 </li>
@@ -227,42 +227,42 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="sendToServer(com.ultreon.mods.lib.networking.network.BasePacket)">
+<section class="detail" id="sendToServer(dev.ultreon.mods.lib.networking.network.BasePacket)">
 <h3>sendToServer</h3>
-<div class="member-signature"><span class="modifiers">public final</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">sendToServer</span><wbr><span class="parameters">(<a href="BasePacket.html" title="class in com.ultreon.mods.lib.networking.network">BasePacket</a>&lt;?&gt;&nbsp;packet)</span></div>
+<div class="member-signature"><span class="modifiers">public final</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">sendToServer</span><wbr><span class="parameters">(<a href="BasePacket.html" title="class in dev.ultreon.mods.lib.networking.network">BasePacket</a>&lt;?&gt;&nbsp;packet)</span></div>
 </section>
 </li>
 <li>
-<section class="detail" id="sendToClient(com.ultreon.mods.lib.networking.network.BasePacket,net.minecraft.server.level.ServerPlayer)">
+<section class="detail" id="sendToClient(dev.ultreon.mods.lib.networking.network.BasePacket,net.minecraft.server.level.ServerPlayer)">
 <h3>sendToClient</h3>
-<div class="member-signature"><span class="modifiers">public final</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">sendToClient</span><wbr><span class="parameters">(<a href="BasePacket.html" title="class in com.ultreon.mods.lib.networking.network">BasePacket</a>&lt;?&gt;&nbsp;packet,
+<div class="member-signature"><span class="modifiers">public final</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">sendToClient</span><wbr><span class="parameters">(<a href="BasePacket.html" title="class in dev.ultreon.mods.lib.networking.network">BasePacket</a>&lt;?&gt;&nbsp;packet,
  net.minecraft.server.level.ServerPlayer&nbsp;player)</span></div>
 </section>
 </li>
 <li>
-<section class="detail" id="sendAll(com.ultreon.mods.lib.networking.network.BasePacket)">
+<section class="detail" id="sendAll(dev.ultreon.mods.lib.networking.network.BasePacket)">
 <h3>sendAll</h3>
-<div class="member-signature"><span class="modifiers">public final</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">sendAll</span><wbr><span class="parameters">(<a href="BasePacket.html" title="class in com.ultreon.mods.lib.networking.network">BasePacket</a>&lt;?&gt;&nbsp;packet)</span></div>
+<div class="member-signature"><span class="modifiers">public final</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">sendAll</span><wbr><span class="parameters">(<a href="BasePacket.html" title="class in dev.ultreon.mods.lib.networking.network">BasePacket</a>&lt;?&gt;&nbsp;packet)</span></div>
 </section>
 </li>
 <li>
-<section class="detail" id="sendToLevel(com.ultreon.mods.lib.networking.network.BasePacket,net.minecraft.resources.ResourceKey)">
+<section class="detail" id="sendToLevel(dev.ultreon.mods.lib.networking.network.BasePacket,net.minecraft.resources.ResourceKey)">
 <h3>sendToLevel</h3>
-<div class="member-signature"><span class="modifiers">public final</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">sendToLevel</span><wbr><span class="parameters">(<a href="BasePacket.html" title="class in com.ultreon.mods.lib.networking.network">BasePacket</a>&lt;?&gt;&nbsp;packet,
+<div class="member-signature"><span class="modifiers">public final</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">sendToLevel</span><wbr><span class="parameters">(<a href="BasePacket.html" title="class in dev.ultreon.mods.lib.networking.network">BasePacket</a>&lt;?&gt;&nbsp;packet,
  net.minecraft.resources.ResourceKey&lt;net.minecraft.world.level.Level&gt;&nbsp;levelKey)</span></div>
 </section>
 </li>
 <li>
-<section class="detail" id="sendToLevel(com.ultreon.mods.lib.networking.network.BasePacket,net.minecraft.world.level.Level)">
+<section class="detail" id="sendToLevel(dev.ultreon.mods.lib.networking.network.BasePacket,net.minecraft.world.level.Level)">
 <h3>sendToLevel</h3>
-<div class="member-signature"><span class="modifiers">public final</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">sendToLevel</span><wbr><span class="parameters">(<a href="BasePacket.html" title="class in com.ultreon.mods.lib.networking.network">BasePacket</a>&lt;?&gt;&nbsp;packet,
+<div class="member-signature"><span class="modifiers">public final</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">sendToLevel</span><wbr><span class="parameters">(<a href="BasePacket.html" title="class in dev.ultreon.mods.lib.networking.network">BasePacket</a>&lt;?&gt;&nbsp;packet,
  net.minecraft.world.level.Level&nbsp;level)</span></div>
 </section>
 </li>
 <li>
-<section class="detail" id="sendToChunk(com.ultreon.mods.lib.networking.network.BasePacket,net.minecraft.world.level.chunk.LevelChunk)">
+<section class="detail" id="sendToChunk(dev.ultreon.mods.lib.networking.network.BasePacket,net.minecraft.world.level.chunk.LevelChunk)">
 <h3>sendToChunk</h3>
-<div class="member-signature"><span class="modifiers">public final</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">sendToChunk</span><wbr><span class="parameters">(<a href="BasePacket.html" title="class in com.ultreon.mods.lib.networking.network">BasePacket</a>&lt;?&gt;&nbsp;packet,
+<div class="member-signature"><span class="modifiers">public final</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">sendToChunk</span><wbr><span class="parameters">(<a href="BasePacket.html" title="class in dev.ultreon.mods.lib.networking.network">BasePacket</a>&lt;?&gt;&nbsp;packet,
  net.minecraft.world.level.chunk.LevelChunk&nbsp;chunk)</span></div>
 </section>
 </li>

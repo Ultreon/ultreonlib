@@ -1,17 +1,17 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "com.ultreon.mods.lib.mixin.common",
+  "package": "dev.ultreon.mods.lib.mixin.common",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
   ],
   "client": [
-    "AbstractSelectionListAccessor",
-    "AbstractWidgetAccessor",
-    "ButtonAccessor",
-    "MouseHandlerMixin",
-    "ScreenAccess",
-    "TitleScreenAccessor"
+    "dev.ultreon.mods.lib.mixin.common.AbstractSelectionListAccessor",
+    "dev.ultreon.mods.lib.mixin.common.AbstractWidgetAccessor",
+    "dev.ultreon.mods.lib.mixin.common.ButtonAccessor",
+    "dev.ultreon.mods.lib.mixin.common.MouseHandlerMixin",
+    "dev.ultreon.mods.lib.mixin.common.ScreenAccess",
+    "dev.ultreon.mods.lib.mixin.common.TitleScreenAccessor"
   ],
   "injectors": {
     "defaultRequire": 1
