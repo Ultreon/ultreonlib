@@ -71,10 +71,15 @@ remapJar {
     //noinspection GrDeprecatedAPIUsage
     input.set shadowJar.archiveFile
     dependsOn shadowJar
+
+    from configurations.includeClasses.files.collect { zipTree(it) }
+
     archiveClassifier = null
 }
 
 jar {
+    from configurations.includeClasses.files.collect { zipTree(it) }
+
     archiveClassifier = "dev"
     manifest {
         attributes([
