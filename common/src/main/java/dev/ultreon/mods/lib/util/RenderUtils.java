@@ -147,7 +147,7 @@ public class RenderUtils {
     private static void renderEntityInInventory(GuiGraphics gfx, float posX, float posY, float scale, Vector3f position3D, Quaternionf rotation, @Nullable Quaternionf cameraOrientation, Entity entity) {
         gfx.pose().pushPose();
         gfx.pose().translate(posX, posY, 50.0);
-        gfx.pose().mulPoseMatrix(new Matrix4f().scaling(scale, scale, -scale));
+        gfx.pose().mulPose(new Matrix4f().scaling(scale, scale, -scale));
         gfx.pose().translate(position3D.x, position3D.y, position3D.z);
         gfx.pose().mulPose(rotation);
         Lighting.setupForEntityInInventory();

@@ -7,6 +7,7 @@ import dev.ultreon.mods.lib.client.gui.FrameType;
 import dev.ultreon.mods.lib.client.gui.screen.BaseScreen;
 import dev.ultreon.mods.lib.client.theme.GlobalTheme;
 import dev.ultreon.mods.lib.client.theme.Stylized;
+import dev.ultreon.mods.lib.util.ScissorStack;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
@@ -37,7 +38,7 @@ public class ListWidget extends BaseWidget implements ContainerEventHandler, Sty
     public static final ResourceLocation TEXTURE_NORMAL = UltreonLib.res("textures/gui/widgets/list/vanilla.png");
     public static final ResourceLocation TEXTURE_LIGHT = UltreonLib.res("textures/gui/widgets/list/light.png");
     public static final ResourceLocation LIST_ICONS = UltreonLib.res("textures/gui/list_icons.png");
-    private static final ResourceLocation SEARCH_SPRITE = new ResourceLocation("icon/search");
+    private static final ResourceLocation SEARCH_SPRITE = ResourceLocation.tryParse("icon/search");
 
     private static final int ICON_SIZE = 12;
     private static final int TEX_W = 64;
@@ -119,9 +120,13 @@ public class ListWidget extends BaseWidget implements ContainerEventHandler, Sty
             @Override
             public void renderWidget(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
                 this.setY(ListWidget.this.getY() + LIST_BORDER_WIDTH + ListWidget.this.headerHeight);
+                this.setX(ListWidget.this.getX() + LIST_BORDER_WIDTH);
                 this.height = LIST_BORDER_WIDTH + ListWidget.this.height - LIST_BORDER_WIDTH * 2;
+                this.width = LIST_BORDER_WIDTH + ListWidget.this.width - LIST_BORDER_WIDTH * 2;
 
+                ScissorStack.pushScissor(getX(), getY(), width, height);
                 super.renderWidget(gfx, mouseX, mouseY, partialTicks);
+                ScissorStack.popScissor();
             }
         };
 
@@ -339,8 +344,6 @@ public class ListWidget extends BaseWidget implements ContainerEventHandler, Sty
             this.mc = mc;
 
             this.widget = widget;
-
-            this.setRenderBackground(false);
         }
 
         @Override
@@ -396,6 +399,16 @@ public class ListWidget extends BaseWidget implements ContainerEventHandler, Sty
                 super.renderWidget(gfx, mouseX, mouseY, partialTicks);
             }
             RenderSystem.disableScissor();
+        }
+
+        @Override
+        protected void renderListSeparators(GuiGraphics guiGraphics) {
+
+        }
+
+        @Override
+        protected void renderListBackground(GuiGraphics guiGraphics) {
+
         }
 
         @Override

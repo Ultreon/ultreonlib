@@ -1,13 +1,14 @@
 package dev.ultreon.mods.lib.client.theme;
 
 import com.google.common.base.Suppliers;
-import dev.ultreon.libs.commons.v0.Color;
+import dev.ultreon.mods.lib.common.Color;
 import dev.ultreon.mods.lib.UltreonLib;
 import dev.ultreon.mods.lib.registries.ModRegistries;
 import net.minecraft.client.gui.components.WidgetSprites;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -62,12 +63,12 @@ public class Theme extends Style {
 
     private final Supplier<WidgetSprites> buttonSprites = Suppliers.memoize(() -> {
         ResourceLocation id = this.getId();
-        return createButtonSprites(this == VANILLA ? new ResourceLocation("widget/button") : new ResourceLocation(id.getNamespace(), "widget/button/" + id.getPath()));
+        return createButtonSprites(Objects.requireNonNull(this == VANILLA ? ResourceLocation.tryParse("widget/button") : ResourceLocation.tryBuild(id.getNamespace(), "widget/button/" + id.getPath())));
     });
 
     public static @NotNull WidgetSprites createButtonSprites(ResourceLocation id) {
-        ResourceLocation disabledTex = new ResourceLocation(id.getNamespace(), id.getPath() + "_disabled");
-        ResourceLocation highlightedTex = new ResourceLocation(id.getNamespace(), id.getPath() + "_highlighted");
+        ResourceLocation disabledTex = ResourceLocation.tryBuild(id.getNamespace(), id.getPath() + "_disabled");
+        ResourceLocation highlightedTex = ResourceLocation.tryBuild(id.getNamespace(), id.getPath() + "_highlighted");
         return new WidgetSprites(id, disabledTex, highlightedTex);
     }
 
@@ -115,12 +116,12 @@ public class Theme extends Style {
     }
 
     public ResourceLocation getFrameSprite() {
-        return new ResourceLocation(this.getId().getNamespace(), "frame/" + this.getId().getPath());
+        return ResourceLocation.tryBuild(this.getId().getNamespace(), "frame/" + this.getId().getPath());
     }
 
     @Deprecated
     public ResourceLocation getBorderFrameSprite() {
-        return new ResourceLocation(this.getId().getNamespace(), "frame/" + this.getId().getPath() + "_border");
+        return ResourceLocation.tryBuild(this.getId().getNamespace(), "frame/" + this.getId().getPath() + "_border");
     }
 
     public Style getButtonStyle() {

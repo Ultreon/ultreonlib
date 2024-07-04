@@ -11,6 +11,7 @@ import java.util.Collections;
 import java.util.List;
 
 @SuppressWarnings("UnusedReturnValue")
+@Deprecated(forRemoval = true)
 public abstract class ActionMenu {
     protected List<ActionMenuItem> client = new ArrayList<>();
     protected List<ActionMenuItem> server = new ArrayList<>();

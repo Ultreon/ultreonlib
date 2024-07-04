@@ -16,7 +16,7 @@ public final class InventoryUtils extends UtilityClass {
 
         int count = 0;
         for (ItemStack stack : player.getInventory().items) {
-            if (ItemStack.isSameItemSameTags(stack, stackItem)) {
+            if (ItemStack.isSameItemSameComponents(stack, stackItem)) {
                 count += stack.getCount();
             }
         }
@@ -32,7 +32,7 @@ public final class InventoryUtils extends UtilityClass {
         Inventory inventory = player.getInventory();
         for (int slot = 0; slot < inventory.getContainerSize(); slot++) {
             ItemStack stack = inventory.getItem(slot);
-            if (ItemStack.isSameItemSameTags(stack, stackItem)) {
+            if (ItemStack.isSameItemSameComponents(stack, stackItem)) {
                 int toRemove = Math.min(count, stack.getCount());
                 stack.shrink(toRemove);
                 if (stack.getCount() == 0) {
@@ -59,7 +59,7 @@ public final class InventoryUtils extends UtilityClass {
         Inventory inventory = player.getInventory();
         for (int slot = 0; slot < inventory.getContainerSize(); slot++) {
             ItemStack stack = inventory.getItem(slot);
-            if (ItemStack.isSameItemSameTags(stack, stackItem)) {
+            if (ItemStack.isSameItemSameComponents(stack, stackItem)) {
                 inventory.setItem(slot, ItemStack.EMPTY);
                 flag = true;
             }

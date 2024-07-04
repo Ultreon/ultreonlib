@@ -5,6 +5,7 @@ import net.fabricmc.api.Environment;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 
+@Deprecated(forRemoval = true)
 public interface IActionMenuItem {
     @NotNull
     default Component getText() {

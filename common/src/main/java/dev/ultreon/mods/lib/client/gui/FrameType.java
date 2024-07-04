@@ -16,6 +16,6 @@ public enum FrameType {
     }
 
     public ResourceLocation mapSprite(ResourceLocation themeId) {
-        return new ResourceLocation(themeId.getNamespace(), themeId.getPath() + suffix);
+        return ResourceLocation.tryBuild(themeId.getNamespace(), themeId.getPath() + suffix);
     }
 }

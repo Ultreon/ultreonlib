@@ -3,6 +3,7 @@ package dev.ultreon.mods.lib.actionmenu;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 
+@Deprecated(forRemoval = true)
 public class SubmenuItem extends ActionMenuItem {
     private final IMenuHandler handler;
 

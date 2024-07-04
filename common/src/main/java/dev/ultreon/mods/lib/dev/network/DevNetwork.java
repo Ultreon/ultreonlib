@@ -18,7 +18,7 @@ public class DevNetwork extends Network {
 
     @Override
     protected void registerPackets(PacketRegisterContext ctx) {
-        ctx.register(TestBiDirectionalPacket::new);
-        ctx.register(TestToClientPacket::new);
+        ctx.<TestBiDirectionalPacket>add();
+        ctx.<TestToClientPacket>add();
     }
 }

@@ -16,6 +16,10 @@ public class MouseHandlerMixin {
     @Final
     private Minecraft minecraft;
 
+    @Shadow private double xpos;
+
+    @Shadow private double ypos;
+
     @Inject(method = "onMove", at = @At("HEAD"), cancellable = true, remap = true)
     public void onMove(long windowPtr, double xPos, double yPos, CallbackInfo ci) {
         double mouseX = xPos * (double) this.minecraft.getWindow().getGuiScaledWidth() / (double) this.minecraft.getWindow().getScreenWidth();

@@ -1,6 +1,6 @@
 package dev.ultreon.mods.lib.client.theme;
 
-import dev.ultreon.libs.commons.v0.Color;
+import dev.ultreon.mods.lib.common.Color;
 import dev.ultreon.mods.lib.UltreonLib;
 import dev.ultreon.mods.lib.registries.ModRegistries;
 import net.minecraft.network.chat.Component;
@@ -78,7 +78,7 @@ public class GlobalTheme {
 
     @ApiStatus.Internal
     private static <T extends GlobalTheme> GlobalTheme registerVanilla(String name, Supplier<T> supplier) {
-        return ModRegistries.GLOBAL_THEME.register(new ResourceLocation(ResourceLocation.DEFAULT_NAMESPACE, name), supplier.get());
+        return ModRegistries.GLOBAL_THEME.register(ResourceLocation.tryBuild(ResourceLocation.DEFAULT_NAMESPACE, name), supplier.get());
     }
 
     @ApiStatus.Internal
@@ -94,7 +94,7 @@ public class GlobalTheme {
      */
     @Deprecated
     public static GlobalTheme fromId(String id) {
-        return ModRegistries.GLOBAL_THEME.get(new ResourceLocation(id));
+        return ModRegistries.GLOBAL_THEME.get(ResourceLocation.tryParse(id));
     }
 
     /**

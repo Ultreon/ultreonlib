@@ -1,6 +1,6 @@
 package dev.ultreon.mods.lib.client.theme;
 
-import dev.ultreon.libs.commons.v0.Color;
+import dev.ultreon.mods.lib.common.Color;
 
 public class Style {
     protected Color textColor;

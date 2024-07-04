@@ -71,7 +71,7 @@ public sealed class Location permits MutableLocation {
                 tags.getInt(NbtKeys.X),
                 tags.getInt(NbtKeys.Y),
                 tags.getInt(NbtKeys.Z),
-                ResourceKey.create(Registries.DIMENSION, new ResourceLocation(tags.getString(NbtKeys.DIMENSION))));
+                ResourceKey.create(Registries.DIMENSION, ResourceLocation.tryParse(tags.getString(NbtKeys.DIMENSION))));
     }
 
     public int getX() {

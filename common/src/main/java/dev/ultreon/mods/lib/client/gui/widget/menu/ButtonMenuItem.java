@@ -1,7 +1,7 @@
 package dev.ultreon.mods.lib.client.gui.widget.menu;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import dev.ultreon.libs.commons.v0.Color;
+import dev.ultreon.mods.lib.common.Color;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;

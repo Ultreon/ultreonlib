@@ -14,9 +14,10 @@ import org.jetbrains.annotations.NotNull;
  *
  * @author XyperCode
  */
+@Deprecated(forRemoval = true)
 public abstract class PanoramaScreen extends BaseScreen {
     public static final PanoramaRenderer PANORAMA = new PanoramaRenderer(TitleScreen.CUBE_MAP);
-    public static final ResourceLocation PANORAMA_OVERLAY = new ResourceLocation("textures/gui/title/background/panorama_overlay.png");
+    public static final ResourceLocation PANORAMA_OVERLAY = ResourceLocation.tryParse("textures/gui/title/background/panorama_overlay.png");
 
     /**
      * Panorama screen constructor.
@@ -25,33 +26,5 @@ public abstract class PanoramaScreen extends BaseScreen {
      */
     protected PanoramaScreen(Component title) {
         super(title);
-    }
-
-    /**
-     * Render the panorama background/
-     *
-     * @param gfx         pose stack.
-     * @param partialTicks render frame time.
-     */
-    public void renderPanorama(GuiGraphics gfx, float partialTicks) {
-        PANORAMA.render(partialTicks, Mth.clamp(1.0f, 0.0f, 1.0f));
-        RenderSystem.enableBlend();
-        gfx.setColor(1.0f, 1.0f, 1.0f, 1.0f);
-        gfx.blit(PANORAMA_OVERLAY, 0, 0, this.width, this.height, 0.0f, 0.0f, 16, 128, 16, 128);
-        gfx.setColor(1.0f, 1.0f, 1.0f, 1.0f);
-    }
-
-    public void renderBackground(GuiGraphics gfx, float partialTicks) {
-        assert this.minecraft != null;
-        if (this.minecraft.level == null) {
-            this.renderPanorama(gfx, partialTicks);
-            return;
-        }
-        gfx.fillGradient(0, 0, this.width, this.height, 0xC0101010, 0xD0101010);
-    }
-
-    @Override
-    public void renderBackground(@NotNull GuiGraphics gfx, int i, int j, float f) {
-
     }
 }

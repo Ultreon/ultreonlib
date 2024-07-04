@@ -55,6 +55,9 @@ public class Window extends BaseContainerWidget implements Stylized {
     private Anchor currentResizingBorder;
     private final Font font = Minecraft.getInstance().font;
 
+    private int dragStartX;
+    private int dragStartY;
+
     private final WindowManager wm = WindowManager.INSTANCE;
 
     /**
@@ -72,6 +75,11 @@ public class Window extends BaseContainerWidget implements Stylized {
     @Override
     public void updateWidgetNarration(@NotNull NarrationElementOutput narrationElementOutput) {
         narrationElementOutput.add(NarratedElementType.TITLE, getTitle());
+    }
+
+    @Override
+    public boolean isMouseOver(double mouseX, double mouseY) {
+        return this.active && this.visible && mouseX >= (double)this.getX() && mouseY >= (double)this.getY() - 21 && mouseX < (double)(this.getX() + this.width) && mouseY < (double)(this.getY() + this.height);
     }
 
     /**
@@ -210,6 +218,8 @@ public class Window extends BaseContainerWidget implements Stylized {
             renderFrame(gfx);
             renderContents(gfx, mouseX, mouseY, partialTicks);
         }
+
+//        gfx.renderOutline(getX(), getY(), getWidth(), getHeight(), 0xffffffff);
     }
 
     /**
@@ -236,7 +246,7 @@ public class Window extends BaseContainerWidget implements Stylized {
      * @param mouseY The y position of the mouse.
      */
     private void renderTitle(@NotNull GuiGraphics gfx, int mouseX, int mouseY) {
-        BaseScreen.renderTitleFrame(gfx, getX(), getY() - 20, width, 12, globalTheme);
+        BaseScreen.renderTitleFrame(gfx, getX(), getY() - 20, width, 19, globalTheme);
         gfx.drawCenteredString(minecraft.font, getTitle(), getX() + width / 2, getY() - 12, globalTheme.getTitleColor(ThemeRootComponent.WINDOW).getRgb());
 
         renderCloseButton(gfx, mouseX, mouseY, getX() + width - 12, getY() - 12);
@@ -319,8 +329,8 @@ public class Window extends BaseContainerWidget implements Stylized {
                 // Window is shown, so we can drag it.
                 if (isDragging()) {
                     // The window is being dragged, so move it.
-                    setX(getX() + (int) (pMouseX - getDragX()));
-                    setY(getY() + (int) (pMouseY - getDragY()));
+                    setX(getDragStartX() + (int) pMouseX - (int) getDragX());
+                    setY(getDragStartY() + (int) pMouseY - (int) getDragY());
                 } else if (isResizing() && isResizable() && currentResizingBorder != null) {
                     // Resize the window based on the current resizing border
                     // The border is the anchor that is currently being resized
@@ -358,23 +368,24 @@ public class Window extends BaseContainerWidget implements Stylized {
                         case MIDDLE_RIGHT -> setWidth(getWidth() + (int) (pMouseX - getDragX()));
                     }
                 }
-
-                if (isOnTopOfTitle(pMouseX, pMouseY)) {
-                    // If the mouse is on the title, start dragging the window.
-                    setDragging(true);
-                    setDragX(pMouseX);
-                    setDragY(pMouseY);
-                } else {
-                    Anchor resizingBorder = findResizeBorder(pMouseX, pMouseY);
-                    if (resizingBorder != null) {
-                        // If the mouse is on a resize border, start resizing the window.
-                        setResizing(true);
-                        currentResizingBorder = resizingBorder;
-                    }
-                }
             }
+        } else {
+            setDragging(false);
         }
         super.mouseMoved(pMouseX, pMouseY);
+    }
+
+    @Override
+    public void setDragging(boolean dragging) {
+        Window draggingWindow = wm.getDraggingWindow();
+        if (dragging) {
+            if (draggingWindow != this && draggingWindow != null) return;
+            wm.draggingWindow = this;
+        } else {
+            if (draggingWindow != this) return;
+            wm.draggingWindow = null;
+        }
+        super.setDragging(dragging);
     }
 
     @Override
@@ -387,6 +398,27 @@ public class Window extends BaseContainerWidget implements Stylized {
         }
 
         return super.mouseReleased(pMouseX, pMouseY, pButton);
+    }
+
+    @Override
+    public boolean mouseClicked(double pMouseX, double pMouseY, int pButton) {
+        if (isOnTopOfTitle(pMouseX, pMouseY) && !isDragging() && pButton == 0) {
+            // If the mouse is on the title, start dragging the window.
+            setDragging(true);
+            setDragX(pMouseX);
+            setDragY(pMouseY);
+            setDragStartX(getX());
+            setDragStartY(getY());
+        } else {
+            Anchor resizingBorder = findResizeBorder(pMouseX, pMouseY);
+            if (resizingBorder != null) {
+                // If the mouse is on a resize border, start resizing the window.
+                setResizing(true);
+                currentResizingBorder = resizingBorder;
+            }
+        }
+
+        return super.mouseClicked(pMouseX, pMouseY, pButton);
     }
 
     private Anchor findResizeBorder(double x, double y) {
@@ -480,6 +512,22 @@ public class Window extends BaseContainerWidget implements Stylized {
         this.dragY = dragY;
     }
 
+    private int getDragStartX() {
+        return dragStartX;
+    }
+
+    private void setDragStartX(int dragStartX) {
+        this.dragStartX = dragStartX;
+    }
+
+    private int getDragStartY() {
+        return dragStartY;
+    }
+
+    private void setDragStartY(int dragStartY) {
+        this.dragStartY = dragStartY;
+    }
+
     private double getResizeX() {
         return resizeX;
     }
@@ -496,7 +544,7 @@ public class Window extends BaseContainerWidget implements Stylized {
         this.resizeY = resizeY;
     }
 
-    private boolean isOnTopOfTitle(double x, double y) {
+    boolean isOnTopOfTitle(double x, double y) {
         return x >= getX() && x <= getX() + getWidth() && y >= getY() - 21 && y <= getY();
     }
 

@@ -23,7 +23,7 @@ import java.util.*;
 /**
  * List screen. A screen that's made for only a list with entries.
  */
-public class ListScreen extends PanoramaScreen {
+public class ListScreen extends BaseScreen {
     private IListFilter listFilter = (query, id, title, description) -> {
         var found = true;
         for (var part : query.split(" ")) {
@@ -125,9 +125,9 @@ public class ListScreen extends PanoramaScreen {
     }
 
     @Override
-    public void renderBackground(@NotNull GuiGraphics gfx, float partialTicks) {
+    public void renderBackground(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
         int i = this.left() + 3;
-        super.renderBackground(gfx, partialTicks);
+        super.renderBackground(gfx, mouseX, mouseY, partialTicks);
 
         renderFrame(gfx, i, 64, 236, this.listHeight() + 16, this.globalTheme.getContentTheme(), FrameType.BORDER);
     }
@@ -135,7 +135,7 @@ public class ListScreen extends PanoramaScreen {
     @Override
     public void render(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
         Objects.requireNonNull(this.minecraft);
-        this.renderBackground(gfx, partialTicks);
+        this.renderBackground(gfx, mouseX, mouseY, partialTicks);
 
         renderTitleFrame(gfx, this.left() + 3, 28, this.minecraft.font.width(this.title) + 12, 21, this.globalTheme);
         renderTitleFrame(gfx, this.right() - 8 - 12, 28, 21, 21, this.globalTheme);
@@ -230,8 +230,16 @@ public class ListScreen extends PanoramaScreen {
             for (Entry cachedEntry : screen.cachedEntries) {
                 addEntry(cachedEntry);
             }
+        }
 
-            this.setRenderBackground(false);
+        @Override
+        protected void renderListSeparators(GuiGraphics guiGraphics) {
+
+        }
+
+        @Override
+        protected void renderListBackground(GuiGraphics guiGraphics) {
+
         }
 
         @Override

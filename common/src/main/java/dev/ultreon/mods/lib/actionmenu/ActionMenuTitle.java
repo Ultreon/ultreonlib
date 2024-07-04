@@ -9,6 +9,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 
+@Deprecated(forRemoval = true)
 public class ActionMenuTitle extends AbstractWidget implements IActionMenuIndexable {
     private int menuIndex;
 

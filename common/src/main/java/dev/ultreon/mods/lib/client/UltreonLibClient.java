@@ -1,5 +1,7 @@
 package dev.ultreon.mods.lib.client;
 
+import dev.architectury.platform.Platform;
+import dev.ultreon.mods.lib.UltreonLib;
 import dev.ultreon.mods.lib.client.gui.screen.window.ScreenHooks;
 import dev.ultreon.mods.lib.event.WindowCloseEvent;
 import dev.ultreon.mods.lib.mixin.common.ButtonAccessor;
@@ -31,6 +33,9 @@ public class UltreonLibClient {
             throw new IllegalStateException("The mod is already instantiated.");
         }
         instance = new UltreonLibClient();
+
+        Platform.getMod(UltreonLib.MOD_ID).registerConfigurationScreen((screen) -> new InternalConfigScreen());
+
         return instance;
     }
 
@@ -43,7 +48,7 @@ public class UltreonLibClient {
         ClientScreenInputEvent.KEY_PRESSED_PRE.register(ScreenHooks::onKeyPress);
         ClientScreenInputEvent.KEY_RELEASED_PRE.register(ScreenHooks::onKeyRelease);
         ClientScreenInputEvent.CHAR_TYPED_PRE.register(ScreenHooks::onCharTyped);
-        ClientGuiEvent.RENDER_PRE.register(ScreenHooks::onDrawScreen);
+        ClientGuiEvent.RENDER_POST.register(ScreenHooks::onDrawScreen);
 
         ClientGuiEvent.SET_SCREEN.register(this::onTitleScreenInit);
         ClientGuiEvent.SET_SCREEN.register(DevPreviewRegistry::onTitleScreen);

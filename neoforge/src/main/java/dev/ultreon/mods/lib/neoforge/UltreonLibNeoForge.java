@@ -21,7 +21,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ServiceLoader;
 
-// The value here should match an entry in the META-INF/mods.toml file
+// The value here should match an entry in the META-INF/neoforge.mods.toml file
 @Mod(UltreonLib.MOD_ID)
 public class UltreonLibNeoForge {
     public static final Logger LOGGER = LoggerFactory.getLogger("UltreonLib:Forge");

@@ -1,6 +1,6 @@
 package dev.ultreon.mods.lib;
 
-import dev.ultreon.libs.commons.v0.Identifier;
+import dev.ultreon.mods.lib.common.Identifier;
 import dev.ultreon.mods.lib.client.gui.screen.TitleStyle;
 import dev.ultreon.mods.lib.client.gui.screen.test.TestScreen;
 import dev.ultreon.mods.lib.client.theme.GlobalTheme;
@@ -8,7 +8,7 @@ import dev.ultreon.mods.lib.client.theme.Stylized;
 import dev.ultreon.mods.lib.dev.UltreonLibDev;
 import dev.ultreon.mods.lib.init.ModTriggerTypes;
 import dev.ultreon.mods.lib.loot.LootTableInjection;
-import dev.ultreon.mods.lib.network.api.NetworkManager;
+import dev.ultreon.mods.lib.network.api.NetworkSystem;
 import dev.ultreon.mods.lib.registries.ModRegistries;
 import dev.ultreon.mods.lib.util.ModMessages;
 import dev.architectury.event.events.common.LifecycleEvent;
@@ -70,6 +70,7 @@ public class UltreonLib {
         UltreonLib.instance = this;
 
         this.config = new UltreonLibConfig();
+        this.config.load();
 
         LootEvent.MODIFY_LOOT_TABLE.register(LootTableInjection::runModifications);
         ModMessages.init();
@@ -173,7 +174,7 @@ public class UltreonLib {
     }
 
     public static ResourceLocation res(String path) {
-        return new ResourceLocation(MOD_ID, path);
+        return ResourceLocation.tryBuild(MOD_ID, path);
     }
 
     @ApiStatus.Internal
@@ -188,7 +189,7 @@ public class UltreonLib {
 
     @ApiStatus.Internal
     public void initNetworkInstances() {
-        NetworkManager.init();
+        NetworkSystem.init();
     }
 
 

@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.Objects;
 import java.util.function.Supplier;
 
+@Deprecated(forRemoval = true)
 public class ActionMenuItem implements IActionMenuItem {
     private final Component text;
     private final Supplier<Boolean> enabled;
@@ -144,7 +145,7 @@ public class ActionMenuItem implements IActionMenuItem {
     }
 
     public ResourceLocation location() {
-        return new ResourceLocation(modId, path());
+        return ResourceLocation.tryBuild(modId, path());
     }
 
     @Override

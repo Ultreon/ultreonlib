@@ -9,6 +9,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import org.jetbrains.annotations.NotNull;
 
+@Deprecated(forRemoval = true)
 public class ActionMenuTransferPacket extends PacketToServer<ActionMenuTransferPacket> {
     private final int id;
 

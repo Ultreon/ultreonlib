@@ -8,8 +8,8 @@ import net.minecraft.util.Mth;
 import org.jetbrains.annotations.NotNull;
 
 public class Progressbar extends BaseWidget {
-    private static final ResourceLocation BAR_BACKGROUND = new ResourceLocation("hud/experience_bar_background.png");
-    private static final ResourceLocation BAR_PROGRESS = new ResourceLocation("hud/experience_bar_progress.png");
+    private static final ResourceLocation BAR_BACKGROUND = ResourceLocation.tryParse("hud/experience_bar_background.png");
+    private static final ResourceLocation BAR_PROGRESS = ResourceLocation.tryParse("hud/experience_bar_progress.png");
     private int maximum;
     private int value;
 
@@ -62,8 +62,9 @@ public class Progressbar extends BaseWidget {
         int x = getX() - 91;
         int y = getY() - 3;
 
-        gfx.blitSprite(BAR_BACKGROUND, x, y, 0, 64);
-        gfx.blitSprite(BAR_PROGRESS, x, y, 0, 69, 0, 0, (int) (182 * getRatio()), 5);
+        gfx.blit(ResourceLocation.tryParse("textures/gui/sprites/hud/experience_bar_background.png"), x, y, 0, 0, 182, 5, 182, 5);
+        gfx.blit(ResourceLocation.tryParse("textures/gui/sprites/hud/experience_bar_progress.png"), x, y, 0, 0, (int) (182 * getRatio()), 5, 182, 5);
+//        gfx.blitSprite(BAR_PROGRESS, 182, 5, 0, 0, x, y, (int) (182 * getRatio()), 5);
     }
 
     @Override

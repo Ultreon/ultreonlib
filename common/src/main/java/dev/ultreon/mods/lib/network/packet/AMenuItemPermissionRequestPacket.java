@@ -11,6 +11,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 
+@Deprecated(forRemoval = true)
 public class AMenuItemPermissionRequestPacket extends PacketToServer<AMenuItemPermissionRequestPacket> {
     public AMenuItemPermissionRequestPacket(FriendlyByteBuf buffer) {
 

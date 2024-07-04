@@ -34,20 +34,7 @@ dependencies {
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionForge")) { transitive = false }
 
-    include forgeRuntimeLibrary("dev.ultreon:ubo:${ultreon_data_version}", { exclude group: "com.google.code.gson"; exclude group: "com.google.guava" })
-
-    include forgeRuntimeLibrary("dev.ultreon.corelibs:collections-v0:$corelibs_version", { exclude group: "com.google.code.gson"; exclude group: "com.google.guava" })
-    include forgeRuntimeLibrary("dev.ultreon.corelibs:commons-v0:$corelibs_version", { exclude group: "com.google.code.gson"; exclude group: "com.google.guava" })
-    include forgeRuntimeLibrary("dev.ultreon.corelibs:crash-v0:$corelibs_version", { exclude group: "com.google.code.gson"; exclude group: "com.google.guava" })
-    include forgeRuntimeLibrary("dev.ultreon.corelibs:datetime-v0:$corelibs_version", { exclude group: "com.google.code.gson"; exclude group: "com.google.guava" })
-    include forgeRuntimeLibrary("dev.ultreon.corelibs:events-v1:$corelibs_version", { exclude group: "com.google.code.gson"; exclude group: "com.google.guava" })
-    include forgeRuntimeLibrary("dev.ultreon.corelibs:functions-v0:$corelibs_version", { exclude group: "com.google.code.gson"; exclude group: "com.google.guava" })
-    include forgeRuntimeLibrary("dev.ultreon.corelibs:registries-v0:$corelibs_version", { exclude group: "com.google.code.gson"; exclude group: "com.google.guava" })
-    include forgeRuntimeLibrary("dev.ultreon.corelibs:resources-v0:$corelibs_version", { exclude group: "com.google.code.gson"; exclude group: "com.google.guava" })
-    include forgeRuntimeLibrary("dev.ultreon.corelibs:text-v0:$corelibs_version", { exclude group: "com.google.code.gson"; exclude group: "com.google.guava" })
-    include forgeRuntimeLibrary("dev.ultreon.corelibs:translations-v0:$corelibs_version", { exclude group: "com.google.code.gson"; exclude group: "com.google.guava" })
-    include forgeRuntimeLibrary("dev.ultreon:json5-api:$json5_api_version", { exclude group: "com.google.code.gson"; exclude group: "com.google.guava" })
-
+    shadowCommon(forgeRuntimeLibrary("dev.ultreon:json5-api:$json5_api_version", { exclude group: "com.google.code.gson"; exclude group: "com.google.guava" }))
 }
 
 processResources {

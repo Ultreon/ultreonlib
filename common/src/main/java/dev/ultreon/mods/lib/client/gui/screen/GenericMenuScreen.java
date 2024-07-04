@@ -21,7 +21,6 @@ import net.minecraft.client.gui.narration.NarratableEntry;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec2;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
@@ -523,11 +522,6 @@ public abstract class GenericMenuScreen extends BaseScreen implements Stylized {
 
     }
 
-    @Override
-    public void renderBackground(@NotNull GuiGraphics gfx, int i, int j, float f) {
-        if (!this.panorama) super.renderBackground(gfx, i, j, f);
-    }
-
     public void onPreRender() {
 
     }
@@ -544,11 +538,11 @@ public abstract class GenericMenuScreen extends BaseScreen implements Stylized {
         ResourceLocation contentFrame = UltreonLib.getTheme().getContentTheme().getFrameSprite();
         ResourceLocation windowFrame = UltreonLib.getTheme().getWindowTheme().getFrameSprite();
 
-        // Renders the background.
-        if (this.panorama) renderPanorama(gfx, partialTicks);
-        else renderBackground(gfx, mouseX, mouseY, partialTicks);
+        this.renderBackground(gfx, mouseX, mouseY, partialTicks);
 
         int rowsHeight = rowsHeight();
+
+        RenderSystem.enableBlend();
 
         switch (this.titleStyle) {
             case HIDDEN -> gfx.blitSprite(this.contentSprite, left(), top(), width(), height());
@@ -586,20 +580,6 @@ public abstract class GenericMenuScreen extends BaseScreen implements Stylized {
         } else {
             super.onClose();
         }
-    }
-
-    /**
-     * Render the panorama background/
-     *
-     * @param gfx         pose stack.
-     * @param partialTicks render frame time.
-     */
-    public void renderPanorama(GuiGraphics gfx, float partialTicks) {
-        PanoramaScreen.PANORAMA.render(partialTicks, Mth.clamp(1.0f, 0.0f, 1.0f));
-        RenderSystem.enableBlend();
-        gfx.setColor(1.0f, 1.0f, 1.0f, 1.0f);
-        gfx.blit(PanoramaScreen.PANORAMA_OVERLAY, 0, 0, this.width, this.height, 0.0f, 0.0f, 16, 128, 16, 128);
-        gfx.setColor(1.0f, 1.0f, 1.0f, 1.0f);
     }
 
     private void renderRows(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTicks, int y, int index) {
@@ -793,6 +773,7 @@ public abstract class GenericMenuScreen extends BaseScreen implements Stylized {
             return this;
         }
 
+        @Deprecated(forRemoval = true)
         public Properties panorama() {
             this.panorama = true;
             return this;

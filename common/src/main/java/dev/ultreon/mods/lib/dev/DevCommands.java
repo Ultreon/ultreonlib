@@ -2,6 +2,7 @@ package dev.ultreon.mods.lib.dev;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import dev.ultreon.mods.lib.common.util.ExceptionUtils;
 import dev.ultreon.mods.lib.dev.network.DevNetwork;
 import dev.ultreon.mods.lib.dev.network.TestBiDirectionalPacket;
 import dev.ultreon.mods.lib.dev.network.TestToClientPacket;
@@ -9,6 +10,7 @@ import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.UuidArgument;
+import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.ApiStatus;
 
 import java.util.UUID;
@@ -31,15 +33,30 @@ public final class DevCommands {
                         .then(Commands.literal("bi-directional")
                                 .then(Commands.argument("uuid", UuidArgument.uuid())
                                         .executes((source) -> {
-                                            DevNetwork.get().sendToClient(new TestBiDirectionalPacket(UuidArgument.getUuid(source, "uuid")), source.getSource().getPlayerOrException());
+                                            try {
+                                                DevNetwork.get().sendToClient(new TestBiDirectionalPacket(UuidArgument.getUuid(source, "uuid")), source.getSource().getPlayerOrException());
+                                            } catch (Exception e) {
+                                                e.printStackTrace();
+                                                source.getSource().sendSystemMessage(Component.literal(ExceptionUtils.getStackTrace(e)));
+                                            }
                                             return 1;
                                         })
                                 ).executes((source) -> {
-                                    DevNetwork.get().sendToClient(new TestBiDirectionalPacket(UUID.randomUUID()), source.getSource().getPlayerOrException());
+                                    try {
+                                        DevNetwork.get().sendToClient(new TestBiDirectionalPacket(UUID.randomUUID()), source.getSource().getPlayerOrException());
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                        source.getSource().sendSystemMessage(Component.literal(ExceptionUtils.getStackTrace(e)));
+                                    }
                                     return 1;
                                 })
                         ).then(Commands.literal("to-client").executes((source) -> {
-                            DevNetwork.get().sendToClient(new TestToClientPacket(UUID.randomUUID()), source.getSource().getPlayerOrException());
+                            try {
+                                DevNetwork.get().sendToClient(new TestToClientPacket(UUID.randomUUID()), source.getSource().getPlayerOrException());
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                source.getSource().sendSystemMessage(Component.literal(ExceptionUtils.getStackTrace(e)));
+                            }
                             return 1;
                         }))
                 );

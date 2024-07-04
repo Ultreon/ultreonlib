@@ -11,7 +11,7 @@
     "ButtonAccessor",
     "MouseHandlerMixin",
     "ScreenAccess",
-    "TitleScreenAccessor"
+    "PanoramaRendererAccessor"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -1,6 +1,6 @@
 package dev.ultreon.mods.lib.client.gui;
 
-import dev.ultreon.libs.commons.v0.Color;
+import dev.ultreon.mods.lib.common.Color;
 import dev.ultreon.mods.lib.util.ScissorStack;
 import net.minecraft.client.gui.GuiGraphics;
 

@@ -38,7 +38,6 @@ public class UltreonLibDev {
 
     private void setup() {
         this.network = new DevNetwork();
-        network.init();
 
         ModMessages.addMessage("UltreonLib", Component.literal("Dev mode enabled."));
     }

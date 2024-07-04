@@ -3,6 +3,7 @@ package dev.ultreon.mods.lib.client.gui.screen.window;
 import dev.ultreon.mods.lib.UltreonLibConfig;
 import dev.ultreon.mods.lib.input.GameKeyboard;
 import dev.architectury.event.EventResult;
+import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
@@ -33,14 +34,15 @@ public class ScreenHooks {
 
     public static EventResult onMouseClick(Minecraft client, Screen screen, double mouseX, double mouseY, int button) {
         AtomicReference<EventResult> eventResult = new AtomicReference<>(EventResult.pass());
-
-        if (button == 0) {
-            WindowManager.INSTANCE.getWindowAt(mouseX, mouseY).ifPresent(w -> {
-                eventResult.set(EventResult.interruptFalse());
-                w.mouseClicked(mouseX, mouseY, button);
-                WindowManager.INSTANCE.moveToFront(w);
-            });
-        }
+//        mouseX /= client.getWindow().getGuiScale();
+//        mouseY /= client.getWindow().getGuiScale();
+        double finalMouseX = mouseX;
+        double finalMouseY = mouseY;
+        WindowManager.INSTANCE.getWindowAt(mouseX, mouseY).ifPresent(w -> {
+            eventResult.set(EventResult.interruptFalse());
+            WindowManager.INSTANCE.moveToFront(w);
+            w.mouseClicked(finalMouseX, finalMouseY, button);
+        });
 
         return eventResult.get();
     }
@@ -49,12 +51,10 @@ public class ScreenHooks {
     public static EventResult onMouseRelease(Minecraft client, Screen screen, double mouseX, double mouseY, int button) {
         AtomicReference<EventResult> eventResult = new AtomicReference<>(EventResult.pass());
 
-        if (button == 0) {
-            WindowManager.INSTANCE.getWindowAt(mouseX, mouseY).ifPresent(w -> {
-                eventResult.set(EventResult.interruptFalse());
-                w.mouseReleased(mouseX, mouseY, button);
-            });
-        }
+        WindowManager.INSTANCE.getWindowAt(mouseX, mouseY).ifPresent(w -> {
+            eventResult.set(EventResult.interruptFalse());
+            w.mouseReleased(mouseX, mouseY, button);
+        });
 
         return eventResult.get();
     }
@@ -142,10 +142,10 @@ public class ScreenHooks {
         return eventResult.get();
     }
 
-    public static EventResult onDrawScreen(Screen screen, @NotNull GuiGraphics gfx, int mouseX, int mouseY, float delta) {
+    public static EventResult onDrawScreen(Screen screen, @NotNull GuiGraphics gfx, int mouseX, int mouseY, DeltaTracker delta) {
         AtomicReference<EventResult> eventResult = new AtomicReference<>(EventResult.pass());
 
-        WindowManager.INSTANCE.renderAllWindows(gfx, mouseX, mouseY, delta);
+        WindowManager.INSTANCE.renderAllWindows(gfx, mouseX, mouseY, delta.getRealtimeDeltaTicks());
 
         return eventResult.get();
     }

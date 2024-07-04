@@ -15,7 +15,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Optional;
 
 public class UseItemTrigger extends SimpleCriterionTrigger<UseItemTrigger.Instance> {
-    public static final ResourceLocation ID = new ResourceLocation(UltreonLib.MOD_ID, "use_item");
+    public static final ResourceLocation ID = ResourceLocation.tryBuild(UltreonLib.MOD_ID, "use_item");
 
     @NotNull
     public ResourceLocation getId() {
@@ -69,7 +69,7 @@ public class UseItemTrigger extends SimpleCriterionTrigger<UseItemTrigger.Instan
         }
 
         public boolean matches(ItemStack item) {
-            return this.item.isEmpty() || this.item.get().matches(item);
+            return this.item.isEmpty() || this.item.get().test(item);
         }
 
         public Optional<ItemPredicate> getItem() {

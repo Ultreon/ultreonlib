@@ -3,6 +3,7 @@ package dev.ultreon.mods.lib.actionmenu;
 import java.util.ArrayList;
 import java.util.List;
 
+@Deprecated(forRemoval = true)
 public final class MainActionMenu extends ActionMenu {
     static final MainActionMenu INSTANCE = new MainActionMenu();
     private final List<SubmenuItem> menuItems = new ArrayList<>();

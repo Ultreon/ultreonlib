@@ -279,6 +279,7 @@ public abstract class BaseScreen extends Screen implements Stylized {
 
     public static void renderFrame(GuiGraphics gfx, int x, int y, int width, int height, Theme theme, FrameType type) {
         var tex = theme.getFrameSprite();
+        RenderSystem.enableBlend();
         gfx.blitSprite(type.mapSprite(tex), x, y, width, height);
     }
 
@@ -288,6 +289,7 @@ public abstract class BaseScreen extends Screen implements Stylized {
 
     public static void renderTitleFrame(GuiGraphics gfx, int x, int y, int width, int height, GlobalTheme globalTheme, FrameType type) {
         var tex = globalTheme.getWindowTheme().getFrameSprite();
+        RenderSystem.enableBlend();
         gfx.blitSprite(type.mapSprite(tex), x, y, width, height);
     }
 

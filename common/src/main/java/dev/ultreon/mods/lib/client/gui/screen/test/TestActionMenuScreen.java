@@ -8,6 +8,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.Nullable;
 
+@Deprecated(forRemoval = true)
 @TestScreenInfo("Action Menu Test")
 public class TestActionMenuScreen extends ActionMenuScreen implements TestScreen {
     public TestActionMenuScreen() {

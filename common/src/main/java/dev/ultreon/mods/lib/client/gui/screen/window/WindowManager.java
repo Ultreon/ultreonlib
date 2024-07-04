@@ -12,6 +12,7 @@ import java.util.Optional;
 public final class WindowManager {
     public static WindowManager INSTANCE = new WindowManager();
     private final List<Window> windows = new ArrayList<>();
+    Window draggingWindow;
 
     private WindowManager() {
 
@@ -80,12 +81,10 @@ public final class WindowManager {
         List<Window> windows = new ArrayList<>(this.windows);
         gfx.pose().pushPose();
         {
-            gfx.pose().translate(0, 0, -200);
+            gfx.pose().translate(0, 0, 2000);
             for (int i = windows.size() - 1; i >= 0; i--) {
                 Window window = windows.get(i);
-                if (!window.isValid()) {
-                    this.windows.remove(window);
-                }
+                if (!window.isValid()) this.windows.remove(window);
 
                 if (window.isVisible() && window.isValid()) {
                     gfx.pose().pushPose();
@@ -99,23 +98,16 @@ public final class WindowManager {
 
     @Nullable
     public Window getDraggingWindow() {
-        List<Window> windows = new ArrayList<>(this.windows);
-        for (int i = windows.size() - 1; i >= 0; i--) {
-            Window window = windows.get(i);
-            if (!window.isValid()) {
-                this.windows.remove(window);
-            }
-
-            if (window.isDragging()) {
-                return window;
-            }
-        }
-        return null;
+        return this.draggingWindow;
     }
 
     public Optional<Window> getWindowAt(double mouseX, double mouseY) {
+        if (draggingWindow != null) {
+            return Optional.of(draggingWindow);
+        }
+
         for (Window window : windows) {
-            if (window.isVisible() && window.isValid() && window.isMouseOver(mouseX, mouseY)) {
+            if ((window.isVisible() && window.isValid() && (window.isMouseOver(mouseX, mouseY) || window.isOnTopOfTitle(mouseX, mouseY)))) {
                 return Optional.of(window);
             }
         }

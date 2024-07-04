@@ -19,6 +19,10 @@ configurations {
     compileClasspath.extendsFrom common
     runtimeClasspath.extendsFrom common
     developmentNeoForge.extendsFrom common
+
+    includeClasses {
+        canBeResolved true
+    }
 }
 
 repositories {
@@ -33,20 +37,7 @@ dependencies {
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionNeoForge")) { transitive = false }
 
-    include forgeRuntimeLibrary("dev.ultreon:ubo:${ultreon_data_version}", { exclude group: "com.google.code.gson"; exclude group: "com.google.guava" })
-
-    include forgeRuntimeLibrary("dev.ultreon.corelibs:collections-v0:$corelibs_version", { exclude group: "com.google.code.gson"; exclude group: "com.google.guava" })
-    include forgeRuntimeLibrary("dev.ultreon.corelibs:commons-v0:$corelibs_version", { exclude group: "com.google.code.gson"; exclude group: "com.google.guava" })
-    include forgeRuntimeLibrary("dev.ultreon.corelibs:crash-v0:$corelibs_version", { exclude group: "com.google.code.gson"; exclude group: "com.google.guava" })
-    include forgeRuntimeLibrary("dev.ultreon.corelibs:datetime-v0:$corelibs_version", { exclude group: "com.google.code.gson"; exclude group: "com.google.guava" })
-    include forgeRuntimeLibrary("dev.ultreon.corelibs:events-v1:$corelibs_version", { exclude group: "com.google.code.gson"; exclude group: "com.google.guava" })
-    include forgeRuntimeLibrary("dev.ultreon.corelibs:functions-v0:$corelibs_version", { exclude group: "com.google.code.gson"; exclude group: "com.google.guava" })
-    include forgeRuntimeLibrary("dev.ultreon.corelibs:registries-v0:$corelibs_version", { exclude group: "com.google.code.gson"; exclude group: "com.google.guava" })
-    include forgeRuntimeLibrary("dev.ultreon.corelibs:resources-v0:$corelibs_version", { exclude group: "com.google.code.gson"; exclude group: "com.google.guava" })
-    include forgeRuntimeLibrary("dev.ultreon.corelibs:text-v0:$corelibs_version", { exclude group: "com.google.code.gson"; exclude group: "com.google.guava" })
-    include forgeRuntimeLibrary("dev.ultreon.corelibs:translations-v0:$corelibs_version", { exclude group: "com.google.code.gson"; exclude group: "com.google.guava" })
-    include forgeRuntimeLibrary("dev.ultreon:json5-api:$json5_api_version", { exclude group: "com.google.code.gson"; exclude group: "com.google.guava" })
-
+    includeClasses forgeRuntimeLibrary("dev.ultreon:json5-api:$json5_api_version", { exclude group: "com.google.code.gson"; exclude group: "com.google.guava" })
 }
 
 processResources {
@@ -56,7 +47,7 @@ processResources {
     inputs.property "neoforgeVersion", neoforge_version
     inputs.property "minecraftVersion", architectury.minecraft
 
-    filesMatching("META-INF/mods.toml") {
+    filesMatching("META-INF/neoforge.mods.toml") {
         HashMap<String, ?> p = new HashMap<>()
         p.put("version", rootProject.version)
         p.put("description", getModDescription())
@@ -66,6 +57,8 @@ processResources {
         expand(p)
     }
 }
+
+classes.inputs.files configurations.includeClasses.collect { it.isFile() && (it.name.endsWith(".zip") || it.name.endsWith(".jar")) ? zipTree(it) : it }
 
 shadowJar {
     exclude "fabric.mod.json"

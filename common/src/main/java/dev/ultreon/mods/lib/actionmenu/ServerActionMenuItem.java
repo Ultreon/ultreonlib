@@ -5,6 +5,7 @@ import net.minecraft.server.level.ServerPlayer;
 
 import java.util.function.Supplier;
 
+@Deprecated(forRemoval = true)
 public class ServerActionMenuItem extends ActionMenuItem {
     private final int permissionLevel;
 

@@ -1,6 +1,6 @@
 package dev.ultreon.mods.lib.client.gui.widget;
 
-import dev.ultreon.libs.commons.v0.Color;
+import dev.ultreon.mods.lib.common.Color;
 import dev.ultreon.mods.lib.UltreonLib;
 import dev.ultreon.mods.lib.client.theme.GlobalTheme;
 import dev.ultreon.mods.lib.client.theme.Stylized;
@@ -57,7 +57,7 @@ public non-sealed class Button extends TexturedButton implements Stylized {
     @Override
     @Deprecated(forRemoval = true)
     protected final ResourceLocation getWidgetsTexture() {
-        return new ResourceLocation("");
+        return ResourceLocation.tryParse("");
     }
 
     @Override
@@ -98,7 +98,7 @@ public non-sealed class Button extends TexturedButton implements Stylized {
 
         Type(ResourceLocation spriteRes) {
             this.textColor = Color.white;
-            this.sprites = Theme.createButtonSprites(new ResourceLocation(spriteRes.getNamespace(), "widget/button/" + spriteRes.getPath()));
+            this.sprites = Theme.createButtonSprites(ResourceLocation.tryBuild(spriteRes.getNamespace(), "widget/button/" + spriteRes.getPath()));
             this.theme = () -> Theme.DARK;
         }
 

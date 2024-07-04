@@ -2,6 +2,7 @@ package dev.ultreon.mods.lib.actionmenu;
 
 import net.minecraft.network.chat.Component;
 
+@Deprecated(forRemoval = true)
 public interface IMenuHandler {
     Submenu getMenu();
 

@@ -1,5 +1,6 @@
 package dev.ultreon.mods.lib.actionmenu;
 
+@Deprecated(forRemoval = true)
 public abstract class Submenu extends ActionMenu {
     private final ActionMenuItem item;
 

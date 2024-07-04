@@ -1,12 +1,15 @@
 package dev.ultreon.mods.lib.loot;
 
+import dev.ultreon.mods.lib.UltreonLib;
 import dev.ultreon.mods.lib.util.UtilityClass;
 import dev.architectury.event.events.common.LootEvent;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.storage.loot.LootDataManager;
 import net.minecraft.world.level.storage.loot.LootPool;
+import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
-import net.minecraft.world.level.storage.loot.entries.LootTableReference;
+import net.minecraft.world.level.storage.loot.entries.NestedLootTable;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import org.jetbrains.annotations.ApiStatus;
 
@@ -33,7 +36,7 @@ public class LootTableInjection extends UtilityClass {
      * @return resource location object.
      */
     public static ResourceLocation mcId(String path) {
-        return new ResourceLocation(ResourceLocation.DEFAULT_NAMESPACE, path);
+        return ResourceLocation.tryBuild(ResourceLocation.DEFAULT_NAMESPACE, path);
     }
 
     /**
@@ -43,11 +46,51 @@ public class LootTableInjection extends UtilityClass {
      * @return resource location object.
      */
     public static ResourceLocation forgeId(String path) {
-        return new ResourceLocation("forge", path);
+        return ResourceLocation.tryBuild("forge", path);
     }
 
     /**
-     * Registers a loot table injection, this will load in {@linkplain #runModifications(LootDataManager, ResourceLocation, LootEvent.LootTableModificationContext, boolean)}
+     * Creates a resource location with forge's id.
+     *
+     * @param path resource path to the injection.
+     * @return resource location object.
+     */
+    public static ResourceLocation neoForgeId(String path) {
+        return ResourceLocation.tryBuild("neoforge", path);
+    }
+
+    /**
+     * Creates a resource location with fabric's id.
+     *
+     * @param path resource path to the injection.
+     * @return resource location object.
+     */
+    public static ResourceLocation fabricId(String path) {
+        return ResourceLocation.tryBuild("fabric", path);
+    }
+
+    /**
+     * Creates a resource location with fabric's "conventional tags" id.
+     *
+     * @param path resource path to the injection.
+     * @return resource location object.
+     */
+    public static ResourceLocation cId(String path) {
+        return ResourceLocation.tryBuild("c", path);
+    }
+
+    /**
+     * Creates a resource location with fabric's "conventional tags" id.
+     *
+     * @param path resource path to the injection.
+     * @return resource location object.
+     */
+    public static ResourceLocation ultreonLibId(String path) {
+        return ResourceLocation.tryBuild(UltreonLib.MOD_ID, path);
+    }
+
+    /**
+     * Registers a loot table injection, this will load in {@linkplain #runModifications(ResourceKey, LootEvent.LootTableModificationContext, boolean)}
      *
      * @param target    the loot table to inject.
      * @param injection the injection for the loot table.
@@ -57,19 +100,19 @@ public class LootTableInjection extends UtilityClass {
     }
 
     /**
-     * Registers a loot table injection, this will load in {@linkplain #runModifications(LootDataManager, ResourceLocation, LootEvent.LootTableModificationContext, boolean)}
+     * Registers a loot table injection, this will load in {@linkplain #runModifications(ResourceKey, LootEvent.LootTableModificationContext, boolean)}
      *
      * @param target the loot table to inject.
      * @param modId  the mod's id to get the injection from.
      */
     public static void registerInjection(ResourceLocation target, String modId) {
-        registerInjection(target, new ResourceLocation(modId, target.getPath()));
+        registerInjection(target, ResourceLocation.tryBuild(modId, target.getPath()));
     }
 
     @ApiStatus.Internal
-    public static void runModifications(LootDataManager manager, ResourceLocation id, LootEvent.LootTableModificationContext context, boolean builtin) {
+    public static void runModifications(ResourceKey<LootTable> key, LootEvent.LootTableModificationContext context, boolean builtin) {
         if (builtin) {
-            Injector injector = injections.get(id);
+            Injector injector = injections.get(key.location());
             if (injector != null) {
                 context.addPool(injector.createPool());
             }
@@ -78,11 +121,11 @@ public class LootTableInjection extends UtilityClass {
 
     private record Injector(ResourceLocation target, ResourceLocation injection) {
         private static LootPoolEntryContainer.Builder<?> createInjectionEntry(ResourceLocation name) {
-            return LootTableReference.lootTableReference(new ResourceLocation(name.getNamespace(), "inject/" + name.getPath())).setWeight(1);
+            return NestedLootTable.lootTableReference(ResourceKey.create(Registries.LOOT_TABLE, ResourceLocation.tryBuild(name.getNamespace(), "inject/" + name.getPath()))).setWeight(1);
         }
 
-        private LootPool createPool() {
-            return LootPool.lootPool().add(createInjectionEntry(injection)).setBonusRolls(UniformGenerator.between(0, 1)).build();
+        private LootPool.Builder createPool() {
+            return LootPool.lootPool().add(createInjectionEntry(injection)).setBonusRolls(UniformGenerator.between(0, 1));
         }
     }
 }

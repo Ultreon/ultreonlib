@@ -27,20 +27,20 @@ config = "ultreonlib-common.mixins.json"
 [[dependencies.ultreonlib]]
 modId = "neoforge"
 versionRange = "[${neoforgeVersion},)"
-type = "required"
+mandatory = true
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.ultreonlib]]
 modId = "minecraft"
-type = "required"
-versionRange = "1.20.4"
+mandatory = true
+versionRange = "1.21"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.ultreonlib]]
 modId = "architectury"
-type = "required"
-versionRange = "[11,12)"
+mandatory = true
+versionRange = "[13,14)"
 ordering = "BEFORE"
 side = "BOTH"

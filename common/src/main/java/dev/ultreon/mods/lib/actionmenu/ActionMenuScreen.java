@@ -1,6 +1,6 @@
 package dev.ultreon.mods.lib.actionmenu;
 
-import dev.ultreon.mods.lib.client.gui.screen.PanoramaScreen;
+import dev.ultreon.mods.lib.client.gui.screen.BaseScreen;
 import dev.ultreon.mods.lib.mixin.common.ScreenAccess;
 import dev.ultreon.mods.lib.network.UltreonLibNetwork;
 import dev.ultreon.mods.lib.network.api.Network;
@@ -22,7 +22,8 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ActionMenuScreen extends PanoramaScreen {
+@Deprecated(forRemoval = true)
+public class ActionMenuScreen extends BaseScreen {
     private final List<Screen> screens = new ArrayList<>();
     private final @Nullable Screen parent;
     private boolean initialized = false;

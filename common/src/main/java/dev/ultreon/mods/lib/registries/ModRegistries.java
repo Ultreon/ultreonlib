@@ -15,7 +15,7 @@ public class ModRegistries {
     @SuppressWarnings("unchecked")
     private static <T> ClientRegistry<T> create(String theme, T... typeGetter) {
         Class<T> clazz = (Class<T>) typeGetter.getClass().getComponentType();
-        return new ClientRegistry<T>(new ResourceLocation(UltreonLib.MOD_ID, theme), clazz);
+        return new ClientRegistry<T>(ResourceLocation.tryBuild(UltreonLib.MOD_ID, theme), clazz);
     }
 
     public static void init() {

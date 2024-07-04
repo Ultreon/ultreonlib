@@ -640,7 +640,7 @@ public abstract class CraftyConfig {
             ResourceLocation resourceLocation = ResourceLocation.tryParse(element.getAsString());
             if (resourceLocation == null) throw new IllegalArgumentException("Invalid resourceLocation: " + element.getAsString());
             return resourceLocation;
-        } else if (type == Enum.class && element instanceof Json5String) {
+        } else if (Enum.class.isAssignableFrom(type) && element instanceof Json5String) {
             return Enum.valueOf((Class<Enum>) type, element.getAsString());
         } else if (type == Json5Element.class) {
             return element;

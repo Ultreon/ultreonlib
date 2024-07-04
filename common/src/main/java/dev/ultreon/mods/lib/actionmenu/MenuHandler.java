@@ -4,6 +4,7 @@ import net.minecraft.network.chat.Component;
 
 import java.util.function.Supplier;
 
+@Deprecated(forRemoval = true)
 public class MenuHandler implements IMenuHandler {
     private final Component text;
     private final Submenu menu;

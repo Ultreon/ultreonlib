@@ -1,5 +1,6 @@
 package dev.ultreon.mods.lib.client.gui.widget;
 
+import dev.ultreon.mods.lib.client.gui.screen.window.WindowManager;
 import net.minecraft.client.gui.components.events.ContainerEventHandler;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
@@ -15,6 +16,7 @@ public abstract class BaseContainerWidget extends BaseWidget implements Containe
     protected final List<BaseWidget> children = new ArrayList<>();
     private GuiEventListener focused;
     private boolean isDragging;
+    private WindowManager wm = WindowManager.INSTANCE;
 
     public BaseContainerWidget(int p_93629_, int p_93630_, int p_93631_, int p_93632_, Component p_93633_) {
         super(p_93629_, p_93630_, p_93631_, p_93632_, p_93633_);
@@ -26,8 +28,8 @@ public abstract class BaseContainerWidget extends BaseWidget implements Containe
     }
 
     @Override
-    public final void setDragging(boolean p_94681_) {
-        this.isDragging = p_94681_;
+    public void setDragging(boolean dragging) {
+        this.isDragging = dragging;
     }
 
     @Override

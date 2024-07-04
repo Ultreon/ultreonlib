@@ -1,13 +1,15 @@
 package dev.ultreon.mods.lib.network.api;
 
 import com.mojang.logging.LogUtils;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import org.slf4j.Logger;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
-public class NetworkManager {
+public class NetworkSystem {
     private static final Logger LOGGER = LogUtils.getLogger();
     private static final Map<ResourceLocation, Network> NETWORKS = new HashMap<>();
 
@@ -22,5 +24,9 @@ public class NetworkManager {
 
     public static void init() {
         NETWORKS.values().forEach(Network::init);
+    }
+
+    public static CustomPacketPayload.Type<? extends CustomPacketPayload> locatePacket(Class<?> aClass) {
+        return NETWORKS.values().stream().map(network -> network.payloads.get(aClass)).filter(Objects::nonNull).findFirst().orElseThrow();
     }
 }
