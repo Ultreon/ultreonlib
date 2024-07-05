@@ -62,6 +62,7 @@ classes.inputs.files configurations.includeClasses.collect { it.isFile() && (it.
 
 shadowJar {
     exclude "fabric.mod.json"
+    exclude "architectury.common.json"
 
     configurations = [project.configurations.shadowCommon]
     archiveClassifier = "dev-shadow"
