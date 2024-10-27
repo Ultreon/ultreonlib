@@ -34,7 +34,7 @@ side = "BOTH"
 [[dependencies.ultreonlib]]
 modId = "minecraft"
 mandatory = true
-versionRange = "1.21"
+versionRange = "[1.21,1.21.1]"
 ordering = "NONE"
 side = "BOTH"
 

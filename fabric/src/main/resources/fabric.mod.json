@@ -43,7 +43,7 @@
   ],
   "depends": {
     "fabricloader": ">=0.15.0",
-    "minecraft": "1.21",
+    "minecraft": ["1.21", "1.21.1"],
     "fabric-api": "*",
     "architectury": "13.*",
     "forgeconfigapiport": "21.*"
