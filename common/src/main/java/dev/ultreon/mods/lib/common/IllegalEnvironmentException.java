@@ -2,7 +2,7 @@ package dev.ultreon.mods.lib.common;
 
 public class IllegalEnvironmentException extends RuntimeException {
     public IllegalEnvironmentException() {
-
+        super();
     }
 
     public IllegalEnvironmentException(String message) {

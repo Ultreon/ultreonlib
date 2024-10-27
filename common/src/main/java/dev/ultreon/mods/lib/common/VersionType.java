@@ -1,7 +1,7 @@
 package dev.ultreon.mods.lib.common;
 
 public enum VersionType {
-    ALPHA("alpha"), BETA("beta"), RELEASE("release"), CANDIDATE("rc");
+    ALPHA("alpha"), BETA("beta"), CANDIDATE("rc"), RELEASE("release");
 
     private final String name;
 

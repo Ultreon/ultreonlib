@@ -4,6 +4,11 @@ import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
 
+/**
+ * @deprecated Mods shouldn't download stuff unless explicitly needed.
+ * So it's marked as deprecated to make sure devs aren't randomly using this.
+ */
+@Deprecated
 public class Downloader implements IDownloader {
     private final URL url;
     private final OutputStream outputStream;

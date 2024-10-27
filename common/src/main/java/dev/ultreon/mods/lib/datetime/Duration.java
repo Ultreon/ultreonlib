@@ -8,7 +8,6 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Objects;
 
-@SuppressWarnings("unused")
 public class Duration implements Comparable<Duration>, Serializable, Cloneable {
     private final double duration;
 

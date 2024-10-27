@@ -13,7 +13,7 @@ import net.minecraft.client.gui.screens.TitleScreen;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class DevPreviewRegistry extends UtilityClass {
+public final class DevPreviewRegistry {
     private static final List<Mod> MODS = new ArrayList<>();
 
     /**

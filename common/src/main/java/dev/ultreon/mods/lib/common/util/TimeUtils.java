@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 
-public final class TimeUtils extends UtilityClass {
+public final class TimeUtils {
     /**
      * @param duration the desired duration to format.
      * @return the formatted duration.

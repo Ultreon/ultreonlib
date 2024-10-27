@@ -2,7 +2,7 @@ package dev.ultreon.mods.lib.common.util;
 
 import dev.ultreon.mods.lib.common.UtilityClass;
 
-public final class ClassUtils extends UtilityClass {
+public final class ClassUtils {
     public static String getCallerClassName() {
         StackTraceElement[] stElements = Thread.currentThread().getStackTrace();
         for (int i = 1; i < stElements.length; i++) {

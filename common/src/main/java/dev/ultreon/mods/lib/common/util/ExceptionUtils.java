@@ -5,7 +5,7 @@ import dev.ultreon.mods.lib.common.UtilityClass;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
-public class ExceptionUtils extends UtilityClass {
+public class ExceptionUtils {
     public static RuntimeException utilityClass() {
         return new UnsupportedOperationException("Can't instantiate utility class.");
     }

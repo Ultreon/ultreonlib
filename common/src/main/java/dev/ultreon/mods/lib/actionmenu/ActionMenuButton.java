@@ -10,7 +10,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 
-@SuppressWarnings("unused")
 @Deprecated(forRemoval = true)
 public class ActionMenuButton extends TransparentButton implements IActionMenuIndexable {
     @NotNull

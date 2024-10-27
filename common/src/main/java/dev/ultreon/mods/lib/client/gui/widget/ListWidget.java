@@ -124,9 +124,10 @@ public class ListWidget extends BaseWidget implements ContainerEventHandler, Sty
                 this.height = LIST_BORDER_WIDTH + ListWidget.this.height - LIST_BORDER_WIDTH * 2;
                 this.width = LIST_BORDER_WIDTH + ListWidget.this.width - LIST_BORDER_WIDTH * 2;
 
-                ScissorStack.pushScissor(getX(), getY(), width, height);
-                super.renderWidget(gfx, mouseX, mouseY, partialTicks);
-                ScissorStack.popScissor();
+                if (ScissorStack.pushScissor(getX(), getY(), width, height)) {
+                    super.renderWidget(gfx, mouseX, mouseY, partialTicks);
+                    ScissorStack.popScissor();
+                }
             }
         };
 

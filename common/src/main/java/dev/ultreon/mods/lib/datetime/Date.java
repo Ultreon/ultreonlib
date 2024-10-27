@@ -10,7 +10,6 @@ import java.util.Objects;
 
 import static dev.ultreon.mods.lib.datetime.MeteorologicalSeason.*;
 
-@SuppressWarnings("unused")
 public class Date implements Serializable, Comparable<Date>, Cloneable {
     private int day;
     private dev.ultreon.mods.lib.datetime.Month month;

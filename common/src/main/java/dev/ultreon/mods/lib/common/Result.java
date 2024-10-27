@@ -95,19 +95,9 @@ public class Result<T> {
         else if (this.failure != null) onFailure.accept(this.failure.throwable);
     }
 
-    private static class Value<L> {
-        private final L value;
-
-        public Value(L value) {
-            this.value = value;
-        }
+    private record Value<L>(L value) {
     }
 
-    private static class Failure {
-        private final Throwable throwable;
-
-        public Failure(Throwable throwable) {
-            this.throwable = throwable;
-        }
+    private record Failure(Throwable throwable) {
     }
 }

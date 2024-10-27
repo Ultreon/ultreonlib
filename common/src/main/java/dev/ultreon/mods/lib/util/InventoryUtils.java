@@ -5,8 +5,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
-@SuppressWarnings("unused")
-public final class InventoryUtils extends UtilityClass {
+public final class InventoryUtils {
     private InventoryUtils() {
 
     }

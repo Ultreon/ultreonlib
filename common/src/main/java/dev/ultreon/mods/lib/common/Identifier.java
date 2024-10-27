@@ -9,6 +9,7 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.regex.Pattern;
 
+@Deprecated(forRemoval = true)
 public final class Identifier {
     private final @NotNull String location;
     private final @NotNull String path;

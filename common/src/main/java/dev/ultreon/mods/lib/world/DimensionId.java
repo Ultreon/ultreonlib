@@ -20,7 +20,6 @@ import java.util.function.Supplier;
  * <p>
  * Edited by <a href="https://github.com/XyperCode">XyperCode</a> for use in modern versions.
  */
-@SuppressWarnings("unused")
 public class DimensionId {
     private final static Supplier<DimensionId> OVERWORLD = Suppliers.memoize(() -> new DimensionId(Level.OVERWORLD));
     private final static Supplier<DimensionId> NETHER = Suppliers.memoize(() -> new DimensionId(Level.NETHER));

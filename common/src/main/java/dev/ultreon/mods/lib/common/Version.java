@@ -1,44 +1,13 @@
 package dev.ultreon.mods.lib.common;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
-public final class Version implements Serializable {
-    private final int major;
-    private final int minor;
-    private final int build;
-    private final VersionType type;
-    private final int release;
-
+@Deprecated(forRemoval = true)
+public record Version(int major, int minor, int build, VersionType type, int release) implements Serializable {
+    @Serial
     private static final long serialVersionUID = 0L;
-
-     public Version(int major, int minor, int build, VersionType type, int release) {
-        this.major = major;
-        this.minor = minor;
-        this.build = build;
-        this.type = type;
-        this.release = release;
-    }
-
-    public int major() {
-        return this.major;
-    }
-
-    public int minor() {
-        return this.minor;
-    }
-
-    public int build() {
-        return this.build;
-    }
-
-    public VersionType type() {
-        return this.type;
-    }
-
-    public int release() {
-        return this.release;
-    }
 
     @Override
     public String toString() {
@@ -51,9 +20,9 @@ public final class Version implements Serializable {
         if (o == null || this.getClass() != o.getClass()) return false;
         Version version = (Version) o;
         return this.major == version.major &&
-                this.minor == version.minor &&
-                this.release == version.release &&
-                this.type == version.type;
+               this.minor == version.minor &&
+               this.release == version.release &&
+               this.type == version.type;
     }
 
     @Override

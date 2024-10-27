@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 /**
- * @author Qboi
+ * @author XyperCode
  */
 public class Progress implements Cloneable, Comparable<Progress>, Serializable {
     private int progress;

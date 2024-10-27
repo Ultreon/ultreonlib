@@ -13,8 +13,7 @@ import org.jetbrains.annotations.NotNull;
  *
  * @author XyperCode
  */
-@SuppressWarnings("unused")
-public final class ChatUtils extends UtilityClass {
+public final class ChatUtils {
     public static void broadcastMessage(@NotNull Level level, @NotNull String message) {
         broadcastMessage(level, Component.literal(message));
     }

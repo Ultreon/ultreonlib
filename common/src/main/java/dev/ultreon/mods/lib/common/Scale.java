@@ -82,4 +82,20 @@ public interface Scale {
      * @since 0.0.1.7
      */
     double getScale();
+
+    default double apply(double v) {
+        return v * getScale();
+    }
+
+    default double apply(float v) {
+        return (float) (v * getScale());
+    }
+
+    default long apply(int v) {
+        return (long) (v * getScale());
+    }
+
+    default long apply(long v) {
+        return (long) (v * getScale());
+    }
 }

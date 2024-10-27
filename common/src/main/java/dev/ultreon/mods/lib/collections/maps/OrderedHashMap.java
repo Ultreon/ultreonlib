@@ -2,13 +2,14 @@ package dev.ultreon.mods.lib.collections.maps;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.io.Externalizable;
-import java.io.IOException;
-import java.io.ObjectInput;
-import java.io.ObjectOutput;
+import java.io.*;
 import java.util.*;
 
+/**
+ * @deprecated use {@link LinkedHashMap} instead.
+ */
 @SuppressWarnings({"unused", "JavaDoc"})
+@Deprecated
 public class OrderedHashMap<K, V> implements Map<K, V>, Cloneable, Externalizable {
     private static final int KEY = 0;
 
@@ -18,6 +19,7 @@ public class OrderedHashMap<K, V> implements Map<K, V>, Cloneable, Externalizabl
 
     private static final int REMOVED_MASK = 0x80000000;
 
+    @Serial
     private static final long serialVersionUID = 964071416243835645L;
 
     private Entry<K, V> sentinel;

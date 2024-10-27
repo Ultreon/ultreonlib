@@ -11,9 +11,9 @@ import java.util.List;
 /**
  * Globally available utility classes, mostly for string manipulation.
  *
- * @author Jim Menard: <a href="mailto:jimm@io.com">jimm@io.com</a>, Qboi <a>no email</a>
+ * @author Jim Menard: <a href="mailto:jimm@io.com">jimm@io.com</a>, XyperCode <a>no email</a>
  */
-public final class StringUtils extends UtilityClass {
+public final class StringUtils {
     public static int count(String s, char c) {
         int count = 0;
 

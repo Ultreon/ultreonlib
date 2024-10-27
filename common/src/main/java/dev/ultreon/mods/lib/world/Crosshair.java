@@ -21,7 +21,6 @@ import org.jetbrains.annotations.Nullable;
  *
  * @author XyperCode
  */
-@SuppressWarnings("unused")
 @Beta
 public final class Crosshair {
     @NotNull

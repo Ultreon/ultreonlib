@@ -7,9 +7,11 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.toasts.SystemToast;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
+import org.jetbrains.annotations.ApiStatus;
 
 import java.util.UUID;
 
+@ApiStatus.Internal
 public class TestToClientPacket extends PacketToClient<TestToClientPacket> {
     private final UUID uuid;
 

@@ -1,5 +1,6 @@
 package dev.ultreon.mods.lib.advancements;
 
+import com.google.common.base.Preconditions;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.ultreon.mods.lib.UltreonLib;
@@ -15,7 +16,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Optional;
 
 public class UseItemTrigger extends SimpleCriterionTrigger<UseItemTrigger.Instance> {
-    public static final ResourceLocation ID = ResourceLocation.tryBuild(UltreonLib.MOD_ID, "use_item");
+    public static final ResourceLocation ID = Preconditions.checkNotNull(ResourceLocation.tryBuild(UltreonLib.MOD_ID, "use_item"), "Failed to create 'use_item' trigger ID");
 
     @NotNull
     public ResourceLocation getId() {

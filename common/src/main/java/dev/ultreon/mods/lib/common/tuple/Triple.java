@@ -7,7 +7,7 @@ import java.util.Objects;
  *
  * @param <T1> first object,
  * @param <T2> second object.
- * @author Qboi
+ * @author XyperCode
  */
 public class Triple<T1, T2, T3> implements Cloneable {
     private T1 first;

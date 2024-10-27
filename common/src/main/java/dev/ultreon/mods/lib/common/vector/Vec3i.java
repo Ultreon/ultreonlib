@@ -6,7 +6,6 @@ import java.io.ObjectInput;
 import java.io.ObjectOutput;
 import java.util.Objects;
 
-@SuppressWarnings("unused")
 public class Vec3i implements Externalizable, Cloneable {
     public int x, y, z;
 

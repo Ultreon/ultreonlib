@@ -260,9 +260,10 @@ public class ListScreen extends BaseScreen {
         public void renderWidget(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
             double scaleFactor = this.mc.getWindow().getGuiScale();
             this.height = this.screen.listHeight() - 16;
-            ScissorStack.pushScissor((int) ((double) this.getRowLeft() * scaleFactor), (int) ((double) (this.getY()) * scaleFactor), (int) ((double) (this.getScrollbarPosition() + 6 - getX()) * scaleFactor), (int) ((double) (this.height) * scaleFactor));
-            super.renderWidget(gfx, mouseX, mouseY, partialTicks);
-            ScissorStack.popScissor();
+            if (ScissorStack.pushScissor((int) ((double) this.getRowLeft() * scaleFactor), (int) ((double) (this.getY()) * scaleFactor), (int) ((double) (this.getScrollbarPosition() + 6 - getX()) * scaleFactor), (int) ((double) (this.height) * scaleFactor))) {
+                super.renderWidget(gfx, mouseX, mouseY, partialTicks);
+                ScissorStack.popScissor();
+            }
         }
 
         public void search(String text) {

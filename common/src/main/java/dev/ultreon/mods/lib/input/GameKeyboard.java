@@ -4,6 +4,8 @@ import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.Minecraft;
 
 public class GameKeyboard {
+    private static long window = -1L;
+
     public static boolean isShiftDown() {
         return isKeyDown(InputConstants.KEY_LSHIFT) || isKeyDown(InputConstants.KEY_RSHIFT);
     }
@@ -21,11 +23,16 @@ public class GameKeyboard {
     }
 
     public static boolean isKeyDown(int keyCode) {
-        return InputConstants.isKeyDown(Minecraft.getInstance().getWindow().getWindow(), keyCode);
+        return InputConstants.isKeyDown(getWindow(), keyCode);
+    }
+
+    private static long getWindow() {
+        if (window == -1) window = Minecraft.getInstance().getWindow().getWindow();
+        return window;
     }
 
     public static boolean isKeyDown(Modifier modifier) {
-        return isKeyDown(modifier.left) || isKeyDown(modifier.right);
+        return modifier.isEitherDown();
     }
 
     public enum Modifier {
@@ -38,9 +45,24 @@ public class GameKeyboard {
         public final int right;
 
         Modifier(int left, int right) {
-
             this.left = left;
             this.right = right;
+        }
+
+        public boolean isLeftDown() {
+            return isKeyDown(left);
+        }
+
+        public boolean isEitherDown() {
+            return isLeftDown() || isRightDown();
+        }
+
+        public boolean isBothDown() {
+            return isLeftDown() && isRightDown();
+        }
+
+        public boolean isRightDown() {
+            return isKeyDown(right);
         }
     }
 }

@@ -5,7 +5,7 @@ import dev.ultreon.mods.lib.common.UtilityClass;
 import java.io.File;
 import java.io.PrintWriter;
 
-public final class FileUtils extends UtilityClass {
+public final class FileUtils {
     public static boolean setCwd(File dir) {
         boolean result = false; // Boolean indicating whether directory was set  
 

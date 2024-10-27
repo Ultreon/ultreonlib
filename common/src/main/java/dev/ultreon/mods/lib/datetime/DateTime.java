@@ -6,7 +6,6 @@ import dev.ultreon.mods.lib.datetime.exceptions.DateTimeException;
 import java.io.Serializable;
 import java.time.*;
 
-@SuppressWarnings("unused")
 public class DateTime implements Comparable<DateTime>, Serializable, Cloneable {
     private static final Duration DURATION = new Duration(0.0d);
     private int hour;

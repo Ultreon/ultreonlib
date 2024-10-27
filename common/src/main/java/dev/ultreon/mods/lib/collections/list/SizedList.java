@@ -16,7 +16,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
  *
  * @param <T> the type to use for the partition value.
  */
-@SuppressWarnings("unused")
 public class SizedList<T> {
     List<Double> sizes = new CopyOnWriteArrayList<>();
     final List<T> values = new CopyOnWriteArrayList<>();

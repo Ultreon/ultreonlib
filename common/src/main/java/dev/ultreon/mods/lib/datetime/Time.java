@@ -5,7 +5,6 @@ import dev.ultreon.mods.lib.datetime.exceptions.DateTimeError;
 import java.io.Serializable;
 import java.time.*;
 
-@SuppressWarnings("unused")
 public class Time implements Comparable<Time>, Serializable, Cloneable {
     private int hour;
     private int minute;

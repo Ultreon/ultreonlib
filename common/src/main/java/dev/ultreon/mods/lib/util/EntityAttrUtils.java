@@ -9,7 +9,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 
 import java.util.UUID;
 
-public class EntityAttrUtils extends UtilityClass {
+public class EntityAttrUtils {
     public static void apply(LivingEntity entity, Holder<Attribute> attribute, AttributeModifier modifier) {
         AttributeInstance instance = entity.getAttribute(attribute);
         apply(instance, modifier);

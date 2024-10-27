@@ -6,7 +6,6 @@ import java.io.ObjectInput;
 import java.io.ObjectOutput;
 import java.util.Objects;
 
-@SuppressWarnings("unused")
 public class Vec2f implements Externalizable, Cloneable {
     public float x, y;
 

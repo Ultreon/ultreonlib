@@ -4,9 +4,11 @@ import dev.ultreon.mods.lib.network.api.packet.BiDirectionalPacket;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
+import org.jetbrains.annotations.ApiStatus;
 
 import java.util.UUID;
 
+@ApiStatus.Internal
 public class TestBiDirectionalPacket extends BiDirectionalPacket<TestBiDirectionalPacket> {
     private final UUID uuid;
 

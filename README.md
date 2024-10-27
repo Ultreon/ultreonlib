@@ -7,7 +7,3 @@ From [CurseForge](https://curseforge.com/minecraft/mc-mods/ultreonlib) or [Modri
 ## Mods that uses this library:
  * ~~Random Thingz: [CurseForge](https://curseforge.com/minecraft/mc-mods/random-thingz)~~ `Abandoned`
  * Advanced Debug: [CurseForge](https://curseforge.com/minecraft/mc-mods/advanced-debug), [Modrinth](https://modrinth.com/mod/advanced-debug)
-
-## License Notes
-* The package `io.github.xypercode.craftyconfig` and all it's subpackages are licensed under AGPL v3.
-  Originates from [Quantum Voxel](https://github.com/Ultreon/quantum-voxel).

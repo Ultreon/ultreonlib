@@ -3,7 +3,7 @@ package dev.ultreon.mods.lib.common.util;
 import dev.ultreon.mods.lib.common.Color;
 import dev.ultreon.mods.lib.common.UtilityClass;
 
-public final class ColorUtils extends UtilityClass {
+public final class ColorUtils {
     public static Color[] extractMultiHex(String... hexes) {
         Color[] colors = new Color[hexes.length];
 

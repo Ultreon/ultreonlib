@@ -84,9 +84,10 @@ public abstract class BaseWidget extends AbstractWidget implements Clickable, St
             double delta = Math.sin(1.5707963267948966 * Math.cos(6.283185307179586 * seconds / easing)) / 2.0 + 0.5;
             double finalX = Mth.lerp(delta, 0.0, textX);
 
-            ScissorStack.pushScissorTranslated(gfx, x1, y1, maxWidth, y2 - y1);
-            gfx.drawString(font, component, x1 - (int)finalX, textY, color);
-            ScissorStack.popScissor();
+            if (ScissorStack.pushScissorTranslated(gfx, x1, y1, maxWidth, y2 - y1)) {
+                gfx.drawString(font, component, x1 - (int) finalX, textY, color);
+                ScissorStack.popScissor();
+            }
         } else {
             textX = Mth.clamp(i, x1 + textWidth / 2, x2 - textWidth / 2);
             gfx.drawCenteredString(font, component, textX, textY, color);

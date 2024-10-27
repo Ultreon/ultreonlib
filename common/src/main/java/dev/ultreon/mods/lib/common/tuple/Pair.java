@@ -7,7 +7,7 @@ import java.util.Objects;
  *
  * @param <T1> first object,
  * @param <T2> second object.
- * @author Qboi
+ * @author XyperCode
  */
 public class Pair<T1, T2> implements Cloneable {
     private T1 first;

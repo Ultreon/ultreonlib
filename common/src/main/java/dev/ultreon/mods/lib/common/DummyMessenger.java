@@ -1,7 +1,7 @@
 package dev.ultreon.mods.lib.common;
 
 /**
- * @author Qboi
+ * @author XyperCode
  * @see MessengerImpl
  */
 public class DummyMessenger extends MessengerImpl {

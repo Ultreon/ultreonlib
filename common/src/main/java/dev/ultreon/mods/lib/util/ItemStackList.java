@@ -63,4 +63,13 @@ public class ItemStackList extends ArrayList<ItemStack> {
             itemStacks.add(registryObject.orElse(Items.AIR).getDefaultInstance());
         return itemStacks;
     }
+
+    public Item getItem(int index) {
+        return get(index).getItem();
+    }
+
+    public void setItem(int index, Item item) {
+        ItemStack itemStack = get(index);
+        set(index, new ItemStack(item.arch$holder(), itemStack.getCount(), itemStack.getComponentsPatch()));
+    }
 }

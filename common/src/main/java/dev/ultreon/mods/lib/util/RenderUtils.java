@@ -11,6 +11,10 @@ import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
+import org.lwjgl.BufferUtils;
+import org.lwjgl.opengl.GL11;
+
+import java.awt.*;
 
 public class RenderUtils {
     /**
@@ -59,9 +63,10 @@ public class RenderUtils {
      * @param entity the entity to render.
      */
     public static void renderEntityInGui(GuiGraphics gfx, int posX, int posY, float xRot, float yRot, float scale, int cutX, int cutY, int cutWidth, int cutHeight, Entity entity) {
-        ScissorStack.pushScissorTranslated(gfx, cutX, cutY, cutWidth, cutHeight);
-        renderEntityInGui(gfx, posX, posY, xRot, yRot, scale, entity);
-        ScissorStack.popScissor();
+        if (ScissorStack.pushScissorTranslated(gfx, cutX, cutY, cutWidth, cutHeight)) {
+            renderEntityInGui(gfx, posX, posY, xRot, yRot, scale, entity);
+            ScissorStack.popScissor();
+        }
     }
 
     /**
@@ -162,5 +167,14 @@ public class RenderUtils {
         dispatcher.setRenderShadow(true);
         gfx.pose().popPose();
         Lighting.setupFor3DItems();
+    }
+
+    public static Color getPixel(int x, int y) {
+        var mc = Minecraft.getInstance();
+        var resolution = new ScaledResolution(mc);
+        var scale = resolution.getScaleFactor();
+        var buffer = BufferUtils.createByteBuffer(3);
+        RenderSystem.readPixels((int) (x * scale), (int) (mc.getWindow().getHeight() - y * scale - scale), 1, 1, GL11.GL_RGB, GL11.GL_BYTE, buffer);
+        return new Color(Math.min(255, buffer.get(0) % 256*2), Math.min(255, buffer.get(1) % 256*2), Math.min(255, buffer.get(2) % 256*2));
     }
 }

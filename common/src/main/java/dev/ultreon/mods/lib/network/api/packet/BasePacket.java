@@ -8,7 +8,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Supplier;
 
-@SuppressWarnings("unused")
 public abstract sealed class BasePacket<T extends BasePacket<T>> implements CustomPacketPayload permits BiDirectionalPacket, PacketToClient, PacketToServer {
     protected abstract boolean handle(Supplier<NetworkManager.PacketContext> context);
 

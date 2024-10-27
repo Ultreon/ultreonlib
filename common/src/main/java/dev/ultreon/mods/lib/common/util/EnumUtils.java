@@ -5,10 +5,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.function.Function;
 
 public final class EnumUtils {
-    private EnumUtils() {
-        throw new IllegalAccessError("Utility class");
-    }
-
     public static <E extends Enum<E>> E byIndex(int value, E defaultValue, Function<E, Integer> getter) {
         for (E e : defaultValue.getDeclaringClass().getEnumConstants()) {
             if (getter.apply(e) == value) {

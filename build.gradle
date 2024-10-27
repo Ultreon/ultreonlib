@@ -81,18 +81,12 @@ subprojects {
         }
 
         maven {
-            name "UBO Maven"
-            url "https://github.com/Ultreon/ultreon-data/raw/main/.mvnrepo/"
-        }
-
-        maven {
-            name "CoreLibs Maven"
-            url "https://github.com/Ultreon/corelibs/raw/main/.mvnrepo/"
-        }
-
-        maven {
             name 'Jitpack'
             url 'https://jitpack.io/'
+            content {
+                includeGroup "dev.ultreon"
+                includeGroup "com.github.Ultreon"
+            }
         }
 
         maven {

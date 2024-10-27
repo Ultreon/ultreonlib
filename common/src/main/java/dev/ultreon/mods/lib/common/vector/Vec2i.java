@@ -1,13 +1,11 @@
 package dev.ultreon.mods.lib.common.vector;
 
-import java.awt.*;
 import java.io.Externalizable;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
 import java.util.Objects;
 
-@SuppressWarnings("unused")
 public class Vec2i implements Externalizable, Cloneable {
     public int x, y;
 
@@ -18,10 +16,6 @@ public class Vec2i implements Externalizable, Cloneable {
 
     public Vec2i() {
 
-    }
-
-    public Vec2i(Point point) {
-        this(point.x, point.y);
     }
 
     public int getX() {
@@ -295,13 +289,5 @@ public class Vec2i implements Externalizable, Cloneable {
     public void readExternal(ObjectInput in) throws IOException {
         this.x = in.readInt();
         this.y = in.readInt();
-    }
-
-    public Dimension toAwtDimension() {
-        return new Dimension(this.x, this.y);
-    }
-
-    public Point toAwtPoint() {
-        return new Point(this.x, this.y);
     }
 }

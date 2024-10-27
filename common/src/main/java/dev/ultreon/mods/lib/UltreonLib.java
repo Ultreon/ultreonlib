@@ -36,7 +36,6 @@ import java.util.concurrent.Executors;
  *
  * @author <a href="https://github.com/XyperCode">XyperCode</a>"
  */
-@SuppressWarnings("unused")
 public class UltreonLib {
     public static final String MOD_ID = "ultreonlib";
 
@@ -74,8 +73,6 @@ public class UltreonLib {
 
         LootEvent.MODIFY_LOOT_TABLE.register(LootTableInjection::runModifications);
         ModMessages.init();
-
-        Identifier.setDefaultNamespace("minecraft");
 
         ModTriggerTypes.init();
 

@@ -2,25 +2,17 @@ package dev.ultreon.mods.lib.common;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
  * Percentage utility object.
  *
- * @author Qboi
+ * @author XyperCode
  */
-public class Percentage implements Serializable, Comparable<Percentage> {
-    private final double percentage;
-
-    public double percentage() {
-        return this.percentage;
-    }
-
+public record Percentage(double percentage) implements Serializable, Comparable<Percentage> {
+    @Serial
     private static final long serialVersionUID = 0L;
-
-    public Percentage(double percentage) {
-        this.percentage = percentage;
-    }
 
     public static Percentage toPercentage(double value) {
         return new Percentage(value * 100);
@@ -46,7 +38,7 @@ public class Percentage implements Serializable, Comparable<Percentage> {
     @Override
     public String toString() {
         return "Percentage[" +
-                "percentage=" + this.percentage + ']';
+               "percentage=" + this.percentage + ']';
     }
 
 }

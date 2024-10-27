@@ -3,7 +3,9 @@ package dev.ultreon.mods.lib.dev.network;
 import dev.ultreon.mods.lib.UltreonLib;
 import dev.ultreon.mods.lib.network.api.Network;
 import dev.ultreon.mods.lib.network.api.PacketRegisterContext;
+import org.jetbrains.annotations.ApiStatus;
 
+@ApiStatus.Internal
 public class DevNetwork extends Network {
     private static Network instance;
 

@@ -22,7 +22,7 @@ import java.util.Map;
  *
  * @author XyperCode
  */
-public class LootTableInjection extends UtilityClass {
+public class LootTableInjection {
     private static final Map<ResourceLocation, Injector> injections = new HashMap<>();
 
     private LootTableInjection() {

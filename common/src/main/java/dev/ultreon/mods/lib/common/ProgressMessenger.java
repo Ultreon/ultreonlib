@@ -1,7 +1,7 @@
 package dev.ultreon.mods.lib.common;
 
 /**
- * @author Qboi
+ * @author XyperCode
  */
 public class ProgressMessenger extends Progress {
     private final Messenger messenger;

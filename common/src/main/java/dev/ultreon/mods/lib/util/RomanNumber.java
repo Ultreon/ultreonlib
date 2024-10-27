@@ -5,7 +5,6 @@ import net.minecraft.MethodsReturnNonnullByDefault;
 
 import java.util.TreeMap;
 
-@SuppressWarnings("unused")
 @FieldsAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 public class RomanNumber {

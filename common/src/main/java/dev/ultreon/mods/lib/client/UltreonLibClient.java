@@ -98,7 +98,7 @@ public class UltreonLibClient {
     }
 
     /**
-     * Sets up the {@link GLFW#glfwSetWindowCloseCallback(long, GLFWWindowCloseCallbackI)}  window close callback using GLFW}.
+     * Sets up the {@link GLFW#glfwSetWindowCloseCallback(long, GLFWWindowCloseCallbackI)}  window close callback using GLFW.
      * @param client the minecraft client.
      * @see GLFW#glfwSetWindowCloseCallback(long, GLFWWindowCloseCallbackI)
      */
