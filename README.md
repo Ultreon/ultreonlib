@@ -1,5 +1,5 @@
 # Ultreon Mod Library [![CircleCI](https://dl.circleci.com/status-badge/img/gh/Ultreon/ultreonlib/tree/1.20.4.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/Ultreon/ultreonlib/tree/dev/1.20.4)
-MC Modding Library for mod(s) made by Ultreon Team and XyperCode.
+MC Modding Library for mod(s) made by Ultreon Studios and XyperCode.
    
 ## Download
 From [CurseForge](https://curseforge.com/minecraft/mc-mods/ultreonlib) or [Modrinth](https://modrinth.com/mod/ultreonlib)
