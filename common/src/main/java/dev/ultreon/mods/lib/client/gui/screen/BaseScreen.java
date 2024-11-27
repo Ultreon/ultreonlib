@@ -128,12 +128,10 @@ public abstract class BaseScreen extends Screen implements Stylized {
                 mouseY >= contextMenu.getY() && mouseY <= contextMenu.getY() + contextMenu.getHeight();
     }
 
-    /**
-     * Event handler for mouse motion.
-     * 
-     * @param mouseX the X-position of the mouse it moved to.
-     * @param mouseY the Y-position of the mouse it moved to.
-     */
+    /// Event handler for mouse motion.
+    ///
+    /// @param mouseX the X-position of the mouse it moved to.
+    /// @param mouseY the Y-position of the mouse it moved to.
     @Override
     public void mouseMoved(double mouseX, double mouseY) {
         if (isHoveringContextMenu((int) mouseX, (int) mouseY)) {
@@ -144,14 +142,12 @@ public abstract class BaseScreen extends Screen implements Stylized {
         super.mouseMoved(mouseX, mouseY);
     }
 
-    /**
-     * Event handler for mouse scrolling.
-     *
-     * @param mouseX the X-position of the mouse it scrolled at.
-     * @param mouseY the Y-position of the mouse it scrolled at.
-     * @param amountX the amount of partial clicks it scrolled in the X-axis.
-     * @param amountY the amount of partial clicks it scrolled in the Y-axis.
-     */
+    /// Event handler for mouse scrolling.
+    ///
+    /// @param mouseX the X-position of the mouse it scrolled at.
+    /// @param mouseY the Y-position of the mouse it scrolled at.
+    /// @param amountX the amount of partial clicks it scrolled in the X-axis.
+    /// @param amountY the amount of partial clicks it scrolled in the Y-axis.
     @Override
     public boolean mouseScrolled(double mouseX, double mouseY, double amountX, double amountY) {
         return super.mouseScrolled(mouseX, mouseY, amountX, amountY);
@@ -162,13 +158,11 @@ public abstract class BaseScreen extends Screen implements Stylized {
         return super.mouseDragged(mouseX, mouseY, button, dragX, dragY);
     }
 
-    /**
-     * Event handler for mouse releasing.
-     *
-     * @param mouseX the X-position of the mouse it released the {@code button} at.
-     * @param mouseY the Y-position of the mouse it released the {@code button} at.
-     * @param button the mouse button the mouse released.
-     */
+    /// Event handler for mouse releasing.
+    ///
+    /// @param mouseX the X-position of the mouse it released the `button` at.
+    /// @param mouseY the Y-position of the mouse it released the `button` at.
+    /// @param button the mouse button the mouse released.
     @Override
     public boolean mouseReleased(double mouseX, double mouseY, int button) {
         if (isHoveringContextMenu((int) mouseX, (int) mouseY) && contextMenu.mouseReleased(mouseX, mouseY, button)) {
@@ -178,12 +172,10 @@ public abstract class BaseScreen extends Screen implements Stylized {
         return super.mouseReleased(mouseX, mouseY, button);
     }
 
-    /**
-     * Event handler for mouse clicking.
-     *
-     * @param mouseX the X-position of the mouse it clicked at.
-     * @param mouseY the Y-position of the mouse it clicked at.
-     */
+    /// Event handler for mouse clicking.
+    ///
+    /// @param mouseX the X-position of the mouse it clicked at.
+    /// @param mouseY the Y-position of the mouse it clicked at.
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
         if (isAtCloseButton(mouseX, mouseY)) {
@@ -222,19 +214,15 @@ public abstract class BaseScreen extends Screen implements Stylized {
         return super.mouseClicked(mouseX, mouseY, button);
     }
 
-    /**
-     * Closes the screen.
-     */
+    /// Closes the screen.
     public final void closeScreen() {
         this.onClose();
     }
 
-    /**
-     * Event handler for mouse clicking.
-     *
-     * @param x the start X-position of the context menu.
-     * @param y the start Y-position of the context menu.
-     */
+    /// Event handler for mouse clicking.
+    ///
+    /// @param x the start X-position of the context menu.
+    /// @param y the start Y-position of the context menu.
     protected ContextMenu createContextMenu(int x, int y) {
         return null;
     }

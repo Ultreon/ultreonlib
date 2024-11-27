@@ -97,9 +97,7 @@ public class ScissorStack {
         return true;
     }
 
-    /**
-     * @deprecated use {@link RenderUtils#getPixel(int, int)} instead.
-     */
+    /// @deprecated use [#getPixel(int,int)] instead.
     @Deprecated(forRemoval = true)
     public static Color getPixel(int x, int y) {
         var mc = Minecraft.getInstance();

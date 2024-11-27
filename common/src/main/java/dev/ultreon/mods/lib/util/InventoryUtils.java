@@ -22,9 +22,7 @@ public final class InventoryUtils {
         return count;
     }
 
-    /**
-     * @return remainder count.
-     */
+    /// @return remainder count.
     public static int remove(Player player, Item item, int count) {
         final ItemStack stackItem = new ItemStack(item);
 
@@ -48,9 +46,7 @@ public final class InventoryUtils {
         return count;
     }
 
-    /**
-     * @return true if 1 or more items are removed.
-     */
+    /// @return true if 1 or more items are removed.
     public static boolean removeAll(Player player, Item item) {
         final ItemStack stackItem = new ItemStack(item);
         boolean flag = false;
@@ -67,9 +63,7 @@ public final class InventoryUtils {
         return flag;
     }
 
-    /**
-     * @return true if 1 or more items are removed.
-     */
+    /// @return true if 1 or more items are removed.
     public static boolean clear(Player player) {
         boolean flag = false;
 

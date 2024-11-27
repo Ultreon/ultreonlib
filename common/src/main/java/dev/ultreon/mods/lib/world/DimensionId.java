@@ -13,13 +13,11 @@ import net.minecraft.world.level.Level;
 import java.util.Objects;
 import java.util.function.Supplier;
 
-/**
- * Copied from McJtyLib on 2022-09-28. It's pretty useful.
- * <p>
- * <a href="https://github.com/McJtyMods/McJtyLib/blob/1.16/src/main/java/mcjty/lib/varia/DimensionId.java">Link to original source code</a>
- * <p>
- * Edited by <a href="https://github.com/XyperCode">XyperCode</a> for use in modern versions.
- */
+/// Copied from McJtyLib on 2022-09-28. It's pretty useful.
+///
+/// <a href="https://github.com/McJtyMods/McJtyLib/blob/1.16/src/main/java/mcjty/lib/varia/DimensionId.java">Link to original source code</a>
+///
+/// Edited by <a href="https://github.com/XyperCode">XyperCode</a> for use in modern versions.
 public class DimensionId {
     private final static Supplier<DimensionId> OVERWORLD = Suppliers.memoize(() -> new DimensionId(Level.OVERWORLD));
     private final static Supplier<DimensionId> NETHER = Suppliers.memoize(() -> new DimensionId(Level.NETHER));

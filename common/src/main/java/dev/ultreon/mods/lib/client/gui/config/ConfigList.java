@@ -17,9 +17,7 @@ public class ConfigList extends ContainerObjectSelectionList<ConfigList.ListEntr
     private final List<ListEntry> entries = new ArrayList<>();
     private final CraftyConfig config;
 
-    /**
-     * @deprecated use {@link ConfigList#ConfigList(Minecraft, int, int, int, CraftyConfig)} instead
-     */
+    /// @deprecated use [#ConfigList(Minecraft,int,int,int,CraftyConfig)] instead
     @Deprecated
     public ConfigList(Minecraft minecraft, int width, int height, int i, int i1, CraftyConfig config) {
         this(minecraft, width, height, i, config);

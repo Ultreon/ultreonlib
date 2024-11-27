@@ -5,15 +5,13 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
-/**
- * Hash table implementation of {@link Table}.
- *
- * @param <R>
- * @param <C>
- * @param <V>
- * @since 0.2.0
- * @author <a href="https://github.com/XyperCodee">XyperCode</a>
- */
+/// Hash table implementation of [Table].
+///
+/// @param <R>
+/// @param <C>
+/// @param <V>
+/// @since 0.2.0
+/// @author <a href="https://github.com/XyperCodee">XyperCode</a>
 public class HashTable<R, C, V> extends AbstractTable<R, C, V> {
     private final Map<R, Map<C, V>> rowMap = new HashMap<>();
     private final Map<C, Map<R, V>> columnMap = new HashMap<>();

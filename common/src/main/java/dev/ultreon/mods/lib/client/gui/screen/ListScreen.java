@@ -20,9 +20,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
-/**
- * List screen. A screen that's made for only a list with entries.
- */
+/// List screen. A screen that's made for only a list with entries.
 public class ListScreen extends BaseScreen {
     private IListFilter listFilter = (query, id, title, description) -> {
         var found = true;
@@ -49,11 +47,9 @@ public class ListScreen extends BaseScreen {
 
     final List<ListWidget.Entry> cachedEntries = new ArrayList<>();
 
-    /**
-     * List screen constructor.
-     *
-     * @param title screen title.
-     */
+    /// List screen constructor.
+    ///
+    /// @param title screen title.
     public ListScreen(Component title) {
         super(title);
     }
@@ -213,9 +209,7 @@ public class ListScreen extends BaseScreen {
         private final List<Entry> defaultEntries = new ArrayList<>();
         private String search;
 
-        /**
-         * @deprecated use {@link #ListWidget(ListScreen, Minecraft, int, int, int, int)} instead
-         */
+        /// @deprecated use [#ListWidget(ListScreen,Minecraft,int,int,int,int)] instead
         @Deprecated
         public ListWidget(ListScreen screen, Minecraft minecraft, int width, int height, int top, int bottom, int itemHeight) {
             this(screen, minecraft, width, height, top, itemHeight);

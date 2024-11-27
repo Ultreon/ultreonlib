@@ -13,10 +13,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.Supplier;
 
-/**
- * The theme enum class.
- * For Vanilla theme use {@link #VANILLA}.
- */
+/// The theme enum class.
+/// For Vanilla theme use [#VANILLA].
 public class GlobalTheme {
     private static final List<GlobalTheme> THEMES = new ArrayList<>();
     private static int total = 0;
@@ -32,10 +30,7 @@ public class GlobalTheme {
     private final Supplier<Theme> contentTheme;
     private final int ordinal;
 
-    /**
-     * Vanilla theme.
-     *
-     */
+    /// Vanilla theme.
     private GlobalTheme() {
         this.windowTheme = () -> Theme.VANILLA;
         this.menuTheme = () -> Theme.VANILLA;
@@ -86,46 +81,38 @@ public class GlobalTheme {
         return ModRegistries.GLOBAL_THEME.register(UltreonLib.res(name), supplier.get());
     }
 
-    /**
-     * Gets the theme from the id.
-     *
-     * @param id the id of the theme.
-     * @return the theme or null if not found.
-     */
+    /// Gets the theme from the id.
+    ///
+    /// @param id the id of the theme.
+    /// @return the theme or null if not found.
     @Deprecated
     public static GlobalTheme fromId(String id) {
         return ModRegistries.GLOBAL_THEME.get(ResourceLocation.tryParse(id));
     }
 
-    /**
-     * Gets the theme from a resource location.
-     *
-     * @param location the resource location of the theme.
-     * @return the theme or null if not found.
-     */
+    /// Gets the theme from a resource location.
+    ///
+    /// @param location the resource location of the theme.
+    /// @return the theme or null if not found.
     public static GlobalTheme fromLocation(ResourceLocation location) {
         return ModRegistries.GLOBAL_THEME.get(location);
     }
 
-    /**
-     * Gets the theme from the id.
-     *
-     * @param id           the id of the theme.
-     * @param defaultGlobalTheme the default theme to return if not found.
-     * @return the theme or defaultTheme if not found.
-     */
+    /// Gets the theme from the id.
+    ///
+    /// @param id           the id of the theme.
+    /// @param defaultGlobalTheme the default theme to return if not found.
+    /// @return the theme or defaultTheme if not found.
     @Deprecated(forRemoval = true)
     public static GlobalTheme fromIdOr(String id, GlobalTheme defaultGlobalTheme) {
         return defaultGlobalTheme;
     }
 
-    /**
-     * Gets the theme from the location.
-     *
-     * @param location the location of the theme.
-     * @param defaultTheme the default theme to return if not found.
-     * @return the theme or defaultTheme if not found.
-     */
+    /// Gets the theme from the location.
+    ///
+    /// @param location the location of the theme.
+    /// @param defaultTheme the default theme to return if not found.
+    /// @return the theme or defaultTheme if not found.
     public static GlobalTheme fromLocationOr(ResourceLocation location, GlobalTheme defaultTheme) {
         if (location != null) {
             GlobalTheme globalTheme = ModRegistries.GLOBAL_THEME.get(location);
@@ -135,43 +122,35 @@ public class GlobalTheme {
         else return null;
     }
 
-    /**
-     * Gets the theme from the id.
-     *
-     * @param id the id of the theme.
-     * @return the theme or the default theme if not found.
-     */
+    /// Gets the theme from the id.
+    ///
+    /// @param id the id of the theme.
+    /// @return the theme or the default theme if not found.
     @Deprecated(forRemoval = true)
     public static @NotNull GlobalTheme fromIdOrDefault(String id) {
         return fromIdOr(id, VANILLA);
     }
 
-    /**
-     * Gets the theme from the location.
-     *
-     * @param location the location of the theme.
-     * @return the theme or the default theme if not found.
-     */
+    /// Gets the theme from the location.
+    ///
+    /// @param location the location of the theme.
+    /// @return the theme or the default theme if not found.
     public static @NotNull GlobalTheme fromLocationOrDefault(ResourceLocation location) {
         return fromLocationOr(location, VANILLA);
     }
 
-    /**
-     * Get the theme's id.
-     *
-     * @return the theme's id.
-     */
+    /// Get the theme's id.
+    ///
+    /// @return the theme's id.
     @Deprecated
     public String id() {
         return Objects.requireNonNull(ModRegistries.GLOBAL_THEME.getId(this), "Theme missing for " + this).getPath();
     }
 
-    /**
-     * Text color for inside the frame.
-     * See {@link #getTitleColor(ThemeComponent)} for color of text in the title bar.
-     *
-     * @return the text color.
-     */
+    /// Text color for inside the frame.
+    /// See [#getTitleColor(ThemeComponent)] for color of text in the title bar.
+    ///
+    /// @return the text color.
     public Color getTextColor(ThemeComponent component) {
         return this.getStyle(component).getTextColor();
     }
@@ -180,12 +159,10 @@ public class GlobalTheme {
         return this.getStyle(type).getInactiveTextColor();
     }
 
-    /**
-     * Text color for inside the title bar.
-     * See {@link #getTextColor(ThemeComponent)} for color of text inside the frame.
-     *
-     * @return the text color in the title bar.
-     */
+    /// Text color for inside the title bar.
+    /// See [#getTextColor(ThemeComponent)] for color of text inside the frame.
+    ///
+    /// @return the text color in the title bar.
     public Color getTitleColor(ThemeComponent type) {
         return this.getStyle(type).getTitleColor();
     }
@@ -194,31 +171,25 @@ public class GlobalTheme {
         return component.getStyle(this);
     }
 
-    /**
-     * Get the button text color.
-     *
-     * @return the button text color.
-     * @deprecated replace with {@link #getTextColor(ThemeComponent)}.
-     */
+    /// Get the button text color.
+    ///
+    /// @return the button text color.
+    /// @deprecated replace with [#getTextColor(ThemeComponent)].
     @Deprecated
     public int getButtonTextColor(ThemeComponent type) {
         return getTextColor(type).getRgb();
     }
 
-    /**
-     * Get the display name as a {@link Component chat component}.
-     *
-     * @return the display name.
-     */
+    /// Get the display name as a [chat component][Component].
+    ///
+    /// @return the display name.
     public Component getDisplayName() {
         return Component.translatable(getDescriptionId());
     }
 
-    /**
-     * Get the translation's id for the display name.
-     *
-     * @return the translation id.
-     */
+    /// Get the translation's id for the display name.
+    ///
+    /// @return the translation id.
     public String getDescriptionId() {
         if (getId().getNamespace().equals(UltreonLib.MOD_ID)) {
             return UltreonLib.MOD_ID +  ".theme." + getId().getPath();
@@ -226,20 +197,16 @@ public class GlobalTheme {
         return getId().getNamespace() + "." + UltreonLib.MOD_ID + ".theme." + getId().getPath();
     }
 
-    /**
-     * Get the theme after this one.
-     *
-     * @return the next theme.
-     */
+    /// Get the theme after this one.
+    ///
+    /// @return the next theme.
     public GlobalTheme next() {
         return THEMES.get((this.ordinal + 1) % GlobalTheme.total);
     }
 
-    /**
-     * Get the theme before this one.
-     *
-     * @return the previous theme.
-     */
+    /// Get the theme before this one.
+    ///
+    /// @return the previous theme.
     public GlobalTheme previous() {
         return THEMES.get(((ordinal - 1 + GlobalTheme.total) % GlobalTheme.total));
     }

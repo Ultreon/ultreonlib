@@ -54,11 +54,9 @@ public class UltreonLibClient {
         ClientGuiEvent.SET_SCREEN.register(DevPreviewRegistry::onTitleScreen);
     }
 
-    /**
-     * Sets everything up when the title screen is shown.
-     *
-     * @param screen the initialized screen. (Only used if it's the title screen)
-     */
+    /// Sets everything up when the title screen is shown.
+    ///
+    /// @param screen the initialized screen. (Only used if it's the title screen)
     private CompoundEventResult<Screen> onTitleScreenInit(Screen screen) {
         Minecraft client = Minecraft.getInstance();
 
@@ -72,12 +70,10 @@ public class UltreonLibClient {
         return CompoundEventResult.pass();
     }
 
-    /**
-     * Overrides the quit button action.
-     *
-     * @param client the minecraft client.
-     * @param titleScreen the title screen.
-     */
+    /// Overrides the quit button action.
+    ///
+    /// @param client the minecraft client.
+    /// @param titleScreen the title screen.
     private void overrideQuitButton(Minecraft client, TitleScreen titleScreen) {
         // Get all gui objects from the title screen.
         List<? extends GuiEventListener> buttons = titleScreen.children();
@@ -97,11 +93,9 @@ public class UltreonLibClient {
         });
     }
 
-    /**
-     * Sets up the {@link GLFW#glfwSetWindowCloseCallback(long, GLFWWindowCloseCallbackI)}  window close callback using GLFW.
-     * @param client the minecraft client.
-     * @see GLFW#glfwSetWindowCloseCallback(long, GLFWWindowCloseCallbackI)
-     */
+    /// Sets up the [#glfwSetWindowCloseCallback(long,GLFWWindowCloseCallbackI)]  window close callback using GLFW.
+    /// @param client the minecraft client.
+    /// @see GLFW#glfwSetWindowCloseCallback(long, GLFWWindowCloseCallbackI)
     @SuppressWarnings("resource")
     private void setupGLFWCallback(Minecraft client) {
         if (!callbackSetUp) {

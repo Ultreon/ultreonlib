@@ -91,14 +91,12 @@ public class DateTime implements Comparable<DateTime>, Serializable, Cloneable {
         return ofEpochMilli(lt.toEpochMilli(), offset);
     }
 
-    /**
-     * Return flag meaning the object is between time1 and time2.
-     *
-     * @param lo low value.
-     * @param hi high value.
-     * @return true if the object is between time1 and time2.
-     * @throws NullPointerException if ‘lo’ is higher than ‘hi’.
-     */
+    /// Return flag meaning the object is between time1 and time2.
+    ///
+    /// @param lo low value.
+    /// @param hi high value.
+    /// @return true if the object is between time1 and time2.
+    /// @throws NullPointerException if ‘lo’ is higher than ‘hi’.
     public static boolean isBetween(DateTime lo, DateTime hi) {
         if (lo.toEpochNano() > hi.toEpochNano()) throw new NullPointerException("‘lo’ is higher than ‘hi’");
 
@@ -140,30 +138,24 @@ public class DateTime implements Comparable<DateTime>, Serializable, Cloneable {
         return localDateTime.toEpochSecond(offset) + this.nano;
     }
 
-    /**
-     * Value between 0 and 23
-     *
-     * @return the hour.
-     */
+    /// Value between 0 and 23
+    ///
+    /// @return the hour.
     public int getHour() {
         return this.hour;
     }
 
-    /**
-     * Value between 0 and 23
-     *
-     * @param hour value to set.
-     */
+    /// Value between 0 and 23
+    ///
+    /// @param hour value to set.
     public void setHour(int hour) {
         if (hour < 0 || hour > 23) throw new DateTimeException("Hour must be between 0 and 23");
         this.hour = hour;
     }
 
-    /**
-     * Value between 0 and 59.
-     *
-     * @return the minute.
-     */
+    /// Value between 0 and 59.
+    ///
+    /// @return the minute.
     public int getMinute() {
         return this.minute;
     }

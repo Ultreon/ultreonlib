@@ -399,12 +399,10 @@ public abstract class GenericMenuScreen extends BaseScreen implements Stylized {
         back();
     }
 
-    /**
-     * Go back to previous screen.
-     *
-     * @see #onPreBack()
-     * @see #onPostBack()
-     */
+    /// Go back to previous screen.
+    ///
+    /// @see #onPreBack()
+    /// @see #onPostBack()
     @Override
     public final void back() {
         if (onPreBack()) return;
@@ -430,46 +428,34 @@ public abstract class GenericMenuScreen extends BaseScreen implements Stylized {
         throw new AssertionError();
     }
 
-    /**
-     * Handle things after going back to the previous screen.
-     */
+    /// Handle things after going back to the previous screen.
     protected void onPostBack() {
 
     }
 
-    /**
-     * Handle things before going back to the previous screen.
-     *
-     * @return true to cancel the back event, false to let the screen go back.
-     */
+    /// Handle things before going back to the previous screen.
+    ///
+    /// @return true to cancel the back event, false to let the screen go back.
     protected boolean onPreBack() {
         return false;
     }
 
-    /**
-     * @return the title color.
-     */
+    /// @return the title color.
     public int getTitleColor() {
         return titleColor;
     }
 
-    /**
-     * @param titleColor the title color to set.
-     */
+    /// @param titleColor the title color to set.
     public void setTitleColor(int titleColor) {
         this.titleColor = titleColor;
     }
 
-    /**
-     * @return gui width.
-     */
+    /// @return gui width.
     protected final int width() {
         return 176;
     }
 
-    /**
-     * @return gui height.
-     */
+    /// @return gui height.
     protected final int height() {
         return this.rowsHeight() + 4 + this.getRenderTitleBarHeight();
     }

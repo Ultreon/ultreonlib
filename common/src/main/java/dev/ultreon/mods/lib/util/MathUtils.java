@@ -13,14 +13,12 @@ public final class MathUtils {
     private static final double DOUBLES_EQUAL_PRECISION = 0.000000001;
     private static final Random RANDOM = new Random();
 
-    /**
-     * Distance between two {@link Vec3i} (such as {@link BlockPos}).
-     * Consider using {@link #distanceSq} when possible.
-     *
-     * @param from one point
-     * @param to   another point
-     * @return the distance between {@code from} and {@code to}
-     */
+    /// Distance between two [Vec3i] (such as [BlockPos]).
+    /// Consider using [#distanceSq] when possible.
+    ///
+    /// @param from one point
+    /// @param to   another point
+    /// @return the distance between `from` and `to`
     public static double distance(Vec3i from, Vec3i to) {
         int dx = to.getX() - from.getX();
         int dy = to.getY() - from.getY();
@@ -28,13 +26,11 @@ public final class MathUtils {
         return Math.sqrt(dx * dx + dy * dy + dz * dz);
     }
 
-    /**
-     * Distance between two {@link Position}. Consider using {@link #distanceSq} when possible.
-     *
-     * @param from one point
-     * @param to another point
-     * @return the distance between {@code from} and {@code to}
-     */
+    /// Distance between two [Position]. Consider using [#distanceSq] when possible.
+    ///
+    /// @param from one point
+    /// @param to another point
+    /// @return the distance between `from` and `to`
     public static double distance(Position from, Position to) {
         double dx = to.x() - from.x();
         double dy = to.y() - from.y();
@@ -42,14 +38,12 @@ public final class MathUtils {
         return Math.sqrt(dx * dx + dy * dy + dz * dz);
     }
 
-    /**
-     * Distance between an entity's position and a given position. Consider using {@link
-     * #distanceSq} when possible.
-     *
-     * @param entity the entity
-     * @param pos the other point
-     * @return the distance between {code entity} and {@code pos}
-     */
+    /// Distance between an entity's position and a given position. Consider using
+    /// [#distanceSq] when possible.
+    ///
+    /// @param entity the entity
+    /// @param pos the other point
+    /// @return the distance between {code entity} and `pos`
     public static double distance(Entity entity, Vec3i pos) {
         double dx = pos.getX() + 0.5 - entity.getX();
         double dy = pos.getY() + 0.5 - entity.getY();
@@ -57,14 +51,12 @@ public final class MathUtils {
         return Math.sqrt(dx * dx + dy * dy + dz * dz);
     }
 
-    /**
-     * Distance between an entity's position and a given position. Consider using {@link
-     * #distanceSq} when possible.
-     *
-     * @param entity the entity
-     * @param pos the other point
-     * @return the distance between {code entity} and {@code pos}
-     */
+    /// Distance between an entity's position and a given position. Consider using
+    /// [#distanceSq] when possible.
+    ///
+    /// @param entity the entity
+    /// @param pos the other point
+    /// @return the distance between {code entity} and `pos`
     public static double distance(Entity entity, Position pos) {
         double dx = pos.x() - entity.getX();
         double dy = pos.y() - entity.getY();
@@ -72,14 +64,12 @@ public final class MathUtils {
         return Math.sqrt(dx * dx + dy * dy + dz * dz);
     }
 
-    /**
-     * Distance squared between two {@link Vec3i} (such as {@link BlockPos}).
-     * Use instead of {@link #distance} when possible.
-     *
-     * @param from one point
-     * @param to another point
-     * @return the distance between {@code from} and {@code to} squared
-     */
+    /// Distance squared between two [Vec3i] (such as [BlockPos]).
+    /// Use instead of [#distance] when possible.
+    ///
+    /// @param from one point
+    /// @param to another point
+    /// @return the distance between `from` and `to` squared
     public static double distanceSq(Vec3i from, Vec3i to) {
         int dx = to.getX() - from.getX();
         int dy = to.getY() - from.getY();
@@ -87,14 +77,12 @@ public final class MathUtils {
         return dx * dx + dy * dy + dz * dz;
     }
 
-    /**
-     * Distance squared between two {@link Position}. Use instead of {@link #distance} when
-     * possible.
-     *
-     * @param from one point
-     * @param to another point
-     * @return the distance between {@code from} and {@code to} squared
-     */
+    /// Distance squared between two [Position]. Use instead of [#distance] when
+    /// possible.
+    ///
+    /// @param from one point
+    /// @param to another point
+    /// @return the distance between `from` and `to` squared
     public static double distanceSq(Position from, Position to) {
         double dx = to.x() - from.x();
         double dy = to.y() - from.y();
@@ -102,13 +90,11 @@ public final class MathUtils {
         return dx * dx + dy * dy + dz * dz;
     }
 
-    /**
-     * Distance squared between an entity's position and a given position.
-     *
-     * @param entity the entity
-     * @param pos the other point
-     * @return the distance between {code entity} and {@code pos} squared
-     */
+    /// Distance squared between an entity's position and a given position.
+    ///
+    /// @param entity the entity
+    /// @param pos the other point
+    /// @return the distance between {code entity} and `pos` squared
     public static double distanceSq(Entity entity, Vec3i pos) {
         double dx = pos.getX() + 0.5 - entity.getX();
         double dy = pos.getY() + 0.5 - entity.getY();
@@ -116,13 +102,11 @@ public final class MathUtils {
         return dx * dx + dy * dy + dz * dz;
     }
 
-    /**
-     * Distance squared between an entity's position and a given position.
-     *
-     * @param entity the entity
-     * @param pos the other point
-     * @return the distance between {code entity} and {@code pos} squared
-     */
+    /// Distance squared between an entity's position and a given position.
+    ///
+    /// @param entity the entity
+    /// @param pos the other point
+    /// @return the distance between {code entity} and `pos` squared
     public static double distanceSq(Entity entity, Position pos) {
         double dx = pos.x() - entity.getX();
         double dy = pos.y() - entity.getY();
@@ -130,122 +114,104 @@ public final class MathUtils {
         return dx * dx + dy * dy + dz * dz;
     }
 
-    /**
-     * Distance between two {@link Vec3i} (such as {@link BlockPos}), but
-     * ignores the Y-coordinate. Consider using {@link #distanceHorizontalSq} when possible.
-     *
-     * @param from one point
-     * @param to another point
-     * @return the distance between {@code from} and {@code to} squared, ignoring Y-axis
-     */
+    /// Distance between two [Vec3i] (such as [BlockPos]), but
+    /// ignores the Y-coordinate. Consider using [#distanceHorizontalSq] when possible.
+    ///
+    /// @param from one point
+    /// @param to another point
+    /// @return the distance between `from` and `to` squared, ignoring Y-axis
     public static double distanceHorizontal(Vec3i from, Vec3i to) {
         int dx = to.getX() - from.getX();
         int dz = to.getZ() - from.getZ();
         return Math.sqrt(dx * dx + dz * dz);
     }
 
-    /**
-     * Distance between two {@link Position}, but ignores the Y-coordinate. Consider using {@link
-     * #distanceHorizontalSq} when possible.
-     *
-     * @param from one point
-     * @param to another point
-     * @return the distance between {@code from} and {@code to} squared
-     */
+    /// Distance between two [Position], but ignores the Y-coordinate. Consider using
+    /// [#distanceHorizontalSq] when possible.
+    ///
+    /// @param from one point
+    /// @param to another point
+    /// @return the distance between `from` and `to` squared
     public static double distanceHorizontal(Position from, Position to) {
         double dx = to.x() - from.x();
         double dz = to.z() - from.z();
         return Math.sqrt(dx * dx + dz * dz);
     }
 
-    /**
-     * Distance between an entity's position and a given position, but ignores the Y-coordinate.
-     *
-     * @param entity the entity
-     * @param pos the other point
-     * @return the distance between {code entity} and {@code pos}, ignoring Y-axis
-     */
+    /// Distance between an entity's position and a given position, but ignores the Y-coordinate.
+    ///
+    /// @param entity the entity
+    /// @param pos the other point
+    /// @return the distance between {code entity} and `pos`, ignoring Y-axis
     public static double distanceHorizontal(Entity entity, Vec3i pos) {
         double dx = pos.getX() + 0.5 - entity.getX();
         double dz = pos.getZ() + 0.5 - entity.getZ();
         return Math.sqrt(dx * dx + dz * dz);
     }
 
-    /**
-     * Distance between an entity's position and a given position, but ignores the Y-coordinate.
-     *
-     * @param entity the entity
-     * @param pos the other point
-     * @return the distance between {code entity} and {@code pos}, ignoring Y-axis
-     */
+    /// Distance between an entity's position and a given position, but ignores the Y-coordinate.
+    ///
+    /// @param entity the entity
+    /// @param pos the other point
+    /// @return the distance between {code entity} and `pos`, ignoring Y-axis
     public static double distanceHorizontal(Entity entity, Position pos) {
         double dx = pos.x() - entity.getX();
         double dz = pos.z() - entity.getZ();
         return Math.sqrt(dx * dx + dz * dz);
     }
 
-    /**
-     * Distance squared between two {@link Vec3i} (such as {@link BlockPos}),
-     * but ignores the Y-coordinate. Use instead of {@link #distanceHorizontal} when possible.
-     *
-     * @param from one point
-     * @param to another point
-     * @return the distance between {@code from} and {@code to} squared, ignoring Y-axis
-     */
+    /// Distance squared between two [Vec3i] (such as [BlockPos]),
+    /// but ignores the Y-coordinate. Use instead of [#distanceHorizontal] when possible.
+    ///
+    /// @param from one point
+    /// @param to another point
+    /// @return the distance between `from` and `to` squared, ignoring Y-axis
     public static double distanceHorizontalSq(Vec3i from, Vec3i to) {
         int dx = to.getX() - from.getX();
         int dz = to.getZ() - from.getZ();
         return dx * dx + dz * dz;
     }
 
-    /**
-     * Distance squared between two {@link Position}, but ignores the Y-coordinate. Use instead of
-     * {@link #distanceHorizontal} when possible.
-     *
-     * @param from one point
-     * @param to another point
-     * @return the distance between {@code from} and {@code to} squared, ignoring Y-axis
-     */
+    /// Distance squared between two [Position], but ignores the Y-coordinate. Use instead of
+    /// [#distanceHorizontal] when possible.
+    ///
+    /// @param from one point
+    /// @param to another point
+    /// @return the distance between `from` and `to` squared, ignoring Y-axis
     public static double distanceHorizontalSq(Position from, Position to) {
         double dx = to.x() - from.x();
         double dz = to.z() - from.z();
         return dx * dx + dz * dz;
     }
 
-    /**
-     * Distance squared between an entity's position and a given position, but ignores the
-     * Y-coordinate.
-     *
-     * @param entity the entity
-     * @param pos the other point
-     * @return the distance between {code entity} and {@code pos} squared, ignoring Y-axis
-     */
+    /// Distance squared between an entity's position and a given position, but ignores the
+    /// Y-coordinate.
+    ///
+    /// @param entity the entity
+    /// @param pos the other point
+    /// @return the distance between {code entity} and `pos` squared, ignoring Y-axis
     public static double distanceHorizontalSq(Entity entity, Vec3i pos) {
         double dx = pos.getX() + 0.5 - entity.getX();
         double dz = pos.getZ() + 0.5 - entity.getZ();
         return dx * dx + dz * dz;
     }
 
-    /**
-     * Distance squared between an entity's position and a given position, but ignores the
-     * Y-coordinate.
-     *
-     * @param entity the entity
-     * @param pos    the other point
-     * @return the distance between {code entity} and {@code pos} squared, ignoring Y-axis
-     */
+    /// Distance squared between an entity's position and a given position, but ignores the
+    /// Y-coordinate.
+    ///
+    /// @param entity the entity
+    /// @param pos    the other point
+    /// @return the distance between {code entity} and `pos` squared, ignoring Y-axis
     public static double distanceHorizontalSq(Entity entity, Position pos) {
         double dx = pos.x() - entity.getX();
         double dz = pos.z() - entity.getZ();
         return dx * dx + dz * dz;
     }
 
-    /**
-     * Decimal places of a float value.
-     *
-     * @param d float value
-     * @return the amount of decimal places.
-     */
+    /// Decimal places of a float value.
+    ///
+    /// @param d float value
+    /// @return the amount of decimal places.
     public static int getDecimalPlaces(Float d) {
         String s = d.toString();
         String[] split = s.split("\\.");
@@ -288,34 +254,26 @@ public final class MathUtils {
         return value < lowerBound ? lowerBound : Math.min(value, upperBound);
     }
 
-    /**
-     * Compare if two doubles are equal, using precision constant {@link #DOUBLES_EQUAL_PRECISION}.
-     */
+    /// Compare if two doubles are equal, using precision constant [#DOUBLES_EQUAL_PRECISION].
     public static boolean doublesEqual(double a, double b) {
         return doublesEqual(a, b, DOUBLES_EQUAL_PRECISION);
     }
 
-    /**
-     * Compare if two doubles are equal, within the given level of precision.
-     *
-     * @param precision Should be a small, positive number (like {@link #DOUBLES_EQUAL_PRECISION})
-     */
+    /// Compare if two doubles are equal, within the given level of precision.
+    ///
+    /// @param precision Should be a small, positive number (like [#DOUBLES_EQUAL_PRECISION])
     public static boolean doublesEqual(double a, double b, double precision) {
         return Math.abs(b - a) < precision;
     }
 
-    /**
-     * Compare if two floats are equal, using precision constant {@link #DOUBLES_EQUAL_PRECISION}.
-     */
+    /// Compare if two floats are equal, using precision constant [#DOUBLES_EQUAL_PRECISION].
     public static boolean floatsEqual(float a, float b) {
         return floatsEqual(a, b, (float) DOUBLES_EQUAL_PRECISION);
     }
 
-    /**
-     * Compare if two floats are equal, within the given level of precision.
-     *
-     * @param precision Should be a small, positive number (like {@link #DOUBLES_EQUAL_PRECISION})
-     */
+    /// Compare if two floats are equal, within the given level of precision.
+    ///
+    /// @param precision Should be a small, positive number (like [#DOUBLES_EQUAL_PRECISION])
     public static boolean floatsEqual(float a, float b, float precision) {
         return Math.abs(b - a) < precision;
     }

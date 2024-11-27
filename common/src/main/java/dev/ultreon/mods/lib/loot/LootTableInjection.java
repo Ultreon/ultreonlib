@@ -16,12 +16,10 @@ import org.jetbrains.annotations.ApiStatus;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Class for injecting loot data into loot tables.
- * For example a custom entity drop. Or custom items in loot chests etc.
- *
- * @author XyperCode
- */
+/// Class for injecting loot data into loot tables.
+/// For example a custom entity drop. Or custom items in loot chests etc.
+///
+/// @author XyperCode
 public class LootTableInjection {
     private static final Map<ResourceLocation, Injector> injections = new HashMap<>();
 
@@ -29,82 +27,66 @@ public class LootTableInjection {
         super();
     }
 
-    /**
-     * Creates a resource location with minecraft's id.
-     *
-     * @param path resource path to the injection.
-     * @return resource location object.
-     */
+    /// Creates a resource location with minecraft's id.
+    ///
+    /// @param path resource path to the injection.
+    /// @return resource location object.
     public static ResourceLocation mcId(String path) {
         return ResourceLocation.tryBuild(ResourceLocation.DEFAULT_NAMESPACE, path);
     }
 
-    /**
-     * Creates a resource location with forge's id.
-     *
-     * @param path resource path to the injection.
-     * @return resource location object.
-     */
+    /// Creates a resource location with forge's id.
+    ///
+    /// @param path resource path to the injection.
+    /// @return resource location object.
     public static ResourceLocation forgeId(String path) {
         return ResourceLocation.tryBuild("forge", path);
     }
 
-    /**
-     * Creates a resource location with forge's id.
-     *
-     * @param path resource path to the injection.
-     * @return resource location object.
-     */
+    /// Creates a resource location with forge's id.
+    ///
+    /// @param path resource path to the injection.
+    /// @return resource location object.
     public static ResourceLocation neoForgeId(String path) {
         return ResourceLocation.tryBuild("neoforge", path);
     }
 
-    /**
-     * Creates a resource location with fabric's id.
-     *
-     * @param path resource path to the injection.
-     * @return resource location object.
-     */
+    /// Creates a resource location with fabric's id.
+    ///
+    /// @param path resource path to the injection.
+    /// @return resource location object.
     public static ResourceLocation fabricId(String path) {
         return ResourceLocation.tryBuild("fabric", path);
     }
 
-    /**
-     * Creates a resource location with fabric's "conventional tags" id.
-     *
-     * @param path resource path to the injection.
-     * @return resource location object.
-     */
+    /// Creates a resource location with fabric's "conventional tags" id.
+    ///
+    /// @param path resource path to the injection.
+    /// @return resource location object.
     public static ResourceLocation cId(String path) {
         return ResourceLocation.tryBuild("c", path);
     }
 
-    /**
-     * Creates a resource location with fabric's "conventional tags" id.
-     *
-     * @param path resource path to the injection.
-     * @return resource location object.
-     */
+    /// Creates a resource location with fabric's "conventional tags" id.
+    ///
+    /// @param path resource path to the injection.
+    /// @return resource location object.
     public static ResourceLocation ultreonLibId(String path) {
         return ResourceLocation.tryBuild(UltreonLib.MOD_ID, path);
     }
 
-    /**
-     * Registers a loot table injection, this will load in {@linkplain #runModifications(ResourceKey, LootEvent.LootTableModificationContext, boolean)}
-     *
-     * @param target    the loot table to inject.
-     * @param injection the injection for the loot table.
-     */
+    /// Registers a loot table injection, this will load in {@linkplain #runModifications(ResourceKey, LootEvent.LootTableModificationContext, boolean)}
+    ///
+    /// @param target    the loot table to inject.
+    /// @param injection the injection for the loot table.
     public static void registerInjection(ResourceLocation target, ResourceLocation injection) {
         injections.put(target, new Injector(target, injection));
     }
 
-    /**
-     * Registers a loot table injection, this will load in {@linkplain #runModifications(ResourceKey, LootEvent.LootTableModificationContext, boolean)}
-     *
-     * @param target the loot table to inject.
-     * @param modId  the mod's id to get the injection from.
-     */
+    /// Registers a loot table injection, this will load in {@linkplain #runModifications(ResourceKey, LootEvent.LootTableModificationContext, boolean)}
+    ///
+    /// @param target the loot table to inject.
+    /// @param modId  the mod's id to get the injection from.
     public static void registerInjection(ResourceLocation target, String modId) {
         registerInjection(target, ResourceLocation.tryBuild(modId, target.getPath()));
     }

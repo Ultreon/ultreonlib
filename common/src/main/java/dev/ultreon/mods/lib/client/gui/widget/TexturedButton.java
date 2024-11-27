@@ -20,9 +20,7 @@ public abstract sealed class TexturedButton extends BaseButton permits Button {
         super(x, y, width, height, title, callback, onTooltip);
     }
 
-    /**
-     * @return the widgets texture to render the button from.
-     */
+    /// @return the widgets texture to render the button from.
     @Deprecated
     protected abstract ResourceLocation getWidgetsTexture();
 

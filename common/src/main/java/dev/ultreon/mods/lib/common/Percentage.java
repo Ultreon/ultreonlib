@@ -5,11 +5,9 @@ import org.jetbrains.annotations.NotNull;
 import java.io.Serial;
 import java.io.Serializable;
 
-/**
- * Percentage utility object.
- *
- * @author XyperCode
- */
+/// Percentage utility object.
+///
+/// @author XyperCode
 public record Percentage(double percentage) implements Serializable, Comparable<Percentage> {
     @Serial
     private static final long serialVersionUID = 0L;

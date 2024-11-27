@@ -109,11 +109,9 @@ public sealed class Location permits MutableLocation {
         tags.putString(NbtKeys.DIMENSION, dimension.getLocation().toString());
     }
 
-    /**
-     * Converts to a BlockPos
-     *
-     * @return A BlockPos with the same coordinates
-     */
+    /// Converts to a BlockPos
+    ///
+    /// @return A BlockPos with the same coordinates
     public BlockPos getPos() {
         return new BlockPos(posX, posY, posZ);
     }
@@ -122,14 +120,12 @@ public sealed class Location permits MutableLocation {
         return new Vec3(posX + 0.5, posY + yOffset, posZ + 0.5);
     }
 
-    /**
-     * Offset the DimPos in the given direction by the given distance.
-     *
-     * @param facing The direction to offset
-     * @param n      The distance
-     * @return A new DimPos with offset coordinates.
-     * @since 4.0.10
-     */
+    /// Offset the DimPos in the given direction by the given distance.
+    ///
+    /// @param facing The direction to offset
+    /// @param n      The distance
+    /// @return A new DimPos with offset coordinates.
+    /// @since 4.0.10
     public Location offset(Direction facing, int n) {
         if (n == 0) {
             return this;

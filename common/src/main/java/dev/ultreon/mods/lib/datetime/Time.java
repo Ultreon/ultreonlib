@@ -69,9 +69,7 @@ public class Time implements Comparable<Time>, Serializable, Cloneable {
         return this.hour * 3_600_000L + (this.minute * 60_000L) + (this.second * 1_000L) + (this.nano / 1_000_000);
     }
 
-    /**
-     * @return total seconds.
-     */
+    /// @return total seconds.
     public int toSeconds() {
         int sec = this.second;
         sec += this.minute * 60;
@@ -80,9 +78,7 @@ public class Time implements Comparable<Time>, Serializable, Cloneable {
         return sec;
     }
 
-    /**
-     * @return total minutes.
-     */
+    /// @return total minutes.
     public float toMinutes() {
         float min = (float) this.second / 60;
         min += (float) this.minute;
@@ -91,9 +87,7 @@ public class Time implements Comparable<Time>, Serializable, Cloneable {
         return min;
     }
 
-    /**
-     * @return total hours.
-     */
+    /// @return total hours.
     public float toHours() {
         float hor = (float) this.second / 3600;
         hor += (float) this.minute / 60;
@@ -102,14 +96,12 @@ public class Time implements Comparable<Time>, Serializable, Cloneable {
         return hor;
     }
 
-    /**
-     * Check whether the time is between a some time.
-     *
-     * @param lo low value.
-     * @param hi high value.
-     * @return true if the object is between time1 and time2.
-     * @throws NullPointerException if ‘lo’ is higher than ‘hi’.
-     */
+    /// Check whether the time is between a some time.
+    ///
+    /// @param lo low value.
+    /// @param hi high value.
+    /// @return true if the object is between time1 and time2.
+    /// @throws NullPointerException if ‘lo’ is higher than ‘hi’.
     public boolean isBetween(Time lo, Time hi) {
         if (lo.toNanos() > hi.toNanos()) throw new dev.ultreon.mods.lib.datetime.exceptions.DateTimeException("Invalid ordering of time, lower end time is higher than higher end time.");
         return ((lo.toSeconds() <= this.toSeconds()) && (hi.toSeconds() >= this.toSeconds()));

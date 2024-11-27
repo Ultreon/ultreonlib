@@ -5,9 +5,7 @@ import org.jetbrains.annotations.NotNull;
 import java.io.*;
 import java.util.*;
 
-/**
- * @deprecated use {@link LinkedHashMap} instead.
- */
+/// @deprecated use [LinkedHashMap] instead.
 @SuppressWarnings({"unused", "JavaDoc"})
 @Deprecated
 public class OrderedHashMap<K, V> implements Map<K, V>, Cloneable, Externalizable {

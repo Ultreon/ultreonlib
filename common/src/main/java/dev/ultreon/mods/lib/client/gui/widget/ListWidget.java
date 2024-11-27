@@ -332,9 +332,7 @@ public class ListWidget extends BaseWidget implements ContainerEventHandler, Sty
         private String query;
         private Consumer<WrappedList> addEntries;
 
-        /**
-         * @deprecated use {@link #WrappedList(ListWidget, Minecraft, int, int, int, int)} instead
-         */
+        /// @deprecated use [#WrappedList(ListWidget,Minecraft,int,int,int,int)] instead
         @Deprecated
         public WrappedList(ListWidget widget, Minecraft mc, int width, int height, int y, int bottom, int itemHeight) {
             this(widget, mc, width, height, y, itemHeight);

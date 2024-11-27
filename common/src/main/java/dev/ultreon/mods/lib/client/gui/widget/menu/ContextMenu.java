@@ -23,9 +23,7 @@ import java.util.Objects;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-/**
- * @author XyperCode
- */
+/// @author XyperCode
 public class ContextMenu extends BaseContainerWidget {
     // Constants
     private static final int BORDER_WIDTH = 5;
@@ -38,25 +36,20 @@ public class ContextMenu extends BaseContainerWidget {
     };
     private GlobalTheme globalTheme;
 
-    /**
-     * @param x     position x to place.
-     * @param y     position y to place.
-    public Button(int x, int y, int width, int height, Component title, CommandCallback onClick) {
-        this(x, y, width, height, title, onClick, Type.of(UltreonLib.getTheme().getContentTheme()));
-    }
-
-     * @param title context menu title.
-     */
+    /// @param x     position x to place.
+    /// @param y     position y to place.
+    ///public Button(int x, int y, int width, int height, Component title, CommandCallback onClick) {
+    ///this(x, y, width, height, title, onClick, Type.of(UltreonLib.getTheme().getContentTheme()));
+    ///}
+    /// @param title context menu title.
     public ContextMenu(int x, int y, @Nullable Component title) {
         this(x, y, title, UltreonLib.getTheme());
     }
 
-    /**
-     * @param x     position x to place.
-     * @param y     position y to place.
-     * @param title context menu title.
-     * @deprecated  Use {@link #ContextMenu(int, int, Component, GlobalTheme)} instead. As it uses specific themes.
-     */
+    /// @param x     position x to place.
+    /// @param y     position y to place.
+    /// @param title context menu title.
+    /// @deprecated  Use [#ContextMenu(int,int,Component,GlobalTheme)] instead. As it uses specific themes.
     @Deprecated
     public ContextMenu(int x, int y, @Nullable Component title, boolean darkMode) {
         this(x, y, title, darkMode ? GlobalTheme.DARK : GlobalTheme.VANILLA);
@@ -77,11 +70,9 @@ public class ContextMenu extends BaseContainerWidget {
         this.globalTheme = darkMode ? GlobalTheme.DARK : GlobalTheme.VANILLA;
     }
 
-    /**
-     * Updates narration.
-     *
-     * @param narration output for narration elements.
-     */
+    /// Updates narration.
+    ///
+    /// @param narration output for narration elements.
     @Override
     public void updateWidgetNarration(@NotNull NarrationElementOutput narration) {
         narration.add(NarratedElementType.TITLE, this.createNarrationMessage());
@@ -135,13 +126,11 @@ public class ContextMenu extends BaseContainerWidget {
         gfx.pose().popPose();
     }
 
-    /**
-     * Adds a menu item entry.
-     *
-     * @param menuItem menu item to add.
-     * @param <T>      item type.
-     * @return the same as menu item parameter.
-     */
+    /// Adds a menu item entry.
+    ///
+    /// @param menuItem menu item to add.
+    /// @param <T>      item type.
+    /// @return the same as menu item parameter.
     public <T extends MenuItem> T add(T menuItem) {
         entries.add(menuItem);
         menuItem.setX(getX() + 5);
@@ -155,45 +144,35 @@ public class ContextMenu extends BaseContainerWidget {
         height = BORDER_WIDTH * 2 + entries.stream().mapToInt(MenuItem::getHeight).sum() + 2 * Math.max(entries.size() - 1, 0);
     }
 
-    /**
-     * Get all menu entries currently in the context menu.
-     *
-     * @return all menu entries (unmodifiable).
-     */
+    /// Get all menu entries currently in the context menu.
+    ///
+    /// @return all menu entries (unmodifiable).
     @Override
     public @NotNull List<? extends GuiEventListener> children() {
         return Collections.unmodifiableList(entries);
     }
 
-    /**
-     * Set the on close event handler.
-     *
-     * @param onClose close handler.
-     */
+    /// Set the on close event handler.
+    ///
+    /// @param onClose close handler.
     public void setOnClose(OnClose onClose) {
         this.onClose = onClose;
     }
 
-    /**
-     * DON'T CALL IF YOU DON'T KNOW WHAT YOU ARE DOING.
-     * This method is called for internal usage, and should not be called to close the context menu.
-     * Use the {@link BaseScreen#closeContextMenu()} method to close the menu instead.
-     */
+    /// DON'T CALL IF YOU DON'T KNOW WHAT YOU ARE DOING.
+    /// This method is called for internal usage, and should not be called to close the context menu.
+    /// Use the [#closeContextMenu()] method to close the menu instead.
     public final void onClose() {
         onClose.call(this);
     }
 
-    /**
-     * On Close event handler interface.
-     * Could be used as lambda.
-     */
+    /// On Close event handler interface.
+    /// Could be used as lambda.
     @FunctionalInterface
     public interface OnClose {
-        /**
-         * Handler itself.
-         *
-         * @param menu context menu for handling the closing with.
-         */
+        /// Handler itself.
+        ///
+        /// @param menu context menu for handling the closing with.
         void call(ContextMenu menu);
     }
 }

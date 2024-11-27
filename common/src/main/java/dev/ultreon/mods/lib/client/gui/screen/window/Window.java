@@ -24,18 +24,16 @@ import org.lwjgl.glfw.GLFW;
 
 import java.util.Objects;
 
-/**
- * Window widget class.
- * Title height is 21 pixels.
- * Content height is the height of the window minus the title height.
- * Border size is 5 pixels.
- * The border is outside the content area.
- * The content area is defined by the x, y, width and height properties.
- *
- * @author XyperCode
- * @version 1.0
- * @since 0.0.1.6
- */
+/// Window widget class.
+/// Title height is 21 pixels.
+/// Content height is the height of the window minus the title height.
+/// Border size is 5 pixels.
+/// The border is outside the content area.
+/// The content area is defined by the x, y, width and height properties.
+///
+/// @author XyperCode
+/// @version 1.0
+/// @since 0.0.1.6
 public class Window extends BaseContainerWidget implements Stylized {
     private static final String CLOSE_ICON = "×";
     private static final String CLOSE_ICON_HOVER = ChatFormatting.RED + CLOSE_ICON;
@@ -60,14 +58,12 @@ public class Window extends BaseContainerWidget implements Stylized {
 
     private final WindowManager wm = WindowManager.INSTANCE;
 
-    /**
-     * Constructs a new window.
-     *
-     * @param x      The x position of the window
-     * @param y      The y position of the window
-     * @param width  The width of the window
-     * @param height The height of the window
-     */
+    /// Constructs a new window.
+    ///
+    /// @param x      The x position of the window
+    /// @param y      The y position of the window
+    /// @param width  The width of the window
+    /// @param height The height of the window
     public Window(int x, int y, int width, int height) {
         super(x, y, width, height, Component.empty());
     }
@@ -82,9 +78,7 @@ public class Window extends BaseContainerWidget implements Stylized {
         return this.active && this.visible && mouseX >= (double)this.getX() && mouseY >= (double)this.getY() - 21 && mouseX < (double)(this.getX() + this.width) && mouseY < (double)(this.getY() + this.height);
     }
 
-    /**
-     * Shows the window.
-     */
+    /// Shows the window.
     public void show() {
         checkValid();
         wm.addWindow(this);
@@ -97,43 +91,35 @@ public class Window extends BaseContainerWidget implements Stylized {
         }
     }
 
-    /**
-     * Hide the window.
-     *
-     * @throws IllegalStateException If the window is not shown
-     */
+    /// Hide the window.
+    ///
+    /// @throws IllegalStateException If the window is not shown
     public void hide() {
         checkValid();
         visible = false;
     }
 
-    /**
-     * Gets the title of the window.
-     *
-     * @return The title of the window.
-     * @throws IllegalStateException If the window is not shown
-     */
+    /// Gets the title of the window.
+    ///
+    /// @return The title of the window.
+    /// @throws IllegalStateException If the window is not shown
     public Component getTitle() {
         checkValid();
         return title;
     }
 
-    /**
-     * Sets the title of the window.
-     *
-     * @param title The title to set.
-     * @throws IllegalStateException If the window is not shown
-     */
+    /// Sets the title of the window.
+    ///
+    /// @param title The title to set.
+    /// @throws IllegalStateException If the window is not shown
     public void setTitle(Component title) {
         checkValid();
         this.title = title;
     }
 
-    /**
-     * Closes the window.
-     *
-     * @throws IllegalStateException If the window is not shown
-     */
+    /// Closes the window.
+    ///
+    /// @throws IllegalStateException If the window is not shown
     public void close(boolean force) {
         if (force) {
             checkValid();
@@ -143,26 +129,22 @@ public class Window extends BaseContainerWidget implements Stylized {
         }
     }
 
-    /**
-     * Called when the window is being closed.
-     *
-     * @return true if the window should be destroyed, false if it should be kept open.
-     */
+    /// Called when the window is being closed.
+    ///
+    /// @return true if the window should be destroyed, false if it should be kept open.
     public boolean onClose() {
         return true;
     }
 
-    /**
-     * Destroys the window.
-     * Calling this method will remove the window from the screen.
-     * This method is called automatically when the window is closed.
-     * After calling this method, other methods may throw an {@link IllegalStateException}.
-     * Check {@link #isValid()} to see if the window is still valid.
-     *
-     * @return true if the window was destroyed.
-     * If the window is invalid or already destroyed, this method will return false.
-     * @see #isValid()
-     */
+    /// Destroys the window.
+    /// Calling this method will remove the window from the screen.
+    /// This method is called automatically when the window is closed.
+    /// After calling this method, other methods may throw an [IllegalStateException].
+    /// Check [#isValid()] to see if the window is still valid.
+    ///
+    /// @return true if the window was destroyed.
+    /// If the window is invalid or already destroyed, this method will return false.
+    /// @see #isValid()
     @CanIgnoreReturnValue
     public final boolean destroy() {
         if (valid) {
@@ -176,21 +158,17 @@ public class Window extends BaseContainerWidget implements Stylized {
         this.valid = false;
     }
 
-    /**
-     * Get whether the window is valid.
-     *
-     * @return true if the window is valid, false if it was destroyed.
-     * @throws IllegalStateException if the window is not valid.
-     */
+    /// Get whether the window is valid.
+    ///
+    /// @return true if the window is valid, false if it was destroyed.
+    /// @throws IllegalStateException if the window is not valid.
     public boolean isValid() {
         return valid;
     }
 
-    /**
-     * Closes the window.
-     *
-     * @throws IllegalStateException if the window is not valid.
-     */
+    /// Closes the window.
+    ///
+    /// @throws IllegalStateException if the window is not valid.
     public void close() {
         checkValid();
         close(false);
@@ -198,15 +176,13 @@ public class Window extends BaseContainerWidget implements Stylized {
         wm.removeWindow(this);
     }
 
-    /**
-     * Renders the window including the border and title.
-     *
-     * @param gfx          The pose-stack of the window.
-     * @param mouseX       The x position of the mouse
-     * @param mouseY       The y position of the mouse
-     * @param partialTicks The partial ticks
-     * @throws IllegalStateException If the window is not valid.
-     */
+    /// Renders the window including the border and title.
+    ///
+    /// @param gfx          The pose-stack of the window.
+    /// @param mouseX       The x position of the mouse
+    /// @param mouseY       The y position of the mouse
+    /// @param partialTicks The partial ticks
+    /// @throws IllegalStateException If the window is not valid.
     @Override
     public void renderWidget(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
         // Check for valid window.
@@ -222,14 +198,12 @@ public class Window extends BaseContainerWidget implements Stylized {
 //        gfx.renderOutline(getX(), getY(), getWidth(), getHeight(), 0xffffffff);
     }
 
-    /**
-     * Render the content area.
-     *
-     * @param gfx          The pose-stack to render with.
-     * @param mouseX       The x position of the mouse.
-     * @param mouseY       The y position of the mouse.
-     * @param partialTicks The partial ticks.
-     */
+    /// Render the content area.
+    ///
+    /// @param gfx          The pose-stack to render with.
+    /// @param mouseX       The x position of the mouse.
+    /// @param mouseY       The y position of the mouse.
+    /// @param partialTicks The partial ticks.
     private void renderContents(@NotNull GuiGraphics gfx, int mouseX, int mouseY, float partialTicks) {
         for (GuiEventListener widget : children()) {
             if (widget instanceof Renderable) {
@@ -238,13 +212,11 @@ public class Window extends BaseContainerWidget implements Stylized {
         }
     }
 
-    /**
-     * Renders the title bar.
-     *
-     * @param gfx    The pose-stack to render with.
-     * @param mouseX The x position of the mouse.
-     * @param mouseY The y position of the mouse.
-     */
+    /// Renders the title bar.
+    ///
+    /// @param gfx    The pose-stack to render with.
+    /// @param mouseX The x position of the mouse.
+    /// @param mouseY The y position of the mouse.
     private void renderTitle(@NotNull GuiGraphics gfx, int mouseX, int mouseY) {
         BaseScreen.renderTitleFrame(gfx, getX(), getY() - 20, width, 19, globalTheme);
         gfx.drawCenteredString(minecraft.font, getTitle(), getX() + width / 2, getY() - 12, globalTheme.getTitleColor(ThemeRootComponent.WINDOW).getRgb());
@@ -252,15 +224,13 @@ public class Window extends BaseContainerWidget implements Stylized {
         renderCloseButton(gfx, mouseX, mouseY, getX() + width - 12, getY() - 12);
     }
 
-    /**
-     * Renders the close button.
-     *
-     * @param gfx    The pose-stack to render with.
-     * @param mouseX The x position of the mouse.
-     * @param mouseY The y position of the mouse.
-     * @param x      The x position of the close button.
-     * @param y      The y position of the close button.
-     */
+    /// Renders the close button.
+    ///
+    /// @param gfx    The pose-stack to render with.
+    /// @param mouseX The x position of the mouse.
+    /// @param mouseY The y position of the mouse.
+    /// @param x      The x position of the close button.
+    /// @param y      The y position of the close button.
     private void renderCloseButton(@NotNull GuiGraphics gfx, int mouseX, int mouseY, int x, int y) {
         if (isMouseOver(mouseX, mouseY, x, y, 12, 12)) {
             gfx.drawCenteredString(minecraft.font, CLOSE_ICON_HOVER, x + 6, y + 6, getStyle().getTitleColor().getRgb());
@@ -269,17 +239,15 @@ public class Window extends BaseContainerWidget implements Stylized {
         }
     }
 
-    /**
-     * Get whether the mouse is over a certain area.
-     *
-     * @param mouseX The x position of the mouse
-     * @param mouseY The y position of the mouse
-     * @param x      The x position of the area
-     * @param y      The y position of the area
-     * @param width  The width of the area
-     * @param height The height of the area
-     * @return true if the mouse is over the area, false if it is not.
-     */
+    /// Get whether the mouse is over a certain area.
+    ///
+    /// @param mouseX The x position of the mouse
+    /// @param mouseY The y position of the mouse
+    /// @param x      The x position of the area
+    /// @param y      The y position of the area
+    /// @param width  The width of the area
+    /// @param height The height of the area
+    /// @return true if the mouse is over the area, false if it is not.
     @SuppressWarnings("SameParameterValue")
     private boolean isMouseOver(int mouseX, int mouseY, int x, int y, int width, int height) {
         return mouseX >= x && mouseX <= x + width && mouseY >= y && mouseY <= y + height;
@@ -564,12 +532,10 @@ public class Window extends BaseContainerWidget implements Stylized {
         this.resizable = resizable;
     }
 
-    /**
-     * Get whether the window is shown.
-     *
-     * @return true if the window is shown, false if it is not.
-     * @throws IllegalStateException if the window is not valid.
-     */
+    /// Get whether the window is shown.
+    ///
+    /// @return true if the window is shown, false if it is not.
+    /// @throws IllegalStateException if the window is not valid.
     public boolean isVisible() {
         return visible;
     }

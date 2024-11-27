@@ -31,11 +31,9 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-/**
- * This is the main class for the UltreonLib mod.
- *
- * @author <a href="https://github.com/XyperCode">XyperCode</a>"
- */
+/// This is the main class for the UltreonLib mod.
+///
+/// @author <a href="https://github.com/XyperCode">XyperCode</a>"
 public class UltreonLib {
     public static final String MOD_ID = "ultreonlib";
 
@@ -145,9 +143,7 @@ public class UltreonLib {
         return Platform.isDevelopmentEnvironment() || UltreonLibConfig.enforceDevMode;
     }
 
-    /**
-     * @deprecated use {@link Platform#isMinecraftForge()} instead, this will be removed in the future
-     */
+    /// @deprecated use [#isMinecraftForge()] instead, this will be removed in the future
     @Deprecated(forRemoval = true)
     public static boolean isForge() {
         return Platform.isMinecraftForge();

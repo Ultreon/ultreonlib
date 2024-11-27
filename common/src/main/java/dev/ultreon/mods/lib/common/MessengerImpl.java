@@ -2,9 +2,7 @@ package dev.ultreon.mods.lib.common;
 
 import java.util.function.Consumer;
 
-/**
- * @author XyperCode
- */
+/// @author XyperCode
 public class MessengerImpl implements Messenger {
     private final Consumer<String> consumer;
 

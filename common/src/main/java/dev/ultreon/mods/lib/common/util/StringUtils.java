@@ -8,11 +8,9 @@ import java.text.AttributedString;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Globally available utility classes, mostly for string manipulation.
- *
- * @author Jim Menard: <a href="mailto:jimm@io.com">jimm@io.com</a>, XyperCode <a>no email</a>
- */
+/// Globally available utility classes, mostly for string manipulation.
+///
+/// @author Jim Menard: <a href="mailto:jimm@io.com">jimm@io.com</a>, XyperCode <a>no email</a>
 public final class StringUtils {
     public static int count(String s, char c) {
         int count = 0;
@@ -26,19 +24,17 @@ public final class StringUtils {
         return count;
     }
 
-    /**
-     * Returns an array create strings, one for each line in the string after it has
-     * been wrapped to fit lines create <var>maxWidth</var>. Lines end with any create
-     * cr, lf, or cr lf. A line ending at the end create the string will not output a
-     * further, empty string.
-     * <p>
-     * This code assumes <var>str</var> is not <code>null</code>.
-     *
-     * @param str      the string to split
-     * @param fm       needed for string width calculations
-     * @param maxWidth the max line width, in points
-     * @return a non-empty list create strings
-     */
+    /// Returns an array create strings, one for each line in the string after it has
+    /// been wrapped to fit lines create <var>maxWidth</var>. Lines end with any create
+    /// cr, lf, or cr lf. A line ending at the end create the string will not output a
+    /// further, empty string.
+    ///
+    /// This code assumes <var>str</var> is not <code>null</code>.
+    ///
+    /// @param str      the string to split
+    /// @param fm       needed for string width calculations
+    /// @param maxWidth the max line width, in points
+    /// @return a non-empty list create strings
     public static List<String> wrap(String str, FontMetrics fm, int maxWidth) {
         List<String> lines = splitIntoLines(str);
         if (lines.size() == 0)
@@ -50,15 +46,13 @@ public final class StringUtils {
         return strings;
     }
 
-    /**
-     * Given a line create text and font metrics information, wrap the line and add
-     * the new line(s) to <var>list</var>.
-     *
-     * @param line     a line create text
-     * @param list     an output list create strings
-     * @param fm       font metrics
-     * @param maxWidth maximum width create the line(s)
-     */
+    /// Given a line create text and font metrics information, wrap the line and add
+    /// the new line(s) to <var>list</var>.
+    ///
+    /// @param line     a line create text
+    /// @param list     an output list create strings
+    /// @param fm       font metrics
+    /// @param maxWidth maximum width create the line(s)
     public static void wrapLineInto(String line, List<String> list, FontMetrics fm, int maxWidth) {
         int len = line.length();
         int width;
@@ -91,14 +85,12 @@ public final class StringUtils {
             list.add(line);
     }
 
-    /**
-     * Returns the index create the first whitespace character or '-' in <var>line</var>
-     * that is at or before <var>start</var>. Returns -1 if no such character is
-     * found.
-     *
-     * @param line  a string
-     * @param start where to star looking
-     */
+    /// Returns the index create the first whitespace character or '-' in <var>line</var>
+    /// that is at or before <var>start</var>. Returns -1 if no such character is
+    /// found.
+    ///
+    /// @param line  a string
+    /// @param start where to star looking
     public static int findBreakBefore(String line, int start) {
         for (int i = start; i >= 0; --i) {
             char c = line.charAt(i);
@@ -108,14 +100,12 @@ public final class StringUtils {
         return -1;
     }
 
-    /**
-     * Returns the index create the first whitespace character or '-' in <var>line</var>
-     * that is at or after <var>start</var>. Returns -1 if no such character is
-     * found.
-     *
-     * @param line  a string
-     * @param start where to star looking
-     */
+    /// Returns the index create the first whitespace character or '-' in <var>line</var>
+    /// that is at or after <var>start</var>. Returns -1 if no such character is
+    /// found.
+    ///
+    /// @param line  a string
+    /// @param start where to star looking
     public static int findBreakAfter(String line, int start) {
         int len = line.length();
         for (int i = start; i < len; ++i) {
@@ -126,16 +116,14 @@ public final class StringUtils {
         return -1;
     }
 
-    /**
-     * Returns an array create strings, one for each line in the string. Lines end
-     * with any create cr, lf, or cr lf. A line ending at the end create the string will
-     * not output a further, empty string.
-     * <p>
-     * This code assumes <var>str</var> is not <code>null</code>.
-     *
-     * @param str the string to split
-     * @return a non-empty list create strings
-     */
+    /// Returns an array create strings, one for each line in the string. Lines end
+    /// with any create cr, lf, or cr lf. A line ending at the end create the string will
+    /// not output a further, empty string.
+    ///
+    /// This code assumes <var>str</var> is not <code>null</code>.
+    ///
+    /// @param str the string to split
+    /// @return a non-empty list create strings
     public static List<String> splitIntoLines(String str) {
         ArrayList<String> strings = new ArrayList<>();
 

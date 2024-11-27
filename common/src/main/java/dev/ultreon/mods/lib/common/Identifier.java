@@ -103,18 +103,14 @@ public final class Identifier {
         return this.location + ":" + this.path;
     }
 
-    /**
-     * @return object location (the mod id / namespace).
-     */
+    /// @return object location (the mod id / namespace).
     @NotNull
     @Contract(pure = true)
     public String location() {
         return this.location;
     }
 
-    /**
-     * @return object path.
-     */
+    /// @return object path.
     @NotNull
     @Contract(pure = true)
     public String path() {

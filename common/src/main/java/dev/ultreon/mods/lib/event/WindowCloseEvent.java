@@ -7,9 +7,7 @@ import dev.architectury.event.EventResult;
 
 @FunctionalInterface
 public interface WindowCloseEvent {
-    /**
-     * Interrupt with true to cancel the closing of the window.
-     */
+    /// Interrupt with true to cancel the closing of the window.
     Event<WindowCloseEvent> EVENT = EventFactory.createEventResult();
 
     EventResult onWindowClose(Window window, Source source);

@@ -11,9 +11,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Send messages to the player when they log in.
- */
+/// Send messages to the player when they log in.
 public final class ModMessages {
     @NotNull
     private static final List<Component> MESSAGES = new ArrayList<>();
@@ -27,21 +25,17 @@ public final class ModMessages {
         throw new UnsupportedOperationException();
     }
 
-    /**
-     * Adds a message to show in chat when a player logs in
-     *
-     * @param component the message to show in chat
-     */
+    /// Adds a message to show in chat when a player logs in
+    ///
+    /// @param component the message to show in chat
     public static void addMessage(@NotNull Component component) {
         MESSAGES.add(component);
     }
 
-    /**
-     * Adds a message with the given prefix to show in chat when a player logs in
-     *
-     * @param prefix the prefix for the message, e.g. the mod's name.
-     * @param component the message to show in chat
-     */
+    /// Adds a message with the given prefix to show in chat when a player logs in
+    ///
+    /// @param prefix the prefix for the message, e.g. the mod's name.
+    /// @param component the message to show in chat
     public static void addMessage(@NotNull String prefix, @NotNull Component component) {
         MESSAGES.add(Component.literal(ChatFormatting.YELLOW + "[").append(ChatFormatting.AQUA + prefix).append(ChatFormatting.YELLOW + "] ").append(component));
     }

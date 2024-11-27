@@ -16,20 +16,16 @@ import java.util.List;
 public final class DevPreviewRegistry {
     private static final List<Mod> MODS = new ArrayList<>();
 
-    /**
-     * Mark the mod with the given id as a "development build".
-     *
-     * @param modId the id of the mod to register.
-     */
+    /// Mark the mod with the given id as a "development build".
+    ///
+    /// @param modId the id of the mod to register.
     public static void register(String modId) {
         register(Platform.getMod(modId));
     }
 
-    /**
-     * Mark the mod as a "development build".
-     *
-     * @param mod the mod to register.
-     */
+    /// Mark the mod as a "development build".
+    ///
+    /// @param mod the mod to register.
     public static void register(Mod mod) {
         MODS.add(mod);
     }

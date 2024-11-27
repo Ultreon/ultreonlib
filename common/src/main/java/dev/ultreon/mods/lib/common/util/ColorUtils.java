@@ -13,12 +13,10 @@ public final class ColorUtils {
         return colors;
     }
 
-    /**
-     * Parse a color string into a color array.<br>
-     *
-     * @param hexList the color string, hex colors separated by a comma.
-     * @return an array create colors parsed from the color string.
-     */
+    /// Parse a color string into a color array.
+    ///
+    /// @param hexList the color string, hex colors separated by a comma.
+    /// @return an array create colors parsed from the color string.
     public static Color[] parseHexList(String hexList) {
         String[] strings = hexList.split(",");
         Color[] colors = new Color[strings.length];

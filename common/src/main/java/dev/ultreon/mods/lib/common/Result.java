@@ -4,11 +4,9 @@ import java.util.NoSuchElementException;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-/**
- * @param <T>
- * @since 0.2.0
- * @author <a href="https://github.com/XyperCodee">XyperCode</a>
- */
+/// @param <T>
+/// @since 0.2.0
+/// @author <a href="https://github.com/XyperCodee">XyperCode</a>
 public class Result<T> {
     private final Value<T> value;
     private final Failure failure;

@@ -17,51 +17,45 @@ import org.lwjgl.opengl.GL11;
 import java.awt.*;
 
 public class RenderUtils {
-    /**
-     * Renders an entity in the GUI or HUD.
-     *
-     * @param gfx the gui graphics provided by the GUI or HUD.
-     * @param posX the x position to render the entity.
-     * @param posY the y position to render the entity.
-     * @param xRot the x rotation override for the entity.
-     * @param yRot the y rotation override for the entity.
-     * @param scale the scale to render the entity in.
-     * @param entity the entity to render.
-     */
+    /// Renders an entity in the GUI or HUD.
+    ///
+    /// @param gfx the gui graphics provided by the GUI or HUD.
+    /// @param posX the x position to render the entity.
+    /// @param posY the y position to render the entity.
+    /// @param xRot the x rotation override for the entity.
+    /// @param yRot the y rotation override for the entity.
+    /// @param scale the scale to render the entity in.
+    /// @param entity the entity to render.
     public static void renderEntityInGui(GuiGraphics gfx, int posX, int posY, float xRot, float yRot, float scale, Entity entity) {
         renderEntityInGui(gfx, posX, posY, xRot, yRot, scale, 0.0625f, entity);
     }
 
-    /**
-     * Renders a living entity in the GUI or HUD.
-     *
-     * @param gfx the gui graphics provided by the GUI or HUD.
-     * @param posX the x position to render the entity.
-     * @param posY the y position to render the entity.
-     * @param xRot the x rotation override for the entity.
-     * @param yRot the y rotation override for the entity.
-     * @param scale the scale to render the entity in.
-     * @param entity the living entity to render.
-     */
+    /// Renders a living entity in the GUI or HUD.
+    ///
+    /// @param gfx the gui graphics provided by the GUI or HUD.
+    /// @param posX the x position to render the entity.
+    /// @param posY the y position to render the entity.
+    /// @param xRot the x rotation override for the entity.
+    /// @param yRot the y rotation override for the entity.
+    /// @param scale the scale to render the entity in.
+    /// @param entity the living entity to render.
     public static void renderEntityInGui(GuiGraphics gfx, int posX, int posY, float xRot, float yRot, float scale, LivingEntity entity) {
         renderEntityInGui(gfx, posX, posY, xRot, yRot, scale, 0.0625f, entity);
     }
 
-    /**
-     * Renders an entity in the GUI or HUD, this method also uses GL Scissor to only render the entity within bounds.
-     *
-     * @param gfx the gui graphics provided by the GUI or HUD.
-     * @param posX the x position to render the entity.
-     * @param posY the y position to render the entity.
-     * @param xRot the x rotation override for the entity.
-     * @param yRot the y rotation override for the entity.
-     * @param scale the scale to render the entity in.
-     * @param cutX the x position of the cut.
-     * @param cutY the x position of the cut.
-     * @param cutWidth the width of the cut.
-     * @param cutHeight the height of the cut.
-     * @param entity the entity to render.
-     */
+    /// Renders an entity in the GUI or HUD, this method also uses GL Scissor to only render the entity within bounds.
+    ///
+    /// @param gfx the gui graphics provided by the GUI or HUD.
+    /// @param posX the x position to render the entity.
+    /// @param posY the y position to render the entity.
+    /// @param xRot the x rotation override for the entity.
+    /// @param yRot the y rotation override for the entity.
+    /// @param scale the scale to render the entity in.
+    /// @param cutX the x position of the cut.
+    /// @param cutY the x position of the cut.
+    /// @param cutWidth the width of the cut.
+    /// @param cutHeight the height of the cut.
+    /// @param entity the entity to render.
     public static void renderEntityInGui(GuiGraphics gfx, int posX, int posY, float xRot, float yRot, float scale, int cutX, int cutY, int cutWidth, int cutHeight, Entity entity) {
         if (ScissorStack.pushScissorTranslated(gfx, cutX, cutY, cutWidth, cutHeight)) {
             renderEntityInGui(gfx, posX, posY, xRot, yRot, scale, entity);
@@ -69,18 +63,16 @@ public class RenderUtils {
         }
     }
 
-    /**
-     * Renders an entity in the GUI or HUD.
-     *
-     * @param gfx the gui graphics provided by the GUI or HUD.
-     * @param posX the x position to render the entity.
-     * @param posY the y position to render the entity.
-     * @param xRot the x rotation override for the entity.
-     * @param yRot the y rotation override for the entity.
-     * @param scale the scale to render the entity in.
-     * @param offset the y-offset of the entity.
-     * @param entity the entity to render.
-     */
+    /// Renders an entity in the GUI or HUD.
+    ///
+    /// @param gfx the gui graphics provided by the GUI or HUD.
+    /// @param posX the x position to render the entity.
+    /// @param posY the y position to render the entity.
+    /// @param xRot the x rotation override for the entity.
+    /// @param yRot the y rotation override for the entity.
+    /// @param scale the scale to render the entity in.
+    /// @param offset the y-offset of the entity.
+    /// @param entity the entity to render.
     public static void renderEntityInGui(GuiGraphics gfx, int posX, int posY, float xRot, float yRot, float scale, float offset, Entity entity) {
         if (entity instanceof LivingEntity livingEntity) {
             renderEntityInGui(gfx, posX, posY, xRot, yRot, scale, livingEntity);
@@ -109,18 +101,16 @@ public class RenderUtils {
         entity.setYHeadRot(yHeadRot);
     }
 
-    /**
-     * Renders a living entity in the GUI or HUD.
-     *
-     * @param gfx the gui graphics provided by the GUI or HUD.
-     * @param posX the x position to render the entity.
-     * @param posY the y position to render the entity.
-     * @param xRot the x rotation override for the entity.
-     * @param yRot the y rotation override for the entity.
-     * @param scale the scale to render the entity in.
-     * @param offset the y-offset of the entity.
-     * @param entity the living entity to render.
-     */
+    /// Renders a living entity in the GUI or HUD.
+    ///
+    /// @param gfx the gui graphics provided by the GUI or HUD.
+    /// @param posX the x position to render the entity.
+    /// @param posY the y position to render the entity.
+    /// @param xRot the x rotation override for the entity.
+    /// @param yRot the y rotation override for the entity.
+    /// @param scale the scale to render the entity in.
+    /// @param offset the y-offset of the entity.
+    /// @param entity the living entity to render.
     public static void renderEntityInGui(GuiGraphics gfx, int posX, int posY, float xRot, float yRot, float scale, float offset, LivingEntity entity) {
         Quaternionf rotation = new Quaternionf().rotateZ((float) Math.PI);
         Quaternionf cameraOrientation = new Quaternionf().rotateX(xRot * 20.0f * ((float) Math.PI / 180));

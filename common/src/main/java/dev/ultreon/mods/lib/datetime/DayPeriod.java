@@ -15,20 +15,16 @@ public enum DayPeriod {
         this.end = endExclusive;
     }
 
-    /**
-     * Time the day period begins.<br>
-     *
-     * @return the start time, note that the returned time is inclusive.
-     */
+    /// Time the day period begins.
+    ///
+    /// @return the start time, note that the returned time is inclusive.
     public Time getStart() {
         return this.start;
     }
 
-    /**
-     * Time the day period has ended.<br>
-     *
-     * @return the end time, note that the returned time is exclusive.
-     */
+    /// Time the day period has ended.
+    ///
+    /// @return the end time, note that the returned time is exclusive.
     public Time getEnd() {
         return this.end;
     }

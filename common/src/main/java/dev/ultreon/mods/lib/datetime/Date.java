@@ -57,14 +57,13 @@ public class Date implements Serializable, Comparable<Date>, Cloneable {
         return DateTime.ofInstant(lt, offset).getDate();
     }
 
-    /*************************************************************
-     * Return flag meaning the object is between time1 and time2.
-     *
-     * @param lo low value.
-     * @param hi high value.
-     * @return true if the object is between time1 and time2.
-     * @throws NullPointerException if ‘lo’ is higher than ‘hi’.
-     */
+    ///***********************************************************
+    /// Return flag meaning the object is between time1 and time2.
+    ///
+    /// @param lo low value.
+    /// @param hi high value.
+    /// @return true if the object is between time1 and time2.
+    /// @throws NullPointerException if ‘lo’ is higher than ‘hi’.
     public static boolean isBetween(Date lo, Date hi) {
         if (lo.toEpochDay() > hi.toEpochDay()) throw new NullPointerException("‘lo’ is higher than ‘hi’");
 

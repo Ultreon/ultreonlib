@@ -8,11 +8,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
-/**
- * Chat utilities.
- *
- * @author XyperCode
- */
+/// Chat utilities.
+///
+/// @author XyperCode
 public final class ChatUtils {
     public static void broadcastMessage(@NotNull Level level, @NotNull String message) {
         broadcastMessage(level, Component.literal(message));

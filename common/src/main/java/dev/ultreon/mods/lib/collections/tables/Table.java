@@ -5,15 +5,13 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 
-/**
- * Tables are a 3-dimensional {@link Map}.
- *
- * @param <R> the row type.
- * @param <C> the column type.
- * @param <V> the value type.
- * @since 0.2.0
- * @author <a href="https://github.com/XyperCodee">XyperCode</a>
- */
+/// Tables are a 3-dimensional [Map].
+///
+/// @param <R> the row type.
+/// @param <C> the column type.
+/// @param <V> the value type.
+/// @since 0.2.0
+/// @author <a href="https://github.com/XyperCodee">XyperCode</a>
 public interface Table<R, C, V> {
     static <R, C, V> Table<R, C, V> copyOf(Table<R, C, V> table) {
         Set<Cell<R, C, V>> cells = Collections.unmodifiableSet(table.cellSet());

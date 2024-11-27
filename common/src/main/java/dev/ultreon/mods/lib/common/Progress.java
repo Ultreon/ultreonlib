@@ -5,9 +5,7 @@ import org.jetbrains.annotations.NotNull;
 import java.io.Serializable;
 import java.util.Objects;
 
-/**
- * @author XyperCode
- */
+/// @author XyperCode
 public class Progress implements Cloneable, Comparable<Progress>, Serializable {
     private int progress;
     private final int max;

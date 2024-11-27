@@ -16,11 +16,9 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-/**
- * Utility for finding what's targeted in the crosshair.
- *
- * @author XyperCode
- */
+/// Utility for finding what's targeted in the crosshair.
+///
+/// @author XyperCode
 @Beta
 public final class Crosshair {
     @NotNull

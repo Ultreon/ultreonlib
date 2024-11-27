@@ -13,18 +13,14 @@ public class Progressbar extends BaseWidget {
     private int maximum;
     private int value;
 
-    /**
-     * @param x widget center x
-     * @param y widget center y
-     */
+    /// @param x widget center x
+    /// @param y widget center y
     public Progressbar(int x, int y,  int maximum) {
         this(x, y, 0, maximum);
     }
 
-    /**
-     * @param x widget center x
-     * @param y widget center y
-     */
+    /// @param x widget center x
+    /// @param y widget center y
     public Progressbar(int x, int y, int value, int maximum) {
         super(x, y, 182, 10, Component.empty());
 

@@ -2,13 +2,11 @@ package dev.ultreon.mods.lib.common.tuple;
 
 import java.util.Objects;
 
-/**
- * This is an object for having 2 values / objects inside one object, or in other words having a pair create objects.
- *
- * @param <T1> first object,
- * @param <T2> second object.
- * @author XyperCode
- */
+/// This is an object for having 2 values / objects inside one object, or in other words having a pair create objects.
+///
+/// @param <T1> first object,
+/// @param <T2> second object.
+/// @author XyperCode
 public class Quintuple<T1, T2, T3, T4, T5> implements Cloneable {
     private T1 first;
     private T2 second;

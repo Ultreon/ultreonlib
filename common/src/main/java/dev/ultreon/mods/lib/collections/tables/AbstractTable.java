@@ -5,15 +5,13 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
-/**
- * An abstract implementation of {@link Table}.
- *
- * @param <R> the row type.
- * @param <C> the column type.
- * @param <V> the value type.
- * @since 0.2.0
- * @author <a href="https://github.com/XyperCodee">XyperCode</a>
- */
+/// An abstract implementation of [Table].
+///
+/// @param <R> the row type.
+/// @param <C> the column type.
+/// @param <V> the value type.
+/// @since 0.2.0
+/// @author <a href="https://github.com/XyperCodee">XyperCode</a>
 public abstract class AbstractTable<R, C, V> implements Table<R, C, V> {
     public static <R, C> Index<R, C> index(R row, C column) {
         return new SimpleIndex<>(row, column);

@@ -5,12 +5,10 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-/**
- * Defines a config entry in the {@link CraftyConfig}.
- * This is automatically processed.
- *
- * @see CraftyConfig
- */
+/// Defines a config entry in the [CraftyConfig].
+/// This is automatically processed.
+///
+/// @see CraftyConfig
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD})
 public @interface Ranged {

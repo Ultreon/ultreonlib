@@ -8,11 +8,9 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 
 public final class TimeUtils {
-    /**
-     * @param duration the desired duration to format.
-     * @return the formatted duration.
-     * @deprecated use date time library of CoreLibs instead.
-     */
+    /// @param duration the desired duration to format.
+    /// @return the formatted duration.
+    /// @deprecated use date time library of CoreLibs instead.
     @NotNull
     @Deprecated
     @ApiStatus.ScheduledForRemoval
@@ -25,9 +23,7 @@ public final class TimeUtils {
         return formatDuration(minute, second, hourDouble);
     }
 
-    /**
-     * @deprecated use date time library of CoreLibs instead.
-     */
+    /// @deprecated use date time library of CoreLibs instead.
     @NotNull
     @Deprecated
     @ApiStatus.ScheduledForRemoval

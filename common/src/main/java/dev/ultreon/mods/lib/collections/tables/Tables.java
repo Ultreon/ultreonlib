@@ -5,10 +5,8 @@ import org.jetbrains.annotations.Nullable;
 import java.util.HashSet;
 import java.util.Set;
 
-/**
- * @since 0.2.0
- * @author <a href="https://github.com/XyperCodee">XyperCode</a>
- */
+/// @since 0.2.0
+/// @author <a href="https://github.com/XyperCodee">XyperCode</a>
 public final class Tables {
     private Tables() {
         throw new UnsupportedOperationException("Instantiation of utility class");

@@ -25,16 +25,14 @@ import java.util.concurrent.TimeUnit;
 
 import static dev.ultreon.mods.lib.UltreonLib.MOD_ID;
 
-/**
- * The base class for all configuration files.
- * Files are stored in the path provided in {@link Platform#getConfigFolder()}.
- * Those files are also automatically reloaded when they are modified.
- * Configs are saved in JSON5 format. See {@link Json5} for more information.
- *
- * @see <a href="https://spec.json5.org/">JSON5 Specification</a>
- * @see Json5
- * @author <a href="https://github.com/XyperCode">XyperCode</a>
- */
+/// The base class for all configuration files.
+/// Files are stored in the path provided in [#getConfigFolder()].
+/// Those files are also automatically reloaded when they are modified.
+/// Configs are saved in JSON5 format. See [Json5] for more information.
+///
+/// @see <a href="https://spec.json5.org/">JSON5 Specification</a>
+/// @see Json5
+/// @author <a href="https://github.com/XyperCode">XyperCode</a>
 public abstract class CraftyConfig {
     private static final Logger LOGGER = LoggerFactory.getLogger("UltreonLib::CraftyConfig");
     private static final Map<String, CraftyConfig> CONFIGS = new HashMap<>();
@@ -83,10 +81,8 @@ public abstract class CraftyConfig {
 
     private static WatchKey watchKey;
 
-    /**
-     * Constructor for CraftyConfig class.
-     * Initializes the configuration based on annotations present in the class fields.
-     */
+    /// Constructor for CraftyConfig class.
+    /// Initializes the configuration based on annotations present in the class fields.
     public CraftyConfig() {
 
         // Get the class of the config
@@ -131,33 +127,25 @@ public abstract class CraftyConfig {
         CONFIGS.put(annotation.fileName() + ".json5", this);
     }
 
-    /**
-     * Get the CraftyConfig instance associated with the given file name.
-     *
-     * @param fileName The name of the file to get the CraftyConfig instance for.
-     * @return The CraftyConfig instance associated with the given file name.
-     */
+    /// Get the CraftyConfig instance associated with the given file name.
+    ///
+    /// @param fileName The name of the file to get the CraftyConfig instance for.
+    /// @return The CraftyConfig instance associated with the given file name.
     public static CraftyConfig getConfig(String fileName) {
         return CONFIGS.get(fileName);
     }
 
-    /**
-     * Reset all CraftyConfig instances.
-     */
+    /// Reset all CraftyConfig instances.
     public static void resetAll() {
         CONFIGS.values().forEach(CraftyConfig::reset);
     }
 
-    /**
-     * Save all CraftyConfig instances.
-     */
+    /// Save all CraftyConfig instances.
     public static void saveAll() {
         CONFIGS.values().forEach(CraftyConfig::save);
     }
 
-    /**
-     * Load all CraftyConfig instances.
-     */
+    /// Load all CraftyConfig instances.
     public static void loadAll() {
         CONFIGS.values().forEach(CraftyConfig::load);
     }
@@ -166,12 +154,10 @@ public abstract class CraftyConfig {
         return CONFIGS.values();
     }
 
-    /**
-     * Load the configuration from the specified file, replacing any existing values with defaults if necessary.
-     *
-     * @return true if the configuration was loaded successfully, false otherwise
-     * @throws IOException if an I/O error occurs
-     */
+    /// Load the configuration from the specified file, replacing any existing values with defaults if necessary.
+    ///
+    /// @return true if the configuration was loaded successfully, false otherwise
+    /// @throws IOException if an I/O error occurs
     protected boolean loadUnsafe() throws IOException {
         // Parse the JSON5 file into a Json5Element
         Json5Element root = Reference.JSON5.parse(Files.readString(this.configPath, StandardCharsets.UTF_8));
@@ -223,11 +209,9 @@ public abstract class CraftyConfig {
         return success;
     }
 
-    /**
-     * Saves the configurations to a file. Any missing fields will be filled with default values.
-     *
-     * @throws IOException if an I/O error occurs
-     */
+    /// Saves the configurations to a file. Any missing fields will be filled with default values.
+    ///
+    /// @throws IOException if an I/O error occurs
     protected void saveUnsafe() throws IOException {
         // Create a Json5Object to hold the configurations
         Json5Object root = new Json5Object();
@@ -267,9 +251,7 @@ public abstract class CraftyConfig {
         Files.writeString(this.configPath, serialize(root), StandardCharsets.UTF_8, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.WRITE);
     }
 
-    /**
-     * Disables the watcher, saves the file, and then re-enables the watcher.
-     */
+    /// Disables the watcher, saves the file, and then re-enables the watcher.
     public void save() {
         disableWatcher();
 
@@ -282,9 +264,7 @@ public abstract class CraftyConfig {
         enableWatcher();
     }
 
-    /**
-     * Disables the watcher by canceling the watch key if it's not null.
-     */
+    /// Disables the watcher by canceling the watch key if it's not null.
     private static void disableWatcher() {
         if (watchKey == null) return;
 
@@ -292,9 +272,7 @@ public abstract class CraftyConfig {
         watchKey = null;
     }
 
-    /**
-     * Enable file watcher on the configuration directory.
-     */
+    /// Enable file watcher on the configuration directory.
     private static void enableWatcher() {
         try {
             // Register the watch service for entry modify, delete, and create events
@@ -305,9 +283,7 @@ public abstract class CraftyConfig {
         }
     }
 
-    /**
-     * Reset the configuration to default values and delete the configuration file.
-     */
+    /// Reset the configuration to default values and delete the configuration file.
     public void reset() {
         // Delete the configuration file if it exists or do nothing if it doesn't
         try {
@@ -337,9 +313,7 @@ public abstract class CraftyConfig {
         enableWatcher();
     }
 
-    /**
-     * This method updates the configuration files when there are modifications or new files in the watch directory.
-     */
+    /// This method updates the configuration files when there are modifications or new files in the watch directory.
     public static void update() {
         // Get the list of watch events
         List<WatchEvent<?>> watchEvents = watchKey.pollEvents();
@@ -389,25 +363,21 @@ public abstract class CraftyConfig {
         }
     }
 
-    /**
-     * Serialize a Json5Object to a CharSequence.
-     *
-     * @param root The Json5Object to serialize
-     * @return The serialized Json5Object as a CharSequence
-     */
+    /// Serialize a Json5Object to a CharSequence.
+    ///
+    /// @param root The Json5Object to serialize
+    /// @return The serialized Json5Object as a CharSequence
     private CharSequence serialize(Json5Object root) throws IOException {
         // Serialize the Json5Object into a CharSequence
         return Reference.JSON5.serialize(root);
     }
 
-    /**
-     * Sets the element at the specified path in the JSON object, with an optional comment.
-     *
-     * @param root    the root JSON object
-     * @param path    the path to the element
-     * @param value   the value to set
-     * @param comment the comment to associate with the element
-     */
+    /// Sets the element at the specified path in the JSON object, with an optional comment.
+    ///
+    /// @param root    the root JSON object
+    /// @param path    the path to the element
+    /// @param value   the value to set
+    /// @param comment the comment to associate with the element
     @SuppressWarnings({"ConditionCoveredByFurtherCondition"})
     private void setElement(Json5Object root, String path, Json5Element value, String comment) {
         // Split the path into parts
@@ -435,14 +405,12 @@ public abstract class CraftyConfig {
         current.setComment(parts[parts.length - 1], comment);
     }
 
-    /**
-     * Serializes the given value based on the provided type and returns the corresponding Json5Element.
-     *
-     * @param value The value to be serialized.
-     * @param type  The type of the value.
-     * @return The serialized Json5Element.
-     * @throws IllegalStateException if the type is unsupported.
-     */
+    /// Serializes the given value based on the provided type and returns the corresponding Json5Element.
+    ///
+    /// @param value The value to be serialized.
+    /// @param type  The type of the value.
+    /// @return The serialized Json5Element.
+    /// @throws IllegalStateException if the type is unsupported.
     private Json5Element serializeValue(Object value, Class<?> type) {
         // Serialize based on the type
         if (type == String.class) {
@@ -500,13 +468,11 @@ public abstract class CraftyConfig {
         }
     }
 
-    /**
-     * Sets default values for different types of fields.
-     *
-     * @param field the field to set the default value for
-     * @param type the type of the field
-     * @throws IllegalAccessException if the default value cannot be set
-     */
+    /// Sets default values for different types of fields.
+    ///
+    /// @param field the field to set the default value for
+    /// @param type the type of the field
+    /// @throws IllegalAccessException if the default value cannot be set
     private void setDefaults(Field field, Class<?> type) throws IllegalAccessException {
         if (type == String.class) {
             field.set(null, "");
@@ -569,14 +535,12 @@ public abstract class CraftyConfig {
         }
     }
 
-    /**
-     * Parses the given Json5Element into the specified type taking into account any range restrictions.
-     *
-     * @param element the Json5Element to be parsed
-     * @param type the target type to parse the element into
-     * @param ranged specifies if there are range restrictions for numeric types
-     * @return the parsed value of the element into the specified type
-     */
+    /// Parses the given Json5Element into the specified type taking into account any range restrictions.
+    ///
+    /// @param element the Json5Element to be parsed
+    /// @param type the target type to parse the element into
+    /// @param ranged specifies if there are range restrictions for numeric types
+    /// @return the parsed value of the element into the specified type
     @SuppressWarnings({"rawtypes", "unchecked"})
     private Object parseValue(Json5Element element, Class<?> type, Ranged ranged) {
         if (Json5Element.class.isAssignableFrom(type)) {
@@ -649,13 +613,11 @@ public abstract class CraftyConfig {
         }
     }
 
-    /**
-     * Parses a number from a Json5Number object within the specified range.
-     *
-     * @param element the Json5Number object to parse
-     * @param ranged the range within which the parsed number should fall
-     * @return the parsed number within the specified range
-     */
+    /// Parses a number from a Json5Number object within the specified range.
+    ///
+    /// @param element the Json5Number object to parse
+    /// @param ranged the range within which the parsed number should fall
+    /// @return the parsed number within the specified range
     private Number parseNumber(Json5Number element, Ranged ranged) {
         if (ranged == null) return element.getAsNumber();
         if (ranged.min() > element.getAsNumber().doubleValue()) return ranged.min();
@@ -663,13 +625,11 @@ public abstract class CraftyConfig {
         return element.getAsNumber();
     }
 
-    /**
-     * Retrieves a nested element in a JSON-like structure based on the provided path.
-     *
-     * @param root The root Json5Element where the search starts.
-     * @param path The path to the desired element separated by dots.
-     * @return The element found at the specified path, or null if not found.
-     */
+    /// Retrieves a nested element in a JSON-like structure based on the provided path.
+    ///
+    /// @param root The root Json5Element where the search starts.
+    /// @param path The path to the desired element separated by dots.
+    /// @return The element found at the specified path, or null if not found.
     private Json5Element getElement(Json5Element root, String path) {
         // Split the path into individual elements
         String[] pathElements = path.split("\\.");
@@ -690,12 +650,10 @@ public abstract class CraftyConfig {
         // Return the element at the last path element, if it exists
         return current instanceof Json5Object ? ((Json5Object) current).get(pathElements[pathElements.length - 1]) : null;
     }
-    /**
-     * Process the given field and perform various operations like setting accessibility,
-     * updating maps, and setting default values.
-     *
-     * @param field the field to be processed
-     */
+    /// Process the given field and perform various operations like setting accessibility,
+    /// updating maps, and setting default values.
+    ///
+    /// @param field the field to be processed
     private void processEntry(Field field) {
         // Get the ConfigEntry annotation from the field
         ConfigEntry configEntry = field.getAnnotation(ConfigEntry.class);
@@ -731,13 +689,11 @@ public abstract class CraftyConfig {
         typesMap.put(configEntry.path(), field.getType());
     }
 
-    /**
-     * Defines default values for different types of fields.
-     *
-     * @param  field        the field to define defaults for
-     * @param  type         the type of the field
-     * @param  configEntry  the configuration entry for the field
-     */
+    /// Defines default values for different types of fields.
+    ///
+    /// @param  field        the field to define defaults for
+    /// @param  type         the type of the field
+    /// @param  configEntry  the configuration entry for the field
     private void defineDefaults(Field field, Class<?> type, ConfigEntry configEntry) {
         if (type == Json5String.class) {
             defaultsMap.put(configEntry.path(), new Json5String(""));
@@ -806,9 +762,7 @@ public abstract class CraftyConfig {
         }
     }
 
-    /**
-     * Loads the configuration file, handles exceptions, and then saves the configuration.
-     */
+    /// Loads the configuration file, handles exceptions, and then saves the configuration.
     public void load() {
         try {
             this.loadUnsafe();
@@ -823,14 +777,12 @@ public abstract class CraftyConfig {
         this.save();
     }
 
-    /**
-     * Retrieves the value of the field at the specified path.
-     *
-     * @param path The path of the field to retrieve.
-     * @return The value of the field.
-     * @throws IllegalArgumentException If the field does not exist.
-     * @throws RuntimeException If there is an error accessing the field.
-     */
+    /// Retrieves the value of the field at the specified path.
+    ///
+    /// @param path The path of the field to retrieve.
+    /// @return The value of the field.
+    /// @throws IllegalArgumentException If the field does not exist.
+    /// @throws RuntimeException If there is an error accessing the field.
     public Object get(String path) {
         // Get the field from the fieldsMap
         Field field = fieldsMap.get(path);
@@ -849,13 +801,11 @@ public abstract class CraftyConfig {
         }
     }
 
-    /**
-     * Retrieves the class type of the field at the specified path.
-     *
-     * @param path the path of the field
-     * @return the class type of the field
-     * @throws IllegalArgumentException if the field does not exist
-     */
+    /// Retrieves the class type of the field at the specified path.
+    ///
+    /// @param path the path of the field
+    /// @return the class type of the field
+    /// @throws IllegalArgumentException if the field does not exist
     public Class<?> getType(String path) {
         // Get the field at the specified path
         Field field = fieldsMap.get(path);
@@ -869,13 +819,11 @@ public abstract class CraftyConfig {
         return field.getType();
     }
 
-    /**
-     * Retrieves the default value associated with the provided path.
-     *
-     * @param path The path to the config entry
-     * @return The default value for the config entry
-     * @throws IllegalArgumentException if the config entry does not exist
-     */
+    /// Retrieves the default value associated with the provided path.
+    ///
+    /// @param path The path to the config entry
+    /// @return The default value for the config entry
+    /// @throws IllegalArgumentException if the config entry does not exist
     public Object getDefault(String path) {
         Field field = fieldsMap.get(path);
         if (field == null) {
@@ -885,21 +833,17 @@ public abstract class CraftyConfig {
         return defaultsMap.get(path);
     }
 
-    /**
-     * Checks if the given path exists in the fields map.
-     *
-     * @param path The path to check.
-     * @return True if the path exists, false otherwise.
-     */
+    /// Checks if the given path exists in the fields map.
+    ///
+    /// @param path The path to check.
+    /// @return True if the path exists, false otherwise.
     public boolean contains(String path) {
         return fieldsMap.containsKey(path);
     }
 
-    /**
-     * Retrieves all fields and their values from the object.
-     *
-     * @return A map containing field names as keys and their corresponding values
-     */
+    /// Retrieves all fields and their values from the object.
+    ///
+    /// @return A map containing field names as keys and their corresponding values
     public Map<String, Object> getAll() {
         // Create a map to store field names and values
         Map<String, Object> map = new HashMap<>();
@@ -919,22 +863,18 @@ public abstract class CraftyConfig {
         return map;
     }
 
-    /**
-     * Returns an unmodifiable map of default values.
-     *
-     * @return unmodifiable map of default values
-     */
+    /// Returns an unmodifiable map of default values.
+    ///
+    /// @return unmodifiable map of default values
     public Map<String, Object> getDefaults() {
         return Collections.unmodifiableMap(defaultsMap);
     }
 
-    /**
-     * Sets the value of a config entry specified by its path.
-     *
-     * @param path The path of the config entry.
-     * @param value The value to set.
-     * @throws IllegalArgumentException If the config entry does not exist or if the value cannot be set.
-     */
+    /// Sets the value of a config entry specified by its path.
+    ///
+    /// @param path The path of the config entry.
+    /// @param value The value to set.
+    /// @throws IllegalArgumentException If the config entry does not exist or if the value cannot be set.
     public void set(String path, Object value) {
         // Get the field associated with the given path
         Field field = fieldsMap.get(path);
@@ -959,11 +899,9 @@ public abstract class CraftyConfig {
         }
     }
 
-    /**
-     * Resets the config entry based on the provided path.
-     *
-     * @param path The path of the config entry to reset
-     */
+    /// Resets the config entry based on the provided path.
+    ///
+    /// @param path The path of the config entry to reset
     public void reset(String path) {
         // Get the field from the fields map based on the path
         Field field = fieldsMap.get(path);
@@ -1001,18 +939,14 @@ public abstract class CraftyConfig {
         return rangesMap.get(key);
     }
 
-    /**
-     * Event that is called when the config file is loaded or reloaded.
-     *
-     * @see #event
-     */
+    /// Event that is called when the config file is loaded or reloaded.
+    ///
+    /// @see #event
     @FunctionalInterface
     public interface LoadConfig {
-        /**
-         * Called when the config file is loaded or reloaded.
-         *
-         * @throws IOException if an I/O error occurs
-         */
+        /// Called when the config file is loaded or reloaded.
+        ///
+        /// @throws IOException if an I/O error occurs
         void load() throws IOException;
     }
 }
