@@ -34,18 +34,17 @@ dependencies {
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionForge")) { transitive = false }
 
-    include forgeRuntimeLibrary("com.github.Ultreon:ultreon-data:${ultreon_data_version}")
+    include forgeRuntimeLibrary("dev.ultreon:ubo:${ultreon_data_version}")
 
-    include forgeRuntimeLibrary("com.github.Ultreon.corelibs:corelibs-collections-v0:$corelibs_version")
-    include forgeRuntimeLibrary("com.github.Ultreon.corelibs:corelibs-commons-v0:$corelibs_version")
-    include forgeRuntimeLibrary("com.github.Ultreon.corelibs:corelibs-crash-v0:$corelibs_version")
-    include forgeRuntimeLibrary("com.github.Ultreon.corelibs:corelibs-datetime-v0:$corelibs_version")
-    include forgeRuntimeLibrary("com.github.Ultreon.corelibs:corelibs-events-v1:$corelibs_version")
-    include forgeRuntimeLibrary("com.github.Ultreon.corelibs:corelibs-functions-v0:$corelibs_version")
-    include forgeRuntimeLibrary("com.github.Ultreon.corelibs:corelibs-registries-v0:$corelibs_version")
-    include forgeRuntimeLibrary("com.github.Ultreon.corelibs:corelibs-resources-v0:$corelibs_version")
-    include forgeRuntimeLibrary("com.github.Ultreon.corelibs:corelibs-text-v0:$corelibs_version")
-    include forgeRuntimeLibrary("com.github.Ultreon.corelibs:corelibs-translations-v0:$corelibs_version")
+    include forgeRuntimeLibrary("dev.ultreon.corelibs:corelibs-collections-v0:$corelibs_version")
+    include forgeRuntimeLibrary("dev.ultreon.corelibs:corelibs-commons-v0:$corelibs_version")
+    include forgeRuntimeLibrary("dev.ultreon.corelibs:corelibs-crash-v0:$corelibs_version")
+    include forgeRuntimeLibrary("dev.ultreon.corelibs:corelibs-datetime-v0:$corelibs_version")
+    include forgeRuntimeLibrary("dev.ultreon.corelibs:corelibs-events-v1:$corelibs_version")
+    include forgeRuntimeLibrary("dev.ultreon.corelibs:corelibs-functions-v0:$corelibs_version")
+    include forgeRuntimeLibrary("dev.ultreon.corelibs:corelibs-registries-v0:$corelibs_version")
+    include forgeRuntimeLibrary("dev.ultreon.corelibs:corelibs-text-v0:$corelibs_version")
+    include forgeRuntimeLibrary("dev.ultreon.corelibs:corelibs-translations-v0:$corelibs_version")
 
 }
 
@@ -107,21 +106,5 @@ sourcesJar {
 components.java {
     withVariantsFromConfiguration(project.configurations.shadowRuntimeElements) {
         skip()
-    }
-}
-
-publishing {
-    publications {
-        //noinspection GroovyAssignabilityCheck
-        mavenForge(MavenPublication) {
-            artifactId = rootProject.archives_base_name + "-" + project.name
-            //noinspection GroovyAssignabilityCheck
-            from components.java
-        }
-    }
-
-    // See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
-    repositories {
-        // Add repositories to publish to here.
     }
 }
