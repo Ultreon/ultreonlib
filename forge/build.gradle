@@ -4,6 +4,10 @@ plugins {
 
 version rootProject.version
 
+base {
+    archivesName = rootProject.name + "-" + project.name
+}
+
 architectury {
     platformSetupLoomIde()
     forge()
@@ -106,5 +110,16 @@ sourcesJar {
 components.java {
     withVariantsFromConfiguration(project.configurations.shadowRuntimeElements) {
         skip()
+    }
+}
+
+publishing {
+    publications {
+        //noinspection GroovyAssignabilityCheck
+        mavenCommon(MavenPublication) {
+            artifactId = rootProject.name + "-" + project.name
+            //noinspection GroovyAssignabilityCheck
+            from components.java
+        }
     }
 }

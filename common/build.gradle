@@ -2,6 +2,10 @@ architectury {
     common()
 }
 
+base {
+    archivesName = rootProject.name
+}
+
 loom {
     //noinspection GroovyAssignabilityCheck
     accessWidenerPath = file("src/main/resources/ultreonlib.accesswidener")
@@ -42,6 +46,17 @@ sourceSets {
                     "src/main/generated/resources"
             ]
             System.out.println(srcDirs)
+        }
+    }
+}
+
+publishing {
+    publications {
+        //noinspection GroovyAssignabilityCheck
+        mavenCommon(MavenPublication) {
+            artifactId = rootProject.name
+            //noinspection GroovyAssignabilityCheck
+            from components.java
         }
     }
 }
